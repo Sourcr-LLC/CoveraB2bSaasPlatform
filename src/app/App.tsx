@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from './lib/api';
 import { Toaster } from 'sonner';
 
-// Eager load critical components
+// Import all components normally (no lazy loading to avoid initialization errors)
 import DashboardLayout from './components/DashboardLayoutNew';
 import LandingPage from './components/LandingPage';
 import LoginScreen from './components/LoginScreen';
@@ -12,53 +12,53 @@ import PageTransition from './components/PageTransition';
 import ScrollToTop from './components/ScrollToTop';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
-// Lazy load all public pages for better performance
-const ForgotPassword = lazy(() => import('./components/ForgotPassword'));
-const TermsOfService = lazy(() => import('./components/TermsOfService'));
-const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
-const Security = lazy(() => import('./components/Security'));
-const Pricing = lazy(() => import('./components/Pricing'));
-const SolutionsPropertyManagement = lazy(() => import('./components/SolutionsPropertyManagement'));
-const SolutionsConstruction = lazy(() => import('./components/SolutionsConstruction'));
-const FeaturesCOITracking = lazy(() => import('./components/FeaturesCOITracking'));
-const IndustriesHealthcare = lazy(() => import('./components/IndustriesHealthcare'));
-const IndustriesLogistics = lazy(() => import('./components/IndustriesLogistics'));
-const IndustriesFranchise = lazy(() => import('./components/IndustriesFranchise'));
-const IndustriesFacilities = lazy(() => import('./components/IndustriesFacilities'));
-const IndustriesGovernment = lazy(() => import('./components/IndustriesGovernment'));
-const IndustriesEducation = lazy(() => import('./components/IndustriesEducation'));
-const IndustriesRetail = lazy(() => import('./components/IndustriesRetail'));
-const IndustriesHospitality = lazy(() => import('./components/IndustriesHospitality'));
-const AboutUs = lazy(() => import('./components/AboutUs'));
-const Sitemap = lazy(() => import('./components/Sitemap'));
-const HowToTrackVendorCompliance = lazy(() => import('./components/HowToTrackVendorCompliance'));
-const WhatHappensVendorUninsured = lazy(() => import('./components/WhatHappensVendorUninsured'));
-const BlogList = lazy(() => import('./components/BlogList'));
-const WhatIsCertificateOfInsurance = lazy(() => import('./components/blogs/WhatIsCertificateOfInsurance'));
-const TrackVendorInsuranceExpiration = lazy(() => import('./components/blogs/TrackVendorInsuranceExpiration'));
-const VendorComplianceChecklist = lazy(() => import('./components/blogs/VendorComplianceChecklist'));
-const PropertyManagersVerifyVendorInsurance = lazy(() => import('./components/blogs/PropertyManagersVerifyVendorInsurance'));
-const COITrackingSpreadsheetVsSoftware = lazy(() => import('./components/blogs/COITrackingSpreadsheetVsSoftware'));
-const ExpiredVendorInsurance = lazy(() => import('./components/blogs/ExpiredVendorInsurance'));
-const ConstructionVendorInsuranceRequirements = lazy(() => import('./components/blogs/ConstructionVendorInsuranceRequirements'));
-const AdditionalInsuredVsCertificateHolder = lazy(() => import('./components/blogs/AdditionalInsuredVsCertificateHolder'));
-const VendorInsuranceTrackingMistakes = lazy(() => import('./components/blogs/VendorInsuranceTrackingMistakes'));
-const GeneralLiabilityCoverageLimits = lazy(() => import('./components/blogs/GeneralLiabilityCoverageLimits'));
-const AutomateCOICollection = lazy(() => import('./components/blogs/AutomateCOICollection'));
-const VendorInsuranceComplianceSmallBusiness = lazy(() => import('./components/blogs/VendorInsuranceComplianceSmallBusiness'));
+// Public pages
+import ForgotPassword from './components/ForgotPassword';
+import TermsOfService from './components/TermsOfService';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import Security from './components/Security';
+import Pricing from './components/Pricing';
+import SolutionsPropertyManagement from './components/SolutionsPropertyManagement';
+import SolutionsConstruction from './components/SolutionsConstruction';
+import FeaturesCOITracking from './components/FeaturesCOITracking';
+import IndustriesHealthcare from './components/IndustriesHealthcare';
+import IndustriesLogistics from './components/IndustriesLogistics';
+import IndustriesFranchise from './components/IndustriesFranchise';
+import IndustriesFacilities from './components/IndustriesFacilities';
+import IndustriesGovernment from './components/IndustriesGovernment';
+import IndustriesEducation from './components/IndustriesEducation';
+import IndustriesRetail from './components/IndustriesRetail';
+import IndustriesHospitality from './components/IndustriesHospitality';
+import AboutUs from './components/AboutUs';
+import Sitemap from './components/Sitemap';
+import HowToTrackVendorCompliance from './components/HowToTrackVendorCompliance';
+import WhatHappensVendorUninsured from './components/WhatHappensVendorUninsured';
+import BlogList from './components/BlogList';
+import WhatIsCertificateOfInsurance from './components/blogs/WhatIsCertificateOfInsurance';
+import TrackVendorInsuranceExpiration from './components/blogs/TrackVendorInsuranceExpiration';
+import VendorComplianceChecklist from './components/blogs/VendorComplianceChecklist';
+import PropertyManagersVerifyVendorInsurance from './components/blogs/PropertyManagersVerifyVendorInsurance';
+import COITrackingSpreadsheetVsSoftware from './components/blogs/COITrackingSpreadsheetVsSoftware';
+import ExpiredVendorInsurance from './components/blogs/ExpiredVendorInsurance';
+import ConstructionVendorInsuranceRequirements from './components/blogs/ConstructionVendorInsuranceRequirements';
+import AdditionalInsuredVsCertificateHolder from './components/blogs/AdditionalInsuredVsCertificateHolder';
+import VendorInsuranceTrackingMistakes from './components/blogs/VendorInsuranceTrackingMistakes';
+import GeneralLiabilityCoverageLimits from './components/blogs/GeneralLiabilityCoverageLimits';
+import AutomateCOICollection from './components/blogs/AutomateCOICollection';
+import VendorInsuranceComplianceSmallBusiness from './components/blogs/VendorInsuranceComplianceSmallBusiness';
 
-// Lazy load all other components for better performance
-const Dashboard = lazy(() => import('./components/Dashboard'));
-const VendorManagement = lazy(() => import('./components/VendorManagement'));
-const VendorDetail = lazy(() => import('./components/VendorDetail'));
-const InsuranceTracking = lazy(() => import('./components/InsuranceTracking'));
-const AlertsReminders = lazy(() => import('./components/AlertsReminders'));
-const ComplianceDashboard = lazy(() => import('./components/ComplianceDashboard'));
-const ReportsExports = lazy(() => import('./components/ReportsExports'));
-const Settings = lazy(() => import('./components/Settings'));
-const ContractManagement = lazy(() => import('./components/ContractManagement'));
-const AddVendor = lazy(() => import('./components/AddVendor'));
-const Billing = lazy(() => import('./components/Billing'));
+// Dashboard components
+import Dashboard from './components/Dashboard';
+import VendorManagement from './components/VendorManagement';
+import VendorDetail from './components/VendorDetail';
+import InsuranceTracking from './components/InsuranceTracking';
+import AlertsReminders from './components/AlertsReminders';
+import ComplianceDashboard from './components/ComplianceDashboard';
+import ReportsExports from './components/ReportsExports';
+import Settings from './components/Settings';
+import ContractManagement from './components/ContractManagement';
+import AddVendor from './components/AddVendor';
+import Billing from './components/Billing';
 
 function ProtectedRoute({ isAuthenticated, children }: { isAuthenticated: boolean; children: React.ReactNode }) {
   if (!isAuthenticated) {
@@ -66,11 +66,9 @@ function ProtectedRoute({ isAuthenticated, children }: { isAuthenticated: boolea
   }
   return (
     <DashboardLayout>
-      <Suspense fallback={<PremiumLoader />}>
-        <PageTransition>
-          {children}
-        </PageTransition>
-      </Suspense>
+      <PageTransition>
+        {children}
+      </PageTransition>
     </DashboardLayout>
   );
 }
@@ -232,39 +230,39 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/forgot-password" element={<Suspense fallback={<PremiumLoader />}><ForgotPassword /></Suspense>} />
-          <Route path="/terms-of-service" element={<Suspense fallback={<PremiumLoader />}><TermsOfService /></Suspense>} />
-          <Route path="/privacy-policy" element={<Suspense fallback={<PremiumLoader />}><PrivacyPolicy /></Suspense>} />
-          <Route path="/security" element={<Suspense fallback={<PremiumLoader />}><Security /></Suspense>} />
-          <Route path="/pricing" element={<Suspense fallback={<PremiumLoader />}><Pricing /></Suspense>} />
-          <Route path="/solutions-property-management" element={<Suspense fallback={<PremiumLoader />}><SolutionsPropertyManagement /></Suspense>} />
-          <Route path="/solutions-construction" element={<Suspense fallback={<PremiumLoader />}><SolutionsConstruction /></Suspense>} />
-          <Route path="/features-coi-tracking" element={<Suspense fallback={<PremiumLoader />}><FeaturesCOITracking /></Suspense>} />
-          <Route path="/industries-healthcare" element={<Suspense fallback={<PremiumLoader />}><IndustriesHealthcare /></Suspense>} />
-          <Route path="/industries-logistics" element={<Suspense fallback={<PremiumLoader />}><IndustriesLogistics /></Suspense>} />
-          <Route path="/industries-franchise" element={<Suspense fallback={<PremiumLoader />}><IndustriesFranchise /></Suspense>} />
-          <Route path="/industries-facilities" element={<Suspense fallback={<PremiumLoader />}><IndustriesFacilities /></Suspense>} />
-          <Route path="/industries-government" element={<Suspense fallback={<PremiumLoader />}><IndustriesGovernment /></Suspense>} />
-          <Route path="/industries-education" element={<Suspense fallback={<PremiumLoader />}><IndustriesEducation /></Suspense>} />
-          <Route path="/industries-retail" element={<Suspense fallback={<PremiumLoader />}><IndustriesRetail /></Suspense>} />
-          <Route path="/industries-hospitality" element={<Suspense fallback={<PremiumLoader />}><IndustriesHospitality /></Suspense>} />
-          <Route path="/about-us" element={<Suspense fallback={<PremiumLoader />}><AboutUs /></Suspense>} />
-          <Route path="/sitemap" element={<Suspense fallback={<PremiumLoader />}><Sitemap /></Suspense>} />
-          <Route path="/how-to-track-vendor-compliance" element={<Suspense fallback={<PremiumLoader />}><HowToTrackVendorCompliance /></Suspense>} />
-          <Route path="/what-happens-vendor-uninsured" element={<Suspense fallback={<PremiumLoader />}><WhatHappensVendorUninsured /></Suspense>} />
-          <Route path="/blog" element={<Suspense fallback={<PremiumLoader />}><BlogList /></Suspense>} />
-          <Route path="/blog/what-is-certificate-of-insurance" element={<Suspense fallback={<PremiumLoader />}><WhatIsCertificateOfInsurance /></Suspense>} />
-          <Route path="/blog/track-vendor-insurance-expiration-automatically" element={<Suspense fallback={<PremiumLoader />}><TrackVendorInsuranceExpiration /></Suspense>} />
-          <Route path="/blog/vendor-compliance-checklist" element={<Suspense fallback={<PremiumLoader />}><VendorComplianceChecklist /></Suspense>} />
-          <Route path="/blog/property-managers-verify-vendor-insurance" element={<Suspense fallback={<PremiumLoader />}><PropertyManagersVerifyVendorInsurance /></Suspense>} />
-          <Route path="/blog/coi-tracking-spreadsheet-vs-software" element={<Suspense fallback={<PremiumLoader />}><COITrackingSpreadsheetVsSoftware /></Suspense>} />
-          <Route path="/blog/expired-vendor-insurance-what-to-do" element={<Suspense fallback={<PremiumLoader />}><ExpiredVendorInsurance /></Suspense>} />
-          <Route path="/blog/construction-vendor-insurance-requirements" element={<Suspense fallback={<PremiumLoader />}><ConstructionVendorInsuranceRequirements /></Suspense>} />
-          <Route path="/blog/additional-insured-vs-certificate-holder" element={<Suspense fallback={<PremiumLoader />}><AdditionalInsuredVsCertificateHolder /></Suspense>} />
-          <Route path="/blog/vendor-insurance-tracking-mistakes" element={<Suspense fallback={<PremiumLoader />}><VendorInsuranceTrackingMistakes /></Suspense>} />
-          <Route path="/blog/general-liability-coverage-limits" element={<Suspense fallback={<PremiumLoader />}><GeneralLiabilityCoverageLimits /></Suspense>} />
-          <Route path="/blog/automate-coi-collection" element={<Suspense fallback={<PremiumLoader />}><AutomateCOICollection /></Suspense>} />
-          <Route path="/blog/vendor-insurance-compliance-small-business" element={<Suspense fallback={<PremiumLoader />}><VendorInsuranceComplianceSmallBusiness /></Suspense>} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/security" element={<Security />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/solutions-property-management" element={<SolutionsPropertyManagement />} />
+          <Route path="/solutions-construction" element={<SolutionsConstruction />} />
+          <Route path="/features-coi-tracking" element={<FeaturesCOITracking />} />
+          <Route path="/industries-healthcare" element={<IndustriesHealthcare />} />
+          <Route path="/industries-logistics" element={<IndustriesLogistics />} />
+          <Route path="/industries-franchise" element={<IndustriesFranchise />} />
+          <Route path="/industries-facilities" element={<IndustriesFacilities />} />
+          <Route path="/industries-government" element={<IndustriesGovernment />} />
+          <Route path="/industries-education" element={<IndustriesEducation />} />
+          <Route path="/industries-retail" element={<IndustriesRetail />} />
+          <Route path="/industries-hospitality" element={<IndustriesHospitality />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/sitemap" element={<Sitemap />} />
+          <Route path="/how-to-track-vendor-compliance" element={<HowToTrackVendorCompliance />} />
+          <Route path="/what-happens-vendor-uninsured" element={<WhatHappensVendorUninsured />} />
+          <Route path="/blog" element={<BlogList />} />
+          <Route path="/blog/what-is-certificate-of-insurance" element={<WhatIsCertificateOfInsurance />} />
+          <Route path="/blog/track-vendor-insurance-expiration-automatically" element={<TrackVendorInsuranceExpiration />} />
+          <Route path="/blog/vendor-compliance-checklist" element={<VendorComplianceChecklist />} />
+          <Route path="/blog/property-managers-verify-vendor-insurance" element={<PropertyManagersVerifyVendorInsurance />} />
+          <Route path="/blog/coi-tracking-spreadsheet-vs-software" element={<COITrackingSpreadsheetVsSoftware />} />
+          <Route path="/blog/expired-vendor-insurance-what-to-do" element={<ExpiredVendorInsurance />} />
+          <Route path="/blog/construction-vendor-insurance-requirements" element={<ConstructionVendorInsuranceRequirements />} />
+          <Route path="/blog/additional-insured-vs-certificate-holder" element={<AdditionalInsuredVsCertificateHolder />} />
+          <Route path="/blog/vendor-insurance-tracking-mistakes" element={<VendorInsuranceTrackingMistakes />} />
+          <Route path="/blog/general-liability-coverage-limits" element={<GeneralLiabilityCoverageLimits />} />
+          <Route path="/blog/automate-coi-collection" element={<AutomateCOICollection />} />
+          <Route path="/blog/vendor-insurance-compliance-small-business" element={<VendorInsuranceComplianceSmallBusiness />} />
           <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
         </Routes>
         <Toaster />
