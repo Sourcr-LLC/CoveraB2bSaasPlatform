@@ -72,7 +72,7 @@ export default function DesktopSidebar({ organizationName, userEmail, userInitia
           style={{ backgroundColor: 'var(--background)' }}
         >
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="w-12 h-12 animate-spin" style={{ color: 'var(--primary)' }} />
+            <Loader2 className="w-12 h-12 animate-spin" strokeWidth={1} style={{ color: 'var(--primary)' }} />
             <p className="text-lg" style={{ color: 'var(--foreground-muted)' }}>Signing out...</p>
           </div>
         </div>
