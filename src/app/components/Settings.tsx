@@ -1,4 +1,4 @@
-import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image } from 'lucide-react';
+import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye } from 'lucide-react';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
@@ -6,6 +6,7 @@ import { supabase } from '../lib/api';
 import PaywallModal from './PaywallModal';
 import { useWalkthrough } from '../hooks/useWalkthrough';
 import { useNavigate } from 'react-router-dom';
+import { isDemoMode, enableDemoMode, disableDemoMode } from '../lib/demoData';
 
 export default function Settings() {
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ export default function Settings() {
   const [tempOrgName, setTempOrgName] = useState('');
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [demoEnabled, setDemoEnabled] = useState(isDemoMode());
   const { resetWalkthrough } = useWalkthrough();
   const navigate = useNavigate();
 
@@ -252,6 +254,15 @@ export default function Settings() {
         {plan.charAt(0).toUpperCase() + plan.slice(1)} Plan
       </span>
     );
+  };
+
+  const toggleDemoMode = () => {
+    if (demoEnabled) {
+      disableDemoMode();
+    } else {
+      enableDemoMode();
+    }
+    setDemoEnabled(!demoEnabled);
   };
 
   return (
@@ -526,7 +537,7 @@ export default function Settings() {
 
         {/* View Platform Walkthrough */}
         <div
-          className="rounded-xl border p-8"
+          className="rounded-xl border p-8 mb-6"
           style={{
             backgroundColor: 'var(--card)',
             borderColor: 'var(--border)',
@@ -566,6 +577,44 @@ export default function Settings() {
             }}
           >
             View Walkthrough
+          </button>
+        </div>
+
+        {/* Demo Mode Toggle */}
+        <div
+          className="rounded-xl border p-8"
+          style={{
+            backgroundColor: 'var(--card)',
+            borderColor: 'var(--border)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <Eye size={20} style={{ color: 'var(--primary)' }} />
+                <h3 className="text-lg" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+                  Demo Mode {demoEnabled && <span style={{ color: 'var(--primary)' }}>(Active)</span>}
+                </h3>
+              </div>
+              <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                Enable demo mode to display realistic sample data across the dashboard, vendors, and contracts pages. Perfect for taking screenshots or presenting the platform.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              toggleDemoMode();
+              toast.success(demoEnabled ? 'Demo mode disabled' : 'Demo mode enabled - refresh pages to see sample data');
+            }}
+            className="px-6 py-3 rounded-lg text-sm transition-all"
+            style={{
+              backgroundColor: demoEnabled ? 'rgba(239, 68, 68, 0.1)' : 'var(--primary)',
+              color: demoEnabled ? '#ef4444' : 'var(--primary-foreground)',
+              fontWeight: 500,
+            }}
+          >
+            {demoEnabled ? 'Disable Demo Mode' : 'Enable Demo Mode'}
           </button>
         </div>
       </div>

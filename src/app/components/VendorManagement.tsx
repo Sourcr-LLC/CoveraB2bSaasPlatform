@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Plus, ChevronRight, Download, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 import { vendorApi } from '../lib/api';
+import { isDemoMode, demoVendors } from '../lib/demoData';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -36,7 +37,7 @@ export default function VendorManagement() {
 
   const loadVendors = useCallback(async () => {
     try {
-      const { vendors: fetchedVendors } = await vendorApi.getAll();
+      const { vendors: fetchedVendors } = isDemoMode ? { vendors: demoVendors } : await vendorApi.getAll();
       // Recalculate status for each vendor to ensure accuracy
       const vendorsWithUpdatedStatus = (fetchedVendors || []).map(vendor => ({
         ...vendor,

@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { supabase, vendorApi } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { useSubscription } from '../hooks/useSubscription';
+import { isDemoMode, demoVendors, getDemoStats } from '../lib/demoData';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -48,6 +49,57 @@ export default function Dashboard() {
 
   const loadData = async () => {
     try {
+      // Check if demo mode is enabled
+      if (isDemoMode()) {
+        console.log('📊 Demo mode enabled - using mock data');
+        setVendors(demoVendors);
+        
+        // Generate alerts from demo vendors
+        const newAlerts = demoVendors
+          .filter((v: any) => v.status === 'at-risk' || v.status === 'non-compliant')
+          .map((v: any) => {
+            const expiryDate = v.insuranceExpiry ? new Date(v.insuranceExpiry) : null;
+            const daysUntilExpiry = expiryDate 
+              ? Math.ceil((expiryDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+              : -999;
+
+            // Generate alert message
+            let message = '';
+            if (v.status === 'non-compliant') {
+              if (daysUntilExpiry < -1) {
+                message = `${v.name} insurance expired ${Math.abs(daysUntilExpiry)} days ago`;
+              } else if (daysUntilExpiry === -1) {
+                message = `${v.name} insurance expired 1 day ago`;
+              } else {
+                message = `${v.name} insurance has expired`;
+              }
+            } else if (v.status === 'at-risk') {
+              if (daysUntilExpiry === 0) {
+                message = `${v.name} insurance expires today`;
+              } else if (daysUntilExpiry === 1) {
+                message = `${v.name} insurance expires in 1 day`;
+              } else {
+                message = `${v.name} insurance expires in ${daysUntilExpiry} days`;
+              }
+            }
+
+            return {
+              id: v.id,
+              vendorName: v.name,
+              type: v.status === 'non-compliant' ? 'expired' : 'expiring',
+              daysUntilExpiry,
+              insuranceExpiry: v.insuranceExpiry,
+              category: v.category,
+              riskLevel: v.riskLevel || 'medium',
+              status: v.status,
+              message
+            };
+          });
+
+        setAlerts(newAlerts);
+        return;
+      }
+      
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
       
