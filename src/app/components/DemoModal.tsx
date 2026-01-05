@@ -102,12 +102,12 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-lg rounded-2xl p-8 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-lg rounded-2xl p-6 md:p-8 max-h-[90vh] overflow-y-auto"
         style={{ 
           backgroundColor: 'var(--card)',
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
@@ -117,7 +117,7 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 rounded-lg transition-all hover:scale-110"
+          className="absolute top-4 right-4 md:top-6 md:right-6 p-2 rounded-lg transition-all hover:scale-110"
           style={{
             backgroundColor: 'rgba(100, 116, 139, 0.1)',
             color: 'var(--foreground-muted)'
@@ -127,8 +127,8 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
         </button>
 
         {/* Header */}
-        <div className="mb-8">
-          <h2 className="mb-2 text-2xl" style={{ fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
+        <div className="mb-6 md:mb-8">
+          <h2 className="mb-2 text-xl md:text-2xl" style={{ fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
             Schedule a demo
           </h2>
           <p className="text-sm" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
