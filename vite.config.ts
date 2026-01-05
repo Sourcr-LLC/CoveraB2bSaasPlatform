@@ -35,15 +35,14 @@ export default defineConfig(({ mode }) => ({
     },
     // Increase chunk size warning limit for production
     chunkSizeWarningLimit: 1000,
-    // Enable minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        // Only drop console in production builds
-        drop_console: mode === 'production',
-        drop_debugger: true,
+    // Enable minification with esbuild (faster than terser, built into Vite)
+    minify: 'esbuild',
+    // Drop console.log in production
+    ...(mode === 'production' && {
+      esbuild: {
+        drop: ['console', 'debugger'],
       },
-    },
+    }),
   },
   // Performance optimizations
   optimizeDeps: {
