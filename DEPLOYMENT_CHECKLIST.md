@@ -1,302 +1,219 @@
-# 🚀 FINAL DEPLOYMENT CHECKLIST
+# Deployment Checklist - Mobile Performance Updates
 
-## ✅ What Was Fixed (Round 2)
+## ⚠️ Known Issue: _headers File
 
-### Problem:
-- Sitemap.xml was returning "Not Found" because the rewrite rule was catching ALL routes (including sitemap.xml) and sending them to index.html
+The `/public/_headers` file keeps getting converted to a directory by Figma AI during development. This is a known environment issue.
 
-### Solution:
-1. ✅ **Fixed `/vercel.json`** - Excluded sitemap.xml and robots.txt from the rewrite rule using regex
-2. ✅ **Fixed `/netlify.toml`** - Added explicit redirects for sitemap.xml and robots.txt BEFORE the catch-all redirect
-3. ✅ **Added `publicDir: 'public'`** to vite.config.ts to ensure public files are copied to dist
-4. ✅ **Created `/index.html`** and `/src/app/index.tsx` to fix the "Not Found" error
+**Solution:** Use one of these methods:
+1. Manually add `_headers` file to `/dist` folder after build
+2. Use hosting provider config (netlify.toml, vercel.json, etc.)
+3. See `/HEADERS_SETUP_GUIDE.md` for detailed instructions
 
----
-
-## 📋 Pre-Deployment Verification
-
-Before you deploy, verify these files exist:
-
-```bash
-✅ /index.html (entry point)
-✅ /src/app/index.tsx (React entry point)
-✅ /public/sitemap.xml (XML sitemap)
-✅ /public/robots.txt (robots file)
-✅ /vercel.json (Vercel config with exclusions)
-✅ /netlify.toml (Netlify config with specific redirects)
-✅ /vite.config.ts (build config with publicDir)
-```
-
-All files are ready! ✅
+**Don't worry:** All other optimizations work fine. Cache headers are just a bonus optimization.
 
 ---
 
-## 🔧 How It Works Now
+## Pre-Deployment Steps
 
-### For Vercel:
-
-**Rewrite Rule (with exclusions):**
-```json
-{
-  "rewrites": [
-    { 
-      "source": "/((?!sitemap\\.xml|robots\\.txt).*)", 
-      "destination": "/index.html" 
-    }
-  ]
-}
-```
-
-**What this does:**
-- `/((?!sitemap\.xml|robots\.txt).*)` = Match any path EXCEPT sitemap.xml or robots.txt
-- Routes like `/blog`, `/login`, `/about` → Go to `/index.html` (React handles routing)
-- Routes like `/sitemap.xml`, `/robots.txt` → Served as static files from `/dist`
-
-### For Netlify:
-
-**Redirect Rules (order matters):**
-```toml
-# Serve static files first
-[[redirects]]
-  from = "/sitemap.xml"
-  to = "/sitemap.xml"
-  status = 200
-
-# Then catch-all for SPA
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
-
-**What this does:**
-- First rule: `/sitemap.xml` → Serve the actual file
-- Second rule: Everything else → Go to `/index.html` (React handles routing)
-
----
-
-## 🧪 Testing After Deployment
-
-### Test 1: Homepage
+### 1. Clean Install Dependencies ✓
 ```bash
-curl -I https://getcovera.co/
-```
-**Expected:**
-```
-HTTP/2 200
-Content-Type: text/html
+# Remove old node_modules
+rm -rf node_modules package-lock.json
+
+# Fresh install with updated package.json
+npm install
 ```
 
-### Test 2: Sitemap (MOST IMPORTANT)
+### 2. Test Locally ✓
 ```bash
-curl -I https://getcovera.co/sitemap.xml
-```
-**Expected:**
-```
-HTTP/2 200
-Content-Type: application/xml; charset=utf-8
-Cache-Control: public, max-age=3600
-```
+# Development build
+npm run dev
 
-### Test 3: Robots.txt
-```bash
-curl -I https://getcovera.co/robots.txt
-```
-**Expected:**
-```
-HTTP/2 200
-Content-Type: text/plain; charset=utf-8
-```
-
-### Test 4: Sitemap Content
-```bash
-curl https://getcovera.co/sitemap.xml
-```
-**Expected:** Should return XML starting with:
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://getcovera.co/</loc>
-    ...
-```
-
-**Should NOT return:** HTML with React app code
-
-### Test 5: React Routes Still Work
-```bash
-# These should all return HTML (index.html)
-curl -I https://getcovera.co/blog
-curl -I https://getcovera.co/login
-curl -I https://getcovera.co/about-us
-```
-
----
-
-## 🎯 Build Output Verification
-
-After running `npm run build`, your `dist/` folder should look like:
-
-```
-dist/
-├── index.html ✅
-├── sitemap.xml ✅ (copied from /public)
-├── robots.txt ✅ (copied from /public)
-└── assets/
-    ├── index-[hash].js
-    ├── index-[hash].css
-    └── (other chunks)
-```
-
-**How to verify locally:**
-
-```bash
-# Build the project
+# Production build test
 npm run build
-
-# Check if sitemap.xml was copied
-ls -la dist/sitemap.xml
-
-# Check if robots.txt was copied
-ls -la dist/robots.txt
-
-# Preview the build
-npx vite preview
-
-# Test sitemap in browser
-# Open: http://localhost:4173/sitemap.xml
-# Should show XML, NOT React app
+npm run preview
 ```
 
----
+### 3. Verify Changes ✓
+- [ ] Landing page loads without errors
+- [ ] Schedule Demo modal appears above navigation
+- [ ] Testimonials carousel works on mobile
+- [ ] All blog pages load correctly
+- [ ] Industry pages load correctly
+- [ ] Dashboard functions normally
+- [ ] No console errors in browser
 
-## 🚀 Deploy Now
+## Deployment Steps
 
-### Option 1: Vercel CLI
-```bash
-npm i -g vercel
-vercel --prod
-```
-
-### Option 2: Netlify CLI
-```bash
-npm i -g netlify-cli
-netlify deploy --prod
-```
-
-### Option 3: GitHub Integration
-1. Push to GitHub
-2. Connect to Vercel/Netlify
-3. Deploy automatically
-
----
-
-## ✅ Success Criteria
-
-After deployment, all of these should be TRUE:
-
-1. ✅ **Homepage loads:** `https://getcovera.co/` shows landing page
-2. ✅ **Sitemap is XML:** `https://getcovera.co/sitemap.xml` returns XML (not HTML)
-3. ✅ **Correct Content-Type:** Sitemap has `Content-Type: application/xml`
-4. ✅ **Robots.txt works:** `https://getcovera.co/robots.txt` returns text file
-5. ✅ **React routes work:** All other routes like `/blog`, `/login` still work
-6. ✅ **Mobile menu works:** Collapsible Industries sections
-7. ✅ **iOS status bar:** Soft white (#fafaf9) on iPhones
-
----
-
-## 📊 Google Search Console
-
-After successful deployment (when all tests pass):
-
-1. Go to: https://search.google.com/search-console
-2. Select: getcovera.co property
-3. Navigate to: **Indexing → Sitemaps**
-4. Remove old sitemap (if showing error)
-5. Click: **"Add a new sitemap"**
-6. Enter: `sitemap.xml`
-7. Click: **Submit**
-
-**Expected result:**
-- Status: **Success** ✅
-- URLs discovered: **20+**
-- Last read: *Today's date*
-
----
-
-## 🆘 Troubleshooting
-
-### Issue: Sitemap still shows React app HTML
-
-**Diagnosis:**
-```bash
-curl https://getcovera.co/sitemap.xml | head -20
-```
-
-If you see `<!DOCTYPE html>` instead of `<?xml version`, the rewrite rule isn't working.
-
-**Fix for Vercel:**
-1. Check `/vercel.json` has the regex exclusion: `/((?!sitemap\\.xml|robots\\.txt).*)`
-2. Redeploy
-
-**Fix for Netlify:**
-1. Check `/netlify.toml` has sitemap redirect BEFORE the `/*` redirect
-2. Redeploy
-
-### Issue: Build doesn't include sitemap.xml
-
-**Diagnosis:**
+### 1. Build for Production
 ```bash
 npm run build
-ls dist/sitemap.xml
 ```
 
-If file doesn't exist, Vite isn't copying the public folder.
+Expected output:
+- ✅ Smaller bundle sizes
+- ✅ Multiple chunk files (react-core, react-router, motion, etc.)
+- ✅ No warnings about unused dependencies
 
-**Fix:**
-1. Verify `/public/sitemap.xml` exists
-2. Verify `/vite.config.ts` has `publicDir: 'public'`
-3. Rebuild: `npm run build`
+### 2. Deploy to Hosting
+Upload the `/dist` folder to your hosting provider
 
-### Issue: Homepage shows 404
+### 3. Clear CDN Cache
+If using a CDN (Cloudflare, etc.):
+- Clear all cache
+- Purge everything
+- Wait 5-10 minutes for propagation
 
-**Diagnosis:**
-The index.html file is missing or misconfigured.
+### 4. Clear Browser Cache
+Test in incognito/private mode to avoid cached files
 
-**Fix:**
-1. Verify `/index.html` exists in project root
-2. Verify it has `<script type="module" src="/src/app/index.tsx"></script>`
-3. Verify `/src/app/index.tsx` exists
-4. Rebuild and redeploy
+## Post-Deployment Verification
 
----
+### 1. PageSpeed Insights Test
+Visit: https://pagespeed.web.dev/
 
-## 💡 Key Differences from Before
+Test URLs:
+- [ ] https://getcovera.co (Homepage)
+- [ ] https://getcovera.co/pricing
+- [ ] https://getcovera.co/blog
+- [ ] https://getcovera.co/industries-healthcare
 
-| Before | After |
-|--------|-------|
-| No index.html | ✅ index.html exists |
-| No index.tsx entry point | ✅ index.tsx exists |
-| Rewrite caught ALL routes | ✅ Exclusion for sitemap.xml/robots.txt |
-| No publicDir config | ✅ publicDir: 'public' in vite.config |
-| Netlify rules in wrong order | ✅ Specific rules before catch-all |
+Expected Mobile Scores:
+- Performance: 75-85 (up from ~58)
+- Accessibility: 90+
+- Best Practices: 90+
+- SEO: 95+
 
----
+### 2. Key Metrics to Check
 
-## 🎉 Bottom Line
+**Before vs After:**
 
-Everything is properly configured now. The key changes:
+| Metric | Target | Notes |
+|--------|--------|-------|
+| **First Contentful Paint** | < 3.5s | Should be ~2.5-3.5s |
+| **Speed Index** | < 5s | Should be ~3.5-4.5s |
+| **Total Blocking Time** | < 800ms | Should be ~500-700ms |
+| **Largest Contentful Paint** | < 4s | Should be ~3-4s |
+| **Cumulative Layout Shift** | < 0.1 | Should be minimal |
 
-1. **Vercel:** Uses regex to exclude sitemap.xml and robots.txt from rewrites
-2. **Netlify:** Serves sitemap.xml and robots.txt BEFORE the catch-all redirect
-3. **Vite:** Explicitly copies public folder to dist
-4. **Entry point:** index.html and index.tsx are created
+### 3. Bundle Size Verification
 
-**Deploy now and the sitemap will work!** 🚀
+Check in browser DevTools (Network tab):
+- [ ] Main JS bundle < 250KB gzipped
+- [ ] React core chunk < 150KB gzipped
+- [ ] No MUI chunks loading
+- [ ] No react-slick chunks loading
+- [ ] Total JS < 700KB (uncompressed)
 
-After deployment, test with:
+### 4. Functionality Testing
+
+**Critical Paths:**
+- [ ] Home page loads and looks correct
+- [ ] Navigation menu works on mobile
+- [ ] Schedule Demo modal opens correctly
+- [ ] Testimonials carousel swipes on mobile
+- [ ] Blog posts load quickly
+- [ ] Industry pages load quickly
+- [ ] Login/signup works
+- [ ] Dashboard loads for authenticated users
+
+### 5. Mobile Device Testing
+
+Test on real devices:
+- [ ] iPhone (Safari)
+- [ ] Android (Chrome)
+- [ ] Check page load speed
+- [ ] Verify touch interactions
+- [ ] Test modal behavior
+- [ ] Verify carousel swipe
+
+## Rollback Plan (If Needed)
+
+### Option 1: Revert Git Commit
 ```bash
-curl https://getcovera.co/sitemap.xml
+git revert HEAD
+git push
 ```
 
-You should see XML, not HTML. That's how you'll know it's working.
+### Option 2: Restore Dependencies
+```bash
+# Restore old package.json from git
+git checkout HEAD~1 package.json
+
+# Reinstall old dependencies
+npm install
+
+# Rebuild
+npm run build
+```
+
+## Monitoring Setup
+
+### 1. Set Up Alerts
+- Monitor PageSpeed scores weekly
+- Set up Lighthouse CI in your deployment pipeline
+- Track Core Web Vitals in Google Analytics
+
+### 2. Track Improvements
+Document baseline vs new metrics:
+
+**Baseline (Before):**
+- Mobile Score: 58
+- FCP: 4.6s
+- Bundle Size: 1.2MB
+
+**After Optimization:**
+- Mobile Score: ___ (fill after deploy)
+- FCP: ___ (fill after deploy)
+- Bundle Size: ___ (fill after deploy)
+
+## Common Issues & Solutions
+
+### Issue: "Module not found" errors
+**Solution:** Run `npm install` to ensure all dependencies are installed
+
+### Issue: Build warnings about chunk size
+**Solution:** This is normal for development. Production build will be optimized.
+
+### Issue: Styles not loading
+**Solution:** Clear browser cache and CDN cache
+
+### Issue: Modal still not appearing correctly
+**Solution:** Hard refresh (Cmd+Shift+R or Ctrl+Shift+R)
+
+### Issue: Carousel not working
+**Solution:** Check console for errors. Verify TestimonialCarousel component is being used.
+
+## Success Criteria
+
+✅ **Must Have:**
+- [ ] PageSpeed Mobile score > 70
+- [ ] No broken functionality
+- [ ] All pages load correctly
+- [ ] Bundle size reduced by > 30%
+
+✅ **Nice to Have:**
+- [ ] PageSpeed Mobile score > 80
+- [ ] FCP < 3.0s
+- [ ] Total bundle < 600KB
+- [ ] All metrics in "green" zone
+
+## Support Resources
+
+- **PageSpeed Insights:** https://pagespeed.web.dev/
+- **Lighthouse CI:** https://github.com/GoogleChrome/lighthouse-ci
+- **Web Vitals:** https://web.dev/vitals/
+- **Bundlephobia:** https://bundlephobia.com/ (check package sizes)
+
+## Notes
+
+- Performance improvements are cumulative
+- Mobile users should see immediate speed improvements
+- Repeat visitors benefit most from caching headers
+- Continue monitoring metrics over time
+- Consider further optimizations based on real usage data
+
+---
+
+**Last Updated:** January 6, 2026
+**Next Review:** After deployment verification

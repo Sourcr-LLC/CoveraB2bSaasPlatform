@@ -4,9 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
 import { analytics } from './GoogleAnalytics';
 
@@ -85,43 +83,6 @@ export default function LandingPage() {
       initials: "JP"
     }
   ];
-
-  // Slider settings
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    arrows: false,
-    swipeToSlide: true,
-    draggable: true,
-    touchMove: true,
-    swipe: true,
-    centerMode: true,
-    centerPadding: '280px',
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          centerPadding: '120px'
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          centerMode: false,
-          centerPadding: '0px',
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: true
-        }
-      }
-    ]
-  };
 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: 'var(--background)' }}>
@@ -992,57 +953,7 @@ export default function LandingPage() {
               ))}
             </div>
           ) : (
-            <div className="relative w-full overflow-hidden">
-              <div className="px-4 md:px-0">
-                <Slider {...sliderSettings}>
-                  {testimonials.map((testimonial, index) => (
-                    <div key={index} className="px-0 md:px-3">
-                      <div 
-                        className="rounded-xl p-6 md:p-6 border flex flex-col"
-                        style={{ 
-                          backgroundColor: 'var(--card)',
-                          borderColor: 'var(--border)',
-                          minHeight: '240px',
-                          maxWidth: '100%'
-                        }}
-                      >
-                        <div className="flex-1 flex flex-col">
-                          <div className="flex gap-1 mb-4">
-                            {[1,2,3,4,5].map((star) => (
-                              <div key={star} className="w-4 h-4" style={{ color: '#F59E0B' }}>★</div>
-                            ))}
-                          </div>
-                          <p className="text-base md:text-base leading-relaxed flex-1" style={{ color: 'var(--foreground)', fontWeight: 400 }}>
-                            "{testimonial.quote}"
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-3 pt-4 border-t mt-4" style={{ borderColor: 'var(--border-subtle)' }}>
-                          <div 
-                            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" 
-                            style={{ 
-                              backgroundColor: 'var(--primary)', 
-                              color: 'var(--primary-foreground)', 
-                              fontWeight: 600,
-                              fontSize: '0.75rem'
-                            }}
-                          >
-                            {testimonial.initials}
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>
-                              {testimonial.author}
-                            </div>
-                            <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
-                              {testimonial.title}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </Slider>
-              </div>
-            </div>
+            <TestimonialCarousel testimonials={testimonials} />
           )}
         </div>
       </section>
