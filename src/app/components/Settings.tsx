@@ -580,8 +580,8 @@ export default function Settings() {
           </button>
         </div>
 
-        {/* Demo Mode Toggle */}
-        <div
+        {/* Demo Mode Toggle - Hidden for now, will be feature for certain users */}
+        {/* <div
           className="rounded-xl border p-8"
           style={{
             backgroundColor: 'var(--card)',
@@ -616,7 +616,7 @@ export default function Settings() {
           >
             {demoEnabled ? 'Disable Demo Mode' : 'Enable Demo Mode'}
           </button>
-        </div>
+        </div> */}
       </div>
       <PaywallModal
         isOpen={isPaywallOpen}
