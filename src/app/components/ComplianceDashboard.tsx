@@ -3,6 +3,7 @@ import { CheckCircle2, XCircle, AlertTriangle, TrendingUp, FileText, Download, M
 import { supabase } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
+import { isDemoMode, demoVendors } from '../lib/demoData';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -38,6 +39,11 @@ export default function ComplianceDashboard() {
 
   const loadData = async () => {
     try {
+      if (isDemoMode()) {
+        setVendors(demoVendors);
+        return;
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
       

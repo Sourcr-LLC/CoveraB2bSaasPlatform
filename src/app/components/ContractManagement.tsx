@@ -6,6 +6,7 @@ import { projectId, publicAnonKey } from '../../../utils/supabase/info';
 import NewContractModal from './NewContractModal';
 import UploadContractModal from './UploadContractModal';
 import { toast } from 'sonner';
+import { isDemoMode, demoContracts } from '../lib/demoData';
 
 interface Contract {
   id: string;
@@ -93,6 +94,24 @@ export default function ContractManagement() {
 
   const loadContracts = async () => {
     try {
+      if (isDemoMode()) {
+        // Map demo contracts to the Contract interface format
+        const mappedDemoContracts = demoContracts.map(dc => ({
+          id: dc.id,
+          vendorName: dc.vendorName,
+          contractType: dc.contractName,
+          startDate: dc.startDate,
+          endDate: dc.endDate,
+          value: dc.value,
+          status: dc.status,
+          autoRenewal: dc.autoRenew,
+          lastReviewed: dc.startDate
+        }));
+        setContracts(mappedDemoContracts);
+        setFilteredContracts(mappedDemoContracts);
+        return;
+      }
+
       const result = await contractApi.getAll();
       const contractsData = result.contracts || [];
       setContracts(contractsData);

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { vendorApi, insuranceApi } from '../lib/api';
 import UploadCOIModal from './UploadCOIModal';
 import { toast } from 'sonner';
+import { isDemoMode, demoVendors } from '../lib/demoData';
 
 export default function InsuranceTracking() {
   const [viewMode, setViewMode] = useState<'timeline' | 'missing' | 'expired'>('timeline');
@@ -16,6 +17,11 @@ export default function InsuranceTracking() {
 
   const loadData = async () => {
     try {
+      if (isDemoMode()) {
+        setVendors(demoVendors);
+        return;
+      }
+
       const { vendors: vendorData } = await vendorApi.getAll();
       setVendors(vendorData || []);
     } catch (error) {
