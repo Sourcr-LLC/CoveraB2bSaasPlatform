@@ -122,8 +122,7 @@ export default function Pricing() {
               </div>
 
               <div className="mb-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <Shield className="w-8 h-8" style={{ color: 'var(--primary)' }} />
+                <div className="mb-6">
                   <h3 className="text-2xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
                     Core
                   </h3>
@@ -191,8 +190,7 @@ export default function Pricing() {
               }}
             >
               <div className="mb-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <Building2 className="w-8 h-8" style={{ color: 'var(--primary)' }} />
+                <div className="mb-6">
                   <h3 className="text-2xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
                     Enterprise
                   </h3>
@@ -280,12 +278,9 @@ export default function Pricing() {
                   onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
                   className="w-full px-6 py-5 flex items-start justify-between gap-4 text-left transition-all"
                 >
-                  <div className="flex items-start gap-3 flex-1">
-                    <HelpCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--primary)' }} />
-                    <span style={{ fontWeight: 500, color: 'var(--foreground)' }}>
-                      {faq.question}
-                    </span>
-                  </div>
+                  <span style={{ fontWeight: 500, color: 'var(--foreground)', flex: 1 }}>
+                    {faq.question}
+                  </span>
                   <span 
                     className="transition-transform duration-200"
                     style={{ 
@@ -297,7 +292,7 @@ export default function Pricing() {
                   </span>
                 </button>
                 {openFaqIndex === index && (
-                  <div className="px-6 pb-5 pl-14">
+                  <div className="px-6 pb-5">
                     <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
                       {faq.answer}
                     </p>
