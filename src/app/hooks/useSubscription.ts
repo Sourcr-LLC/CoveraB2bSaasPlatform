@@ -1,0 +1,92 @@
+import { useState, useEffect } from 'react';
+import { projectId } from '../../../utils/supabase/info';
+import { supabase } from '../lib/api';
+
+export function useSubscription() {
+  const [subscription, setSubscription] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchSubscription();
+  }, []);
+
+  const fetchSubscription = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
+      
+      if (!accessToken) {
+        console.warn('⚠️ No access token available for subscription check - skipping');
+        setLoading(false);
+        return;
+      }
+      
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/stripe/subscription-status`,
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      // Handle authentication errors
+      if (response.status === 401 || response.status === 403) {
+        console.error('🔒 Subscription check failed - session expired, redirecting to login');
+        // Clear localStorage directly (don't call signOut API as session is already invalid)
+        localStorage.removeItem('sb-gpnvockmgvysulsxxtyi-auth-token');
+        sessionStorage.clear();
+        // Redirect only once
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
+        return;
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Subscription data loaded:', {
+          plan: data.plan,
+          status: data.subscriptionStatus,
+          isPremium: (data.plan === 'core' || data.plan === 'enterprise') && 
+                    (data.subscriptionStatus === 'active' || data.subscriptionStatus === 'trialing')
+        });
+        setSubscription(data);
+      } else {
+        console.error('❌ Subscription API error:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching subscription:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isPremium = () => {
+    // Check if user has an active subscription (including trial)
+    if (!subscription) return false;
+    
+    const hasCorePlan = subscription.plan === 'core' || subscription.plan === 'enterprise';
+    const isActive = subscription.subscriptionStatus === 'active' || subscription.subscriptionStatus === 'trialing';
+    
+    return hasCorePlan && isActive;
+  };
+
+  const isFree = () => {
+    return !subscription || subscription?.plan === 'free';
+  };
+
+  const canAccessFeature = (feature: 'reports' | 'bulk-operations' | 'advanced-analytics') => {
+    // For now, all premium features require Core or Enterprise plan
+    return isPremium();
+  };
+
+  return {
+    subscription,
+    loading,
+    isPremium: isPremium(),
+    isFree: isFree(),
+    canAccessFeature,
+    refresh: fetchSubscription,
+  };
+}

@@ -1,0 +1,32 @@
+# Covera - Vendor Compliance & Insurance Tracking Platform
+# https://getcovera.co
+
+User-agent: *
+Allow: /
+
+# Public marketing pages - allow all
+Allow: /about-us
+Allow: /solutions-*
+Allow: /features-*
+Allow: /industries-*
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /security
+Allow: /blog
+Allow: /blog/*
+
+# Block authenticated/app pages from indexing
+Disallow: /dashboard
+Disallow: /vendors
+Disallow: /contracts
+Disallow: /insurance
+Disallow: /compliance
+Disallow: /alerts
+Disallow: /reports
+Disallow: /settings
+Disallow: /billing
+Disallow: /login
+Disallow: /forgot-password
+
+# Sitemap
+Sitemap: https://getcovera.co/sitemap.xml
