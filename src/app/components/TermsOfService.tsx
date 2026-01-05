@@ -13,6 +13,9 @@ export default function TermsOfService() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
       <LandingNav />
 
+      {/* Spacing for fixed nav */}
+      <div className="h-24 md:h-28"></div>
+
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 md:px-12 py-16 md:py-24">
         <h1 className="mb-8 text-4xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
