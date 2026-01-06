@@ -7,7 +7,7 @@ import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
 import { analytics } from './GoogleAnalytics';
-import dashboardImage from 'figma:asset/809868023b3ec82e80b0f22e01357e89210945b0.png';
+import DashboardPreview from './DashboardPreview';
 
 export default function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -531,13 +531,8 @@ export default function LandingPage() {
                   boxShadow: '0 25px 60px -15px rgba(58, 79, 106, 0.25), 0 10px 30px -10px rgba(0, 0, 0, 0.1)'
                 }}
               >
-                {/* Dashboard Screenshot */}
-                <img 
-                  src={dashboardImage} 
-                  alt="Covera Dashboard - Real-time vendor compliance tracking with analytics, high-risk alerts, and upcoming expirations"
-                  className="w-full h-auto"
-                  style={{ display: 'block' }}
-                />
+                {/* Dashboard Component */}
+                <DashboardPreview />
               </div>
             </div>
 
@@ -626,13 +621,8 @@ export default function LandingPage() {
                 boxShadow: '0 25px 60px -15px rgba(58, 79, 106, 0.25), 0 10px 30px -10px rgba(0, 0, 0, 0.1)'
               }}
             >
-              {/* Dashboard Screenshot */}
-              <img 
-                src={dashboardImage} 
-                alt="Covera Dashboard - Real-time vendor compliance tracking with analytics, high-risk alerts, and upcoming expirations"
-                className="w-full h-auto"
-                style={{ display: 'block' }}
-              />
+              {/* Dashboard Component */}
+              <DashboardPreview />
             </div>
           </div>
         </div>
