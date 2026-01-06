@@ -7,7 +7,7 @@ import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
 import { analytics } from './GoogleAnalytics';
-import dashboardImage from 'figma:asset/8e5b62f22f899338b04f981ebb554bc986a75837.png';
+import dashboardImage from 'figma:asset/809868023b3ec82e80b0f22e01357e89210945b0.png';
 
 export default function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
