@@ -7,6 +7,7 @@ import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
 import { analytics } from './GoogleAnalytics';
+import dashboardImage from 'figma:asset/8e5b62f22f899338b04f981ebb554bc986a75837.png';
 
 export default function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -486,7 +487,7 @@ export default function LandingPage() {
       <div className="h-24 md:h-28"></div>
 
       {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-4 md:px-12 pt-12 md:pt-24 pb-16 md:pb-32 relative overflow-hidden">
+      <section className="max-w-[1800px] mx-auto px-4 md:px-8 lg:px-12 pt-12 md:pt-20 pb-16 md:pb-24 relative overflow-visible">
         {/* Subtle gradient background */}
         <div 
           className="absolute inset-0 -z-10 opacity-60"
@@ -495,299 +496,164 @@ export default function LandingPage() {
           }}
         />
         
-        <div className="max-w-3xl mx-auto text-center">
+        {/* Two Column Layout: Text Left, Image Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
           
-          <h1 
-            className="mb-6 md:mb-8 text-3xl sm:text-4xl md:text-6xl leading-tight md:leading-none" 
-            style={{ 
-              fontWeight: 600,
-              letterSpacing: '-0.03em',
-              color: 'var(--foreground)' 
-            }}
-          >
-            Vendor <span style={{ color: 'var(--primary)' }}>insurance compliance</span><br className="hidden sm:inline" /><span className="sm:hidden"> </span>without spreadsheets
-          </h1>
-          
-          <p 
-            className="text-sm sm:text-base md:text-xl mb-8 md:mb-12 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0" 
-            style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}
-          >
-            Automatically track COIs, prevent expired coverage, and stay audit-ready without chasing vendors or exposing your business to legal risk.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4 mb-4 md:mb-8 px-4 sm:px-0">
-            <Link 
-              to="/login"
-              className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
+          {/* Left Column - Hero Text & CTA */}
+          <div className="text-center lg:text-left order-1 lg:order-1">
+            {/* Title - Shows first on mobile */}
+            <h1 
+              className="mb-6 md:mb-8 text-3xl sm:text-4xl md:text-5xl xl:text-6xl leading-tight" 
               style={{ 
-                backgroundColor: 'var(--primary)', 
-                color: 'var(--primary-foreground)',
-                fontWeight: 500
-              }}
-              onClick={() => analytics.trackButtonClick('Start Free Trial', 'Hero Section')}
-            >
-              Start free trial
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <button 
-              className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm transition-all hover:bg-gray-50"
-              style={{ 
-                border: '1px solid var(--border)',
-                color: 'var(--foreground)',
-                fontWeight: 500
-              }}
-              onClick={() => {
-                analytics.trackDemoRequest();
-                setIsDemoModalOpen(true);
+                fontWeight: 600,
+                letterSpacing: '-0.03em',
+                color: 'var(--foreground)' 
               }}
             >
-              Schedule demo
-            </button>
+              Vendor <span style={{ color: 'var(--primary)' }}>insurance compliance</span> without spreadsheets
+            </h1>
+            
+            {/* Image - Shows after title on mobile only */}
+            <div className="lg:hidden relative mb-8 md:mb-10">
+              {/* Subtle gradient backdrop */}
+              <div 
+                className="absolute inset-0 -z-10 blur-3xl opacity-20"
+                style={{
+                  background: 'radial-gradient(circle at 50% 50%, var(--primary), transparent 70%)'
+                }}
+              />
+
+              <div 
+                className="relative rounded-2xl overflow-hidden border"
+                style={{
+                  borderColor: 'var(--border)',
+                  backgroundColor: 'var(--card)',
+                  boxShadow: '0 25px 60px -15px rgba(58, 79, 106, 0.25), 0 10px 30px -10px rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                {/* Dashboard Screenshot */}
+                <img 
+                  src={dashboardImage} 
+                  alt="Covera Dashboard - Real-time vendor compliance tracking with analytics, high-risk alerts, and upcoming expirations"
+                  className="w-full h-auto"
+                  style={{ display: 'block' }}
+                />
+              </div>
+            </div>
+
+            {/* Description text */}
+            <p 
+              className="text-sm sm:text-base md:text-lg xl:text-xl mb-8 md:mb-10 leading-relaxed px-2 sm:px-0" 
+              style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}
+            >
+              Automatically track COIs, prevent expired coverage, and stay audit-ready without chasing vendors or exposing your business to legal risk.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 md:gap-4 mb-6 md:mb-8 px-4 sm:px-0">
+              <Link 
+                to="/login"
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
+                style={{ 
+                  backgroundColor: 'var(--primary)', 
+                  color: 'var(--primary-foreground)',
+                  fontWeight: 500
+                }}
+                onClick={() => analytics.trackButtonClick('Start Free Trial', 'Hero Section')}
+              >
+                Start free trial
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <button 
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm transition-all hover:bg-gray-50"
+                style={{ 
+                  border: '1px solid var(--border)',
+                  color: 'var(--foreground)',
+                  fontWeight: 500
+                }}
+                onClick={() => {
+                  analytics.trackDemoRequest();
+                  setIsDemoModalOpen(true);
+                }}
+              >
+                Schedule demo
+              </button>
+            </div>
+
+            {/* Micro proof block */}
+            <p 
+              className="text-xs md:text-sm mb-8 lg:mb-0 px-4 sm:px-0" 
+              style={{ color: 'var(--foreground-subtle)', fontWeight: 400, fontStyle: 'italic' }}
+            >
+              Used by property managers tracking 50+ vendors across multiple locations.
+            </p>
+
+            {/* Trust indicators - Desktop only, positioned below text */}
+            <div className="hidden lg:flex flex-wrap items-center justify-center lg:justify-start gap-4 lg:gap-6 pt-8 border-t text-xs mt-8" style={{ 
+              borderColor: 'var(--border-subtle)',
+              color: 'var(--foreground-subtle)',
+              fontWeight: 500
+            }}>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>SOC 2 Type II</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>Audit-ready</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>Bank-grade encryption</span>
+              </div>
+            </div>
           </div>
 
-          {/* Micro proof block */}
-          <p 
-            className="text-xs md:text-sm mb-12 md:mb-24 px-4 sm:px-0" 
-            style={{ color: 'var(--foreground-subtle)', fontWeight: 400, fontStyle: 'italic' }}
-          >
-            Used by property managers tracking 50+ vendors across multiple locations.
-          </p>
-
-          {/* Product mockup preview - Real Dashboard - Hidden on mobile */}
-          <div className="hidden md:block relative max-w-7xl mx-auto mb-16 md:mb-20">
+          {/* Right Column - Large Dashboard Screenshot (Desktop only) */}
+          <div className="hidden lg:block relative order-2">
+            {/* Subtle gradient backdrop */}
             <div 
-              className="relative rounded-xl overflow-hidden border"
+              className="absolute inset-0 -z-10 blur-3xl opacity-20"
+              style={{
+                background: 'radial-gradient(circle at 50% 50%, var(--primary), transparent 70%)'
+              }}
+            />
+
+            <div 
+              className="relative rounded-2xl overflow-hidden border"
               style={{
                 borderColor: 'var(--border)',
                 backgroundColor: 'var(--card)',
-                boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.15)'
+                boxShadow: '0 25px 60px -15px rgba(58, 79, 106, 0.25), 0 10px 30px -10px rgba(0, 0, 0, 0.1)'
               }}
             >
-              {/* Browser chrome */}
-              <div className="relative flex items-center justify-between gap-2 px-3 md:px-4 py-2 md:py-3 border-b" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--background)' }}>
-                <div className="flex gap-1 md:gap-1.5 flex-shrink-0">
-                  <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full" style={{ backgroundColor: '#EF4444' }} />
-                  <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full" style={{ backgroundColor: '#F59E0B' }} />
-                  <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full" style={{ backgroundColor: '#10B981' }} />
-                </div>
-                <div className="absolute left-1/2 transform -translate-x-1/2">
-                  <div className="inline-flex items-center gap-1 md:gap-2 px-2 md:px-3 py-0.5 md:py-1 rounded text-xs" style={{ backgroundColor: 'var(--panel)', color: 'var(--foreground-muted)' }}>
-                    <Shield className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                    <span className="hidden sm:inline">getcovera.co/dashboard</span>
-                    <span className="sm:hidden">covera.co</span>
-                  </div>
-                </div>
-                <div className="flex-shrink-0 w-[24px]"></div>
-              </div>
-
-              {/* Dashboard Layout */}
-              <div style={{ backgroundColor: 'var(--background)' }}>
-                {/* Main Content Area */}
-                <div className="overflow-hidden">
-                  {/* Page Header */}
-                  <div className="px-3 md:px-6 py-3 md:py-4 border-b" style={{ borderColor: 'var(--border)' }}>
-                    <div className="flex items-start justify-between mb-1">
-                      <h1 className="text-sm md:text-lg" style={{ fontWeight: 600 }}>Dashboard</h1>
-                      <div className="text-xs hidden sm:block" style={{ color: 'var(--foreground-subtle)' }}>Last updated: 2 min ago</div>
-                    </div>
-                    <p className="text-xs text-left" style={{ color: 'var(--foreground-muted)' }}>Real-time overview of your vendor compliance status</p>
-                  </div>
-
-                  {/* Dashboard Content */}
-                  <div className="p-3 md:p-6 space-y-3 md:space-y-5">
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                      {[
-                        { label: 'TOTAL VENDORS', value: 847, change: '+12%', subtext: 'vs. last month', color: 'var(--foreground)', trending: 'up' },
-                        { label: 'COMPLIANT', value: 782, change: '+92.3%', subtext: 'of total vendors', color: 'var(--status-compliant)', trending: 'up' },
-                        { label: 'AT RISK', value: 43, change: '5.1%', subtext: 'expiring within 30 days', color: 'var(--foreground)', trending: 'neutral' },
-                        { label: 'NON-COMPLIANT', value: 22, change: '-18%', subtext: 'vs. last month', color: 'var(--foreground)', trending: 'down' }
-                      ].map((stat, i) => (
-                        <div key={i} className="rounded-lg p-4 border text-center" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
-                          <div className="text-[10px] mb-3 tracking-wider" style={{ color: 'var(--foreground-subtle)', fontWeight: 500, letterSpacing: '0.05em' }}>
-                            {stat.label}
-                          </div>
-                          <div className="flex items-baseline justify-center gap-2 mb-2">
-                            <span className="text-3xl" style={{ fontWeight: 600, color: stat.color, letterSpacing: '-0.02em' }}>
-                              {stat.value}
-                            </span>
-                            <span className="text-xs" style={{ 
-                              color: stat.trending === 'up' ? 'var(--status-compliant)' : stat.trending === 'down' ? 'var(--status-critical)' : 'var(--foreground-subtle)', 
-                              fontWeight: 500 
-                            }}>
-                              {stat.change}
-                            </span>
-                          </div>
-                          <div className="text-[11px]" style={{ color: 'var(--foreground-subtle)' }}>{stat.subtext}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Main Content Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                      {/* High-risk vendors table */}
-                      <div className="lg:col-span-2 rounded-lg border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
-                        <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
-                          <h2 className="text-sm" style={{ fontWeight: 600 }}>High-risk vendors</h2>
-                          <p className="text-xs mt-0.5" style={{ color: 'var(--foreground-muted)' }}>Vendors requiring immediate attention</p>
-                        </div>
-                        
-                        {/* Desktop Table View */}
-                        <div className="hidden md:block overflow-x-auto">
-                          <table className="w-full text-xs">
-                            <thead>
-                              <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                                <th className="px-4 py-2.5 text-left" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>VENDOR</th>
-                                <th className="px-4 py-2.5 text-center" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>STATUS</th>
-                                <th className="px-4 py-2.5 text-center" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>EXPIRY</th>
-                                <th className="px-4 py-2.5 text-center" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>ACTION</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {[
-                                { name: 'Apex Contractors LLC', status: 'At Risk', statusColor: 'var(--status-expiring)', date: 'Jan 15, 2024', days: '(8 days left)' },
-                                { name: 'BuildRight Construction', status: 'Non-Compliant', statusColor: 'var(--status-critical)', date: 'Dec 28, 2023', days: '(18 days overdue)', subtitle: '2 missing documents' }
-                              ].map((vendor, i) => (
-                                <tr key={i} className={i < 1 ? 'border-b' : ''} style={{ borderColor: 'var(--border)' }}>
-                                  <td className="px-4 py-3">
-                                    <div style={{ fontWeight: 500, color: 'var(--foreground)' }}>{vendor.name}</div>
-                                    {vendor.subtitle && <div className="text-[10px] mt-0.5" style={{ color: 'var(--foreground-subtle)' }}>{vendor.subtitle}</div>}
-                                  </td>
-                                  <td className="px-4 py-3 text-center">
-                                    <span className="inline-block px-2 py-0.5 rounded text-[9px] whitespace-nowrap" style={{ 
-                                      backgroundColor: vendor.status === 'At Risk' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                                      color: vendor.statusColor,
-                                      fontWeight: 500
-                                    }}>
-                                      {vendor.status}
-                                    </span>
-                                  </td>
-                                  <td className="px-4 py-3 text-center">
-                                    <div className="whitespace-nowrap" style={{ color: 'var(--foreground)' }}>
-                                      {vendor.date}
-                                    </div>
-                                    <div className="text-[10px] whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>{vendor.days}</div>
-                                  </td>
-                                  <td className="px-4 py-3 text-center">
-                                    <button className="text-[10px] px-2.5 py-1 rounded whitespace-nowrap" style={{ color: 'var(--primary)', fontWeight: 500 }}>
-                                      Send reminder
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-
-                        {/* Mobile Card View */}
-                        <div className="md:hidden">
-                          {[
-                            { name: 'Apex Contractors LLC', status: 'At Risk', statusColor: 'var(--status-expiring)', date: 'Jan 15, 2024', days: '(8 days left)' },
-                            { name: 'BuildRight Construction', status: 'Non-Compliant', statusColor: 'var(--status-critical)', date: 'Dec 28, 2023', days: '(18 days overdue)', subtitle: '2 missing documents' }
-                          ].map((vendor, i) => (
-                            <div key={i} className={`p-4 space-y-3 ${i < 1 ? 'border-b' : ''}`} style={{ borderColor: 'var(--border)' }}>
-                              {/* Vendor name and subtitle */}
-                              <div>
-                                <div className="text-sm mb-1" style={{ fontWeight: 500, color: 'var(--foreground)' }}>
-                                  {vendor.name}
-                                </div>
-                                {vendor.subtitle && (
-                                  <div className="text-[10px]" style={{ color: 'var(--foreground-subtle)' }}>
-                                    {vendor.subtitle}
-                                  </div>
-                                )}
-                              </div>
-                              
-                              {/* Status, Date, and Action row */}
-                              <div className="flex items-center justify-between gap-3">
-                                <div className="flex items-center gap-3">
-                                  <span className="inline-block px-2 py-0.5 rounded text-[9px] flex-shrink-0 whitespace-nowrap" style={{ 
-                                    backgroundColor: vendor.status === 'At Risk' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                                    color: vendor.statusColor,
-                                    fontWeight: 500
-                                  }}>
-                                    {vendor.status}
-                                  </span>
-                                  <div className="text-xs">
-                                    <div className="whitespace-nowrap" style={{ color: 'var(--foreground)' }}>
-                                      {vendor.date}
-                                    </div>
-                                    <div className="text-[10px]" style={{ color: 'var(--foreground-subtle)' }}>{vendor.days}</div>
-                                  </div>
-                                </div>
-                                <button className="text-[10px] px-3 py-1.5 rounded border flex-shrink-0 whitespace-nowrap" style={{ 
-                                  color: 'var(--primary)', 
-                                  borderColor: 'var(--border)',
-                                  fontWeight: 500 
-                                }}>
-                                  Send reminder
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Right Column */}
-                      <div className="space-y-5">
-                        {/* Upcoming expirations */}
-                        <div className="rounded-lg border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
-                          <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
-                            <h2 className="text-sm" style={{ fontWeight: 600 }}>Upcoming expirations</h2>
-                          </div>
-                          <div className="p-4 space-y-3">
-                            {[
-                              { label: 'Within 7 days', count: '18' },
-                              { label: 'Within 14 days', count: '25' },
-                              { label: 'Within 30 days', count: '43' }
-                            ].map((item, i) => (
-                              <div key={i} className="flex items-center justify-between py-1">
-                                <span className="text-xs" style={{ color: 'var(--foreground-muted)' }}>{item.label}</span>
-                                <span className="text-base" style={{ fontWeight: 600 }}>{item.count}</span>
-                              </div>
-                            ))}
-                            <button className="w-full text-xs py-2 mt-2" style={{ color: 'var(--primary)', fontWeight: 500 }}>
-                              View all expirations
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating badge */}
-            <div 
-              className="hidden md:block absolute -top-4 -right-4 rounded-lg px-4 py-2 border shadow-lg"
-              style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--status-compliant)' }} />
-                <span className="text-xs" style={{ color: 'var(--foreground-muted)', fontWeight: 500 }}>Real-time sync active</span>
-              </div>
+              {/* Dashboard Screenshot */}
+              <img 
+                src={dashboardImage} 
+                alt="Covera Dashboard - Real-time vendor compliance tracking with analytics, high-risk alerts, and upcoming expirations"
+                className="w-full h-auto"
+                style={{ display: 'block' }}
+              />
             </div>
           </div>
-          
-          {/* Trust indicators */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4 sm:gap-8 pt-8 border-t text-xs max-w-2xl mx-auto" style={{ 
-            borderColor: 'var(--border-subtle)',
-            color: 'var(--foreground-subtle)',
-            fontWeight: 500
-          }}>
-            <div className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-              <span>SOC 2 Type II certified</span>
-            </div>
-            <div className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-              <span>Audit-ready exports</span>
-            </div>
-            <div className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-              <span>Bank-grade encryption</span>
-            </div>
+        </div>
+
+        {/* Trust indicators - Mobile only, centered below */}
+        <div className="flex lg:hidden flex-col sm:flex-row sm:items-center justify-center gap-4 sm:gap-8 pt-8 border-t text-xs max-w-2xl mx-auto mt-8" style={{ 
+          borderColor: 'var(--border-subtle)',
+          color: 'var(--foreground-subtle)',
+          fontWeight: 500
+        }}>
+          <div className="flex items-center justify-center gap-2">
+            <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>SOC 2 Type II certified</span>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>Audit-ready exports</span>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>Bank-grade encryption</span>
           </div>
         </div>
       </section>
