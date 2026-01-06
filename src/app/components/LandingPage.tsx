@@ -306,6 +306,14 @@ export default function LandingPage() {
               >
                 Pricing
               </Link>
+
+              <Link 
+                to="/login" 
+                className="text-sm transition-all hover:opacity-70 ml-2"
+                style={{ color: '#3A4F6A', fontWeight: 500 }}
+              >
+                Log in
+              </Link>
               <Link 
                 to="/login" 
                 className="px-6 py-2.5 rounded-xl text-sm transition-all hover:shadow-lg"
@@ -463,6 +471,15 @@ export default function LandingPage() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Pricing
+                </Link>
+
+                <Link 
+                  to="/login" 
+                  className="block text-sm py-2 transition-all hover:translate-x-1"
+                  style={{ color: '#3A4F6A', fontWeight: 500 }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Log in
                 </Link>
                 <Link 
                   to="/login" 

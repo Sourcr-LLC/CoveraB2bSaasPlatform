@@ -164,6 +164,14 @@ export default function LandingNav() {
               Pricing
             </Link>
 
+            <Link 
+              to="/login" 
+              className="text-sm transition-all hover:opacity-70 ml-2"
+              style={{ color: '#3A4F6A', fontWeight: 500 }}
+            >
+              Log in
+            </Link>
+
             {/* CTA Button - Now grouped with nav links */}
             <Link 
               to="/login"
@@ -322,6 +330,15 @@ export default function LandingNav() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Pricing
+              </Link>
+              
+              <Link 
+                to="/login" 
+                className="block text-sm py-2 transition-all hover:translate-x-1"
+                style={{ color: '#3A4F6A', fontWeight: 500 }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Log in
               </Link>
               <Link 
                 to="/login" 
