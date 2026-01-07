@@ -26,11 +26,11 @@ export default function LandingNav() {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 w-full px-4 md:px-6 pt-4 md:pt-6" style={{ backgroundColor: 'var(--background)' }}>
       <nav 
-        className="max-w-7xl mx-auto rounded-2xl border backdrop-blur-xl"
+        className="max-w-7xl mx-auto rounded-2xl border backdrop-blur-xl transition-all duration-300"
         style={{ 
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          borderColor: 'rgba(58, 79, 106, 0.1)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02)'
+          backgroundColor: 'rgba(255, 255, 255, 0.85)',
+          borderColor: 'rgba(58, 79, 106, 0.08)',
+          boxShadow: '0 8px 32px -4px rgba(58, 79, 106, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02)'
         }}
       >
         <div className="px-6 md:px-8 py-4 flex items-center justify-between">
@@ -175,12 +175,12 @@ export default function LandingNav() {
             {/* CTA Button - Now grouped with nav links */}
             <Link 
               to="/login"
-              className="px-6 py-2.5 rounded-xl text-sm transition-all inline-block"
+              className="px-6 py-2.5 rounded-xl text-sm transition-all inline-block hover:-translate-y-0.5"
               style={{ 
                 backgroundColor: '#3A4F6A', 
                 color: '#ffffff',
                 fontWeight: 500,
-                boxShadow: '0 4px 12px rgba(58, 79, 106, 0.2)'
+                boxShadow: '0 4px 14px rgba(58, 79, 106, 0.25)'
               }}
             >
               Start free trial
