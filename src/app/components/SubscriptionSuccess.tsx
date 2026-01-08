@@ -9,7 +9,7 @@ export default function SubscriptionSuccess() {
       <SEO 
         title="Subscription Confirmed | Covera" 
         description="Your subscription has been successfully confirmed. Welcome to Covera." 
-        canonicalUrl="https://covera.ai/subscription-success"
+        canonicalUrl="https://getcovera.co/subscription-success"
       />
 
       {/* Background decorations */}
