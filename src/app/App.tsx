@@ -46,6 +46,7 @@ import VendorInsuranceTrackingMistakes from './components/blogs/VendorInsuranceT
 import GeneralLiabilityCoverageLimits from './components/blogs/GeneralLiabilityCoverageLimits';
 import AutomateCOICollection from './components/blogs/AutomateCOICollection';
 import VendorInsuranceComplianceSmallBusiness from './components/blogs/VendorInsuranceComplianceSmallBusiness';
+import SubscriptionSuccess from './components/SubscriptionSuccess';
 
 // Dashboard components
 import Dashboard from './components/Dashboard';
@@ -263,6 +264,7 @@ export default function App() {
           <Route path="/blog/general-liability-coverage-limits" element={<GeneralLiabilityCoverageLimits />} />
           <Route path="/blog/automate-coi-collection" element={<AutomateCOICollection />} />
           <Route path="/blog/vendor-insurance-compliance-small-business" element={<VendorInsuranceComplianceSmallBusiness />} />
+          <Route path="/subscription-success" element={<SubscriptionSuccess />} />
           <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
         </Routes>
         <Toaster />

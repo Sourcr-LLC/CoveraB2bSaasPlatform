@@ -29,12 +29,15 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
       if (isSignUp) {
         await authApi.signUp(email, password, name, organizationName);
         analytics.trackTrialSignup('standard');
+        // Navigate first to avoid race condition with App.tsx protected route redirect
+        navigate('/subscription-success');
+        onLogin();
       } else {
         await authApi.signIn(email, password);
         analytics.trackLogin('email');
+        onLogin();
+        navigate('/dashboard');
       }
-      onLogin();
-      navigate('/dashboard');
     } catch (err: any) {
       console.error('Auth error:', err);
       setError(err.message || 'Authentication failed. Please try again.');
