@@ -1,9 +1,16 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useEffect } from 'react';
 import SEO from './SEO';
+import { trackEvent } from './GoogleAnalytics';
 
 export default function SubscriptionSuccess() {
+  useEffect(() => {
+    // Fire Google Ads conversion event
+    trackEvent('conversion_event_subscribe_paid');
+  }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'var(--background)' }}>
       <SEO 
