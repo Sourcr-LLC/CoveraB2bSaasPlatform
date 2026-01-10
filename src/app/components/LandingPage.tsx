@@ -204,8 +204,21 @@ export default function LandingPage() {
                   <span>Repeat 100x per month</span>
                 </li>
               </ul>
-              <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed">
-                <span className="text-slate-600 font-medium">Costly & Slow</span>
+              <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed relative overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                  <div className="grid grid-cols-2 gap-4 rotate-12 scale-110">
+                     <FileText className="w-16 h-16 text-slate-400" />
+                     <FileText className="w-16 h-16 text-slate-400" />
+                     <FileText className="w-16 h-16 text-slate-400" />
+                     <FileText className="w-16 h-16 text-slate-400" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2 relative z-10">
+                  <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-slate-500 rotate-90" />
+                  </div>
+                  <span className="text-slate-600 font-medium">Costly & Slow</span>
+                </div>
               </div>
             </div>
 

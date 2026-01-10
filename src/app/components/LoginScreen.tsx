@@ -14,6 +14,8 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
+  const [step, setStep] = useState<'initial' | 'verification'>('initial');
+  const [verificationCode, setVerificationCode] = useState('');
   const [name, setName] = useState('');
   const [organizationName, setOrganizationName] = useState('');
   const [error, setError] = useState('');
@@ -27,11 +29,16 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
     try {
       if (isSignUp) {
-        await authApi.signUp(email, password, name, organizationName);
-        analytics.trackTrialSignup('standard');
-        // Navigate first to avoid race condition with App.tsx protected route redirect
-        navigate('/subscription-success');
-        onLogin();
+        if (step === 'initial') {
+          await authApi.signUpRequest(email, name);
+          setStep('verification');
+        } else {
+          await authApi.signUpVerify(email, verificationCode, password, name, organizationName);
+          analytics.trackTrialSignup('standard');
+          // Navigate first to avoid race condition with App.tsx protected route redirect
+          navigate('/subscription-success');
+          onLogin();
+        }
       } else {
         await authApi.signIn(email, password);
         analytics.trackLogin('email');
@@ -44,6 +51,13 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const toggleSignUp = () => {
+    setIsSignUp(!isSignUp);
+    setStep('initial');
+    setError('');
+    setVerificationCode('');
   };
 
   return (
@@ -88,101 +102,146 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               }}
             >
               <form onSubmit={handleSubmit} className="space-y-6">
-                {isSignUp && (
-                  <>
-                    <div>
-                      <label htmlFor="name" className="block mb-2.5 text-sm">
-                        Full Name
+                {isSignUp && step === 'verification' ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <div className="mb-6 text-center">
+                      <h3 className="text-lg font-semibold mb-2">Check your email</h3>
+                      <p className="text-sm text-slate-500">
+                        We sent a verification code to <strong>{email}</strong>
+                      </p>
+                    </div>
+
+                    <div className="mb-6">
+                      <label htmlFor="code" className="block mb-2.5 text-sm">
+                        Verification Code
                       </label>
                       <input
                         type="text"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        id="code"
+                        value={verificationCode}
+                        onChange={(e) => setVerificationCode(e.target.value)}
+                        className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 text-center tracking-widest text-lg font-mono"
+                        style={{ 
+                          backgroundColor: 'var(--input-background)',
+                          borderColor: 'var(--input-border)',
+                          color: 'var(--foreground)'
+                        }}
+                        placeholder="123456"
+                        required
+                        maxLength={6}
+                      />
+                    </div>
+                    
+                    <button 
+                      type="button" 
+                      onClick={() => setStep('initial')}
+                      className="text-sm text-center w-full mb-4 text-slate-500 hover:text-slate-700"
+                    >
+                      Incorrect email? Go back
+                    </button>
+                  </motion.div>
+                ) : (
+                  <>
+                    {isSignUp && (
+                      <>
+                        <div>
+                          <label htmlFor="name" className="block mb-2.5 text-sm">
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
+                            style={{ 
+                              backgroundColor: 'var(--input-background)',
+                              borderColor: 'var(--input-border)',
+                              color: 'var(--foreground)'
+                            }}
+                            placeholder="John Doe"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="organizationName" className="block mb-2.5 text-sm">
+                            Organization Name
+                          </label>
+                          <input
+                            type="text"
+                            id="organizationName"
+                            value={organizationName}
+                            onChange={(e) => setOrganizationName(e.target.value)}
+                            className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
+                            style={{ 
+                              backgroundColor: 'var(--input-background)',
+                              borderColor: 'var(--input-border)',
+                              color: 'var(--foreground)'
+                            }}
+                            placeholder="Acme Corporation"
+                            required
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    <div>
+                      <label htmlFor="email" className="block mb-2.5 text-sm">
+                        Email address
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                         style={{ 
                           backgroundColor: 'var(--input-background)',
                           borderColor: 'var(--input-border)',
                           color: 'var(--foreground)'
                         }}
-                        placeholder="John Doe"
+                        placeholder="your@company.com"
                         required
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="organizationName" className="block mb-2.5 text-sm">
-                        Organization Name
+                      <label htmlFor="password" className="block mb-2.5 text-sm">
+                        Password
                       </label>
                       <input
-                        type="text"
-                        id="organizationName"
-                        value={organizationName}
-                        onChange={(e) => setOrganizationName(e.target.value)}
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                         style={{ 
                           backgroundColor: 'var(--input-background)',
                           borderColor: 'var(--input-border)',
                           color: 'var(--foreground)'
                         }}
-                        placeholder="Acme Corporation"
+                        placeholder="••••••••"
                         required
+                        minLength={6}
                       />
+                      {!isSignUp && (
+                        <div className="mt-2 text-right">
+                          <Link
+                            to="/forgot-password"
+                            className="text-xs"
+                            style={{ color: 'var(--primary)', fontWeight: 500 }}
+                          >
+                            Forgot password?
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </>
                 )}
-
-                <div>
-                  <label htmlFor="email" className="block mb-2.5 text-sm">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
-                    style={{ 
-                      backgroundColor: 'var(--input-background)',
-                      borderColor: 'var(--input-border)',
-                      color: 'var(--foreground)'
-                    }}
-                    placeholder="your@company.com"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="password" className="block mb-2.5 text-sm">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
-                    style={{ 
-                      backgroundColor: 'var(--input-background)',
-                      borderColor: 'var(--input-border)',
-                      color: 'var(--foreground)'
-                    }}
-                    placeholder="••••••••"
-                    required
-                    minLength={6}
-                  />
-                  {!isSignUp && (
-                    <div className="mt-2 text-right">
-                      <Link
-                        to="/forgot-password"
-                        className="text-xs"
-                        style={{ color: 'var(--primary)', fontWeight: 500 }}
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
-                  )}
-                </div>
 
                 {error && (
                   <div 
@@ -207,17 +266,16 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                     boxShadow: 'var(--shadow-sm)'
                   }}
                 >
-                  {isLoading ? 'Please wait...' : (isSignUp ? 'Create Account' : 'Sign in')}
+                  {isLoading ? 'Please wait...' : (
+                    isSignUp ? (step === 'verification' ? 'Verify & Create Account' : 'Continue') : 'Sign in'
+                  )}
                 </button>
               </form>
 
               <div className="mt-8 pt-6 border-t text-center text-sm" style={{ borderColor: 'var(--border-subtle)' }}>
                 <button 
                   type="button"
-                  onClick={() => {
-                    setIsSignUp(!isSignUp);
-                    setError('');
-                  }}
+                  onClick={toggleSignUp}
                   className="hover:underline"
                   style={{ color: 'var(--foreground-muted)' }}
                 >

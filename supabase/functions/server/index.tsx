@@ -470,7 +470,203 @@ app.post("/make-server-be7827e3/send-email-proxy", async (c) => {
 
 // ==================== AUTH ROUTES ====================
 
-// Sign up route
+// Sign up request - sends verification code
+app.post("/make-server-be7827e3/auth/signup-request", async (c) => {
+  try {
+    const { email, name } = await c.req.json();
+    
+    if (!email) {
+      return c.json({ error: 'Email is required' }, 400);
+    }
+
+    // Check if user already exists
+    const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error('Error listing users:', listError);
+      return c.json({ error: 'Internal server error' }, 500);
+    }
+    
+    const existingUser = users?.find(u => u.email?.toLowerCase() === email.toLowerCase());
+
+    if (existingUser) {
+      return c.json({ error: 'User with this email already exists' }, 400);
+    }
+
+    // Generate 6-digit verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 600000; // 10 minutes
+
+    // Store verification code in KV
+    await kv.set(`signup_verification:${email.toLowerCase()}`, {
+      email: email.toLowerCase(),
+      name,
+      code: verificationCode,
+      expiresAt,
+      createdAt: Date.now(),
+    });
+
+    // LOG CODE FOR TESTING/DEBUGGING
+    console.log(`🔐 VERIFICATION CODE for ${email}: ${verificationCode}`);
+
+    const resendApiKey = Deno.env.get('RESEND_API_KEY');
+    if (!resendApiKey) {
+      console.error('RESEND_API_KEY not configured');
+      // In dev/test, allow proceeding even without email config
+      // return c.json({ error: 'Email service not configured' }, 500);
+      return c.json({ success: true, warning: 'Email service not configured, check logs for code' });
+    }
+
+    // Send email
+    try {
+      let emailResponse;
+      let attempt = 0;
+      const maxRetries = 3;
+
+      while (attempt < maxRetries) {
+        emailResponse = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'Covera <noreply@covera.co>',
+            to: [email],
+            subject: 'Verify your email for Covera',
+            html: `
+              <!DOCTYPE html>
+              <html>
+                <head>
+                  <meta charset="utf-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <style>
+                    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1F2937; margin: 0; padding: 0; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+                    .header { text-align: center; margin-bottom: 40px; }
+                    .logo { font-size: 32px; font-weight: 600; color: #3A4F6A; letter-spacing: -0.02em; }
+                    .content { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 40px; }
+                    h1 { font-size: 24px; font-weight: 600; color: #1F2937; margin: 0 0 16px 0; }
+                    p { color: #6B7280; margin: 0 0 24px 0; font-size: 16px; }
+                    .code-container { text-align: center; margin: 32px 0; }
+                    .code { display: inline-block; background: #F3F4F6; border: 2px solid #3A4F6A; color: #3A4F6A; font-size: 36px; font-weight: 700; letter-spacing: 8px; padding: 20px 32px; border-radius: 12px; font-family: 'Courier New', monospace; }
+                    .footer { text-align: center; margin-top: 32px; color: #9CA3AF; font-size: 14px; }
+                    .security-note { background: #F3F4F6; border-radius: 8px; padding: 16px; margin-top: 24px; font-size: 14px; color: #6B7280; }
+                  </style>
+                </head>
+                <body>
+                  <div class="container">
+                    <div class="header">
+                      <div class="logo">Covera</div>
+                    </div>
+                    <div class="content">
+                      <h1>Verify your email</h1>
+                      <p>Hi ${name || 'there'},</p>
+                      <p>Thanks for signing up for Covera. Please use the following code to verify your email address:</p>
+                      <div class="code-container">
+                        <div class="code">${verificationCode}</div>
+                      </div>
+                      <p style="text-align: center; color: #6B7280; font-size: 14px;">Enter this code to complete your registration</p>
+                      <div class="security-note">
+                        <strong>🔒 Security note:</strong> This code will expire in 10 minutes.
+                      </div>
+                    </div>
+                    <div class="footer">
+                      <p>Enterprise vendor compliance tracking</p>
+                      <p>© ${new Date().getFullYear()} Covera. All rights reserved.</p>
+                    </div>
+                  </div>
+                </body>
+              </html>
+            `,
+          }),
+        });
+
+        if (emailResponse.status === 429) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+          attempt++;
+          continue;
+        }
+        break;
+      }
+
+      if (!emailResponse || !emailResponse.ok) {
+        const errorData = await emailResponse?.json().catch(() => ({}));
+        console.error('Resend API error:', errorData);
+        // Don't block flow, but log error
+        // return c.json({ error: 'Failed to send verification email' }, 500);
+      }
+    } catch (emailError) {
+      console.error('Failed to send email (exception):', emailError);
+      // Proceed despite email error
+    }
+
+    return c.json({ success: true });
+
+  } catch (error) {
+    console.error('Signup request error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Sign up verify - completes registration
+app.post("/make-server-be7827e3/auth/signup-verify", async (c) => {
+  try {
+    const { email, code, password, name, organizationName } = await c.req.json();
+
+    if (!email || !code || !password || !name) {
+      return c.json({ error: 'Missing required fields' }, 400);
+    }
+
+    const verificationData = await kv.get(`signup_verification:${email.toLowerCase()}`);
+
+    if (!verificationData) {
+      return c.json({ error: 'Verification code not found or expired. Please try signing up again.' }, 400);
+    }
+
+    if (verificationData.code !== code) {
+      return c.json({ error: 'Invalid verification code' }, 400);
+    }
+
+    if (Date.now() > verificationData.expiresAt) {
+      return c.json({ error: 'Verification code expired' }, 400);
+    }
+
+    // Create user using Supabase Admin API
+    const { data, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      user_metadata: { name },
+      email_confirm: true,
+    });
+
+    if (error) {
+      console.error('Signup error:', error);
+      return c.json({ error: error.message }, 400);
+    }
+
+    // Create user profile in KV store
+    await kv.set(`user:${data.user.id}`, {
+      email,
+      name,
+      organizationName: organizationName || '',
+      plan: 'free',
+      subscriptionStatus: 'inactive',
+      createdAt: new Date().toISOString(),
+    });
+
+    // Cleanup verification code
+    await kv.del(`signup_verification:${email.toLowerCase()}`);
+
+    return c.json({ user: data.user });
+
+  } catch (error) {
+    console.error('Signup verify error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Sign up route (LEGACY - kept for backward compatibility but effectively replaced)
 app.post("/make-server-be7827e3/auth/signup", async (c) => {
   try {
     const { email, password, name, organizationName } = await c.req.json();

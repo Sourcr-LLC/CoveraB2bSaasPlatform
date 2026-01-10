@@ -80,6 +80,28 @@ async function apiCall(endpoint: string, options: RequestInit = {}) {
 
 // Auth API
 export const authApi = {
+  signUpRequest: async (email: string, name: string) => {
+    return apiCall('/auth/signup-request', {
+      method: 'POST',
+      body: JSON.stringify({ email, name }),
+    });
+  },
+
+  signUpVerify: async (email: string, code: string, password: string, name: string, organizationName?: string) => {
+    // Verify and create user
+    await apiCall('/auth/signup-verify', {
+      method: 'POST',
+      body: JSON.stringify({ email, code, password, name, organizationName }),
+    });
+    
+    // Then sign them in
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    
+    if (error) throw error;
+    
+    return { user: data.user, session: data.session };
+  },
+
   signUp: async (email: string, password: string, name: string, organizationName?: string) => {
     // First create the user via API
     const result = await apiCall('/auth/signup', {
