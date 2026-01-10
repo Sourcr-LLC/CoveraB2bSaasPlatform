@@ -391,7 +391,7 @@ export default function LandingPage() {
               Contact Sales
             </button>
           </div>
-          <p className="mt-6 text-sm text-slate-400">
+          <p className="mt-6 text-sm text-slate-300">
             No credit card required for trial • Cancel anytime
           </p>
         </div>

@@ -21,32 +21,32 @@ export default function DashboardPreview() {
               <span>Dashboard</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <Users className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Vendors</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <Shield className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Insurance</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <FileText className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Contracts</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <FileCheck className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Compliance</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <AlertCircle className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Alerts</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <TrendingUp className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Reports</span>
             </div>
@@ -54,15 +54,15 @@ export default function DashboardPreview() {
           
           {/* Bottom section */}
           <div className="p-1 sm:p-1.5 md:p-1.5 lg:p-2 border-t space-y-0.5" style={{ borderColor: '#e7e5e4' }}>
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <CreditCard className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Billing</span>
             </div>
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <Settings className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Settings</span>
             </div>
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#57534e' }}>
               <LogOut className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Sign out</span>
             </div>
@@ -75,7 +75,7 @@ export default function DashboardPreview() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-semibold truncate" style={{ color: '#1c1917' }}>Taylor, LLC</div>
-              <div className="text-[6px] sm:text-[7px] md:text-[8px] lg:text-[9px] truncate" style={{ color: '#a8a29e' }}>Enterprise</div>
+              <div className="text-[6px] sm:text-[7px] md:text-[8px] lg:text-[9px] truncate" style={{ color: '#78716c' }}>Enterprise</div>
             </div>
           </div>
         </div>
@@ -87,49 +87,49 @@ export default function DashboardPreview() {
             {/* Header */}
             <div className="mb-1 sm:mb-1.5 md:mb-2 lg:mb-2.5">
               <h1 className="text-[8px] sm:text-[10px] md:text-xs lg:text-sm font-semibold mb-0.5" style={{ color: '#1c1917' }}>Dashboard</h1>
-              <p className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>Real-time overview of your vendor compliance status</p>
+              <p className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>Real-time overview of your vendor compliance status</p>
             </div>
             
             {/* Stats Cards - Always 4 columns */}
             <div className="grid grid-cols-4 gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-1.5 sm:mb-2 md:mb-3 lg:mb-4">
               {/* Total Vendors */}
               <div className="rounded-lg p-1 sm:p-1.5 md:p-2 lg:p-2.5 bg-white border" style={{ borderColor: '#e7e5e4' }}>
-                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider" style={{ color: '#78716c' }}>TOTAL VENDORS</div>
+                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider" style={{ color: '#57534e' }}>TOTAL VENDORS</div>
                 <div className="flex items-baseline gap-0.5 sm:gap-0.5 md:gap-1 lg:gap-1 mb-0.5">
                   <div className="text-xs sm:text-base md:text-xl lg:text-2xl font-semibold" style={{ color: '#1c1917' }}>12</div>
-                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>of 250</div>
+                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>of 250</div>
                 </div>
-                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>Active vendors</div>
+                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>Active vendors</div>
               </div>
               
               {/* Compliant */}
               <div className="rounded-lg p-1 sm:p-1.5 md:p-2 lg:p-2.5 bg-white border" style={{ borderColor: '#e7e5e4' }}>
-                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider" style={{ color: '#78716c' }}>COMPLIANT</div>
+                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider" style={{ color: '#57534e' }}>COMPLIANT</div>
                 <div className="flex items-baseline gap-0.5 sm:gap-0.5 md:gap-1 lg:gap-1 mb-0.5">
                   <div className="text-xs sm:text-base md:text-xl lg:text-2xl font-semibold" style={{ color: '#1c1917' }}>6</div>
-                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>vendors</div>
+                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>vendors</div>
                 </div>
-                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>All requirements met</div>
+                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>All requirements met</div>
               </div>
               
               {/* At Risk */}
               <div className="rounded-lg p-1 sm:p-1.5 md:p-2 lg:p-2.5 bg-white border" style={{ borderColor: '#e7e5e4' }}>
-                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider" style={{ color: '#78716c' }}>AT RISK</div>
+                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider" style={{ color: '#57534e' }}>AT RISK</div>
                 <div className="flex items-baseline gap-0.5 sm:gap-0.5 md:gap-1 lg:gap-1 mb-0.5">
                   <div className="text-xs sm:text-base md:text-xl lg:text-2xl font-semibold" style={{ color: '#1c1917' }}>3</div>
-                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>vendors</div>
+                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>vendors</div>
                 </div>
-                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>Expiring within 30 days</div>
+                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>Expiring within 30 days</div>
               </div>
               
               {/* Non-Compliant */}
               <div className="rounded-lg p-1 sm:p-1.5 md:p-2 lg:p-2.5 bg-white border" style={{ borderColor: '#e7e5e4' }}>
-                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider whitespace-nowrap" style={{ color: '#78716c' }}>NON-COMPLIANT</div>
+                <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium mb-0.5 sm:mb-0.5 md:mb-0.5 lg:mb-1 uppercase tracking-wider whitespace-nowrap" style={{ color: '#57534e' }}>NON-COMPLIANT</div>
                 <div className="flex items-baseline gap-0.5 sm:gap-0.5 md:gap-1 lg:gap-1 mb-0.5">
                   <div className="text-xs sm:text-base md:text-xl lg:text-2xl font-semibold" style={{ color: '#1c1917' }}>3</div>
-                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>vendors</div>
+                  <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>vendors</div>
                 </div>
-                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#a8a29e' }}>Action required</div>
+                <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px]" style={{ color: '#78716c' }}>Action required</div>
               </div>
             </div>
             
@@ -139,12 +139,12 @@ export default function DashboardPreview() {
               <div className="col-span-2 rounded-lg bg-white border" style={{ borderColor: '#e7e5e4' }}>
                 <div className="p-1 sm:p-1.5 md:p-2 lg:p-2.5 border-b" style={{ borderColor: '#e7e5e4' }}>
                   <h3 className="text-[7px] sm:text-[9px] md:text-[10px] lg:text-xs font-semibold mb-0.5" style={{ color: '#1c1917' }}>High-risk vendors</h3>
-                  <p className="text-[6px] sm:text-[7px] md:text-[8px] lg:text-[10px]" style={{ color: '#a8a29e' }}>Vendors requiring immediate attention</p>
+                  <p className="text-[6px] sm:text-[7px] md:text-[8px] lg:text-[10px]" style={{ color: '#78716c' }}>Vendors requiring immediate attention</p>
                 </div>
                 
                 <div className="overflow-hidden">
                   {/* Table Header */}
-                  <div className="grid grid-cols-12 gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1.5 lg:py-2 text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium uppercase tracking-wider" style={{ color: '#78716c', backgroundColor: '#fafaf9' }}>
+                  <div className="grid grid-cols-12 gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1.5 lg:py-2 text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px] font-medium uppercase tracking-wider" style={{ color: '#57534e', backgroundColor: '#fafaf9' }}>
                     <div className="col-span-4">VENDOR</div>
                     <div className="col-span-3">STATUS</div>
                     <div className="col-span-3">EXPIRY</div>
@@ -167,7 +167,7 @@ export default function DashboardPreview() {
                       </div>
                       <div className="col-span-3">
                         <div className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium" style={{ color: '#1c1917' }}>{row.expiry}</div>
-                        <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px]" style={{ color: '#a8a29e' }}>{row.days}</div>
+                        <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px]" style={{ color: '#78716c' }}>{row.days}</div>
                       </div>
                       <div className="col-span-2">
                         <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[10px] font-medium underline hover:no-underline cursor-default" style={{ color: '#3A4F6A' }}>Send reminder</div>
@@ -186,12 +186,12 @@ export default function DashboardPreview() {
                     {[
                       { title: 'Within 7 days', count: '0', color: '#ef4444' },
                       { title: 'Within 30 days', count: '3', color: '#f59e0b' },
-                      { title: 'Within 60 days', count: '3', color: '#78716c' },
+                      { title: 'Within 60 days', count: '3', color: '#57534e' },
                     ].map((item, i) => (
                       <div key={i} className="flex items-center justify-between">
                         <div className="flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2">
                           <div className="w-1 sm:w-1 md:w-1.5 lg:w-1.5 h-1 sm:h-1 md:h-1.5 lg:h-1.5 rounded-full" style={{ backgroundColor: item.color }}></div>
-                          <span className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium" style={{ color: '#78716c' }}>{item.title}</span>
+                          <span className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium" style={{ color: '#57534e' }}>{item.title}</span>
                         </div>
                         <span className="text-[7px] sm:text-[9px] md:text-[10px] lg:text-xs font-semibold" style={{ color: '#1c1917' }}>{item.count}</span>
                       </div>
