@@ -64,22 +64,6 @@ export default function LandingPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Animation variants
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
       <SEO {...SEO_CONFIGS.landing} />
@@ -100,23 +84,23 @@ export default function LandingPage() {
       <main>
         <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative">
           <div className="max-w-7xl mx-auto">
-            <motion.div 
-              initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="text-center max-w-4xl mx-auto mb-16"
-          >
+            <div className="text-center max-w-4xl mx-auto mb-16">
             
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               Vendor Insurance and Compliance <br className="hidden md:block" />
               <span className="text-[#3A4F6A]">Without Spreadsheets</span>
-            </motion.h1>
+            </h1>
             
-            <motion.p variants={fadeInUp} className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
               Automatically track COIs, prevent expired coverage, and stay audit-ready without chasing vendors or exposing your business to legal risk.
-            </motion.p>
+            </p>
             
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
               <Link 
                 to="/login"
                 className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-all shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 hover:-translate-y-1 flex items-center justify-center gap-2"
@@ -131,7 +115,7 @@ export default function LandingPage() {
                 Schedule demo
               </button>
             </motion.div>
-          </motion.div>
+          </div>
 
           {/* Hero Visual */}
           <motion.div 
