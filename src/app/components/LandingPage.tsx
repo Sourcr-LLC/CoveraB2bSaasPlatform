@@ -108,7 +108,7 @@ export default function LandingPage() {
           >
             
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-              Vendor Insurance Compliance <br className="hidden md:block" />
+              Vendor Insurance and Compliance <br className="hidden md:block" />
               <span className="text-[#3A4F6A]">Without Spreadsheets</span>
             </motion.h1>
             

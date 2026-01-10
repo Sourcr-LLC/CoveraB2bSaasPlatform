@@ -12,7 +12,7 @@ export default function Footer() {
               </svg>
             </Link>
             <p className="text-slate-500 text-sm max-w-xs mb-6">
-              Vendor Insurance Compliance Without Spreadsheets
+              Vendor insurance and compliance without spreadsheets.
             </p>
             <div className="flex gap-4">
               <a href="https://x.com/covera_co" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-colors cursor-pointer">
