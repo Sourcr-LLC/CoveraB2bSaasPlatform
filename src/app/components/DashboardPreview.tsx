@@ -153,10 +153,10 @@ export default function DashboardPreview() {
                   
                   {/* Table Rows */}
                   {[
-                    { vendor: 'SafeGuard Security Systems', status: 'At risk', statusColor: '#f59e0b', expiry: '1/25/2026', days: '19 days' },
-                    { vendor: 'GreenScapes Landscaping', status: 'At risk', statusColor: '#f59e0b', expiry: '1/22/2026', days: '16 days' },
-                    { vendor: 'Rapid Delivery Logistics', status: 'Non-compliant', statusColor: '#ef4444', expiry: '12/18/2025', days: '19 days overdue' },
-                    { vendor: 'Elite HVAC Services', status: 'Non-compliant', statusColor: '#ef4444', expiry: '12/3/2025', days: '34 days overdue' },
+                    { vendor: 'SafeGuard Security Systems', status: 'At risk', statusColor: '#d97706', expiry: '1/25/2026', days: '19 days' },
+                    { vendor: 'GreenScapes Landscaping', status: 'At risk', statusColor: '#d97706', expiry: '1/22/2026', days: '16 days' },
+                    { vendor: 'Rapid Delivery Logistics', status: 'Non-compliant', statusColor: '#dc2626', expiry: '12/18/2025', days: '19 days overdue' },
+                    { vendor: 'Elite HVAC Services', status: 'Non-compliant', statusColor: '#dc2626', expiry: '12/3/2025', days: '34 days overdue' },
                   ].map((row, i) => (
                     <div key={i} className="grid grid-cols-12 gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1.5 lg:py-2 border-t" style={{ borderColor: '#f5f5f4' }}>
                       <div className="col-span-4 text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium truncate" style={{ color: '#1c1917' }}>{row.vendor}</div>
@@ -184,8 +184,8 @@ export default function DashboardPreview() {
                   <h3 className="text-[7px] sm:text-[9px] md:text-[10px] lg:text-xs font-semibold mb-1 sm:mb-1.5 md:mb-2 lg:mb-2.5" style={{ color: '#1c1917' }}>Upcoming expirations</h3>
                   <div className="space-y-0.5 sm:space-y-1 md:space-y-1.5 lg:space-y-2">
                     {[
-                      { title: 'Within 7 days', count: '0', color: '#ef4444' },
-                      { title: 'Within 30 days', count: '3', color: '#f59e0b' },
+                      { title: 'Within 7 days', count: '0', color: '#dc2626' },
+                      { title: 'Within 30 days', count: '3', color: '#d97706' },
                       { title: 'Within 60 days', count: '3', color: '#57534e' },
                     ].map((item, i) => (
                       <div key={i} className="flex items-center justify-between">
