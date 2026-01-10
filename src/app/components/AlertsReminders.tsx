@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
+import { isDemoMode, demoVendors } from '../lib/demoData';
 
 // Helper function to calculate days until expiry
 function calculateDaysUntilExpiry(insuranceExpiry: string | undefined): number | null {
@@ -45,6 +46,39 @@ export default function AlertsReminders() {
 
   const loadData = async () => {
     try {
+      // Check for demo mode
+      if (isDemoMode()) {
+        console.log('📊 Demo mode enabled - using mock data for Alerts');
+        setVendors(demoVendors);
+        
+        // Mock sent reminders
+        const demoReminders = [
+          {
+            vendorName: 'Rapid Delivery Logistics',
+            message: 'Reminder email sent to vendor',
+            sentAt: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 days ago
+            status: 'delivered',
+            opened: true
+          },
+          {
+            vendorName: 'Elite HVAC Services',
+            message: 'Reminder email sent to vendor',
+            sentAt: new Date(Date.now() - 86400000 * 5).toISOString(), // 5 days ago
+            status: 'delivered',
+            opened: false
+          },
+          {
+            vendorName: 'SafeGuard Security Systems',
+            message: 'Reminder email sent to vendor',
+            sentAt: new Date(Date.now() - 86400000 * 12).toISOString(), // 12 days ago
+            status: 'delivered',
+            opened: true
+          }
+        ];
+        setSentReminders(demoReminders);
+        return;
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
       

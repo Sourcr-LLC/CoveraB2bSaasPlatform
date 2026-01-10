@@ -6,6 +6,7 @@ import { supabase } from '../lib/api';
 import PaywallModal from './PaywallModal';
 import { useWalkthrough } from '../hooks/useWalkthrough';
 import { useNavigate } from 'react-router-dom';
+import { isDemoMode, enableDemoMode, disableDemoMode } from '../lib/demoData';
 
 export default function Settings() {
   const [loading, setLoading] = useState(false);
@@ -15,13 +16,25 @@ export default function Settings() {
   const [tempOrgName, setTempOrgName] = useState('');
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [demoEnabled, setDemoEnabled] = useState(false);
   const { resetWalkthrough } = useWalkthrough();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchSubscriptionStatus();
     fetchProfile();
+    setDemoEnabled(isDemoMode());
   }, []);
+
+  const toggleDemoMode = () => {
+    if (demoEnabled) {
+      disableDemoMode();
+      setDemoEnabled(false);
+    } else {
+      enableDemoMode();
+      setDemoEnabled(true);
+    }
+  };
 
   const fetchProfile = async () => {
     try {
@@ -569,8 +582,8 @@ export default function Settings() {
           </button>
         </div>
 
-        {/* Demo Mode Toggle - Hidden for now, will be feature for certain users */}
-        {/* <div
+        {/* Demo Mode Toggle */}
+        <div
           className="rounded-xl border p-8"
           style={{
             backgroundColor: 'var(--card)',
@@ -605,7 +618,7 @@ export default function Settings() {
           >
             {demoEnabled ? 'Disable Demo Mode' : 'Enable Demo Mode'}
           </button>
-        </div> */}
+        </div>
       </div>
       <PaywallModal
         isOpen={isPaywallOpen}

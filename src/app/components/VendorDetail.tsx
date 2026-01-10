@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, Mail, Phone, MapPin, CheckCircle2, AlertCircle, Clock, Upload, FileText, ExternalLink, Send, Copy, X, FileUp, Eye, Trash2, AlertTriangle } from 'lucide-react';
 import { vendorApi } from '../lib/api';
 import { toast } from 'sonner';
+import { isDemoMode, demoVendors } from '../lib/demoData';
 
 // Standard coverage requirements for "AI Verification"
 const REQUIRED_LIMITS: Record<string, { occurrence?: number; aggregate?: number }> = {
@@ -69,6 +70,35 @@ export default function VendorDetail() {
   const loadVendorData = async () => {
     try {
       console.log('Loading vendor with ID:', id);
+      
+      // Check for demo mode
+      if (isDemoMode()) {
+        const demoVendor = demoVendors.find(v => v.id === id);
+        if (demoVendor) {
+          // Add some fake activities for demo
+          const demoActivities = [
+            {
+              id: 'act-1',
+              action: 'reminder_sent',
+              detail: 'Reminder email sent to vendor',
+              timestamp: new Date(Date.now() - 86400000 * 2).toISOString() // 2 days ago
+            },
+            {
+              id: 'act-2',
+              action: 'document_uploaded',
+              detail: 'Certificate of Insurance uploaded',
+              timestamp: new Date(Date.now() - 86400000 * 15).toISOString() // 15 days ago
+            }
+          ];
+          
+          setVendor(demoVendor);
+          setActivities(demoActivities);
+          setError(null);
+          setIsLoading(false);
+          return;
+        }
+      }
+
       const [vendorResponse, activitiesResponse] = await Promise.all([
         vendorApi.getOne(id!),
         vendorApi.getActivities(id!).catch(err => {
