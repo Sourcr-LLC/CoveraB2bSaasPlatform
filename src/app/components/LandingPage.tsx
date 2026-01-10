@@ -97,10 +97,11 @@ export default function LandingPage() {
       <LandingNav />
 
       {/* Hero Section */}
-      <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative">
-        <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial="hidden"
+      <main>
+        <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative">
+          <div className="max-w-7xl mx-auto">
+            <motion.div 
+              initial="hidden"
             animate="visible"
             variants={staggerContainer}
             className="text-center max-w-4xl mx-auto mb-16"
@@ -172,7 +173,7 @@ export default function LandingPage() {
       {/* Social Proof */}
       <section className="py-12 border-y border-slate-100 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm font-medium text-slate-400 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
+          <p className="text-sm font-medium text-slate-500 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
             {['Roadr', 'Summit Properties', 'BuildRight', 'MedCore Health', 'FranchiseCo', 'Apex Group'].map((name) => (
               <div key={name} className="text-xl font-bold font-display text-slate-800 flex items-center gap-2">
@@ -220,7 +221,7 @@ export default function LandingPage() {
                 </li>
               </ul>
               <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed">
-                <span className="text-slate-400 font-medium">Costly & Slow</span>
+                <span className="text-slate-500 font-medium">Costly & Slow</span>
               </div>
             </div>
 
@@ -261,7 +262,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <div className="text-sm font-medium text-white">Vendor Portal</div>
-                    <div className="text-xs text-white/60">Active now</div>
+                    <div className="text-xs text-white/80">Active now</div>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -287,7 +288,7 @@ export default function LandingPage() {
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-400 scale-100'}`}>1</div>
                     <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-900'}`}>Generate Link</div>
-                      <div className="text-sm text-slate-500 mt-1">Create a secure, time-limited upload token.</div>
+                      <div className="text-sm text-slate-600 mt-1">Create a secure, time-limited upload token.</div>
                     </div>
                   </div>
                   {/* Step 2 */}
@@ -303,7 +304,7 @@ export default function LandingPage() {
                           <FileText className="w-5 h-5 text-slate-400 flex-shrink-0" />
                           <div className="flex-1 min-w-0">
                             <div className="text-sm font-medium text-slate-700 truncate">GL_Insurance_2024.pdf</div>
-                            <div className="text-xs text-slate-400">2.4 MB • Uploading...</div>
+                            <div className="text-xs text-slate-500">2.4 MB • Uploading...</div>
                           </div>
                           <div className="w-5 h-5 rounded-full border-2 border-slate-200 border-t-[#3A4F6A] animate-spin flex-shrink-0" />
                         </div>
@@ -315,7 +316,7 @@ export default function LandingPage() {
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-400 scale-100'}`}>3</div>
                     <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className="font-medium text-slate-900">AI Verification</div>
-                      <div className="text-sm text-slate-500 mt-1">Coverage limits extracted and checked instantly.</div>
+                      <div className="text-sm text-slate-600 mt-1">Coverage limits extracted and checked instantly.</div>
                     </div>
                   </div>
                 </div>
@@ -395,6 +396,7 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <Footer />
