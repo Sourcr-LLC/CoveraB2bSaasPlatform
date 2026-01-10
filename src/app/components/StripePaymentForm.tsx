@@ -55,7 +55,7 @@ function CheckoutForm({ onSuccess, onCancel, buttonText }: { onSuccess: () => vo
         if (accessToken) {
           console.log('Verifying setup intent:', setupIntent.id);
           const verifyResponse = await fetch(
-            `https://${projectId}.supabase.co/functions/v1/make-server-92f9f116/stripe/verify-payment-intent`,
+            `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/stripe/verify-payment-intent`,
             {
               method: 'POST',
               headers: {
@@ -171,7 +171,7 @@ export default function StripePaymentForm({ clientSecret, onSuccess, onCancel, b
         console.log('Fetching Stripe publishable key for mode:', stripeMode);
         
         const response = await fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-92f9f116/stripe/config`,
+          `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/stripe/config`,
           {
             headers: {
               'Authorization': `Bearer ${publicAnonKey}`,

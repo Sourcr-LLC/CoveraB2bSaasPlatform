@@ -43,6 +43,53 @@ async function verifyUser(authHeader: string | null) {
   return { user, error };
 }
 
+// Helper function to send email via Resend with robust retry logic
+async function sendEmailWithRetry(resendApiKey: string, body: any) {
+  let emailResponse;
+  let attempt = 0;
+  const maxRetries = 5;
+
+  while (attempt < maxRetries) {
+    try {
+      emailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (emailResponse.status === 429) {
+        const retryAfter = emailResponse.headers.get('Retry-After');
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 1000 * Math.pow(2, attempt);
+        console.log(`Resend rate limit hit (429). Waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        attempt++;
+        continue;
+      }
+      
+      if (emailResponse.status >= 500 && emailResponse.status < 600) {
+        const waitTime = 1000 * Math.pow(2, attempt);
+        console.log(`Resend server error (${emailResponse.status}). Waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        attempt++;
+        continue;
+      }
+
+      return emailResponse;
+      
+    } catch (error) {
+       console.error(`Email send attempt ${attempt + 1} failed (network error):`, error);
+       const waitTime = 1000 * Math.pow(2, attempt);
+       await new Promise(resolve => setTimeout(resolve, waitTime));
+       attempt++;
+    }
+  }
+  
+  return emailResponse;
+}
+
 // Helper function to log activity
 async function logActivity(userId: string, vendorId: string, action: string, detail: string, status: 'positive' | 'neutral' | 'warning' = 'neutral') {
   try {
@@ -118,13 +165,17 @@ function getStripeKeys(mode: string | null) {
     ? Deno.env.get('STRIPE_PUBLISHABLE_KEY_TEST')
     : Deno.env.get('STRIPE_PUBLISHABLE_KEY');
   
-  const priceId = isTestMode 
+  const priceIdCore = isTestMode 
     ? Deno.env.get('STRIPE_PRICE_ID_CORE_TEST') 
     : Deno.env.get('STRIPE_PRICE_ID_CORE');
+
+  const priceIdEssentials = isTestMode
+    ? Deno.env.get('STRIPE_PRICE_ID_ESSENTIALS_TEST')
+    : Deno.env.get('STRIPE_PRICE_ID_ESSENTIALS');
   
   console.log(`Using Stripe ${isTestMode ? 'TEST' : 'PRODUCTION'} mode`);
   
-  return { secretKey, publishableKey, priceId, isTestMode };
+  return { secretKey, publishableKey, priceIdCore, priceIdEssentials, isTestMode };
 }
 
 // Helper function to detect which Stripe mode is actually configured
@@ -422,34 +473,12 @@ app.post("/make-server-be7827e3/send-email-proxy", async (c) => {
 
     console.log(`📧 Sending email to ${to}`);
     
-    let emailResponse;
-    let attempt = 0;
-    const maxRetries = 3;
-
-    while (attempt < maxRetries) {
-      emailResponse = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'Covera <noreply@covera.co>',
-          to,
-          subject,
-          html,
-        }),
-      });
-
-      if (emailResponse.status === 429) {
-        console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-        attempt++;
-        continue;
-      }
-      
-      break;
-    }
+    const emailResponse = await sendEmailWithRetry(resendApiKey, {
+      from: 'Covera <noreply@covera.co>',
+      to,
+      subject,
+      html,
+    });
 
     if (!emailResponse || !emailResponse.ok) {
       const errorData = await emailResponse?.json().catch(() => ({}));
@@ -521,22 +550,11 @@ app.post("/make-server-be7827e3/auth/signup-request", async (c) => {
 
     // Send email
     try {
-      let emailResponse;
-      let attempt = 0;
-      const maxRetries = 3;
-
-      while (attempt < maxRetries) {
-        emailResponse = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'Covera <noreply@covera.co>',
-            to: [email],
-            subject: 'Verify your email for Covera',
-            html: `
+      const emailResponse = await sendEmailWithRetry(resendApiKey, {
+        from: 'Covera <noreply@covera.co>',
+        to: [email],
+        subject: 'Verify your email for Covera',
+        html: `
               <!DOCTYPE html>
               <html>
                 <head>
@@ -581,16 +599,7 @@ app.post("/make-server-be7827e3/auth/signup-request", async (c) => {
                 </body>
               </html>
             `,
-          }),
-        });
-
-        if (emailResponse.status === 429) {
-          await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-          attempt++;
-          continue;
-        }
-        break;
-      }
+      });
 
       if (!emailResponse || !emailResponse.ok) {
         const errorData = await emailResponse?.json().catch(() => ({}));
@@ -919,22 +928,11 @@ app.post("/make-server-be7827e3/auth/forgot-password", async (c) => {
     
     console.log('Sending email to:', email, 'with userName:', userName);
     
-    let emailResponse;
-    let attempt = 0;
-    const maxRetries = 3;
-
-    while (attempt < maxRetries) {
-      emailResponse = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'Covera <noreply@covera.co>',
-          to: [email],
-          subject: 'Your Covera password reset code',
-          html: `
+    const emailResponse = await sendEmailWithRetry(resendApiKey, {
+      from: 'Covera <noreply@covera.co>',
+      to: [email],
+      subject: 'Your Covera password reset code',
+      html: `
             <!DOCTYPE html>
             <html>
               <head>
@@ -979,23 +977,12 @@ app.post("/make-server-be7827e3/auth/forgot-password", async (c) => {
               </body>
             </html>
           `,
-        }),
-      });
-
-      if (emailResponse.status === 429) {
-        console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-        attempt++;
-        continue;
-      }
-
-      break;
-    }
+    });
 
     if (!emailResponse || !emailResponse.ok) {
       const errorText = await emailResponse?.text().catch(() => 'Unknown error');
       console.error('Resend API error:', errorText);
-      console.error('Resend response status:', emailResponse.status);
+      console.error('Resend response status:', emailResponse?.status);
       return c.json({ error: `Failed to send reset email: ${errorText}` }, 500);
     }
 
@@ -1575,8 +1562,13 @@ app.post("/make-server-be7827e3/vendors", async (c) => {
     const existingVendors = await kv.getByPrefix(`vendor:${user.id}:`);
     const vendorCount = existingVendors?.length || 0;
     
-    // Define limits: Core/Free = 150, Enterprise = Unlimited
-    const limit = (plan === 'enterprise' || plan === 'unlimited') ? Infinity : 150;
+    // Define limits: Core/Free = 150, Essentials = 50, Enterprise = Unlimited
+    let limit = 150;
+    if (plan === 'essentials') {
+      limit = 50;
+    } else if (plan === 'enterprise' || plan === 'unlimited') {
+      limit = Infinity;
+    }
     
     if (vendorCount >= limit) {
       return c.json({ 
@@ -1808,18 +1800,7 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
         
         console.log(`📧 Sending reminder email to ${recipientEmail}`);
         
-        let emailResponse;
-        let attempt = 0;
-        const maxRetries = 3;
-
-        while (attempt < maxRetries) {
-          emailResponse = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${resendApiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        const emailResponse = await sendEmailWithRetry(resendApiKey, {
               from: 'Covera <noreply@covera.co>',
               to: recipientEmail,
               subject: `${organizationName} - Insurance Certificate Required`,
@@ -1869,18 +1850,7 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
                   </div>
                 </div>
               `,
-            }),
-          });
-
-          if (emailResponse.status === 429) {
-            console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
-            await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-            attempt++;
-            continue;
-          }
-
-          break;
-        }
+            });
 
         if (!emailResponse || !emailResponse.ok) {
           const errorData = await emailResponse?.json().catch(() => ({}));
@@ -2692,19 +2662,24 @@ app.post("/make-server-be7827e3/stripe/create-payment-intent", async (c) => {
 
     // Get Stripe keys based on mode
     const stripeMode = c.req.header('X-Stripe-Mode') || 'production';
-    const { secretKey, priceId: envPriceId } = getStripeKeys(stripeMode);
+    const { secretKey, priceIdCore, priceIdEssentials } = getStripeKeys(stripeMode);
     
     if (!secretKey) {
       console.error(`STRIPE_SECRET_KEY not configured for ${stripeMode} mode`);
       return c.json({ error: 'Stripe not configured' }, 500);
     }
 
-    // Use environment price ID
-    const finalPriceId = envPriceId;
+    // Determine price ID based on plan
+    let finalPriceId;
+    if (plan === 'essentials') {
+      finalPriceId = priceIdEssentials;
+    } else {
+      finalPriceId = priceIdCore;
+    }
     
     if (!finalPriceId) {
-      console.error(`STRIPE_PRICE_ID not configured for ${stripeMode} mode`);
-      return c.json({ error: 'Price ID not configured' }, 500);
+      console.error(`STRIPE_PRICE_ID for ${plan} not configured for ${stripeMode} mode`);
+      return c.json({ error: `Price ID for ${plan} plan not configured` }, 500);
     }
 
     // Get user profile
@@ -2989,15 +2964,20 @@ app.post("/make-server-be7827e3/stripe/create-checkout-session", async (c) => {
 
     // Get Stripe keys based on mode
     const stripeMode = c.req.header('X-Stripe-Mode') || 'production';
-    const { secretKey, priceId: envPriceId } = getStripeKeys(stripeMode);
+    const { secretKey, priceIdCore, priceIdEssentials } = getStripeKeys(stripeMode);
     
     if (!secretKey) {
       console.error(`STRIPE_SECRET_KEY not configured for ${stripeMode} mode`);
       return c.json({ error: 'Stripe not configured' }, 500);
     }
 
-    // Use environment price ID
-    const finalPriceId = envPriceId;
+    // Determine price ID based on plan
+    let finalPriceId;
+    if (plan === 'essentials') {
+      finalPriceId = priceIdEssentials;
+    } else {
+      finalPriceId = priceIdCore;
+    }
     
     if (!finalPriceId) {
       console.error(`STRIPE_PRICE_ID not configured for ${stripeMode} mode`);
@@ -3229,7 +3209,14 @@ app.get("/make-server-be7827e3/stripe/payment-method", async (c) => {
     
     // Try to get customer ID from mode-specific subscription first
     const subscription = await kv.get(`subscription:${user.id}:${stripeMode}`);
-    const customerId = subscription?.customerId || profile?.stripeCustomerId;
+    let customerId = subscription?.customerId;
+    
+    if (!customerId && profile?.stripeCustomerId) {
+      const profileMode = profile.stripeMode || 'production';
+      if (profileMode === stripeMode) {
+        customerId = profile.stripeCustomerId;
+      }
+    }
     
     if (!customerId) {
       console.log(`No customer ID found for mode: ${stripeMode}`);
@@ -3301,7 +3288,14 @@ app.post("/make-server-be7827e3/stripe/update-payment-method", async (c) => {
     
     const stripeMode = c.req.header('X-Stripe-Mode') || detectedMode;
     const subscription = await kv.get(`subscription:${user.id}:${stripeMode}`);
-    const customerId = subscription?.customerId || profile?.stripeCustomerId;
+    let customerId = subscription?.customerId;
+    
+    if (!customerId && profile?.stripeCustomerId) {
+      const profileMode = profile.stripeMode || 'production';
+      if (profileMode === stripeMode) {
+        customerId = profile.stripeCustomerId;
+      }
+    }
     
     if (!customerId) {
       return c.json({ error: 'No customer found' }, 400);
@@ -3366,7 +3360,14 @@ app.post("/make-server-be7827e3/stripe/confirm-payment-method-update", async (c)
     
     const stripeMode = c.req.header('X-Stripe-Mode') || detectedMode;
     const subscription = await kv.get(`subscription:${user.id}:${stripeMode}`);
-    const customerId = subscription?.customerId || profile?.stripeCustomerId;
+    let customerId = subscription?.customerId;
+    
+    if (!customerId && profile?.stripeCustomerId) {
+      const profileMode = profile.stripeMode || 'production';
+      if (profileMode === stripeMode) {
+        customerId = profile.stripeCustomerId;
+      }
+    }
 
     const { secretKey } = getStripeKeys(stripeMode);
     
@@ -3462,7 +3463,14 @@ app.get("/make-server-be7827e3/stripe/invoices", async (c) => {
     
     // Try to get customer ID from mode-specific subscription first
     const subscription = await kv.get(`subscription:${user.id}:${stripeMode}`);
-    const customerId = subscription?.customerId || profile?.stripeCustomerId;
+    let customerId = subscription?.customerId;
+    
+    if (!customerId && profile?.stripeCustomerId) {
+      const profileMode = profile.stripeMode || 'production';
+      if (profileMode === stripeMode) {
+        customerId = profile.stripeCustomerId;
+      }
+    }
     
     if (!customerId) {
       console.log(`No customer ID found for mode: ${stripeMode}`);
@@ -3532,7 +3540,14 @@ app.post("/make-server-be7827e3/stripe/cancel-subscription", async (c) => {
     
     const stripeMode = c.req.header('X-Stripe-Mode') || detectedMode;
     const subscription = await kv.get(`subscription:${user.id}:${stripeMode}`);
-    const subscriptionId = subscription?.subscriptionId || profile?.stripeSubscriptionId;
+    let subscriptionId = subscription?.subscriptionId;
+    
+    if (!subscriptionId && profile?.stripeSubscriptionId) {
+      const profileMode = profile.stripeMode || 'production';
+      if (profileMode === stripeMode) {
+        subscriptionId = profile.stripeSubscriptionId;
+      }
+    }
     
     if (!subscriptionId) {
       return c.json({ error: 'No active subscription found' }, 400);
@@ -3591,7 +3606,7 @@ app.post("/make-server-be7827e3/stripe/cancel-subscription", async (c) => {
 });
 
 // TESTING ONLY: Reset subscription to free (remove in production)
-app.post("/make-server-92f9f116/stripe/reset-subscription", async (c) => {
+app.post("/make-server-be7827e3/stripe/reset-subscription", async (c) => {
   try {
     const { user, error } = await verifyUser(c.req.header('Authorization'));
     
@@ -3748,18 +3763,7 @@ app.post("/make-server-be7827e3/contact-sales", async (c) => {
         console.log('RESEND_API_KEY exists, attempting to send email...');
 
         // Send email to sales team
-        let emailResponse;
-        let attempt = 0;
-        const maxRetries = 3;
-
-        while (attempt < maxRetries) {
-          emailResponse = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${resendApiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        const emailResponse = await sendEmailWithRetry(resendApiKey, {
               from: 'Covera <noreply@getcovera.co>',
               to: ['or@getcovera.co'],
               subject: `Enterprise Inquiry from ${userName}`,
@@ -3808,18 +3812,7 @@ app.post("/make-server-be7827e3/contact-sales", async (c) => {
                   </div>
                 </div>
               `,
-            }),
-          });
-
-          if (emailResponse.status === 429) {
-            console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
-            await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-            attempt++;
-            continue;
-          }
-
-          break;
-        }
+            });
 
         console.log('Email API response status:', emailResponse ? emailResponse.status : 'No response');
 

@@ -35,7 +35,7 @@ export async function handleTestEmail(c: any, verifyUser: any, kv: any) {
     
     let emailResponse;
     let attempt = 0;
-    const maxRetries = 3;
+    const maxRetries = 5;
 
     while (attempt < maxRetries) {
       emailResponse = await fetch('https://api.resend.com/emails', {
@@ -94,8 +94,18 @@ export async function handleTestEmail(c: any, verifyUser: any, kv: any) {
       });
 
       if (emailResponse.status === 429) {
-        console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+        const retryAfter = emailResponse.headers.get('Retry-After');
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 1000 * Math.pow(2, attempt);
+        console.log(`Rate limit hit (429), retrying in ${waitTime}ms...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        attempt++;
+        continue;
+      }
+      
+      if (emailResponse.status >= 500 && emailResponse.status < 600) {
+        const waitTime = 1000 * Math.pow(2, attempt);
+        console.log(`Resend server error (${emailResponse.status}), retrying in ${waitTime}ms...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
         attempt++;
         continue;
       }

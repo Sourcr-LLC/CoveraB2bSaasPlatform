@@ -4,6 +4,8 @@ import { projectId } from '../../../utils/supabase/info';
 import { supabase } from '../lib/api';
 import StripePaymentForm from './StripePaymentForm';
 import { toast } from 'sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Badge } from './ui/badge';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -19,6 +21,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
     return (localStorage.getItem('stripe_mode') as 'production' | 'test') || 'production';
   });
   const [isAnimating, setIsAnimating] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<'core' | 'essentials'>('core');
 
   useEffect(() => {
     if (isOpen) {
@@ -26,13 +29,18 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
       setTimeout(() => setIsAnimating(true), 10);
     } else {
       setIsAnimating(false);
+      // Reset state when closing
+      setTimeout(() => {
+        setClientSecret(null);
+        setSelectedPlan('core');
+      }, 200);
     }
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen && !isAnimating) return null;
 
   const handleStartCheckout = async () => {
-    console.log('Start checkout clicked');
+    console.log('Start checkout clicked', { selectedPlan });
     setLoading(true);
     
     try {
@@ -47,10 +55,10 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
         return;
       }
 
-      console.log('Calling payment intent endpoint...', { stripeMode });
+      console.log('Calling payment intent endpoint...', { stripeMode, selectedPlan });
       
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-92f9f116/stripe/create-payment-intent`,
+        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/stripe/create-payment-intent`,
         {
           method: 'POST',
           headers: {
@@ -59,7 +67,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
             'X-Stripe-Mode': stripeMode,
           },
           body: JSON.stringify({
-            plan: 'core',
+            plan: selectedPlan,
           }),
         }
       );
@@ -94,6 +102,39 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
   const handleCancel = () => {
     setClientSecret(null);
   };
+
+  const planDetails = {
+    essentials: {
+      name: 'Essentials',
+      price: 199,
+      vendors: 50,
+      features: [
+        'Track up to 50 vendors',
+        'Unlimited compliance tracking',
+        'Real-time expiry monitoring',
+        'Automated alerts & notifications',
+        'Certificate of Insurance (COI) management',
+        'Standard email support',
+      ]
+    },
+    core: {
+      name: 'Core',
+      price: 399,
+      vendors: 150,
+      features: [
+        'Track up to 150 vendors',
+        'Unlimited compliance tracking',
+        'Real-time expiry monitoring',
+        'Automated alerts & notifications',
+        'Certificate of Insurance (COI) management',
+        'Activity logs & audit trails',
+        'PDF, CSV & Excel exports',
+        'Priority email support',
+      ]
+    }
+  };
+
+  const currentPlan = planDetails[selectedPlan];
 
   return (
     <div
@@ -130,7 +171,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
             </div>
             <div>
               <h2 className="text-2xl mb-1" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
-                Upgrade to Core Plan
+                Upgrade Plan
               </h2>
               <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
                 Unlock {feature} and more premium features
@@ -160,56 +201,69 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
             }}
           >
             <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-              <strong style={{ color: 'var(--foreground)' }}>{feature}</strong> is a premium feature available on the Core Plan.
+              <strong style={{ color: 'var(--foreground)' }}>{feature}</strong> is a premium feature available on paid plans.
             </p>
           </div>
 
+          {!clientSecret && (
+            <div className="mb-6">
+              <Tabs defaultValue="core" value={selectedPlan} onValueChange={(val) => setSelectedPlan(val as 'core' | 'essentials')} className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-4">
+                  <TabsTrigger value="essentials">Essentials ($199)</TabsTrigger>
+                  <TabsTrigger value="core">Core ($399)</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+          )}
+
           {/* Pricing with Trial Info */}
           <div
-            className="rounded-xl border p-6 mb-6"
+            className="rounded-xl border p-6 mb-6 transition-all duration-300"
             style={{
               backgroundColor: 'var(--background)',
               borderColor: 'var(--border)',
             }}
           >
-            {/* Trial Badge */}
-            <div 
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg mb-4 text-sm"
-              style={{
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
-                color: '#10b981',
-                fontWeight: 500,
-              }}
-            >
-              <CheckCircle2 size={16} />
-              7-Day Free Trial • $0 charged now
+            <div className="flex justify-between items-start mb-4">
+              {/* Trial Badge */}
+              <div 
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm"
+                style={{
+                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  color: '#10b981',
+                  fontWeight: 500,
+                }}
+              >
+                <CheckCircle2 size={16} />
+                7-Day Free Trial • $0 charged now
+              </div>
+              
+              {selectedPlan === 'core' && (
+                <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                  Most Popular
+                </Badge>
+              )}
             </div>
 
             <div className="flex items-baseline gap-2 mb-4">
               <span className="text-4xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
-                $399
+                ${currentPlan.price}
               </span>
               <span className="text-lg" style={{ color: 'var(--foreground-muted)' }}>
                 / month after trial
               </span>
             </div>
             <p className="text-sm mb-6" style={{ color: 'var(--foreground-muted)' }}>
-              We'll verify your card but won't charge until your trial ends. Cancel anytime.
+              {selectedPlan === 'core' 
+                ? 'Perfect for growing companies managing compliance at scale.' 
+                : 'Great for smaller teams just getting started with vendor compliance.'}
+              {' '}We'll verify your card but won't charge until your trial ends. Cancel anytime.
             </p>
 
             {/* Features */}
             <div className="space-y-3">
-              {[
-                'Track up to 150 vendors',
-                'Unlimited compliance tracking',
-                'Real-time expiry monitoring',
-                'Automated alerts & notifications',
-                'Certificate of Insurance (COI) management',
-                'Activity logs & audit trails',
-                'PDF, CSV & Excel exports',
-                'Priority email support',
-              ].map((item, index) => (
+              {currentPlan.features.map((item, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <CheckCircle2
                     size={18}
@@ -226,10 +280,20 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
           {/* Actions */}
           {clientSecret ? (
             <div className="w-full pb-8">
+              <div className="mb-4 text-sm text-center text-muted-foreground">
+                Setting up <strong>{currentPlan.name} Plan</strong> trial
+                <button 
+                  onClick={() => setClientSecret(null)}
+                  className="ml-2 text-primary hover:underline"
+                >
+                  Change Plan
+                </button>
+              </div>
               <StripePaymentForm
                 clientSecret={clientSecret}
                 onSuccess={handlePaymentSuccess}
                 onCancel={handleCancel}
+                buttonText={`Start ${currentPlan.name} Trial`}
               />
             </div>
           ) : (
@@ -252,7 +316,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
                     Initializing...
                   </>
                 ) : (
-                  'Start 7-Day Free Trial'
+                  `Start ${currentPlan.name} Trial`
                 )}
               </button>
               <button

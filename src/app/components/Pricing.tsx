@@ -49,7 +49,7 @@ export default function Pricing() {
     <div className="min-h-screen bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
       <SEO
         title="Pricing - Simple, Transparent Vendor Compliance Software | Covera"
-        description="One simple price for unlimited vendor compliance tracking. Start with a 7-day free trial. No setup fees, no contracts. Cancel anytime. Trusted by property managers, construction firms, and healthcare organizations."
+        description="Simple pricing for vendor compliance tracking. Start with a 7-day free trial. No setup fees, no contracts. Cancel anytime."
         keywords="vendor compliance software pricing, COI tracking software cost, certificate of insurance software pricing, vendor management pricing, compliance tracking cost, property management software pricing"
         schema={{
           "@context": "https://schema.org",
@@ -94,12 +94,60 @@ export default function Pricing() {
 
       {/* Pricing Cards */}
       <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-4 md:px-12">
-          <div className="grid md:grid-cols-2 gap-8 items-start">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
             
+            {/* Essentials Plan */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300 transition-colors">
+              <div className="mb-8">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-[#1a1a1a]">Essentials</h3>
+                </div>
+
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-5xl font-bold text-[#1a1a1a] tracking-tight">$199</span>
+                    <span className="text-lg text-slate-500">/month</span>
+                  </div>
+                  <p className="text-sm text-slate-500">
+                    Perfect for smaller teams getting started
+                  </p>
+                </div>
+
+                <Link 
+                  to="/login"
+                  className="block w-full py-4 rounded-xl text-center border-2 border-[#3A4F6A] text-[#3A4F6A] font-medium hover:bg-slate-50 transition-all mb-3"
+                >
+                  Start free trial
+                </Link>
+                
+                <p className="text-xs text-center text-slate-400">
+                  7-day free trial • No credit card required
+                </p>
+              </div>
+
+              <div className="space-y-4 pt-8 border-t border-slate-100">
+                {[
+                  'Up to 50 vendors',
+                  'COI uploads & storage',
+                  'Automated reminders (30 / 14 / 7 days)',
+                  'Compliance dashboard',
+                  'High-risk & non-compliant tracking',
+                  'Standard email support'
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-emerald-600" />
+                    <span className="text-slate-700">
+                      {feature}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Core Plan */}
-            <div className="rounded-3xl border-2 border-[#3A4F6A] bg-white p-10 relative shadow-2xl shadow-[#3A4F6A]/10">
-              <div className="absolute -top-4 left-8 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider bg-[#3A4F6A] text-white uppercase">
+            <div className="rounded-3xl border-2 border-[#3A4F6A] bg-white p-8 relative shadow-2xl shadow-[#3A4F6A]/10 lg:-mt-8">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider bg-[#3A4F6A] text-white uppercase whitespace-nowrap">
                 Most Popular
               </div>
 
@@ -139,7 +187,7 @@ export default function Pricing() {
                   'High-risk & non-compliant tracking',
                   'Audit-ready exports (PDF / CSV)',
                   'Team access',
-                  'Email support'
+                  'Priority email support'
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-emerald-600" />
@@ -152,7 +200,7 @@ export default function Pricing() {
             </div>
 
             {/* Enterprise Plan */}
-            <div className="rounded-3xl border border-slate-200 bg-white p-10 relative hover:border-slate-300 transition-colors">
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300 transition-colors">
               <div className="mb-8">
                 <div className="mb-6">
                   <h3 className="text-2xl font-bold text-[#1a1a1a]">Enterprise</h3>
@@ -175,7 +223,7 @@ export default function Pricing() {
                 >
                   Contact sales
                 </button>
-
+                
                 <p className="text-xs text-center text-slate-400">
                   Custom pricing • Dedicated support
                 </p>
