@@ -116,6 +116,32 @@ export default function SEO({
       document.head.appendChild(alternateLink);
     }
 
+    // Add preconnect links for performance
+    const preconnectOrigins = [
+      'https://gpnvockmgvysulsxxtyi.supabase.co',
+      'https://js.stripe.com',
+      'https://m.stripe.network'
+    ];
+
+    preconnectOrigins.forEach(origin => {
+      let link = document.querySelector(`link[rel="preconnect"][href="${origin}"]`);
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'preconnect');
+        link.setAttribute('href', origin);
+        link.setAttribute('crossorigin', 'anonymous');
+        document.head.appendChild(link);
+      }
+      
+      let dnsLink = document.querySelector(`link[rel="dns-prefetch"][href="${origin}"]`);
+      if (!dnsLink) {
+        dnsLink = document.createElement('link');
+        dnsLink.setAttribute('rel', 'dns-prefetch');
+        dnsLink.setAttribute('href', origin);
+        document.head.appendChild(dnsLink);
+      }
+    });
+
   }, [title, description, keywords, ogImage, ogType, currentUrl, noindex, schema]);
 
   return null;
