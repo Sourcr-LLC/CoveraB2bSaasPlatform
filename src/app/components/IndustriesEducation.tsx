@@ -19,7 +19,30 @@ export default function IndustriesEducation() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "name": "Education Compliance Solutions",
-          "description": "Vendor compliance and insurance tracking software for schools, universities, and educational institutions"
+          "description": "Vendor compliance and insurance tracking software for schools, universities, and educational institutions",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://getcovera.co"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Industries",
+                "item": "https://getcovera.co/industries"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Education",
+                "item": "https://getcovera.co/industries/education"
+              }
+            ]
+          }
         }}
       />
 

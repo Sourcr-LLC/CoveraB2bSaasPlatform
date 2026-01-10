@@ -19,7 +19,30 @@ export default function IndustriesRetail() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "name": "Retail Compliance Solutions",
-          "description": "Vendor compliance and insurance tracking software for retail chains and multi-location stores"
+          "description": "Vendor compliance and insurance tracking software for retail chains and multi-location stores",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://getcovera.co"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Industries",
+                "item": "https://getcovera.co/industries"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Retail",
+                "item": "https://getcovera.co/industries/retail"
+              }
+            ]
+          }
         }}
       />
 

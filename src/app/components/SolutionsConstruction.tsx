@@ -19,7 +19,30 @@ export default function SolutionsConstruction() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "name": "Construction Compliance Solutions",
-          "description": "Subcontractor compliance and insurance tracking software for general contractors and construction firms"
+          "description": "Subcontractor compliance and insurance tracking software for general contractors and construction firms",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://getcovera.co"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Solutions",
+                "item": "https://getcovera.co/solutions"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Construction",
+                "item": "https://getcovera.co/solutions/construction"
+              }
+            ]
+          }
         }}
       />
 

@@ -67,6 +67,10 @@ export default function LandingNav() {
                         <Link to="/industries-logistics" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Logistics & Warehousing</Link>
                         <Link to="/industries-franchise" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Franchises</Link>
                         <Link to="/industries-retail" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Retail & Multi-Location</Link>
+                        <Link to="/industries-government" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Government & Public Sector</Link>
+                        <Link to="/industries-education" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Education</Link>
+                        <Link to="/industries-facilities" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Facilities Management</Link>
+                        <Link to="/industries-hospitality" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Hospitality</Link>
                       </div>
                     </motion.div>
                   )}
@@ -128,6 +132,10 @@ export default function LandingNav() {
                     <Link to="/industries-logistics" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Logistics</Link>
                     <Link to="/industries-franchise" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Franchises</Link>
                     <Link to="/industries-retail" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Retail</Link>
+                    <Link to="/industries-government" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Government</Link>
+                    <Link to="/industries-education" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Education</Link>
+                    <Link to="/industries-facilities" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Facilities</Link>
+                    <Link to="/industries-hospitality" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Hospitality</Link>
                   </div>
                 )}
               </div>

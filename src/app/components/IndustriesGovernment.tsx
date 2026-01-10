@@ -19,7 +19,30 @@ export default function IndustriesGovernment() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "name": "Government & Public Sector Compliance Solutions",
-          "description": "Vendor compliance and insurance tracking software for government agencies and public sector organizations"
+          "description": "Vendor compliance and insurance tracking software for government agencies and public sector organizations",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://getcovera.co"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Industries",
+                "item": "https://getcovera.co/industries"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Government & Public Sector",
+                "item": "https://getcovera.co/industries/government"
+              }
+            ]
+          }
         }}
       />
 

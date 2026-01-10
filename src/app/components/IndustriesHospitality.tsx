@@ -19,7 +19,30 @@ export default function IndustriesHospitality() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "name": "Hospitality Compliance Solutions",
-          "description": "Vendor compliance and insurance tracking software for hotels, restaurants, and hospitality operations"
+          "description": "Vendor compliance and insurance tracking software for hotels, restaurants, and hospitality operations",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://getcovera.co"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Industries",
+                "item": "https://getcovera.co/industries"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Hospitality",
+                "item": "https://getcovera.co/industries/hospitality"
+              }
+            ]
+          }
         }}
       />
 

@@ -15,7 +15,30 @@ export default function FeaturesCOITracking() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "name": "Certificate of Insurance Tracking",
-          "description": "Automated COI tracking and management software"
+          "description": "Automated COI tracking and management software",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://getcovera.co"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Features",
+                "item": "https://getcovera.co/features"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "COI Tracking",
+                "item": "https://getcovera.co/features/coi-tracking"
+              }
+            ]
+          }
         }}
       />
 
