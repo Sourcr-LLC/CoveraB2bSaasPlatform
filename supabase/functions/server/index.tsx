@@ -2638,11 +2638,19 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
         const userEmail = user.email || profile?.email;
         
         // This will create a new customer since one wasn't found in KV earlier
-        customerId = await getOrCreateStripeCustomer(secretKey, userEmail, user.id, stripeMode);
+        try {
+          customerId = await getOrCreateStripeCustomer(secretKey, userEmail, user.id, stripeMode);
+          console.log('Created new Stripe customer:', customerId);
+        } catch (err) {
+          console.error('Failed to create Stripe customer:', err);
+          return c.json({ error: 'Failed to create customer record' }, 500);
+        }
         
-        if (customerId) {
+        if (customerId && setupIntent.payment_method) {
+          console.log(`Attaching payment method ${setupIntent.payment_method} to customer ${customerId}...`);
+          
           // Attach the payment method to the new customer
-          await fetch(`https://api.stripe.com/v1/payment_methods/${setupIntent.payment_method}/attach`, {
+          const attachResponse = await fetch(`https://api.stripe.com/v1/payment_methods/${setupIntent.payment_method}/attach`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${secretKey}`,
@@ -2653,8 +2661,15 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
             }),
           });
           
+          if (!attachResponse.ok) {
+            const attachError = await attachResponse.text();
+            console.error('Failed to attach payment method:', attachError);
+            return c.json({ error: `Failed to attach payment method: ${attachError}` }, 500);
+          }
+          console.log('Payment method attached successfully');
+          
           // Set as default payment method for the customer's future invoices
-          await fetch(`https://api.stripe.com/v1/customers/${customerId}`, {
+          const updateCustomerResponse = await fetch(`https://api.stripe.com/v1/customers/${customerId}`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${secretKey}`,
@@ -2664,6 +2679,19 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
               'invoice_settings[default_payment_method]': setupIntent.payment_method,
             }),
           });
+
+          if (!updateCustomerResponse.ok) {
+             const updateError = await updateCustomerResponse.text();
+             console.error('Failed to set default payment method:', updateError);
+             // Proceed anyway as we explicitly set default_payment_method in subscription creation
+          } else {
+             console.log('Default payment method set successfully');
+          }
+        } else {
+          console.error('Missing customerId or payment_method for attachment');
+          if (!setupIntent.payment_method) {
+             return c.json({ error: 'No payment method found in SetupIntent' }, 400);
+          }
         }
       }
 
