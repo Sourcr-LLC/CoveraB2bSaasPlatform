@@ -160,6 +160,8 @@ async function getOrCreateStripeCustomer(secretKey: string, email: string, userI
     return pendingSubscription.customerId;
   }
 
+  console.log(`👤 Creating NEW Stripe customer for ${email} (User: ${userId}, Mode: ${stripeMode})`);
+
   // Create new customer
   const response = await fetch('https://api.stripe.com/v1/customers', {
     method: 'POST',
@@ -2724,7 +2726,14 @@ app.post("/make-server-be7827e3/stripe/create-payment-intent", async (c) => {
     }
 
     // Only get/create customer if we found one, otherwise we wait until verification
+    // We intentionally DO NOT create a customer here to avoid creating empty customers
+    // in Stripe before the user has actually provided a payment method.
+    // The customer will be created in /verify-payment-intent after the SetupIntent succeeds.
     // const customerId = await getOrCreateStripeCustomer(secretKey, userEmail, user.id, stripeMode);
+
+    if (!customerId) {
+      console.log('ℹ️ Creating SetupIntent without customer (will be attached later)');
+    }
 
     // Step 1: Create a SetupIntent to collect the payment method
     const setupIntentParams: any = {
