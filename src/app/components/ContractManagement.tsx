@@ -105,7 +105,11 @@ export default function ContractManagement() {
           value: dc.value,
           status: dc.status,
           autoRenewal: dc.autoRenew,
-          lastReviewed: dc.startDate
+          lastReviewed: dc.startDate,
+          documentName: dc.documentName,
+          documentType: dc.documentType,
+          documentSize: dc.documentSize,
+          documentUrl: dc.documentUrl
         }));
         setContracts(mappedDemoContracts);
         setFilteredContracts(mappedDemoContracts);

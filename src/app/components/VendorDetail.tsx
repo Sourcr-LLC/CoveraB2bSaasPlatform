@@ -142,6 +142,24 @@ export default function VendorDetail() {
     if (!id) return;
     
     setIsSendingReminder(true);
+    
+    // Simulate delay for demo mode or real network
+    if (isDemoMode()) {
+      setTimeout(() => {
+        toast.success('Reminder sent successfully! (Demo Mode)');
+        setIsSendingReminder(false);
+        // Add a mock activity to the list
+        const newActivity = {
+          id: `act-${Date.now()}`,
+          action: 'reminder_sent',
+          detail: 'Reminder email sent to vendor',
+          timestamp: new Date().toISOString()
+        };
+        setActivities(prev => [newActivity, ...prev]);
+      }, 1500);
+      return;
+    }
+
     try {
       console.log('📧 Attempting to send reminder for vendor:', id);
       const result = await vendorApi.sendReminder(id);
@@ -168,6 +186,24 @@ export default function VendorDetail() {
     if (!id) return;
     
     setIsGeneratingLink(true);
+    
+    if (isDemoMode()) {
+      setTimeout(() => {
+        setUploadLink(`https://covera.co/upload/demo-token-${Math.random().toString(36).substring(7)}`);
+        setShowLinkModal(true);
+        setIsGeneratingLink(false);
+        // Add mock activity
+        const newActivity = {
+          id: `act-${Date.now()}`,
+          action: 'upload_link_generated',
+          detail: 'Upload link generated',
+          timestamp: new Date().toISOString()
+        };
+        setActivities(prev => [newActivity, ...prev]);
+      }, 1000);
+      return;
+    }
+
     try {
       const response = await vendorApi.generateUploadLink(id);
       setUploadLink(response.uploadLink);
@@ -215,6 +251,40 @@ export default function VendorDetail() {
     if (!selectedFile || !id) return;
     
     setIsUploadingCOI(true);
+    
+    if (isDemoMode()) {
+      setTimeout(() => {
+        toast.success(`Certificate of Insurance "${selectedFile.name}" uploaded successfully! (Demo Mode)`);
+        setIsUploadingCOI(false);
+        setSelectedFile(null);
+        
+        // Add mock document locally
+        const newDoc = {
+          name: selectedFile.name,
+          type: selectedFile.type.includes('pdf') ? 'PDF' : 'Image',
+          size: `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB`,
+          uploaded: new Date().toISOString(),
+          path: `demo-doc-${Date.now()}`
+        };
+        
+        setVendor((prev: any) => ({
+          ...prev,
+          documents: [...(prev.documents || []), newDoc]
+        }));
+        
+        // Add mock activity
+        const newActivity = {
+          id: `act-${Date.now()}`,
+          action: 'document_uploaded',
+          detail: `Certificate of Insurance "${selectedFile.name}" uploaded`,
+          timestamp: new Date().toISOString()
+        };
+        setActivities(prev => [newActivity, ...prev]);
+        
+      }, 2000);
+      return;
+    }
+
     try {
       toast.info('Uploading and analyzing document with AI...');
       const response = await vendorApi.uploadCOI(id, selectedFile);
@@ -239,6 +309,11 @@ export default function VendorDetail() {
   };
 
   const handleViewDocument = (doc: any) => {
+    if (isDemoMode()) {
+      // In demo mode, just show a placeholder since we don't have real files
+      window.open('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1000', '_blank');
+      return;
+    }
     setViewingDocument(doc);
   };
 
@@ -250,6 +325,21 @@ export default function VendorDetail() {
     }
     
     setIsDeletingDocument(doc.path);
+    
+    if (isDemoMode()) {
+      setTimeout(() => {
+        toast.success('Document deleted successfully! (Demo Mode)');
+        
+        setVendor((prev: any) => ({
+          ...prev,
+          documents: prev.documents.filter((d: any) => d.path !== doc.path)
+        }));
+        
+        setIsDeletingDocument(null);
+      }, 1000);
+      return;
+    }
+
     try {
       const response = await vendorApi.deleteCOI(id, doc.path);
       

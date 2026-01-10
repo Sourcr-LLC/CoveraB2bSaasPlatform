@@ -2945,6 +2945,19 @@ app.get("/make-server-be7827e3/stripe/subscription-status", async (c) => {
       return c.json({ error: 'Unauthorized' }, 401);
     }
 
+    // Special handling for Demo Account
+    if (user.email === 'demo@covera.co') {
+      console.log('🌟 Serving Demo Account subscription status');
+      return c.json({
+        plan: 'core',
+        subscriptionStatus: 'active',
+        stripeCustomerId: 'cus_demo123456',
+        stripeSubscriptionId: 'sub_demo123456',
+        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+        subscriptionCancelAtPeriodEnd: false,
+      });
+    }
+
     const profile = await kv.get(`user:${user.id}`);
     const stripeMode = profile?.stripeMode || c.req.header('X-Stripe-Mode') || 'production';
     
@@ -2984,6 +2997,16 @@ app.get("/make-server-be7827e3/stripe/payment-method", async (c) => {
     
     if (error || !user) {
       return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    // Special handling for Demo Account
+    if (user.email === 'demo@covera.co') {
+      return c.json({
+        brand: 'visa',
+        last4: '4242',
+        exp_month: 12,
+        exp_year: 2030,
+      });
     }
 
     const profile = await kv.get(`user:${user.id}`);
