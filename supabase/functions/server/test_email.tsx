@@ -94,7 +94,7 @@ export async function handleTestEmail(c: any, verifyUser: any, kv: any) {
       });
 
       if (emailResponse.status === 429) {
-        console.log(\`Rate limit hit (429), retrying in \${attempt + 1}s...\`);
+        console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
         await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
         attempt++;
         continue;
