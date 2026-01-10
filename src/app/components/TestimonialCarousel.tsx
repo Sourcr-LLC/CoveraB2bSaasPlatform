@@ -123,7 +123,7 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
           {/* Previous Button */}
           <button
             onClick={goToPrevious}
-            className="p-2 rounded-lg transition-all hover:bg-gray-100"
+            className="w-12 h-12 flex items-center justify-center rounded-lg transition-all hover:bg-gray-100"
             style={{ border: '1px solid var(--border)' }}
             aria-label="Previous testimonial"
           >
@@ -136,21 +136,25 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className="transition-all rounded-full"
-                style={{
-                  width: currentIndex === index ? '24px' : '8px',
-                  height: '8px',
-                  backgroundColor: currentIndex === index ? 'var(--primary)' : 'var(--border)',
-                }}
+                className="w-12 h-12 flex items-center justify-center transition-all rounded-full relative"
                 aria-label={`Go to testimonial ${index + 1}`}
-              />
+              >
+                <span 
+                  className="rounded-full transition-all"
+                  style={{
+                    width: currentIndex === index ? '24px' : '8px',
+                    height: '8px',
+                    backgroundColor: currentIndex === index ? 'var(--primary)' : 'var(--border)',
+                  }}
+                />
+              </button>
             ))}
           </div>
 
           {/* Next Button */}
           <button
             onClick={goToNext}
-            className="p-2 rounded-lg transition-all hover:bg-gray-100"
+            className="w-12 h-12 flex items-center justify-center rounded-lg transition-all hover:bg-gray-100"
             style={{ border: '1px solid var(--border)' }}
             aria-label="Next testimonial"
           >

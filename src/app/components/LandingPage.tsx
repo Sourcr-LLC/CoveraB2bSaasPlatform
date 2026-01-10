@@ -141,7 +141,7 @@ export default function LandingPage() {
             className="relative mx-auto max-w-6xl"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
-            <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl">
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl" aria-hidden="true">
               <DashboardPreview />
               
               {/* Floating Element: Magic Link Notification */}
@@ -173,7 +173,7 @@ export default function LandingPage() {
       {/* Social Proof */}
       <section className="py-12 border-y border-slate-100 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm font-medium text-slate-500 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
+          <p className="text-sm font-medium text-slate-600 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
             {['Roadr', 'Summit Properties', 'BuildRight', 'MedCore Health', 'FranchiseCo', 'Apex Group'].map((name) => (
               <div key={name} className="text-xl font-bold font-display text-slate-800 flex items-center gap-2">
@@ -215,13 +215,13 @@ export default function LandingPage() {
                   <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
                   <span>You open PDF, type dates into Excel</span>
                 </li>
-                <li className="flex items-start gap-3 text-slate-600">
+                <li className="flex items-start gap-3 text-slate-700">
                   <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
                   <span>Repeat 100x per month</span>
                 </li>
               </ul>
               <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed">
-                <span className="text-slate-500 font-medium">Costly & Slow</span>
+                <span className="text-slate-600 font-medium">Costly & Slow</span>
               </div>
             </div>
 
@@ -338,14 +338,14 @@ export default function LandingPage() {
                   <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
                     <Lock className="w-5 h-5 text-blue-600" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mb-1">Secure Access</h4>
+                  <h3 className="font-semibold text-slate-900 mb-1">Secure Access</h3>
                   <p className="text-sm text-slate-500">Encrypted links expire automatically after 7 days.</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
                   <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
                     <Upload className="w-5 h-5 text-emerald-600" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mb-1">Self-Correction</h4>
+                  <h3 className="font-semibold text-slate-900 mb-1">Self-Correction</h3>
                   <p className="text-sm text-slate-500">Vendors can update their own phone & address info.</p>
                 </div>
               </div>
