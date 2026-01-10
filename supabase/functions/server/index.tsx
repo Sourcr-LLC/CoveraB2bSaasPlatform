@@ -295,7 +295,7 @@ app.post("/make-server-be7827e3/demo-request", async (c) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Covera Demo Requests <noreply@getcovera.co>',
+          from: 'Covera Demo Requests <noreply@covera.co>',
           to: [adminEmail],
           reply_to: email,
           subject: `New Demo Request from ${company}`,
@@ -432,7 +432,7 @@ app.post("/make-server-be7827e3/send-email-proxy", async (c) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Covera <noreply@getcovera.co>',
+          from: 'Covera <noreply@covera.co>',
           to,
           subject,
           html,
@@ -733,7 +733,7 @@ app.post("/make-server-be7827e3/auth/forgot-password", async (c) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Covera <noreply@getcovera.co>',
+          from: 'Covera <noreply@covera.co>',
           to: [email],
           subject: 'Your Covera password reset code',
           html: `
@@ -1537,12 +1537,12 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
     // Use origin from body if provided (from frontend), otherwise fall back to header or production domain
     const { origin } = await c.req.json().catch(() => ({ origin: null }));
     
-    let baseUrl = origin || c.req.header('origin') || 'https://getcovera.co';
+    let baseUrl = origin || c.req.header('origin') || 'https://covera.co';
 
     // If we are in the Figma preview environment, force the production domain
     // This ensures generated links look professional and match the intended domain
     if (baseUrl && baseUrl.includes('figmaiframepreview.figma.site')) {
-      baseUrl = 'https://getcovera.co';
+      baseUrl = 'https://covera.co';
     }
 
     const uploadLink = `${baseUrl}/upload/${uploadToken}`;
@@ -1622,7 +1622,7 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              from: 'Covera <noreply@getcovera.co>',
+              from: 'Covera <noreply@covera.co>',
               to: recipientEmail,
               subject: `${organizationName} - Insurance Certificate Required`,
               html: `

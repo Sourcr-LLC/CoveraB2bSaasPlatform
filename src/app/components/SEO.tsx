@@ -23,7 +23,7 @@ export default function SEO({
   schema
 }: SEOProps) {
   const location = useLocation();
-  const baseUrl = 'https://getcovera.co';
+  const baseUrl = 'https://covera.co';
   const currentUrl = canonical || `${baseUrl}${location.pathname}`;
 
   useEffect(() => {
@@ -66,8 +66,8 @@ export default function SEO({
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
     updateMetaTag('twitter:image', ogImage);
-    updateMetaTag('twitter:site', '@getcovera');
-    updateMetaTag('twitter:creator', '@getcovera');
+    updateMetaTag('twitter:site', '@covera_co');
+    updateMetaTag('twitter:creator', '@covera_co');
 
     // Additional SEO tags
     updateMetaTag('theme-color', '#fafaf9');
@@ -177,7 +177,7 @@ export const SEO_CONFIGS = {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Covera",
-        "url": "https://getcovera.co",
+        "url": "https://covera.co",
         "logo": "https://gpnvockmgvysulsxxtyi.supabase.co/storage/v1/object/public/assets/covera-og-image.png",
         "description": "Enterprise vendor compliance and insurance tracking platform",
         "sameAs": [
@@ -186,7 +186,7 @@ export const SEO_CONFIGS = {
         ],
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "https://getcovera.co/search?q={search_term_string}",
+          "target": "https://covera.co/search?q={search_term_string}",
           "query-input": "required name=search_term_string"
         }
       },
@@ -194,11 +194,11 @@ export const SEO_CONFIGS = {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Covera",
-        "url": "https://getcovera.co",
+        "url": "https://covera.co",
         "description": "Vendor compliance and COI tracking software for enterprises",
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "https://getcovera.co/search?q={search_term_string}",
+          "target": "https://covera.co/search?q={search_term_string}",
           "query-input": "required name=search_term_string"
         }
       }
@@ -299,13 +299,13 @@ export const SEO_CONFIGS = {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://getcovera.co"
+            "item": "https://covera.co"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Pricing",
-            "item": "https://getcovera.co/pricing"
+            "item": "https://covera.co/pricing"
           }
         ]
       }
@@ -328,13 +328,13 @@ export const SEO_CONFIGS = {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://getcovera.co"
+            "item": "https://covera.co"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "About Us",
-            "item": "https://getcovera.co/about"
+            "item": "https://covera.co/about"
           }
         ]
       }
@@ -397,7 +397,7 @@ export const SEO_CONFIGS = {
         "name": "Covera",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://getcovera.co/logo.png"
+          "url": "https://covera.co/logo.png"
         }
       },
       "description": "Complete guide to understanding Certificates of Insurance, including requirements, verification, and compliance tracking"
@@ -423,7 +423,7 @@ export const SEO_CONFIGS = {
         "name": "Covera",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://getcovera.co/logo.png"
+          "url": "https://covera.co/logo.png"
         }
       }
     }

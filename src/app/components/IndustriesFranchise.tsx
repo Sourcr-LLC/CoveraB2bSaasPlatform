@@ -27,19 +27,19 @@ export default function IndustriesFranchise() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://getcovera.co"
+                "item": "https://covera.co"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Industries",
-                "item": "https://getcovera.co/industries"
+                "item": "https://covera.co/industries"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Franchises & Multi-Location",
-                "item": "https://getcovera.co/industries/franchise"
+                "item": "https://covera.co/industries/franchise"
               }
             ]
           }

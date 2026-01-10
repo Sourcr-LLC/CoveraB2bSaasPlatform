@@ -121,7 +121,7 @@ export default function PrivacyPolicy() {
               <li><strong>Opt-Out:</strong> Unsubscribe from marketing communications</li>
             </ul>
             <p className="mt-3">
-              To exercise these rights, please contact us at privacy@getcovera.co
+              To exercise these rights, please contact us at privacy@covera.co
             </p>
           </section>
 
@@ -169,7 +169,7 @@ export default function PrivacyPolicy() {
               If you have questions or concerns about this Privacy Policy or our data practices, please contact us at:
             </p>
             <p className="mt-3">
-              Email: privacy@getcovera.co<br />
+              Email: privacy@covera.co<br />
               Address: Covera Inc., Data Protection Officer
             </p>
           </section>

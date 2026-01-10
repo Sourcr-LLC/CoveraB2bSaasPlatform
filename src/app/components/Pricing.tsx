@@ -63,13 +63,13 @@ export default function Pricing() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://getcovera.co"
+                "item": "https://covera.co"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Pricing",
-                "item": "https://getcovera.co/pricing"
+                "item": "https://covera.co/pricing"
               }
             ]
           }

@@ -27,19 +27,19 @@ export default function SolutionsConstruction() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://getcovera.co"
+                "item": "https://covera.co"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Solutions",
-                "item": "https://getcovera.co/solutions"
+                "item": "https://covera.co/solutions"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Construction",
-                "item": "https://getcovera.co/solutions/construction"
+                "item": "https://covera.co/solutions/construction"
               }
             ]
           }

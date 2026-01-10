@@ -45,7 +45,7 @@ export async function handleTestEmail(c: any, verifyUser: any, kv: any) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Covera <noreply@getcovera.co>',
+          from: 'Covera <noreply@covera.co>',
           to: testEmail,
           subject: `[TEST] ${organizationName} - Insurance Certificate Required`,
           html: `

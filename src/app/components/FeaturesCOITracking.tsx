@@ -23,19 +23,19 @@ export default function FeaturesCOITracking() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://getcovera.co"
+                "item": "https://covera.co"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Features",
-                "item": "https://getcovera.co/features"
+                "item": "https://covera.co/features"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "COI Tracking",
-                "item": "https://getcovera.co/features/coi-tracking"
+                "item": "https://covera.co/features/coi-tracking"
               }
             ]
           }

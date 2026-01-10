@@ -105,7 +105,7 @@ export default function Contact() {
                 </p>
                 <div className="flex items-center gap-3 text-[#3A4F6A] font-medium">
                   <Mail className="w-5 h-5" />
-                  <a href="mailto:sales@getcovera.co" className="hover:underline">sales@getcovera.co</a>
+                  <a href="mailto:sales@covera.co" className="hover:underline">sales@covera.co</a>
                 </div>
               </div>
 
@@ -116,7 +116,7 @@ export default function Contact() {
                 </p>
                 <div className="flex items-center gap-3 text-[#3A4F6A] font-medium">
                   <MessageSquare className="w-5 h-5" />
-                  <a href="mailto:support@getcovera.co" className="hover:underline">support@getcovera.co</a>
+                  <a href="mailto:support@covera.co" className="hover:underline">support@covera.co</a>
                 </div>
               </div>
             </div>

@@ -27,19 +27,19 @@ export default function SolutionsPropertyManagement() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://getcovera.co"
+                "item": "https://covera.co"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Solutions",
-                "item": "https://getcovera.co/solutions"
+                "item": "https://covera.co/solutions"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Property Management",
-                "item": "https://getcovera.co/solutions/property-management"
+                "item": "https://covera.co/solutions/property-management"
               }
             ]
           }

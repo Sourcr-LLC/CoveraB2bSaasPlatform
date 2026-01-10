@@ -139,7 +139,7 @@ export default function TermsOfService() {
               10. Contact
             </h2>
             <p>
-              If you have questions about these Terms of Service, please contact us at legal@getcovera.co
+              If you have questions about these Terms of Service, please contact us at legal@covera.co
             </p>
           </section>
         </div>

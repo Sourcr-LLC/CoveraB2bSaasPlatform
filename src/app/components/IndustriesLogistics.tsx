@@ -27,19 +27,19 @@ export default function IndustriesLogistics() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://getcovera.co"
+                "item": "https://covera.co"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Industries",
-                "item": "https://getcovera.co/industries"
+                "item": "https://covera.co/industries"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Logistics & Warehousing",
-                "item": "https://getcovera.co/industries/logistics"
+                "item": "https://covera.co/industries/logistics"
               }
             ]
           }

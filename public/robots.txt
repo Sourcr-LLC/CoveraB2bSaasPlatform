@@ -1,5 +1,5 @@
 # Covera - Vendor Compliance & Insurance Tracking Platform
-# https://getcovera.co
+# https://covera.co
 
 User-agent: *
 Allow: /
@@ -29,4 +29,4 @@ Disallow: /login
 Disallow: /forgot-password
 
 # Sitemap
-Sitemap: https://getcovera.co/sitemap.xml
+Sitemap: https://covera.co/sitemap.xml

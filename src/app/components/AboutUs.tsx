@@ -40,8 +40,8 @@ export default function AboutUs() {
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://getcovera.co" },
-              { "@type": "ListItem", "position": 2, "name": "About Us", "item": "https://getcovera.co/about" }
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://covera.co" },
+              { "@type": "ListItem", "position": 2, "name": "About Us", "item": "https://covera.co/about" }
             ]
           }
         }}

@@ -206,7 +206,7 @@ export default function Security() {
               <li>Security questionnaire responses</li>
             </ul>
             <p className="mt-4">
-              Contact us at security@getcovera.co for more information.
+              Contact us at security@covera.co for more information.
             </p>
           </section>
 
@@ -215,7 +215,7 @@ export default function Security() {
               Report a Vulnerability
             </h2>
             <p>
-              We welcome responsible disclosure of security vulnerabilities. If you discover a security issue, please email security@getcovera.co with details. We commit to:
+              We welcome responsible disclosure of security vulnerabilities. If you discover a security issue, please email security@covera.co with details. We commit to:
             </p>
             <ul className="list-disc pl-6 space-y-2 mt-3">
               <li>Acknowledge your report within 24 hours</li>
