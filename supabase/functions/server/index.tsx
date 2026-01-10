@@ -720,66 +720,82 @@ app.post("/make-server-be7827e3/auth/forgot-password", async (c) => {
     console.log('Resend API key found, preparing to send email...');
     
     console.log('Sending email to:', email, 'with userName:', userName);
-    const emailResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Covera <noreply@getcovera.co>',
-        to: [email],
-        subject: 'Your Covera password reset code',
-        html: `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <style>
-                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1F2937; margin: 0; padding: 0; }
-                .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-                .header { text-align: center; margin-bottom: 40px; }
-                .logo { font-size: 32px; font-weight: 600; color: #3A4F6A; letter-spacing: -0.02em; }
-                .content { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 40px; }
-                h1 { font-size: 24px; font-weight: 600; color: #1F2937; margin: 0 0 16px 0; }
-                p { color: #6B7280; margin: 0 0 24px 0; font-size: 16px; }
-                .code-container { text-align: center; margin: 32px 0; }
-                .code { display: inline-block; background: #F3F4F6; border: 2px solid #3A4F6A; color: #3A4F6A; font-size: 36px; font-weight: 700; letter-spacing: 8px; padding: 20px 32px; border-radius: 12px; font-family: 'Courier New', monospace; }
-                .footer { text-align: center; margin-top: 32px; color: #9CA3AF; font-size: 14px; }
-                .security-note { background: #F3F4F6; border-radius: 8px; padding: 16px; margin-top: 24px; font-size: 14px; color: #6B7280; }
-              </style>
-            </head>
-            <body>
-              <div class="container">
-                <div class="header">
-                  <div class="logo">Covera</div>
-                </div>
-                <div class="content">
-                  <h1>Password Reset Code</h1>
-                  <p>Hi ${userName},</p>
-                  <p>We received a request to reset your Covera password. Use this verification code to reset your password:</p>
-                  <div class="code-container">
-                    <div class="code">${verificationCode}</div>
-                  </div>
-                  <p style="text-align: center; color: #6B7280; font-size: 14px;">Enter this code in the Covera app to continue</p>
-                  <div class="security-note">
-                    <strong>🔒 Security note:</strong> This code will expire in 10 minutes. If you didn't request this password reset, you can safely ignore this email.
-                  </div>
-                </div>
-                <div class="footer">
-                  <p>Enterprise vendor compliance tracking</p>
-                  <p>© ${new Date().getFullYear()} Covera. All rights reserved.</p>
-                </div>
-              </div>
-            </body>
-          </html>
-        `,
-      }),
-    });
+    
+    let emailResponse;
+    let attempt = 0;
+    const maxRetries = 3;
 
-    if (!emailResponse.ok) {
-      const errorText = await emailResponse.text();
+    while (attempt < maxRetries) {
+      emailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'Covera <noreply@getcovera.co>',
+          to: [email],
+          subject: 'Your Covera password reset code',
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1F2937; margin: 0; padding: 0; }
+                  .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+                  .header { text-align: center; margin-bottom: 40px; }
+                  .logo { font-size: 32px; font-weight: 600; color: #3A4F6A; letter-spacing: -0.02em; }
+                  .content { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 40px; }
+                  h1 { font-size: 24px; font-weight: 600; color: #1F2937; margin: 0 0 16px 0; }
+                  p { color: #6B7280; margin: 0 0 24px 0; font-size: 16px; }
+                  .code-container { text-align: center; margin: 32px 0; }
+                  .code { display: inline-block; background: #F3F4F6; border: 2px solid #3A4F6A; color: #3A4F6A; font-size: 36px; font-weight: 700; letter-spacing: 8px; padding: 20px 32px; border-radius: 12px; font-family: 'Courier New', monospace; }
+                  .footer { text-align: center; margin-top: 32px; color: #9CA3AF; font-size: 14px; }
+                  .security-note { background: #F3F4F6; border-radius: 8px; padding: 16px; margin-top: 24px; font-size: 14px; color: #6B7280; }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <div class="logo">Covera</div>
+                  </div>
+                  <div class="content">
+                    <h1>Password Reset Code</h1>
+                    <p>Hi ${userName},</p>
+                    <p>We received a request to reset your Covera password. Use this verification code to reset your password:</p>
+                    <div class="code-container">
+                      <div class="code">${verificationCode}</div>
+                    </div>
+                    <p style="text-align: center; color: #6B7280; font-size: 14px;">Enter this code in the Covera app to continue</p>
+                    <div class="security-note">
+                      <strong>🔒 Security note:</strong> This code will expire in 10 minutes. If you didn't request this password reset, you can safely ignore this email.
+                    </div>
+                  </div>
+                  <div class="footer">
+                    <p>Enterprise vendor compliance tracking</p>
+                    <p>© ${new Date().getFullYear()} Covera. All rights reserved.</p>
+                  </div>
+                </div>
+              </body>
+            </html>
+          `,
+        }),
+      });
+
+      if (emailResponse.status === 429) {
+        console.log(\`Rate limit hit (429), retrying in \${attempt + 1}s...\`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+        attempt++;
+        continue;
+      }
+
+      break;
+    }
+
+    if (!emailResponse || !emailResponse.ok) {
+      const errorText = await emailResponse?.text().catch(() => 'Unknown error');
       console.error('Resend API error:', errorText);
       console.error('Resend response status:', emailResponse.status);
       return c.json({ error: `Failed to send reset email: ${errorText}` }, 500);
@@ -1594,67 +1610,82 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
         
         console.log(`📧 Sending reminder email to ${recipientEmail}`);
         
-        const emailResponse = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'Covera <noreply@getcovera.co>',
-            to: recipientEmail,
-            subject: `${organizationName} - Insurance Certificate Required`,
-            html: `
-              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                <div style="background: linear-gradient(135deg, #3A4F6A 0%, #2c3e50 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
-                  <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">Covera</h1>
-                  <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 14px;">Vendor Compliance Management</p>
-                </div>
-                
-                <div style="background: #ffffff; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.07);">
-                  <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 22px; font-weight: 600;">Insurance Certificate Required</h2>
-                  
-                  <p style="color: #4a5568; line-height: 1.6; margin: 0 0 20px 0;">
-                    Hello,
-                  </p>
-                  
-                  <p style="color: #4a5568; line-height: 1.6; margin: 0 0 20px 0;">
-                    This is a reminder from <strong>${organizationName}</strong> that we need an updated Certificate of Insurance (COI) for your company, <strong>${vendor.name}</strong>.
-                  </p>
-                  
-                  ${vendor.insuranceExpiry ? `
-                    <div style="background: #fff5f5; border-left: 4px solid #f56565; padding: 16px; margin: 20px 0; border-radius: 4px;">
-                      <p style="color: #c53030; margin: 0; font-weight: 500;">
-                        ⚠️ Current insurance expires on ${new Date(vendor.insuranceExpiry).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                      </p>
-                    </div>
-                  ` : `
-                    <div style="background: #fff5f5; border-left: 4px solid #f56565; padding: 16px; margin: 20px 0; border-radius: 4px;">
-                      <p style="color: #c53030; margin: 0; font-weight: 500;">
-                        ⚠️ We don't have your insurance certificate on file
-                      </p>
-                    </div>
-                  `}
-                  
-                  <p style="color: #4a5568; line-height: 1.6; margin: 0 0 30px 0;">
-                    Please upload your Certificate of Insurance at your earliest convenience to maintain compliance and avoid any disruptions.
-                  </p>
-                  
-                  <p style="color: #718096; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-                    If you have any questions or need assistance, please contact ${organizationName}.
-                  </p>
-                  
-                  <p style="color: #a0aec0; font-size: 12px; margin: 20px 0 0 0;">
-                    This is an automated reminder from Covera vendor compliance management system.
-                  </p>
-                </div>
-              </div>
-            `,
-          }),
-        });
+        let emailResponse;
+        let attempt = 0;
+        const maxRetries = 3;
 
-        if (!emailResponse.ok) {
-          const errorData = await emailResponse.json();
+        while (attempt < maxRetries) {
+          emailResponse = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: 'Covera <noreply@getcovera.co>',
+              to: recipientEmail,
+              subject: `${organizationName} - Insurance Certificate Required`,
+              html: `
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                  <div style="background: linear-gradient(135deg, #3A4F6A 0%, #2c3e50 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+                    <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">Covera</h1>
+                    <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 14px;">Vendor Compliance Management</p>
+                  </div>
+                  
+                  <div style="background: #ffffff; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.07);">
+                    <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 22px; font-weight: 600;">Insurance Certificate Required</h2>
+                    
+                    <p style="color: #4a5568; line-height: 1.6; margin: 0 0 20px 0;">
+                      Hello,
+                    </p>
+                    
+                    <p style="color: #4a5568; line-height: 1.6; margin: 0 0 20px 0;">
+                      This is a reminder from <strong>${organizationName}</strong> that we need an updated Certificate of Insurance (COI) for your company, <strong>${vendor.name}</strong>.
+                    </p>
+                    
+                    ${vendor.insuranceExpiry ? `
+                      <div style="background: #fff5f5; border-left: 4px solid #f56565; padding: 16px; margin: 20px 0; border-radius: 4px;">
+                        <p style="color: #c53030; margin: 0; font-weight: 500;">
+                          ⚠️ Current insurance expires on ${new Date(vendor.insuranceExpiry).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                        </p>
+                      </div>
+                    ` : `
+                      <div style="background: #fff5f5; border-left: 4px solid #f56565; padding: 16px; margin: 20px 0; border-radius: 4px;">
+                        <p style="color: #c53030; margin: 0; font-weight: 500;">
+                          ⚠️ We don't have your insurance certificate on file
+                        </p>
+                      </div>
+                    `}
+                    
+                    <p style="color: #4a5568; line-height: 1.6; margin: 0 0 30px 0;">
+                      Please upload your Certificate of Insurance at your earliest convenience to maintain compliance and avoid any disruptions.
+                    </p>
+                    
+                    <p style="color: #718096; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                      If you have any questions or need assistance, please contact ${organizationName}.
+                    </p>
+                    
+                    <p style="color: #a0aec0; font-size: 12px; margin: 20px 0 0 0;">
+                      This is an automated reminder from Covera vendor compliance management system.
+                    </p>
+                  </div>
+                </div>
+              `,
+            }),
+          });
+
+          if (emailResponse.status === 429) {
+            console.log(\`Rate limit hit (429), retrying in \${attempt + 1}s...\`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+            attempt++;
+            continue;
+          }
+
+          break;
+        }
+
+        if (!emailResponse || !emailResponse.ok) {
+          const errorData = await emailResponse?.json().catch(() => ({}));
           console.error('Resend API error:', errorData);
           throw new Error('Failed to send email');
         }
@@ -2481,22 +2512,40 @@ app.post("/make-server-be7827e3/stripe/create-payment-intent", async (c) => {
     // Get user profile
     const profile = await kv.get(`user:${user.id}`);
     const userEmail = user.email || profile?.email;
-    const customerId = await getOrCreateStripeCustomer(secretKey, userEmail, user.id, stripeMode);
-
-    // For subscriptions with trials, we need to create a SetupIntent to collect payment method
-    // Then create the subscription with that payment method
     
+    // Check if we already have a customer ID for this mode
+    // We only want to create a customer object in Stripe if the user actually completes the payment setup
+    let customerId = null;
+    
+    // 1. Check active/cancelled subscription for this mode
+    const existingSubscription = await kv.get(`subscription:${user.id}:${stripeMode}`);
+    if (existingSubscription?.customerId) {
+      customerId = existingSubscription.customerId;
+    }
+    // 2. Check profile if it matches the current mode (legacy support)
+    else if (profile?.stripeCustomerId && profile?.stripeMode === stripeMode) {
+      customerId = profile.stripeCustomerId;
+    }
+
+    // Only get/create customer if we found one, otherwise we wait until verification
+    // const customerId = await getOrCreateStripeCustomer(secretKey, userEmail, user.id, stripeMode);
+
     // Step 1: Create a SetupIntent to collect the payment method
+    const setupIntentParams: any = {
+      'payment_method_types[]': 'card',
+    };
+    
+    if (customerId) {
+      setupIntentParams.customer = customerId;
+    }
+
     const setupIntentResponse = await fetch('https://api.stripe.com/v1/setup_intents', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${secretKey}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        'customer': customerId,
-        'payment_method_types[]': 'card',
-      }),
+      body: new URLSearchParams(setupIntentParams),
     });
 
     if (!setupIntentResponse.ok) {
@@ -2580,6 +2629,44 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
         return c.json({ error: 'Subscription not found' }, 404);
       }
 
+      let customerId = pendingSubscription.customerId;
+
+      // If we deferred customer creation (to avoid empty customers), create one now
+      if (!customerId) {
+        console.log('Creating customer for verified payment method...');
+        const profile = await kv.get(`user:${user.id}`);
+        const userEmail = user.email || profile?.email;
+        
+        // This will create a new customer since one wasn't found in KV earlier
+        customerId = await getOrCreateStripeCustomer(secretKey, userEmail, user.id, stripeMode);
+        
+        if (customerId) {
+          // Attach the payment method to the new customer
+          await fetch(`https://api.stripe.com/v1/payment_methods/${setupIntent.payment_method}/attach`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${secretKey}`,
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              'customer': customerId,
+            }),
+          });
+          
+          // Set as default payment method for the customer's future invoices
+          await fetch(`https://api.stripe.com/v1/customers/${customerId}`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${secretKey}`,
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              'invoice_settings[default_payment_method]': setupIntent.payment_method,
+            }),
+          });
+        }
+      }
+
       // Now create the actual subscription with the confirmed payment method and 7-day trial
       const subscriptionResponse = await fetch('https://api.stripe.com/v1/subscriptions', {
         method: 'POST',
@@ -2588,7 +2675,7 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-          'customer': pendingSubscription.customerId,
+          'customer': customerId,
           'items[0][price]': pendingSubscription.priceId,
           'default_payment_method': setupIntent.payment_method,
           'trial_period_days': '7',
@@ -2606,7 +2693,7 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
       // Store mode-specific subscription info
       await kv.set(`subscription:${user.id}:${stripeMode}`, {
         plan: pendingSubscription.plan,
-        customerId: pendingSubscription.customerId,
+        customerId: customerId,
         subscriptionId: subscription.id,
         status: subscription.status, // Will be "trialing" during trial period
         currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
@@ -2618,7 +2705,7 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
       // Update user profile with active subscription (for backward compatibility)
       const profile = await kv.get(`user:${user.id}`) || {};
       profile.plan = pendingSubscription.plan;
-      profile.stripeCustomerId = pendingSubscription.customerId;
+      profile.stripeCustomerId = customerId;
       profile.stripeSubscriptionId = subscription.id;
       profile.subscriptionStatus = subscription.status === 'trialing' ? 'active' : subscription.status; // Treat trialing as active
       profile.subscriptionUpdatedAt = new Date().toISOString();
@@ -3405,68 +3492,83 @@ app.post("/make-server-be7827e3/contact-sales", async (c) => {
         console.log('RESEND_API_KEY exists, attempting to send email...');
 
         // Send email to sales team
-        const emailResponse = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'Covera <noreply@getcovera.co>',
-            to: ['or@getcovera.co'],
-            subject: `Enterprise Inquiry from ${userName}`,
-            html: `
-              <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto;">
-                <div style="background: linear-gradient(135deg, #3A4F6A 0%, #2C3E50 100%); padding: 32px; text-align: center; border-radius: 12px 12px 0 0;">
-                  <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">New Enterprise Inquiry</h1>
-                </div>
-                
-                <div style="background: white; padding: 32px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
-                  <h2 style="color: #1f2937; margin-top: 0; margin-bottom: 24px; font-size: 20px;">Contact Information</h2>
+        let emailResponse;
+        let attempt = 0;
+        const maxRetries = 3;
+
+        while (attempt < maxRetries) {
+          emailResponse = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: 'Covera <noreply@getcovera.co>',
+              to: ['or@getcovera.co'],
+              subject: `Enterprise Inquiry from ${userName}`,
+              html: `
+                <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto;">
+                  <div style="background: linear-gradient(135deg, #3A4F6A 0%, #2C3E50 100%); padding: 32px; text-align: center; border-radius: 12px 12px 0 0;">
+                    <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">New Enterprise Inquiry</h1>
+                  </div>
                   
-                  <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
-                    <div style="margin-bottom: 12px;">
-                      <strong style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Name</strong>
-                      <div style="color: #1f2937; font-size: 16px; margin-top: 4px;">${userName}</div>
-                    </div>
+                  <div style="background: white; padding: 32px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+                    <h2 style="color: #1f2937; margin-top: 0; margin-bottom: 24px; font-size: 20px;">Contact Information</h2>
                     
-                    <div style="margin-bottom: 12px;">
-                      <strong style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</strong>
-                      <div style="color: #1f2937; font-size: 16px; margin-top: 4px;">
-                        <a href="mailto:${userEmail}" style="color: #3b82f6; text-decoration: none;">${userEmail}</a>
+                    <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+                      <div style="margin-bottom: 12px;">
+                        <strong style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Name</strong>
+                        <div style="color: #1f2937; font-size: 16px; margin-top: 4px;">${userName}</div>
+                      </div>
+                      
+                      <div style="margin-bottom: 12px;">
+                        <strong style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</strong>
+                        <div style="color: #1f2937; font-size: 16px; margin-top: 4px;">
+                          <a href="mailto:${userEmail}" style="color: #3b82f6; text-decoration: none;">${userEmail}</a>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <strong style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Organization</strong>
+                        <div style="color: #1f2937; font-size: 16px; margin-top: 4px;">${organizationName}</div>
                       </div>
                     </div>
                     
+                    ${message ? `
                     <div>
-                      <strong style="color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Organization</strong>
-                      <div style="color: #1f2937; font-size: 16px; margin-top: 4px;">${organizationName}</div>
+                      <h3 style="color: #1f2937; margin-bottom: 12px; font-size: 16px;">Message</h3>
+                      <div style="background: #f9fafb; padding: 16px; border-radius: 8px; color: #4b5563; line-height: 1.6;">
+                        ${message}
+                      </div>
                     </div>
-                  </div>
-                  
-                  ${message ? `
-                  <div>
-                    <h3 style="color: #1f2937; margin-bottom: 12px; font-size: 16px;">Message</h3>
-                    <div style="background: #f9fafb; padding: 16px; border-radius: 8px; color: #4b5563; line-height: 1.6;">
-                      ${message}
+                    ` : ''}
+                    
+                    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                      <p style="color: #6b7280; font-size: 14px; margin: 0;">
+                        This inquiry was submitted from the Covera platform.
+                      </p>
                     </div>
-                  </div>
-                  ` : ''}
-                  
-                  <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-                    <p style="color: #6b7280; font-size: 14px; margin: 0;">
-                      This inquiry was submitted from the Covera platform.
-                    </p>
                   </div>
                 </div>
-              </div>
-            `,
-          }),
-        });
+              `,
+            }),
+          });
 
-        console.log('Email API response status:', emailResponse.status);
+          if (emailResponse.status === 429) {
+            console.log(\`Rate limit hit (429), retrying in \${attempt + 1}s...\`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+            attempt++;
+            continue;
+          }
 
-        if (!emailResponse.ok) {
-          const errorData = await emailResponse.json();
+          break;
+        }
+
+        console.log('Email API response status:', emailResponse ? emailResponse.status : 'No response');
+
+        if (!emailResponse || !emailResponse.ok) {
+          const errorData = await emailResponse?.json().catch(() => ({}));
           console.error('❌ Resend API error:', errorData);
           // Don't fail the request - inquiry is already saved
           console.log('Email failed but inquiry is saved in database');
