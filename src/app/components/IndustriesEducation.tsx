@@ -3,6 +3,7 @@ import { GraduationCap, CheckCircle, Shield, ArrowRight, Users, Building2, FileC
 import { useState } from 'react';
 import SEO from './SEO';
 import LandingNav from './LandingNav';
+import Footer from './Footer';
 import DemoModal from './DemoModal';
 
 export default function IndustriesEducation() {
@@ -33,7 +34,7 @@ export default function IndustriesEducation() {
               Vendor compliance for schools, universities & educational institutions
             </h1>
             
-            <p className="text-sm sm:text-base md:text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
+            <p className="text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
               Protect students, staff, and campus facilities with comprehensive vendor compliance tracking. Manage contractor insurance, verify background checks, and ensure all campus vendors meet safety and compliance requirements.
             </p>
             
@@ -281,20 +282,7 @@ export default function IndustriesEducation() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t" style={{ borderColor: 'var(--border)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-12 py-10">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-between gap-4">
-            <div className="text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              © 2026 Covera. All rights reserved.
-            </div>
-            <div className="flex items-center gap-6 md:gap-8 text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              <Link to="/privacy-policy">Privacy</Link>
-              <Link to="/terms-of-service">Terms</Link>
-              <Link to="/security">Security</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Demo Modal */}
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />

@@ -30,6 +30,7 @@ import IndustriesEducation from './components/IndustriesEducation';
 import IndustriesRetail from './components/IndustriesRetail';
 import IndustriesHospitality from './components/IndustriesHospitality';
 import AboutUs from './components/AboutUs';
+import Contact from './components/Contact';
 import Sitemap from './components/Sitemap';
 import HowToTrackVendorCompliance from './components/HowToTrackVendorCompliance';
 import WhatHappensVendorUninsured from './components/WhatHappensVendorUninsured';
@@ -250,6 +251,7 @@ export default function App() {
           <Route path="/industries-retail" element={<IndustriesRetail />} />
           <Route path="/industries-hospitality" element={<IndustriesHospitality />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/sitemap" element={<Sitemap />} />
           <Route path="/how-to-track-vendor-compliance" element={<HowToTrackVendorCompliance />} />
           <Route path="/what-happens-vendor-uninsured" element={<WhatHappensVendorUninsured />} />

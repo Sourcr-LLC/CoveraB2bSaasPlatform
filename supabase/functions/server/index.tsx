@@ -232,7 +232,8 @@ app.post("/make-server-be7827e3/clear-demo-data", async (c) => {
     // Filter for demo vendors
     const demoVendors = vendors.filter((v: any) => 
       v.isDemo === true || 
-      (v.notes && typeof v.notes === 'string' && v.notes.startsWith('Demo vendor'))
+      (v.notes && typeof v.notes === 'string' && v.notes.startsWith('Demo vendor')) ||
+      (v.email && typeof v.email === 'string' && v.email.endsWith('@example.com')) // Also clear vendors with example.com email
     );
     
     if (demoVendors.length === 0) {
@@ -282,69 +283,84 @@ app.post("/make-server-be7827e3/demo-request", async (c) => {
     // Send notification email to admin
     const adminEmail = 'or@getcovera.co'; // Change this to your actual email
     
-    const emailResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Covera Demo Requests <noreply@getcovera.co>',
-        to: [adminEmail],
-        reply_to: email,
-        subject: `New Demo Request from ${company}`,
-        html: `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="utf-8">
-              <style>
-                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1F2937; margin: 0; padding: 0; background: #F9FAFB; }
-                .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-                .header { text-align: center; margin-bottom: 32px; }
-                .logo { font-size: 28px; font-weight: 600; color: #3A4F6A; }
-                .content { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; padding: 32px; }
-                h1 { font-size: 20px; font-weight: 600; margin: 0 0 24px 0; }
-                .info-row { padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
-                .label { font-size: 14px; font-weight: 500; color: #6B7280; }
-                .value { font-size: 14px; color: #1F2937; font-weight: 500; margin-top: 4px; }
-                .badge { background: #DBEAFE; color: #1E40AF; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
-              </style>
-            </head>
-            <body>
-              <div class="container">
-                <div class="header">
-                  <div class="logo">Covera</div>
-                  <div style="margin-top: 8px;"><span class="badge">NEW DEMO REQUEST</span></div>
-                </div>
-                <div class="content">
-                  <h1>🎯 New Demo Request</h1>
-                  <p style="color: #6B7280; font-size: 14px;">A potential customer has requested a demo.</p>
-                  
-                  <div class="info-row">
-                    <div class="label">Contact Name</div>
-                    <div class="value">${name}</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="label">Email</div>
-                    <div class="value"><a href="mailto:${email}">${email}</a></div>
-                  </div>
-                  <div class="info-row">
-                    <div class="label">Company</div>
-                    <div class="value">${company}</div>
-                  </div>
-                  ${phone ? `<div class="info-row"><div class="label">Phone</div><div class="value">${phone}</div></div>` : ''}
-                  ${vendors ? `<div class="info-row"><div class="label">Vendors Managed</div><div class="value">${vendors}</div></div>` : ''}
-                  ${message ? `<div class="info-row"><div class="label">Message</div><div class="value">${message}</div></div>` : ''}
-                </div>
-              </div>
-            </body>
-          </html>
-        `,
-      }),
-    });
+    let emailResponse;
+    let attempt = 0;
+    const maxRetries = 3;
 
-    if (!emailResponse.ok) {
+    while (attempt < maxRetries) {
+      emailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'Covera Demo Requests <noreply@getcovera.co>',
+          to: [adminEmail],
+          reply_to: email,
+          subject: `New Demo Request from ${company}`,
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8">
+                <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1F2937; margin: 0; padding: 0; background: #F9FAFB; }
+                  .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+                  .header { text-align: center; margin-bottom: 32px; }
+                  .logo { font-size: 28px; font-weight: 600; color: #3A4F6A; }
+                  .content { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; padding: 32px; }
+                  h1 { font-size: 20px; font-weight: 600; margin: 0 0 24px 0; }
+                  .info-row { padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
+                  .label { font-size: 14px; font-weight: 500; color: #6B7280; }
+                  .value { font-size: 14px; color: #1F2937; font-weight: 500; margin-top: 4px; }
+                  .badge { background: #DBEAFE; color: #1E40AF; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <div class="logo">Covera</div>
+                    <div style="margin-top: 8px;"><span class="badge">NEW DEMO REQUEST</span></div>
+                  </div>
+                  <div class="content">
+                    <h1>🎯 New Demo Request</h1>
+                    <p style="color: #6B7280; font-size: 14px;">A potential customer has requested a demo.</p>
+                    
+                    <div class="info-row">
+                      <div class="label">Contact Name</div>
+                      <div class="value">${name}</div>
+                    </div>
+                    <div class="info-row">
+                      <div class="label">Email</div>
+                      <div class="value"><a href="mailto:${email}">${email}</a></div>
+                    </div>
+                    <div class="info-row">
+                      <div class="label">Company</div>
+                      <div class="value">${company}</div>
+                    </div>
+                    ${phone ? `<div class="info-row"><div class="label">Phone</div><div class="value">${phone}</div></div>` : ''}
+                    ${vendors ? `<div class="info-row"><div class="label">Vendors Managed</div><div class="value">${vendors}</div></div>` : ''}
+                    ${message ? `<div class="info-row"><div class="label">Message</div><div class="value">${message}</div></div>` : ''}
+                  </div>
+                </div>
+              </body>
+            </html>
+          `,
+        }),
+      });
+
+      if (emailResponse.status === 429) {
+        console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+        attempt++;
+        continue;
+      }
+
+      break;
+    }
+
+    if (!emailResponse || !emailResponse.ok) {
       const errorData = await emailResponse.json().catch(() => ({ message: 'Unknown error' }));
       console.error('Resend API error:', errorData);
       return c.json({ error: `Failed to send demo request email: ${errorData.message || 'Unknown error'}` }, 500);
@@ -404,22 +420,37 @@ app.post("/make-server-be7827e3/send-email-proxy", async (c) => {
 
     console.log(`📧 Sending email to ${to}`);
     
-    const emailResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Covera <noreply@getcovera.co>',
-        to,
-        subject,
-        html,
-      }),
-    });
+    let emailResponse;
+    let attempt = 0;
+    const maxRetries = 3;
 
-    if (!emailResponse.ok) {
-      const errorData = await emailResponse.json();
+    while (attempt < maxRetries) {
+      emailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'Covera <noreply@getcovera.co>',
+          to,
+          subject,
+          html,
+        }),
+      });
+
+      if (emailResponse.status === 429) {
+        console.log(`Rate limit hit (429), retrying in ${attempt + 1}s...`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+        attempt++;
+        continue;
+      }
+      
+      break;
+    }
+
+    if (!emailResponse || !emailResponse.ok) {
+      const errorData = await emailResponse?.json().catch(() => ({}));
       console.error('Resend API error:', errorData);
       return c.json({ error: 'Failed to send email', details: errorData }, 500);
     }
@@ -1487,7 +1518,18 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
       createdAt: new Date().toISOString(),
     });
 
-    const uploadLink = `${c.req.header('origin') || 'http://localhost:5173'}/upload/${uploadToken}`;
+    // Use origin from body if provided (from frontend), otherwise fall back to header or production domain
+    const { origin } = await c.req.json().catch(() => ({ origin: null }));
+    
+    let baseUrl = origin || c.req.header('origin') || 'https://getcovera.co';
+
+    // If we are in the Figma preview environment, force the production domain
+    // This ensures generated links look professional and match the intended domain
+    if (baseUrl && baseUrl.includes('figmaiframepreview.figma.site')) {
+      baseUrl = 'https://getcovera.co';
+    }
+
+    const uploadLink = `${baseUrl}/upload/${uploadToken}`;
     
     await logActivity(user.id, vendorId, 'upload_link', 'Upload link generated', 'neutral');
 

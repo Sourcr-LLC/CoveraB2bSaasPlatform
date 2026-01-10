@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { FileCheck, CheckCircle, ArrowRight, Bell, Calendar, Shield, Upload, Download } from 'lucide-react';
 import SEO from './SEO';
 import LandingNav from './LandingNav';
+import Footer from './Footer';
 
 export default function FeaturesCOITracking() {
   return (
@@ -32,7 +33,7 @@ export default function FeaturesCOITracking() {
               <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Feature Spotlight</span>
             </div>
             
-            <h1 className="mb-6" style={{ fontSize: '3.5rem', fontWeight: 700, lineHeight: 1.1, color: 'var(--foreground)' }}>
+            <h1 className="mb-6 text-4xl md:text-6xl font-bold leading-[1.1]" style={{ color: 'var(--foreground)' }}>
               Automated <span style={{ color: 'var(--primary)' }}>Certificate of Insurance</span> Tracking
             </h1>
             
@@ -229,20 +230,7 @@ export default function FeaturesCOITracking() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t" style={{ borderColor: 'var(--border)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-12 py-10">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-between gap-4">
-            <div className="text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              © 2026 Covera. All rights reserved.
-            </div>
-            <div className="flex items-center gap-6 md:gap-8 text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              <Link to="/privacy-policy">Privacy</Link>
-              <Link to="/terms-of-service">Terms</Link>
-              <Link to="/security">Security</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

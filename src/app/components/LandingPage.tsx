@@ -1,49 +1,19 @@
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Shield, Bell, FileText, TrendingUp, ArrowRight, Menu, X, ChevronDown, Building2, Hospital, Store, Truck, MapPin, FileCheck, CheckCircle } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { CheckCircle2, Shield, Bell, FileText, TrendingUp, ArrowRight, Building2, Hospital, Store, Truck, MapPin, FileCheck, CheckCircle, Upload, Zap, Lock, Globe, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
-import { analytics } from './GoogleAnalytics';
 import DashboardPreview from './DashboardPreview';
+import LandingNav from './LandingNav';
+import Footer from './Footer';
 
 export default function LandingPage() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
-  const [isIndustriesOpen, setIsIndustriesOpen] = useState(false);
-  const [isMobileIndustriesOpen, setIsMobileIndustriesOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(true);
-  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Detect screen size for testimonials
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
-
-  // Dropdown handlers with delay
-  const handleMouseEnter = () => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-    setIsIndustriesOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    closeTimeoutRef.current = setTimeout(() => {
-      setIsIndustriesOpen(false);
-    }, 300);
-  };
+  const [activeTab, setActiveTab] = useState('self-service');
 
   // Testimonials data
   const testimonials = [
@@ -85,861 +55,349 @@ export default function LandingPage() {
     }
   ];
 
+  const [activeStep, setActiveStep] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev % 3) + 1);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   return (
-    <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: 'var(--background)' }}>
+    <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
       <SEO {...SEO_CONFIGS.landing} />
       
-      {/* Global Background Decorations */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        {/* Subtle grid pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(58, 79, 106, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(58, 79, 106, 0.5) 1px, transparent 1px)`,
-            backgroundSize: '64px 64px'
-          }}
-        />
-        
-        {/* Static gradient orbs - removed animations for performance */}
-        <div 
-          className="absolute top-20 left-10 w-96 h-96 rounded-full blur-3xl opacity-30"
-          style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent 70%)' }}
-        />
-        
-        <div 
-          className="absolute top-1/3 right-20 w-[500px] h-[500px] rounded-full blur-3xl opacity-25"
-          style={{ background: 'radial-gradient(circle, rgba(58, 79, 106, 0.5), transparent 70%)' }}
-        />
-        
-        <div 
-          className="absolute bottom-40 left-1/4 w-80 h-80 rounded-full blur-3xl opacity-30"
-          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.35), transparent 70%)' }}
-        />
-        
-        <div 
-          className="absolute top-2/3 right-1/4 w-72 h-72 rounded-full blur-3xl opacity-25"
-          style={{ background: 'radial-gradient(circle, rgba(245, 158, 11, 0.3), transparent 70%)' }}
-        />
-        
-        {/* Static industry icons - removed animations for performance */}
-        <div 
-          className="absolute top-1/4 right-1/3 opacity-[0.06]"
-        >
-          <Shield className="w-32 h-32" strokeWidth={1} style={{ color: '#3A4F6A' }} />
-        </div>
-        
-        <div 
-          className="absolute top-1/2 left-1/4 opacity-[0.06]"
-        >
-          <FileCheck className="w-40 h-40" strokeWidth={1} style={{ color: '#10B981' }} />
-        </div>
-        
-        <div 
-          className="absolute bottom-1/4 right-1/4 opacity-[0.06]"
-        >
-          <Building2 className="w-36 h-36" strokeWidth={1} style={{ color: '#3A4F6A' }} />
-        </div>
-        
-        <div 
-          className="absolute top-3/4 left-1/3 opacity-[0.06]"
-        >
-          <CheckCircle className="w-28 h-28" strokeWidth={1} style={{ color: '#10B981' }} />
-        </div>
-        
-        {/* Static document/certificate rectangles - removed animations for performance */}
-        <div 
-          className="absolute top-1/3 left-1/2 w-48 h-32 rounded-lg opacity-[0.04] border"
-          style={{ 
-            borderColor: 'rgba(58, 79, 106, 0.3)',
-            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(58, 79, 106, 0.05))'
-          }}
-        />
-        
-        <div 
-          className="absolute bottom-1/3 left-1/5 w-40 h-28 rounded-lg opacity-[0.04] border"
-          style={{ 
-            borderColor: 'rgba(16, 185, 129, 0.3)',
-            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(59, 130, 246, 0.05))'
-          }}
-        />
+      {/* Background Ambience */}
+      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-[#3A4F6A]/5 blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/3 blur-[100px]" />
+        <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] rounded-full bg-blue-400/5 blur-[80px]" />
       </div>
 
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
       <ContactSalesModal isOpen={isContactSalesModalOpen} onClose={() => setIsContactSalesModalOpen(false)} />
       
-      {/* Modern Fixed Navigation with Glassmorphism */}
-      <div className="fixed top-0 left-0 right-0 z-50 w-full px-4 md:px-6 pt-4 md:pt-6" style={{ backgroundColor: 'var(--background)' }}>
-        <nav 
-          className="max-w-7xl mx-auto rounded-2xl border backdrop-blur-xl transition-all duration-300"
-          style={{ 
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-            borderColor: 'rgba(58, 79, 106, 0.08)',
-            boxShadow: '0 8px 32px -4px rgba(58, 79, 106, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02)'
-          }}
-        >
-          <div className="px-6 md:px-8 py-4 flex items-center justify-between">
-            {/* Logo */}
-            <Link to="/" className="flex items-center">
-              <svg className="w-28 h-6 md:w-32 md:h-7" viewBox="0 0 3000 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M598.514 129.609L549.807 165.933C523.39 131.26 491.538 105.05 454.251 87.3005C416.965 69.5515 376.032 60.677 331.453 60.677C282.471 60.677 237.204 72.3721 195.652 95.7623C154.1 119.152 121.835 150.592 98.858 190.08C75.8805 229.568 64.3918 274.078 64.3918 323.61C64.3918 398.184 89.9834 458.242 141.167 503.784C192.35 549.326 256.879 572.097 334.755 572.097C420.611 572.097 492.295 538.525 549.807 471.381L598.514 508.118C567.969 546.918 529.857 576.913 484.177 598.101C438.497 619.29 387.589 629.884 331.453 629.884C224.133 629.884 139.516 594.249 77.6004 522.977C25.8668 462.713 0 394.469 0 318.244C0 228.811 31.4392 153.412 94.3175 92.0474C157.196 30.6825 235.828 6.10352e-05 330.215 6.10352e-05C387.452 6.10352e-05 439.117 11.3512 485.209 34.0534C531.302 56.7557 569.07 88.6077 598.514 129.609ZM925.014 150.248C994.634 150.248 1052.42 175.427 1098.38 225.784C1139.93 272.014 1160.7 326.637 1160.7 389.653C1160.7 452.669 1138.69 507.774 1094.66 554.967C1050.63 602.16 994.084 625.757 925.014 625.757C855.669 625.757 799.051 602.16 755.16 554.967C711.268 507.774 689.323 452.669 689.323 389.653C689.323 326.912 710.099 272.427 751.651 226.197C797.606 175.564 855.393 150.248 925.014 150.248ZM925.014 207.21C876.857 207.21 835.443 225.096 800.77 260.87C766.098 296.643 748.762 339.846 748.762 390.479C748.762 423.225 756.673 453.839 772.496 482.32C788.319 510.801 809.714 532.678 836.681 547.95C863.649 563.222 893.093 570.859 925.014 570.859C957.485 570.859 987.135 563.222 1013.97 547.95C1040.8 532.678 1062.05 510.801 1077.74 482.32C1093.42 453.839 1101.27 423.225 1101.27 390.479C1101.27 339.846 1083.93 296.643 1049.26 260.87C1014.58 225.096 973.17 207.21 925.014 207.21ZM1225.1 173.363H1287.01L1438.5 502.752L1588.75 173.363H1651.07L1443.86 626.17H1433.54L1225.1 173.363ZM2120.8 464.364L2169.51 490.369C2153.83 522.014 2135.39 547.468 2114.2 566.731C2093.01 585.993 2069.21 600.647 2042.79 610.691C2016.37 620.735 1986.52 625.757 1953.22 625.757C1879.47 625.757 1821.82 601.61 1780.27 553.316C1738.72 505.022 1717.94 450.468 1717.94 389.653C1717.94 332.141 1735.55 280.958 1770.78 236.104C1815.36 178.866 1875.21 150.248 1950.33 150.248C2027.11 150.248 2088.61 179.554 2134.84 238.167C2167.58 279.444 2184.09 330.903 2184.37 392.543H1777.79C1778.89 445.377 1795.68 488.649 1828.15 522.358C1860.62 556.068 1900.66 572.923 1948.27 572.923C1971.38 572.923 1993.81 568.864 2015.55 560.746C2037.29 552.628 2055.79 541.965 2071.07 528.756C2086.34 515.548 2102.92 494.084 2120.8 464.364ZM2120.8 342.598C2113.1 311.503 2101.82 286.668 2086.96 268.093C2072.1 249.518 2052.42 234.521 2027.93 223.101C2003.44 211.681 1977.71 205.971 1950.74 205.971C1906.44 205.971 1868.33 220.281 1836.41 248.899C1813.29 269.813 1795.82 301.046 1783.98 342.598H2120.8ZM2270.64 418.134V363.649C2275.04 336.406 2281.37 314.254 2289.63 297.193C2308.89 249.862 2334.76 215.19 2367.23 193.176C2399.7 171.161 2426.66 160.154 2448.13 160.154C2464.09 160.154 2481.15 165.383 2499.31 175.839L2469.18 224.546C2443.59 215.19 2418.2 222.757 2393.02 247.248C2367.85 271.739 2350.44 298.432 2340.81 327.325C2333.65 352.917 2330.08 400.936 2330.08 471.381V624.518H2270.64V418.134ZM2762.66 150.248C2832.28 150.248 2890.07 175.427 2936.02 225.784C2978.4 271.739 2999.59 326.362 2999.59 389.653C3000.14 545.955 3000.14 625.344 2999.59 627.821H2938.08V525.041C2905.89 585.03 2847.41 618.602 2762.66 625.757C2693.31 625.757 2636.7 602.16 2592.8 554.967C2548.91 507.774 2526.97 452.669 2526.97 389.653C2526.97 326.912 2547.74 272.427 2589.3 226.197C2635.25 175.564 2693.04 150.248 2762.66 150.248ZM2762.66 207.21C2714.5 207.21 2673.09 225.096 2638.42 260.87C2603.74 296.643 2586.41 339.846 2586.41 390.479C2586.41 423.225 2595.28 454.733 2613.03 485.003C2630.78 515.272 2660.84 540.864 2703.22 561.778C2809.44 585.443 2884.98 537.149 2929.83 416.896C2932.31 378.371 2928.18 341.497 2917.45 306.274C2909.74 290.314 2899.15 275.179 2885.66 260.87C2851.82 225.096 2810.81 207.21 2762.66 207.21Z" fill="currentColor"/>
-              </svg>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
-              <Link 
-                to="/about-us" 
-                className="text-sm transition-all hover:opacity-70"
-                style={{ color: '#3A4F6A', fontWeight: 500 }}
-              >
-                About
-              </Link>
-              <div 
-                className="relative"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button 
-                  className="text-sm transition-all hover:opacity-70 flex items-center gap-1"
-                  style={{ color: '#3A4F6A', fontWeight: 500 }}
-                >
-                  Industries
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {isIndustriesOpen && (
-                  <div 
-                    className="absolute top-full left-0 mt-1 w-64 rounded-xl border backdrop-blur-xl py-2 z-50"
-                    style={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                      borderColor: 'rgba(58, 79, 106, 0.1)',
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)'
-                    }}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <Link 
-                      to="/solutions-property-management"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Property Management
-                    </Link>
-                    <Link 
-                      to="/solutions-construction"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Construction & Contractors
-                    </Link>
-                    <Link 
-                      to="/industries-franchise"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Franchises & Multi-Location
-                    </Link>
-                    <Link 
-                      to="/industries-healthcare"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Healthcare & Clinics
-                    </Link>
-                    <Link 
-                      to="/industries-logistics"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Logistics & Warehousing
-                    </Link>
-                    <Link 
-                      to="/industries-facilities"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Facilities Management
-                    </Link>
-                    <Link 
-                      to="/industries-government"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Government & Public Sector
-                    </Link>
-                    <Link 
-                      to="/industries-education"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Education & Schools
-                    </Link>
-                    <Link 
-                      to="/industries-retail"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Retail & Multi-Location
-                    </Link>
-                    <Link 
-                      to="/industries-hospitality"
-                      className="block px-4 py-2 text-sm transition-all hover:bg-gray-50"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                    >
-                      Hospitality & Hotels
-                    </Link>
-                  </div>
-                )}
-              </div>
-              <Link 
-                to="/blog" 
-                className="text-sm transition-all hover:opacity-70"
-                style={{ color: '#3A4F6A', fontWeight: 500 }}
-              >
-                Blog
-              </Link>
-              <Link 
-                to="/pricing" 
-                className="text-sm transition-all hover:opacity-70"
-                style={{ color: '#3A4F6A', fontWeight: 500 }}
-              >
-                Pricing
-              </Link>
-
-              <Link 
-                to="/login" 
-                className="text-sm transition-all hover:opacity-70 ml-2"
-                style={{ color: '#3A4F6A', fontWeight: 500 }}
-              >
-                Log in
-              </Link>
-              <Link 
-                to="/login" 
-                className="px-6 py-2.5 rounded-xl text-sm transition-all inline-block hover:-translate-y-0.5"
-                style={{ 
-                  backgroundColor: '#3A4F6A', 
-                  color: '#ffffff',
-                  fontWeight: 500,
-                  boxShadow: '0 4px 14px rgba(58, 79, 106, 0.25)'
-                }}
-              >
-                Start free trial
-              </Link>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden p-2 rounded-xl hover:bg-gray-50 transition-all"
-              style={{ color: '#3A4F6A' }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div 
-              className="md:hidden border-t overflow-y-auto"
-              style={{ 
-                borderColor: 'rgba(58, 79, 106, 0.1)',
-                maxHeight: 'calc(100vh - 100px)'
-              }}
-            >
-              <div className="px-6 py-6 space-y-4">
-                <Link 
-                  to="/about-us" 
-                  className="block text-sm py-2 transition-all hover:translate-x-1"
-                  style={{ color: '#3A4F6A', fontWeight: 500 }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  About
-                </Link>
-                
-                {/* Industries submenu */}
-                <div>
-                  <button
-                    onClick={() => setIsMobileIndustriesOpen(!isMobileIndustriesOpen)}
-                    className="flex items-center justify-between w-full text-sm py-2 transition-all hover:translate-x-1"
-                    style={{ color: '#3A4F6A', fontWeight: 500 }}
-                  >
-                    <span>Industries</span>
-                    <ChevronDown 
-                      className={`w-4 h-4 transition-transform duration-200 ${isMobileIndustriesOpen ? 'rotate-180' : ''}`}
-                    />
-                  </button>
-                  {isMobileIndustriesOpen && (
-                    <div className="space-y-2 pl-3 mt-2">
-                    <Link 
-                      to="/solutions-property-management"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Property Management
-                    </Link>
-                    <Link 
-                      to="/solutions-construction"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Construction & Contractors
-                    </Link>
-                    <Link 
-                      to="/industries-franchise"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Franchises & Multi-Location
-                    </Link>
-                    <Link 
-                      to="/industries-healthcare"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Healthcare & Clinics
-                    </Link>
-                    <Link 
-                      to="/industries-logistics"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Logistics & Warehousing
-                    </Link>
-                    <Link 
-                      to="/industries-facilities"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Facilities Management
-                    </Link>
-                    <Link 
-                      to="/industries-government"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Government & Public Sector
-                    </Link>
-                    <Link 
-                      to="/industries-education"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Education & Schools
-                    </Link>
-                    <Link 
-                      to="/industries-retail"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Retail & Multi-Location
-                    </Link>
-                    <Link 
-                      to="/industries-hospitality"
-                      className="block text-sm py-1.5 transition-all hover:translate-x-1"
-                      style={{ color: '#3A4F6A', fontWeight: 500 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Hospitality & Hotels
-                    </Link>
-                  </div>
-                  )}
-                </div>
-
-                <Link 
-                  to="/blog" 
-                  className="block text-sm py-2 transition-all hover:translate-x-1"
-                  style={{ color: '#3A4F6A', fontWeight: 500 }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Blog
-                </Link>
-                <Link 
-                  to="/pricing" 
-                  className="block text-sm py-2 transition-all hover:translate-x-1"
-                  style={{ color: '#3A4F6A', fontWeight: 500 }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Pricing
-                </Link>
-
-                <Link 
-                  to="/login" 
-                  className="block text-sm py-2 transition-all hover:translate-x-1"
-                  style={{ color: '#3A4F6A', fontWeight: 500 }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Log in
-                </Link>
-                <Link 
-                  to="/login" 
-                  className="block w-full px-6 py-3 rounded-xl text-sm text-center transition-all"
-                  style={{ 
-                    backgroundColor: '#3A4F6A', 
-                    color: '#ffffff',
-                    fontWeight: 500,
-                    boxShadow: '0 4px 12px rgba(58, 79, 106, 0.2)'
-                  }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Start free trial
-                </Link>
-              </div>
-            </div>
-          )}
-        </nav>
-      </div>
-
-      {/* Adjust spacing below nav */}
-      <div className="h-24 md:h-28"></div>
+      <LandingNav />
 
       {/* Hero Section */}
-      <section className="max-w-[1800px] mx-auto px-4 md:px-8 lg:px-12 pt-12 md:pt-20 pb-16 md:pb-24 relative overflow-visible">
-        {/* Subtle gradient background */}
-        <div 
-          className="absolute inset-0 -z-10 opacity-60"
-          style={{
-            background: 'radial-gradient(ellipse 100% 60% at 50% 0%, rgba(59, 130, 246, 0.08), transparent 70%)'
-          }}
-        />
-        
-        {/* Two Column Layout: Text Left, Image Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
-          
-          {/* Left Column - Hero Text & CTA */}
-          <div className="text-center lg:text-left order-1 lg:order-1">
-            {/* Title - Shows first on mobile */}
-            <h1 
-              className="mb-6 md:mb-8 text-3xl sm:text-4xl md:text-5xl xl:text-6xl leading-tight" 
-              style={{ 
-                fontWeight: 600,
-                letterSpacing: '-0.03em',
-                color: 'var(--foreground)' 
-              }}
-            >
-              Vendor <span style={{ color: 'var(--primary)' }}>insurance compliance</span> without spreadsheets
-            </h1>
+      <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="text-center max-w-4xl mx-auto mb-16"
+          >
             
-            {/* Image - Shows after title on mobile only */}
-            <div className="lg:hidden relative mb-8 md:mb-10">
-              {/* Subtle gradient backdrop */}
-              <div 
-                className="absolute inset-0 -z-10 blur-3xl opacity-20"
-                style={{
-                  background: 'radial-gradient(circle at 50% 50%, var(--primary), transparent 70%)'
-                }}
-              />
-
-              <div 
-                className="relative rounded-2xl overflow-hidden border"
-                style={{
-                  borderColor: 'var(--border)',
-                  backgroundColor: 'var(--card)',
-                  boxShadow: '0 25px 60px -15px rgba(58, 79, 106, 0.25), 0 10px 30px -10px rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                {/* Dashboard Component */}
-                <DashboardPreview />
-              </div>
-            </div>
-
-            {/* Description text */}
-            <p 
-              className="text-sm sm:text-base md:text-lg xl:text-xl mb-8 md:mb-10 leading-relaxed px-2 sm:px-0" 
-              style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}
-            >
+            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Vendor Insurance Compliance <br className="hidden md:block" />
+              <span className="text-[#3A4F6A]">Without Spreadsheets</span>
+            </motion.h1>
+            
+            <motion.p variants={fadeInUp} className="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
               Automatically track COIs, prevent expired coverage, and stay audit-ready without chasing vendors or exposing your business to legal risk.
-            </p>
+            </motion.p>
             
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 md:gap-4 mb-6 md:mb-8 px-4 sm:px-0">
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
-                style={{ 
-                  backgroundColor: 'var(--primary)', 
-                  color: 'var(--primary-foreground)',
-                  fontWeight: 500
-                }}
-                onClick={() => analytics.trackButtonClick('Start Free Trial', 'Hero Section')}
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-all shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 hover:-translate-y-1 flex items-center justify-center gap-2"
               >
-                Start free trial
+                Start Free Trial
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <button 
-                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm transition-all hover:bg-gray-50"
-                style={{ 
-                  border: '1px solid var(--border)',
-                  color: 'var(--foreground)',
-                  fontWeight: 500
-                }}
-                onClick={() => {
-                  analytics.trackDemoRequest();
-                  setIsDemoModalOpen(true);
-                }}
+                onClick={() => setIsDemoModalOpen(true)}
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2"
               >
                 Schedule demo
               </button>
-            </div>
+            </motion.div>
+          </motion.div>
 
-            {/* Micro proof block */}
-            <p 
-              className="text-xs md:text-sm mb-8 lg:mb-0 px-4 sm:px-0" 
-              style={{ color: 'var(--foreground-subtle)', fontWeight: 400, fontStyle: 'italic' }}
-            >
-              Used by property managers tracking 50+ vendors across multiple locations.
-            </p>
-
-            {/* Trust indicators - Desktop only, positioned below text */}
-            <div className="hidden lg:flex flex-wrap items-center justify-center lg:justify-start gap-4 lg:gap-6 pt-8 border-t text-xs mt-8" style={{ 
-              borderColor: 'var(--border-subtle)',
-              color: 'var(--foreground-subtle)',
-              fontWeight: 500
-            }}>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>SOC 2 Type II</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>Audit-ready</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>Bank-grade encryption</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column - Large Dashboard Screenshot (Desktop only) */}
-          <div className="hidden lg:block relative order-2">
-            {/* Subtle gradient backdrop */}
-            <div 
-              className="absolute inset-0 -z-10 blur-3xl opacity-20"
-              style={{
-                background: 'radial-gradient(circle at 50% 50%, var(--primary), transparent 70%)'
-              }}
-            />
-
-            <div 
-              className="relative rounded-2xl overflow-hidden border"
-              style={{
-                borderColor: 'var(--border)',
-                backgroundColor: 'var(--card)',
-                boxShadow: '0 25px 60px -15px rgba(58, 79, 106, 0.25), 0 10px 30px -10px rgba(0, 0, 0, 0.1)'
-              }}
-            >
-              {/* Dashboard Component */}
-              <DashboardPreview />
-            </div>
-          </div>
-        </div>
-
-        {/* Trust indicators - Mobile only, centered below */}
-        <div className="flex lg:hidden flex-col sm:flex-row sm:items-center justify-center gap-4 sm:gap-8 pt-8 border-t text-xs max-w-2xl mx-auto mt-8" style={{ 
-          borderColor: 'var(--border-subtle)',
-          color: 'var(--foreground-subtle)',
-          fontWeight: 500
-        }}>
-          <div className="flex items-center justify-center gap-2">
-            <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>SOC 2 Type II certified</span>
-          </div>
-          <div className="flex items-center justify-center gap-2">
-            <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>Audit-ready exports</span>
-          </div>
-          <div className="flex items-center justify-center gap-2">
-            <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>Bank-grade encryption</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Customer Logos Section */}
-      <section className="border-t border-b py-8 md:py-16" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--panel)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-12">
-          <div className="text-xs text-center mb-6 md:mb-8 uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)', fontWeight: 600, letterSpacing: '0.1em' }}>
-            Trusted by compliance teams at
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-12 items-center opacity-40">
-            {['Summit Properties', 'BuildRight', 'MedCore Health', 'FastFleet Logistics', 'FranchiseCo'].map((company, i) => (
-              <div key={i} className="text-center">
-                <div className="text-xs sm:text-sm md:text-base px-2" style={{ fontWeight: 600, color: 'var(--foreground)', letterSpacing: '-0.01em' }}>
-                  {company}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
-      {/* Features Grid */}
-      <section id="features" className="border-t" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-12 py-16 md:py-28">
-          <div 
-            className="mb-12 md:mb-20 max-w-2xl"
+          {/* Hero Visual */}
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="relative mx-auto max-w-6xl"
           >
-            <h2 className="mb-4 text-2xl md:text-3xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
-              Operations-first, not insurance-first
-            </h2>
-            <p className="text-base md:text-lg leading-relaxed" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-              Clear compliance status without interpretation. Remove manual admin work entirely. Designed for operations teams who manage third-party vendors.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 md:gap-y-16">
-            {[
-              { 
-                icon: Shield, 
-                title: 'Real-time compliance tracking', 
-                desc: 'Know instantly which vendors are compliant, at risk, or non-compliant without interpretation. Monitor certificate of insurance (COI) status across all vendors with one dashboard view that eliminates guesswork.'
-              },
-              { 
-                icon: Bell, 
-                title: 'Automated vendor reminders', 
-                desc: 'Vendors submit updated COIs on time without your team chasing emails. Professional reminders sent automatically at 30, 14, and 7 days before expiration while you focus on operations, not follow-up.'
-              },
-              { 
-                icon: FileText, 
-                title: 'Secure vendor portal', 
-                desc: 'Vendors upload COIs via secure links without creating accounts or navigating complex portals. No friction, no back-and-forth emails. They upload, you stay compliant, everyone saves time.'
-              },
-              { 
-                icon: TrendingUp, 
-                title: 'Always audit-ready', 
-                desc: 'Generate compliance reports instantly in PDF or CSV the moment you need them. Export audit-ready documentation at any time without spreadsheet panic, missing documents, or last-minute scrambling.'
-              }
-            ].map((feature, i) => (
-              <div
-                key={i}
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl">
+              <DashboardPreview />
+              
+              {/* Floating Element: Magic Link Notification */}
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1, duration: 0.6 }}
+                className="absolute -right-4 top-12 md:right-8 md:top-20 bg-white/90 backdrop-blur-md border border-white/40 p-4 rounded-xl shadow-lg shadow-black/5 max-w-xs hidden lg:block"
               >
-                <div 
-                  className="mb-4 md:mb-5 w-9 h-9 md:w-10 md:h-10 rounded-lg flex items-center justify-center" 
-                  style={{ backgroundColor: 'var(--card)' }}
-                >
-                  <feature.icon className="w-4 h-4 md:w-5 md:h-5" style={{ color: 'var(--primary)' }} />
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-slate-900">Acme Corp uploaded COI</h4>
+                    <p className="text-xs text-slate-500 mt-1">Via Secure Magic Link • Just now</p>
+                    <div className="mt-2 flex items-center gap-1 text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md inline-flex">
+                      <Shield className="w-3 h-3" />
+                      Verified by AI
+                    </div>
+                  </div>
                 </div>
-                <h3 className="mb-2 md:mb-3 text-lg md:text-xl" style={{ fontWeight: 600 }}>
-                  {feature.title}
-                </h3>
-                <p className="text-sm md:text-base leading-relaxed" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-                  {feature.desc}
-                </p>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Social Proof */}
+      <section className="py-12 border-y border-slate-100 bg-white/50">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-sm font-medium text-slate-400 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+            {['Roadr', 'Summit Properties', 'BuildRight', 'MedCore Health', 'FranchiseCo', 'Apex Group'].map((name) => (
+              <div key={name} className="text-xl font-bold font-display text-slate-800 flex items-center gap-2">
+                {name}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section id="trust" className="border-t overflow-hidden" style={{ borderColor: 'var(--border)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-12 py-16 md:py-28">
-          <div className="mb-12 md:mb-20 max-w-2xl">
-            <h2 className="mb-4 text-2xl md:text-3xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
-              Managing million-dollar risk
-            </h2>
-            <p className="text-base md:text-lg leading-relaxed" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-              Property managers, construction firms, healthcare groups, logistics companies, and franchises rely on Covera to eliminate compliance blind spots.
+      {/* The Shift Section */}
+      <section className="py-24 md:py-32 px-4 bg-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">The Old Way is Broken</h2>
+            <p className="text-lg text-slate-500">
+              Why are you still manually data-entering expirations from PDF attachments?
+              There is a better way.
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-16 mb-12 md:mb-28">
-            <div className="border-l pl-4 md:pl-6" style={{ borderColor: 'var(--border)' }}>
-              <div className="mb-2 text-2xl md:text-5xl" style={{ fontWeight: 600, color: 'var(--foreground)', letterSpacing: '-0.02em' }}>
-                $380M+
-              </div>
-              <div className="text-xs md:text-sm" style={{ color: 'var(--foreground-subtle)', fontWeight: 500, letterSpacing: '0.01em' }}>
-                Insurance coverage tracked
-              </div>
-            </div>
-            <div className="border-l pl-4 md:pl-6" style={{ borderColor: 'var(--border)' }}>
-              <div className="mb-2 text-2xl md:text-5xl" style={{ fontWeight: 600, color: 'var(--foreground)', letterSpacing: '-0.02em' }}>
-                2,400+
-              </div>
-              <div className="text-xs md:text-sm" style={{ color: 'var(--foreground-subtle)', fontWeight: 500, letterSpacing: '0.01em' }}>
-                Active vendors monitored
-              </div>
-            </div>
-            <div className="border-l pl-4 md:pl-6" style={{ borderColor: 'var(--border)' }}>
-              <div className="mb-2 text-2xl md:text-5xl" style={{ fontWeight: 600, color: 'var(--foreground)', letterSpacing: '-0.02em' }}>
-                98%+
-              </div>
-              <div className="text-xs md:text-sm" style={{ color: 'var(--foreground-subtle)', fontWeight: 500, letterSpacing: '0.01em' }}>
-                Compliance rate maintained
-              </div>
-            </div>
-          </div>
 
-          {/* Testimonials - Mobile: Simple Stack, Desktop: Carousel */}
-          {!isDesktop ? (
-            <div className="space-y-4 px-4">
-              {testimonials.slice(0, 3).map((testimonial, index) => (
-                <div 
-                  key={index}
-                  className="rounded-xl p-5 border"
-                  style={{ 
-                    backgroundColor: 'var(--card)',
-                    borderColor: 'var(--border)'
-                  }}
-                >
-                  <div className="flex gap-1 mb-3">
-                    {[1,2,3,4,5].map((star) => (
-                      <div key={star} className="w-4 h-4" style={{ color: '#F59E0B' }}>★</div>
-                    ))}
-                  </div>
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--foreground)', fontWeight: 400 }}>
-                    "{testimonial.quote}"
-                  </p>
-                  <div className="flex items-center gap-3 pt-3 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-                    <div 
-                      className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" 
-                      style={{ 
-                        backgroundColor: 'var(--primary)', 
-                        color: 'var(--primary-foreground)', 
-                        fontWeight: 600,
-                        fontSize: '0.75rem'
-                      }}
-                    >
-                      {testimonial.initials}
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>
-                        {testimonial.author}
-                      </div>
-                      <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
-                        {testimonial.title}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+            {/* The Old Way */}
+            <div className="p-6 md:p-8 rounded-3xl bg-slate-50 border border-slate-100 relative group">
+              <div className="absolute top-6 right-6 md:top-8 md:right-8 text-slate-300">
+                <X className="w-6 h-6 md:w-8 md:h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">Manual Admin (Bottleneck)</h3>
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-start gap-3 text-slate-600">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
+                  <span>You email vendor asking for COI</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-600">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
+                  <span>Vendor emails back a PDF (eventually)</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-600">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
+                  <span>You open PDF, type dates into Excel</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-600">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
+                  <span>Repeat 100x per month</span>
+                </li>
+              </ul>
+              <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed">
+                <span className="text-slate-400 font-medium">Costly & Slow</span>
+              </div>
             </div>
-          ) : (
-            <TestimonialCarousel testimonials={testimonials} />
-          )}
-        </div>
-      </section>
 
-      {/* Why Now Section */}
-      <section className="border-t" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--background)' }}>
-        <div className="max-w-5xl mx-auto px-4 md:px-12 py-12 md:py-20">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="mb-4 text-2xl md:text-3xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
-              Why teams switch to Covera
-            </h2>
-            <p className="text-base md:text-lg leading-relaxed" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-              Common triggers that drive operations teams to automate compliance
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { 
-                icon: FileCheck, 
-                title: 'Upcoming audits', 
-                desc: 'Regulatory review scheduled and your team is scrambling to prove vendor compliance across hundreds of files.'
-              },
-              { 
-                icon: Shield, 
-                title: 'Recent insurance claims', 
-                desc: 'A vendor incident exposed gaps in your insurance tracking process and legal is demanding better systems.'
-              },
-              { 
-                icon: TrendingUp, 
-                title: 'Rapid vendor growth', 
-                desc: 'Your vendor count has doubled in the last year and spreadsheets are no longer sustainable or reliable.'
-              },
-              { 
-                icon: MapPin, 
-                title: 'Expanding to multiple locations', 
-                desc: 'New sites mean more vendors, more complexity, and more risk without centralized compliance visibility.'
-              }
-            ].map((trigger, i) => (
-              <div
-                key={i}
-                className="flex gap-4 p-5 rounded-xl border"
-                style={{ 
-                  backgroundColor: 'var(--card)',
-                  borderColor: 'var(--border)'
-                }}
-              >
-                <div className="flex-shrink-0">
-                  <div 
-                    className="w-11 h-11 rounded-lg flex items-center justify-center"
-                    style={{ 
-                      backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                      color: 'var(--primary)'
-                    }}
-                  >
-                    <trigger.icon className="w-5 h-5" />
+            {/* The New Way */}
+            <div className="p-6 md:p-8 rounded-3xl bg-[#3A4F6A] text-white relative shadow-2xl shadow-[#3A4F6A]/20 overflow-hidden group">
+              {/* Glossy overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              
+              <div className="absolute top-6 right-6 md:top-8 md:right-8 text-emerald-400">
+                <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2 pr-12 relative z-10">
+                The Network Effect
+                <span className="px-2 py-0.5 rounded-full bg-white/20 text-xs font-medium backdrop-blur-sm whitespace-nowrap">Automated</span>
+              </h3>
+              <ul className="space-y-4 mb-8 relative z-10">
+                <li className="flex items-start gap-3 text-slate-200">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
+                  <span>You send one "Magic Link"</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-200">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
+                  <span>Vendor uploads their own COI & W9</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-200">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
+                  <span>AI scans & verifies coverage instantly</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-200">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
+                  <span>Vendor updates their own expired docs</span>
+                </li>
+              </ul>
+              <div className="h-48 bg-white/10 rounded-xl backdrop-blur-md border border-white/10 p-6 flex flex-col justify-between relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <Globe className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-white">Vendor Portal</div>
+                    <div className="text-xs text-white/60">Active now</div>
                   </div>
                 </div>
-                <div>
-                  <h3 className="mb-2 text-base" style={{ fontWeight: 600 }}>
-                    {trigger.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-                    {trigger.desc}
-                  </p>
+                <div className="space-y-2">
+                  <div className="h-2 w-3/4 bg-white/20 rounded-full" />
+                  <div className="h-2 w-1/2 bg-white/20 rounded-full" />
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="border-t" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
-        <div className="max-w-3xl mx-auto px-4 md:px-12 py-12 md:py-28">
-          <div className="max-w-xl text-center sm:text-left">
-            <h2 className="mb-4 md:mb-6 text-xl sm:text-2xl md:text-4xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
-              Ready to stop chasing vendor insurance?
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg mb-6 md:mb-10 leading-relaxed" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-              Replace spreadsheets with automated compliance in minutes.
-            </p>
+      {/* Feature Deep Dive */}
+      <section className="py-24 md:py-32 px-4 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="order-2 lg:order-1 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-[40px] transform rotate-3 scale-95 opacity-50" />
+              <div className="bg-white rounded-[32px] border border-slate-200 p-4 md:p-8 shadow-xl relative z-10">
+                <div className="flex flex-col gap-6">
+                  {/* Step 1 */}
+                  <div className={`flex gap-4 transition-all duration-300 ${activeStep === 1 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-400 scale-100'}`}>1</div>
+                    <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+                      <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-900'}`}>Generate Link</div>
+                      <div className="text-sm text-slate-500 mt-1">Create a secure, time-limited upload token.</div>
+                    </div>
+                  </div>
+                  {/* Step 2 */}
+                  <div className={`flex gap-4 transition-all duration-300 ${activeStep === 2 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-400 scale-100'}`}>2</div>
+                    <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 2 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+                      <div className={`font-bold mb-2 flex items-center gap-2 ${activeStep === 2 ? 'text-[#3A4F6A]' : 'text-slate-900'}`}>
+                        Vendor Uploads
+                        <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] uppercase tracking-wide">Magic Link</span>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border border-slate-100">
+                          <FileText className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-slate-700 truncate">GL_Insurance_2024.pdf</div>
+                            <div className="text-xs text-slate-400">2.4 MB • Uploading...</div>
+                          </div>
+                          <div className="w-5 h-5 rounded-full border-2 border-slate-200 border-t-[#3A4F6A] animate-spin flex-shrink-0" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Step 3 */}
+                  <div className={`flex gap-4 transition-all duration-300 ${activeStep === 3 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-400 scale-100'}`}>3</div>
+                    <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+                      <div className="font-medium text-slate-900">AI Verification</div>
+                      <div className="text-sm text-slate-500 mt-1">Coverage limits extracted and checked instantly.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
+                Zero-Friction <br />
+                <span className="text-[#3A4F6A]">Vendor Onboarding</span>
+              </h2>
+              <p className="text-lg text-slate-500 mb-8 leading-relaxed">
+                Vendors don't need to create an account. They just click the link, drag-and-drop their files, and they're done. 
+                It's the easiest compliance workflow they've ever used.
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div className="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
+                    <Lock className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <h4 className="font-semibold text-slate-900 mb-1">Secure Access</h4>
+                  <p className="text-sm text-slate-500">Encrypted links expire automatically after 7 days.</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+                    <Upload className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <h4 className="font-semibold text-slate-900 mb-1">Self-Correction</h4>
+                  <p className="text-sm text-slate-500">Vendors can update their own phone & address info.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-24 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-[#1a1a1a]">Loved by Operations Teams</h2>
+          </div>
+          <TestimonialCarousel testimonials={testimonials} />
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[#3A4F6A]" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay" />
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+            Ready to automate your compliance?
+          </h2>
+          <p className="text-xl text-slate-200 mb-10 max-w-2xl mx-auto">
+            Join hundreds of companies using Covera to reduce risk and save time.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
               to="/login"
-              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all"
-              style={{ 
-                backgroundColor: 'var(--primary)', 
-                color: 'var(--primary-foreground)',
-                fontWeight: 500
-              }}
+              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[#3A4F6A] hover:bg-slate-50 transition-all shadow-xl flex items-center justify-center gap-2"
             >
-              Start free trial
+              Start Free Trial
               <ArrowRight className="w-4 h-4" />
             </Link>
+            <button 
+              onClick={() => setIsContactSalesModalOpen(true)}
+              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-transparent border border-white/30 text-white hover:bg-white/10 transition-all"
+            >
+              Contact Sales
+            </button>
           </div>
+          <p className="mt-6 text-sm text-slate-400">
+            No credit card required for trial • Cancel anytime
+          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t" style={{ borderColor: 'var(--border)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-12 py-10">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-between gap-4">
-            <div className="text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              © 2026 Covera. All rights reserved.
-            </div>
-            <div className="flex items-center gap-6 md:gap-8 text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              <Link to="/privacy-policy">Privacy</Link>
-              <Link to="/terms-of-service">Terms</Link>
-              <Link to="/security">Security</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

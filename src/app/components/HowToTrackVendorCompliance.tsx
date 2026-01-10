@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle, Shield, Clock, AlertTriangle, FileText, ArrowRight } from 'lucide-react';
 import LandingNav from './LandingNav';
+import Footer from './Footer';
 
 export default function HowToTrackVendorCompliance() {
   return (
@@ -16,7 +17,7 @@ export default function HowToTrackVendorCompliance() {
             </span>
           </div>
           <h1 
-            className="mb-6 text-3xl sm:text-4xl md:text-5xl leading-tight"
+            className="mb-6 text-4xl md:text-5xl leading-tight"
             style={{ fontWeight: 600, letterSpacing: '-0.03em', color: 'var(--foreground)' }}
           >
             How to Track Vendor Insurance Compliance in 2026
@@ -511,13 +512,7 @@ export default function HowToTrackVendorCompliance() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#0A0F1E] text-white py-12 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-gray-400 text-sm">
-            © 2026 Covera. All rights reserved. | <Link to="/privacy-policy" className="hover:text-white">Privacy</Link> | <Link to="/terms-of-service" className="hover:text-white">Terms</Link>
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -4,9 +4,9 @@ export default function DashboardPreview() {
   return (
     <div className="w-full bg-[#fafaf9] rounded-lg overflow-hidden shadow-sm" style={{ fontFamily: 'Red Hat Display, system-ui, sans-serif' }}>
       {/* Main Layout */}
-      <div className="flex h-[280px] sm:h-[360px] md:h-[420px] lg:h-[480px]">
+      <div className="flex h-auto aspect-[4/3] sm:aspect-video max-h-[600px] w-full">
         {/* Left Sidebar - Scaled proportionally */}
-        <div className="flex w-[70px] sm:w-[100px] md:w-[130px] lg:w-[160px] bg-[#f5f5f4] border-r flex-col" style={{ borderColor: '#e7e5e4' }}>
+        <div className="flex w-[15%] max-w-[160px] min-w-[70px] bg-[#f5f5f4] border-r flex-col" style={{ borderColor: '#e7e5e4' }}>
           {/* Logo */}
           <div className="px-1.5 sm:px-2 md:px-2.5 lg:px-3 pt-1.5 sm:pt-2 md:pt-2.5 lg:pt-3 pb-1.5 sm:pb-2 md:pb-2.5 lg:pb-3">
             <svg className="w-8 sm:w-11 md:w-14 lg:w-16 h-2 sm:h-2.5 md:h-3.5 lg:h-4" viewBox="0 0 3000 630" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -207,10 +207,10 @@ export default function DashboardPreview() {
                   <h3 className="text-[7px] sm:text-[9px] md:text-[10px] lg:text-xs font-semibold mb-1 sm:mb-1.5 md:mb-1.5 lg:mb-2" style={{ color: '#1c1917' }}>Quick actions</h3>
                   <div className="space-y-0.5 sm:space-y-1 md:space-y-1 lg:space-y-1.5">
                     <button className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-white transition-all hover:opacity-90" style={{ backgroundColor: '#3A4F6A' }}>
-                      Add new vendor
+                      Invite vendor via link
                     </button>
                     <button className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium bg-white border transition-all hover:bg-gray-50" style={{ color: '#1c1917', borderColor: '#e7e5e4' }}>
-                      Upload COI
+                      Review uploads
                     </button>
                     <button className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium bg-white border transition-all hover:bg-gray-50" style={{ color: '#1c1917', borderColor: '#e7e5e4' }}>
                       Export compliance report

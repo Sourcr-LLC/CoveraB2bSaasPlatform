@@ -12,10 +12,15 @@ interface TestimonialCarouselProps {
   testimonials: Testimonial[];
 }
 
-export default function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
+export default function TestimonialCarousel({ testimonials = [] }: TestimonialCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Return null if no testimonials
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
 
   // Detect mobile/desktop
   useEffect(() => {

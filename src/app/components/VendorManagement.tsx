@@ -37,7 +37,7 @@ export default function VendorManagement() {
 
   const loadVendors = useCallback(async () => {
     try {
-      const { vendors: fetchedVendors } = isDemoMode ? { vendors: demoVendors } : await vendorApi.getAll();
+      const { vendors: fetchedVendors } = isDemoMode() ? { vendors: demoVendors } : await vendorApi.getAll();
       // Recalculate status for each vendor to ensure accuracy
       const vendorsWithUpdatedStatus = (fetchedVendors || []).map(vendor => ({
         ...vendor,

@@ -97,7 +97,7 @@ export default function VendorDetail() {
       setError(null);
     } catch (error: any) {
       if (error.message === 'Vendor not found') {
-        console.warn('Vendor lookup failed: Vendor not found');
+        // Vendor might have been deleted
         setError('Vendor not found');
       } else {
         console.error('Failed to load vendor data:', error);
@@ -364,30 +364,30 @@ export default function VendorDetail() {
       </Link>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8 md:mb-12 gap-4">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8 md:mb-12 gap-6">
         <div>
-          <h1 className="mb-4">{vendor.name}</h1>
-          <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+          <h1 className="mb-4 text-2xl md:text-3xl font-semibold text-gray-900">{vendor.name}</h1>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-sm" style={{ color: 'var(--foreground-muted)' }}>
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-              <span>{vendor.email}</span>
+              <Mail className="w-4 h-4 shrink-0" />
+              <span className="truncate max-w-[200px]">{vendor.email}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4" />
+              <Phone className="w-4 h-4 shrink-0" />
               <span>{vendor.phone}</span>
             </div>
             {vendor.address && (
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                <span>{vendor.address}</span>
+                <MapPin className="w-4 h-4 shrink-0" />
+                <span className="truncate max-w-[200px] sm:max-w-xs">{vendor.address}</span>
               </div>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
           <button
-            className="flex-1 md:flex-none px-6 py-3 rounded-lg border transition-all text-sm inline-flex items-center gap-2 justify-center"
+            className="flex-1 sm:flex-none px-6 py-3 rounded-lg border transition-all text-sm inline-flex items-center justify-center gap-2"
             style={{ 
               borderColor: 'var(--border)',
               color: 'var(--foreground)' 
@@ -399,7 +399,7 @@ export default function VendorDetail() {
             {isGeneratingLink ? 'Generating...' : 'Generate upload link'}
           </button>
           <button
-            className="flex-1 md:flex-none px-6 py-3 rounded-lg transition-all text-sm inline-flex items-center gap-2 justify-center"
+            className="flex-1 sm:flex-none px-6 py-3 rounded-lg transition-all text-sm inline-flex items-center justify-center gap-2"
             style={{ 
               backgroundColor: 'var(--primary)',
               color: 'var(--primary-foreground)'
@@ -419,7 +419,7 @@ export default function VendorDetail() {
         <div className="col-span-2 space-y-8">
           {/* Vendor Overview */}
           <div
-            className="rounded-2xl border p-8"
+            className="rounded-2xl border p-6 md:p-8"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
@@ -427,21 +427,21 @@ export default function VendorDetail() {
             }}
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl" style={{ color: 'var(--foreground)' }}>Vendor overview</h2>
+              <h2 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>Vendor overview</h2>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Status</div>
                 <div
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm border"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium border whitespace-nowrap"
                   style={{
                     backgroundColor: vendorStatusBadge.bg,
                     color: vendorStatusBadge.color,
                     borderColor: vendorStatusBadge.border
                   }}
                 >
-                  <StatusIcon className="w-4 h-4" />
+                  <StatusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   {vendorStatusBadge.label}
                 </div>
               </div>
@@ -449,7 +449,14 @@ export default function VendorDetail() {
               <div>
                 <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Next expiration</div>
                 <div style={{ color: 'var(--foreground)' }}>
-                  {vendor.nextExpiry ? `${formatDate(vendor.nextExpiry)} (${getDaysUntil(vendor.nextExpiry)} days)` : 'N/A'}
+                  {vendor.nextExpiry ? (
+                    <div>
+                      {formatDate(vendor.nextExpiry)}
+                      <div className="text-xs mt-1" style={{ color: getDaysUntil(vendor.nextExpiry) < 30 ? 'var(--status-non-compliant)' : 'var(--foreground-muted)' }}>
+                        ({getDaysUntil(vendor.nextExpiry)} days)
+                      </div>
+                    </div>
+                  ) : 'N/A'}
                 </div>
               </div>
 
@@ -460,7 +467,11 @@ export default function VendorDetail() {
 
               <div>
                 <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Address</div>
-                <div style={{ color: 'var(--foreground)' }}>{vendor.address || 'N/A'}</div>
+                <div style={{ color: 'var(--foreground)' }}>
+                  {vendor.address ? (
+                    <div className="break-words">{vendor.address}</div>
+                  ) : 'N/A'}
+                </div>
               </div>
             </div>
           </div>
@@ -524,38 +535,38 @@ export default function VendorDetail() {
                       }}
                     >
                       <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-base" style={{ color: 'var(--foreground)' }}>
-                              {policy.type}
-                            </h3>
-                            <div
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border"
-                              style={{
-                                backgroundColor: policyStatus.bg,
-                                color: policyStatus.color,
-                                borderColor: policyStatus.border
-                              }}
-                            >
-                              <PolicyIcon className="w-3.5 h-3.5" />
-                              {policyStatus.label}
-                            </div>
-                            
-                            {/* Warning Badge */}
-                            {gapWarning && (
-                              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 border border-red-200">
-                                <AlertTriangle className="w-3 h-3" />
-                                Coverage Gap
-                              </div>
-                            )}
+                        <h3 className="text-base font-medium" style={{ color: 'var(--foreground)' }}>
+                          {policy.type}
+                        </h3>
+                        
+                        <div className="flex items-center gap-2">
+                          {/* Status Badge */}
+                          <div
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border"
+                            style={{
+                              backgroundColor: policyStatus.bg,
+                              color: policyStatus.color,
+                              borderColor: policyStatus.border
+                            }}
+                          >
+                            <PolicyIcon className="w-3.5 h-3.5" />
+                            {policyStatus.label}
                           </div>
+
+                          {/* Warning Badge */}
+                          {gapWarning && (
+                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 border border-red-200">
+                              <AlertTriangle className="w-3 h-3" />
+                              <span className="hidden sm:inline">Coverage Gap</span>
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div className="grid grid-cols-3 gap-2 sm:gap-4 text-sm">
                         <div>
-                          <div className="mb-1" style={{ color: 'var(--foreground-muted)' }}>Coverage limit</div>
-                          <div style={{ color: gapWarning ? '#b91c1c' : 'var(--foreground)', fontWeight: gapWarning ? 600 : 400 }}>
+                          <div className="mb-1 text-xs sm:text-sm" style={{ color: 'var(--foreground-muted)' }}>Coverage limit</div>
+                          <div className="text-sm font-medium" style={{ color: gapWarning ? '#b91c1c' : 'var(--foreground)' }}>
                             {limitDisplay}
                           </div>
                           {gapWarning && (
@@ -565,14 +576,14 @@ export default function VendorDetail() {
                           )}
                         </div>
                         <div>
-                          <div className="mb-1" style={{ color: 'var(--foreground-muted)' }}>Expiry date</div>
-                          <div style={{ color: 'var(--foreground)' }}>
+                          <div className="mb-1 text-xs sm:text-sm" style={{ color: 'var(--foreground-muted)' }}>Expiry date</div>
+                          <div className="text-sm" style={{ color: 'var(--foreground)' }}>
                             {policy.expiryDate ? formatDate(policy.expiryDate) : 'N/A'}
                           </div>
                         </div>
                         <div>
-                          <div className="mb-1" style={{ color: 'var(--foreground-muted)' }}>Carrier</div>
-                          <div style={{ color: 'var(--foreground)' }}>{policy.carrier || 'N/A'}</div>
+                          <div className="mb-1 text-xs sm:text-sm" style={{ color: 'var(--foreground-muted)' }}>Carrier</div>
+                          <div className="text-sm" style={{ color: 'var(--foreground)' }}>{policy.carrier || 'N/A'}</div>
                         </div>
                       </div>
                     </div>
@@ -588,14 +599,14 @@ export default function VendorDetail() {
 
           {/* Documents */}
           <div
-            className="rounded-2xl border p-8"
+            className="rounded-2xl border p-6 md:p-8"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
               boxShadow: 'var(--shadow-md)'
             }}
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <h2 className="text-xl" style={{ color: 'var(--foreground)' }}>Certificates of Insurance (COI)</h2>
             </div>
 
@@ -607,14 +618,14 @@ export default function VendorDetail() {
                 backgroundColor: 'var(--background)'
               }}
             >
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col md:flex-row items-center gap-4">
                 <label
                   htmlFor="coi-upload"
-                  className="flex-1 cursor-pointer"
+                  className="w-full flex-1 cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div 
-                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                       style={{
                         backgroundColor: 'rgba(58, 79, 106, 0.08)',
                         border: '1px solid rgba(58, 79, 106, 0.15)'
@@ -622,10 +633,10 @@ export default function VendorDetail() {
                     >
                       <FileUp className="w-6 h-6" style={{ color: 'var(--primary)' }} />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       {selectedFile ? (
                         <>
-                          <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>
+                          <div className="text-sm mb-1 truncate" style={{ color: 'var(--foreground)' }}>
                             {selectedFile.name}
                           </div>
                           <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
@@ -656,7 +667,7 @@ export default function VendorDetail() {
                   <button
                     onClick={handleUploadCOI}
                     disabled={isUploadingCOI}
-                    className="px-6 py-3 rounded-lg transition-all text-sm inline-flex items-center gap-2"
+                    className="w-full md:w-auto px-6 py-3 rounded-lg transition-all text-sm inline-flex items-center justify-center gap-2"
                     style={{
                       backgroundColor: 'var(--primary)',
                       color: 'var(--primary-foreground)',
@@ -677,22 +688,22 @@ export default function VendorDetail() {
                 vendor.documents.map((doc: any, index: number) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-4 rounded-lg border transition-all hover:shadow-sm"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-4 rounded-lg border transition-all hover:shadow-sm"
                     style={{
                       borderColor: 'var(--border)',
                       backgroundColor: 'var(--background)'
                     }}
                   >
-                    <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5" style={{ color: 'var(--foreground-muted)' }} />
-                      <div>
-                        <div className="text-sm" style={{ color: 'var(--foreground)' }}>{doc.name}</div>
-                        <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <FileText className="w-5 h-5 shrink-0" style={{ color: 'var(--foreground-muted)' }} />
+                      <div className="min-w-0">
+                        <div className="text-sm truncate" style={{ color: 'var(--foreground)' }}>{doc.name}</div>
+                        <div className="text-xs truncate" style={{ color: 'var(--foreground-muted)' }}>
                           {doc.type} • Uploaded {doc.uploaded || 'recently'} • {doc.size || 'N/A'}
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleViewDocument(doc)}
                         className="p-2 rounded-lg transition-colors hover:bg-gray-100"

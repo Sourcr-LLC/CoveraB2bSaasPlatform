@@ -16,7 +16,7 @@ export default function WhatHappensVendorUninsured() {
             </span>
           </div>
           <h1 
-            className="mb-6 text-3xl sm:text-4xl md:text-5xl leading-tight"
+            className="mb-6 text-4xl md:text-5xl leading-tight"
             style={{ fontWeight: 600, letterSpacing: '-0.03em', color: 'var(--foreground)' }}
           >
             What Happens If a Vendor Is Uninsured? The Real Costs & Consequences

@@ -3,6 +3,7 @@ import { Building2, CheckCircle, Shield, ArrowRight, Wrench, Users, Clock } from
 import { useState } from 'react';
 import SEO from './SEO';
 import LandingNav from './LandingNav';
+import Footer from './Footer';
 import DemoModal from './DemoModal';
 
 export default function IndustriesFacilities() {
@@ -56,7 +57,7 @@ export default function IndustriesFacilities() {
               Vendor compliance for facilities management operations
             </h1>
             
-            <p className="text-sm sm:text-base md:text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
+            <p className="text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
               Track cleaning services, maintenance contractors, and service provider compliance across all managed facilities. Eliminate manual COI tracking and ensure continuous vendor coverage.
             </p>
             
@@ -245,20 +246,7 @@ export default function IndustriesFacilities() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t" style={{ borderColor: 'var(--border)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-12 py-10">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-between gap-4">
-            <div className="text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              © 2026 Covera. All rights reserved.
-            </div>
-            <div className="flex items-center gap-6 md:gap-8 text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 500 }}>
-              <Link to="/privacy-policy">Privacy</Link>
-              <Link to="/terms-of-service">Terms</Link>
-              <Link to="/security">Security</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Demo Modal */}
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />

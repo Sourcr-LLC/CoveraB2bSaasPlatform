@@ -163,6 +163,7 @@ export const vendorApi = {
   generateUploadLink: async (id: string) => {
     return apiCall(`/vendors/${id}/upload-link`, {
       method: 'POST',
+      body: JSON.stringify({ origin: window.location.origin }),
     });
   },
 

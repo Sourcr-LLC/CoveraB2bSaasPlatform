@@ -132,51 +132,51 @@ export default function VendorPortal() {
 
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'compliant': return 'text-emerald-600 bg-emerald-50 border-emerald-200';
-      case 'at-risk': return 'text-amber-600 bg-amber-50 border-amber-200';
-      case 'non-compliant': return 'text-red-600 bg-red-50 border-red-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      case 'compliant': return 'text-[var(--status-compliant)] bg-[var(--status-compliant-bg)] border-[var(--status-compliant-border)]';
+      case 'at-risk': return 'text-[var(--status-at-risk)] bg-[var(--status-at-risk-bg)] border-[var(--status-at-risk-border)]';
+      case 'non-compliant': return 'text-[var(--status-non-compliant)] bg-[var(--status-non-compliant-bg)] border-[var(--status-non-compliant-border)]';
+      default: return 'text-[var(--foreground-muted)] bg-gray-50 border-[var(--border)]';
     }
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <Loader2 className="w-8 h-8 animate-spin text-[var(--primary)]" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)] p-4">
+        <div className="max-w-md w-full bg-[var(--card)] rounded-2xl shadow-lg p-8 text-center border border-[var(--border)]">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <AlertCircle className="w-8 h-8 text-red-600" />
+            <AlertCircle className="w-8 h-8 text-[var(--status-non-compliant)]" />
           </div>
-          <h1 className="text-xl font-semibold text-gray-900 mb-2">Access Denied</h1>
-          <p className="text-gray-600 mb-6">{error}</p>
-          <p className="text-sm text-gray-500">Please contact {organizationName} if you believe this is an error.</p>
+          <h1 className="text-xl font-semibold text-[var(--foreground)] mb-2">Access Denied</h1>
+          <p className="text-[var(--foreground-muted)] mb-6">{error}</p>
+          <p className="text-sm text-[var(--foreground-subtle)]">Please contact {organizationName} if you believe this is an error.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-slate-900 selection:bg-slate-200">
+    <div className="min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)] selection:bg-[var(--primary)] selection:text-white">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="sticky top-0 z-10 backdrop-blur-xl bg-white/70 border-b border-[var(--border-subtle)] transition-all duration-300">
         <div className="max-w-4xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-[var(--primary)] rounded-lg flex items-center justify-center text-white font-bold text-lg">
               C
             </div>
             <div>
-              <div className="text-xs font-medium text-slate-500 uppercase tracking-wider">Vendor Portal</div>
-              <div className="text-sm md:text-base font-semibold text-slate-900">{organizationName}</div>
+              <div className="text-xs font-medium text-[var(--foreground-muted)] uppercase tracking-wider">Vendor Portal</div>
+              <div className="text-sm md:text-base font-semibold text-[var(--foreground)]">{organizationName}</div>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-sm text-slate-500">
+          <div className="flex items-center gap-2 text-sm text-[var(--foreground-muted)]">
             <Shield className="w-4 h-4" />
             <span className="hidden md:inline">Secure Connection</span>
           </div>
@@ -186,18 +186,18 @@ export default function VendorPortal() {
       <main className="max-w-4xl mx-auto px-4 md:px-8 py-8 md:py-12 space-y-8">
         {/* Welcome Section */}
         <div className="space-y-2">
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+          <h1 className="text-2xl md:text-3xl font-bold text-[var(--foreground)]">
             Welcome, {vendor.name}
           </h1>
-          <p className="text-slate-600">
+          <p className="text-[var(--foreground-muted)]">
             Please review your information and ensure your compliance documents are up to date.
           </p>
         </div>
 
         {/* Status Card */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm">
-          <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-            <FileCheck className="w-5 h-5 text-slate-500" />
+        <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-6 md:p-8 shadow-sm">
+          <h2 className="text-lg font-semibold mb-6 flex items-center gap-2 text-[var(--foreground)]">
+            <FileCheck className="w-5 h-5 text-[var(--foreground-muted)]" />
             Compliance Status
           </h2>
           
@@ -212,25 +212,25 @@ export default function VendorPortal() {
               </div>
             </div>
 
-            <div className="p-5 bg-slate-50 rounded-xl border border-slate-100">
-              <div className="text-sm text-slate-500 mb-1">Insurance Expiry</div>
-              <div className="text-xl font-semibold text-slate-900">
+            <div className="p-5 bg-[var(--panel)] rounded-xl border border-[var(--border-subtle)]">
+              <div className="text-sm text-[var(--foreground-muted)] mb-1">Insurance Expiry</div>
+              <div className="text-xl font-semibold text-[var(--foreground)]">
                 {vendor.insuranceExpiry ? new Date(vendor.insuranceExpiry).toLocaleDateString() : 'None on file'}
               </div>
             </div>
             
-            <div className="p-5 bg-slate-50 rounded-xl border border-slate-100">
-              <div className="text-sm text-slate-500 mb-1">W9 Status</div>
-              <div className="text-xl font-semibold text-slate-900 flex items-center gap-2">
+            <div className="p-5 bg-[var(--panel)] rounded-xl border border-[var(--border-subtle)]">
+              <div className="text-sm text-[var(--foreground-muted)] mb-1">W9 Status</div>
+              <div className="text-xl font-semibold text-[var(--foreground)] flex items-center gap-2">
                 {vendor.w9Uploaded ? (
                   <>
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                    <span className="text-emerald-700">On File</span>
+                    <CheckCircle2 className="w-5 h-5 text-[var(--status-compliant)]" />
+                    <span className="text-[var(--status-compliant)]">On File</span>
                   </>
                 ) : (
                   <>
-                    <AlertCircle className="w-5 h-5 text-amber-500" />
-                    <span className="text-amber-700">Missing</span>
+                    <AlertCircle className="w-5 h-5 text-[var(--status-at-risk)]" />
+                    <span className="text-[var(--status-at-risk)]">Missing</span>
                   </>
                 )}
               </div>
@@ -241,26 +241,26 @@ export default function VendorPortal() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Document Upload Section */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm h-full">
-              <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                <Upload className="w-5 h-5 text-slate-500" />
+            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-6 md:p-8 shadow-sm h-full">
+              <h2 className="text-lg font-semibold mb-6 flex items-center gap-2 text-[var(--foreground)]">
+                <Upload className="w-5 h-5 text-[var(--foreground-muted)]" />
                 Upload Documents
               </h2>
               
               <div className="space-y-6">
                 {/* COI Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
                     Certificate of Insurance (COI)
                   </label>
                   <div className="relative group">
-                    <div className="absolute inset-0 bg-primary/5 rounded-lg border-2 border-dashed border-primary/20 pointer-events-none group-hover:bg-primary/10 transition-colors" />
+                    <div className="absolute inset-0 bg-[var(--primary)] rounded-lg border-2 border-dashed border-[var(--primary)] opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity" />
                     <div className="p-6 text-center relative z-10">
-                      <FileText className="w-8 h-8 text-primary mx-auto mb-3" />
-                      <p className="text-sm text-slate-600 mb-4">
+                      <FileText className="w-8 h-8 text-[var(--primary)] mx-auto mb-3" />
+                      <p className="text-sm text-[var(--foreground-muted)] mb-4">
                         Drag & drop or click to upload PDF/Image
                       </p>
-                      <label className="inline-flex items-center justify-center px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors cursor-pointer w-full sm:w-auto">
+                      <label className="inline-flex items-center justify-center px-4 py-2 bg-[var(--primary)] text-white text-sm font-medium rounded-lg hover:bg-[var(--primary-hover)] transition-colors cursor-pointer w-full sm:w-auto shadow-sm">
                         {isUploadingCOI ? (
                           <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -282,27 +282,27 @@ export default function VendorPortal() {
                       </label>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">
+                  <p className="text-xs text-[var(--foreground-muted)] mt-2">
                     Our system will automatically scan your certificate for coverage limits and dates.
                   </p>
                 </div>
 
-                <div className="h-px bg-gray-100" />
+                <div className="h-px bg-[var(--border-subtle)]" />
 
                 {/* W9 Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
                     W9 Form
                   </label>
                   <div className="flex items-center gap-4">
-                    <div className="flex-1 bg-slate-50 rounded-lg border border-slate-200 p-4 flex items-center justify-between">
+                    <div className="flex-1 bg-[var(--panel)] rounded-lg border border-[var(--border-subtle)] p-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <FileText className="w-5 h-5 text-slate-400" />
-                        <span className="text-sm text-slate-600">
+                        <FileText className="w-5 h-5 text-[var(--foreground-muted)]" />
+                        <span className="text-sm text-[var(--foreground-muted)]">
                           {vendor.w9Uploaded ? 'W9_Form.pdf' : 'No W9 uploaded'}
                         </span>
                       </div>
-                      <label className="text-sm text-primary font-medium cursor-pointer hover:underline">
+                      <label className="text-sm text-[var(--primary)] font-medium cursor-pointer hover:underline">
                         {isUploadingW9 ? 'Uploading...' : 'Upload'}
                         <input 
                           type="file" 
@@ -321,40 +321,40 @@ export default function VendorPortal() {
 
           {/* Contact Info Form */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm h-full">
-              <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                <User className="w-5 h-5 text-slate-500" />
+            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-6 md:p-8 shadow-sm h-full">
+              <h2 className="text-lg font-semibold mb-6 flex items-center gap-2 text-[var(--foreground)]">
+                <User className="w-5 h-5 text-[var(--foreground-muted)]" />
                 Vendor Information
               </h2>
               
               <form onSubmit={handleUpdateInfo} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
                     Company Name
                   </label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)]" />
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[var(--input-border)] bg-[var(--input-background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all text-sm text-[var(--foreground)]"
                       placeholder="Company Name"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
                     Contact Person
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)]" />
                     <input
                       type="text"
                       value={formData.contactName}
                       onChange={(e) => setFormData({...formData, contactName: e.target.value})}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[var(--input-border)] bg-[var(--input-background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all text-sm text-[var(--foreground)]"
                       placeholder="Primary Contact"
                     />
                   </div>
@@ -362,32 +362,32 @@ export default function VendorPortal() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
                       Email
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)]" />
                       <input
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[var(--input-border)] bg-[var(--input-background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all text-sm text-[var(--foreground)]"
                         placeholder="Email"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
                       Phone
                     </label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)]" />
                       <input
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[var(--input-border)] bg-[var(--input-background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all text-sm text-[var(--foreground)]"
                         placeholder="Phone"
                       />
                     </div>
@@ -395,16 +395,16 @@ export default function VendorPortal() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
                     Address
                   </label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                    <MapPin className="absolute left-3 top-3 w-4 h-4 text-[var(--foreground-muted)]" />
                     <textarea
                       rows={3}
                       value={formData.address}
                       onChange={(e) => setFormData({...formData, address: e.target.value})}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[var(--input-border)] bg-[var(--input-background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all text-sm text-[var(--foreground)]"
                       placeholder="Business Address"
                     />
                   </div>
@@ -414,7 +414,7 @@ export default function VendorPortal() {
                   <button
                     type="submit"
                     disabled={isSaving}
-                    className="w-full bg-slate-900 text-white font-medium py-2.5 rounded-lg hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full bg-[var(--primary)] text-white font-medium py-2.5 rounded-lg hover:bg-[var(--primary-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md"
                   >
                     {isSaving ? (
                       <>
@@ -431,7 +431,7 @@ export default function VendorPortal() {
           </div>
         </div>
         
-        <div className="text-center text-sm text-slate-400 py-8">
+        <div className="text-center text-sm text-[var(--foreground-muted)] py-8">
           Powered by Covera • {new Date().getFullYear()}
         </div>
       </main>
