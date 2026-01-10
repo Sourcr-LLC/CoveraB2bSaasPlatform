@@ -112,7 +112,7 @@ export default function LandingPage() {
               <span className="text-[#3A4F6A]">Without Spreadsheets</span>
             </motion.h1>
             
-            <motion.p variants={fadeInUp} className="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <motion.p variants={fadeInUp} className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
               Automatically track COIs, prevent expired coverage, and stay audit-ready without chasing vendors or exposing your business to legal risk.
             </motion.p>
             
@@ -189,7 +189,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">The Old Way is Broken</h2>
-            <p className="text-lg text-slate-500">
+            <p className="text-lg text-slate-600">
               Why are you still manually data-entering expirations from PDF attachments?
               There is a better way.
             </p>
@@ -288,7 +288,7 @@ export default function LandingPage() {
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-400 scale-100'}`}>1</div>
                     <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-900'}`}>Generate Link</div>
-                      <div className="text-sm text-slate-600 mt-1">Create a secure, time-limited upload token.</div>
+                      <div className="text-sm text-slate-700 mt-1">Create a secure, time-limited upload token.</div>
                     </div>
                   </div>
                   {/* Step 2 */}
@@ -303,8 +303,8 @@ export default function LandingPage() {
                         <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border border-slate-100">
                           <FileText className="w-5 h-5 text-slate-400 flex-shrink-0" />
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium text-slate-700 truncate">GL_Insurance_2024.pdf</div>
-                            <div className="text-xs text-slate-500">2.4 MB • Uploading...</div>
+                            <div className="text-sm font-medium text-slate-800 truncate">GL_Insurance_2024.pdf</div>
+                            <div className="text-xs text-slate-600">2.4 MB • Uploading...</div>
                           </div>
                           <div className="w-5 h-5 rounded-full border-2 border-slate-200 border-t-[#3A4F6A] animate-spin flex-shrink-0" />
                         </div>
@@ -316,7 +316,7 @@ export default function LandingPage() {
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-400 scale-100'}`}>3</div>
                     <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className="font-medium text-slate-900">AI Verification</div>
-                      <div className="text-sm text-slate-600 mt-1">Coverage limits extracted and checked instantly.</div>
+                      <div className="text-sm text-slate-700 mt-1">Coverage limits extracted and checked instantly.</div>
                     </div>
                   </div>
                 </div>
@@ -328,7 +328,7 @@ export default function LandingPage() {
                 Zero-Friction <br />
                 <span className="text-[#3A4F6A]">Vendor Onboarding</span>
               </h2>
-              <p className="text-lg text-slate-500 mb-8 leading-relaxed">
+              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                 Vendors don't need to create an account. They just click the link, drag-and-drop their files, and they're done. 
                 It's the easiest compliance workflow they've ever used.
               </p>
@@ -339,14 +339,14 @@ export default function LandingPage() {
                     <Lock className="w-5 h-5 text-blue-600" />
                   </div>
                   <h3 className="font-semibold text-slate-900 mb-1">Secure Access</h3>
-                  <p className="text-sm text-slate-500">Encrypted links expire automatically after 7 days.</p>
+                  <p className="text-sm text-slate-600">Encrypted links expire automatically after 7 days.</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
                   <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
                     <Upload className="w-5 h-5 text-emerald-600" />
                   </div>
                   <h3 className="font-semibold text-slate-900 mb-1">Self-Correction</h3>
-                  <p className="text-sm text-slate-500">Vendors can update their own phone & address info.</p>
+                  <p className="text-sm text-slate-600">Vendors can update their own phone & address info.</p>
                 </div>
               </div>
             </div>

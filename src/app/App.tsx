@@ -84,6 +84,10 @@ export default function App() {
 
   // Disable pinch-to-zoom on mobile
   useEffect(() => {
+    // Note: Disabling zoom is generally bad for accessibility, but can be useful for 
+    // web apps that need to feel like native apps. We're keeping standard viewport 
+    // settings for better accessibility per audit recommendations.
+    /*
     const viewport = document.querySelector('meta[name=viewport]');
     if (viewport) {
       viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
@@ -93,31 +97,7 @@ export default function App() {
       meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
       document.getElementsByTagName('head')[0].appendChild(meta);
     }
-
-    // Prevent pinch-to-zoom with touch events
-    const preventZoom = (e: TouchEvent) => {
-      if (e.touches.length > 1) {
-        e.preventDefault();
-      }
-    };
-
-    // Prevent double-tap zoom
-    let lastTouchEnd = 0;
-    const preventDoubleTapZoom = (e: TouchEvent) => {
-      const now = Date.now();
-      if (now - lastTouchEnd <= 300) {
-        e.preventDefault();
-      }
-      lastTouchEnd = now;
-    };
-
-    document.addEventListener('touchstart', preventZoom, { passive: false });
-    document.addEventListener('touchend', preventDoubleTapZoom, { passive: false });
-
-    return () => {
-      document.removeEventListener('touchstart', preventZoom);
-      document.removeEventListener('touchend', preventDoubleTapZoom);
-    };
+    */
   }, []);
 
   useEffect(() => {

@@ -21,32 +21,32 @@ export default function DashboardPreview() {
               <span>Dashboard</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <Users className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Vendors</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <Shield className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Insurance</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <FileText className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Contracts</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <FileCheck className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Compliance</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <AlertCircle className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Alerts</span>
             </div>
             
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <TrendingUp className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Reports</span>
             </div>
@@ -54,15 +54,15 @@ export default function DashboardPreview() {
           
           {/* Bottom section */}
           <div className="p-1 sm:p-1.5 md:p-1.5 lg:p-2 border-t space-y-0.5" style={{ borderColor: '#e7e5e4' }}>
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <CreditCard className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Billing</span>
             </div>
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <Settings className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Settings</span>
             </div>
-            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-pointer" style={{ color: '#78716c' }}>
+            <div className="px-1 sm:px-1.5 md:px-2 lg:px-2.5 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-normal hover:bg-white/50 transition-colors cursor-default" style={{ color: '#78716c' }}>
               <LogOut className="w-2 sm:w-2.5 md:w-3 lg:w-3.5 h-2 sm:h-2.5 md:h-3 lg:h-3.5" strokeWidth={2} />
               <span>Sign out</span>
             </div>
@@ -170,7 +170,7 @@ export default function DashboardPreview() {
                         <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px]" style={{ color: '#a8a29e' }}>{row.days}</div>
                       </div>
                       <div className="col-span-2">
-                        <button className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[10px] font-medium underline hover:no-underline" style={{ color: '#3A4F6A' }}>Send reminder</button>
+                        <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[10px] font-medium underline hover:no-underline cursor-default" style={{ color: '#3A4F6A' }}>Send reminder</div>
                       </div>
                     </div>
                   ))}
@@ -197,24 +197,24 @@ export default function DashboardPreview() {
                       </div>
                     ))}
                   </div>
-                  <button className="w-full mt-1 sm:mt-1.5 md:mt-2 lg:mt-3 text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-center py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded hover:bg-gray-50 transition-colors" style={{ color: '#3A4F6A' }}>
+                  <div className="w-full mt-1 sm:mt-1.5 md:mt-2 lg:mt-3 text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-center py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded hover:bg-gray-50 transition-colors cursor-default" style={{ color: '#3A4F6A' }}>
                     View all expirations →
-                  </button>
+                  </div>
                 </div>
                 
                 {/* Quick actions */}
                 <div className="rounded-lg bg-white border p-1 sm:p-1.5 md:p-2 lg:p-2.5" style={{ borderColor: '#e7e5e4' }}>
                   <h3 className="text-[7px] sm:text-[9px] md:text-[10px] lg:text-xs font-semibold mb-1 sm:mb-1.5 md:mb-1.5 lg:mb-2" style={{ color: '#1c1917' }}>Quick actions</h3>
                   <div className="space-y-0.5 sm:space-y-1 md:space-y-1 lg:space-y-1.5">
-                    <button className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-white transition-all hover:opacity-90" style={{ backgroundColor: '#3A4F6A' }}>
+                    <div className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-white transition-all hover:opacity-90 text-center cursor-default" style={{ backgroundColor: '#3A4F6A' }}>
                       Invite vendor via link
-                    </button>
-                    <button className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium bg-white border transition-all hover:bg-gray-50" style={{ color: '#1c1917', borderColor: '#e7e5e4' }}>
+                    </div>
+                    <div className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium bg-white border transition-all hover:bg-gray-50 text-center cursor-default" style={{ color: '#1c1917', borderColor: '#e7e5e4' }}>
                       Review uploads
-                    </button>
-                    <button className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium bg-white border transition-all hover:bg-gray-50" style={{ color: '#1c1917', borderColor: '#e7e5e4' }}>
+                    </div>
+                    <div className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium bg-white border transition-all hover:bg-gray-50 text-center cursor-default" style={{ color: '#1c1917', borderColor: '#e7e5e4' }}>
                       Export compliance report
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
