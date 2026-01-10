@@ -580,6 +580,134 @@ export default function Settings() {
           </button>
         </div>
 
+        {/* Demo Data Generation */}
+        <div
+          className="rounded-xl border p-8 mb-6"
+          style={{
+            backgroundColor: 'var(--card)',
+            borderColor: 'var(--border)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Eye size={20} style={{ color: 'var(--primary)' }} />
+                <h3 className="text-lg" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+                  Demo Account
+                </h3>
+              </div>
+              <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                Populate your account with realistic sample data (vendors, insurance policies, etc.) to showcase the platform.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <button
+              onClick={async () => {
+                if (confirm('This will add sample data to your account. Are you sure?')) {
+                  setLoading(true);
+                  try {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    const accessToken = session?.access_token;
+                    
+                    if (!accessToken) {
+                      toast.error('Not authenticated');
+                      return;
+                    }
+
+                    const response = await fetch(
+                      `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/seed-demo-data`,
+                      {
+                        method: 'POST',
+                        headers: {
+                          'Authorization': `Bearer ${accessToken}`,
+                        },
+                      }
+                    );
+
+                    if (response.ok) {
+                      const data = await response.json();
+                      toast.success(data.message || 'Demo data generated successfully');
+                      // Reload to reflect changes
+                      setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                      toast.error('Failed to generate demo data');
+                    }
+                  } catch (error) {
+                    console.error('Error generating demo data:', error);
+                    toast.error('An error occurred');
+                  } finally {
+                    setLoading(false);
+                  }
+                }
+              }}
+              disabled={loading}
+              className="px-6 py-3 rounded-lg text-sm transition-all"
+              style={{
+                backgroundColor: 'var(--primary)',
+                color: 'var(--primary-foreground)',
+                fontWeight: 500,
+                opacity: loading ? 0.7 : 1,
+              }}
+            >
+              {loading ? 'Processing...' : 'Generate Demo Data'}
+            </button>
+
+            <button
+              onClick={async () => {
+                if (confirm('This will remove all demo vendors from your account. Are you sure?')) {
+                  setLoading(true);
+                  try {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    const accessToken = session?.access_token;
+                    
+                    if (!accessToken) {
+                      toast.error('Not authenticated');
+                      return;
+                    }
+
+                    const response = await fetch(
+                      `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/clear-demo-data`,
+                      {
+                        method: 'POST',
+                        headers: {
+                          'Authorization': `Bearer ${accessToken}`,
+                        },
+                      }
+                    );
+
+                    if (response.ok) {
+                      const data = await response.json();
+                      toast.success(data.message || 'Demo data cleared successfully');
+                      // Reload to reflect changes
+                      setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                      toast.error('Failed to clear demo data');
+                    }
+                  } catch (error) {
+                    console.error('Error clearing demo data:', error);
+                    toast.error('An error occurred');
+                  } finally {
+                    setLoading(false);
+                  }
+                }
+              }}
+              disabled={loading}
+              className="px-6 py-3 rounded-lg text-sm transition-all border"
+              style={{
+                borderColor: 'rgba(239, 68, 68, 0.3)',
+                backgroundColor: 'rgba(239, 68, 68, 0.05)',
+                color: '#ef4444',
+                fontWeight: 500,
+                opacity: loading ? 0.7 : 1,
+              }}
+            >
+              {loading ? 'Processing...' : 'Clear Demo Data'}
+            </button>
+          </div>
+        </div>
+
         {/* Demo Mode Toggle - Hidden for now, will be feature for certain users */}
         {/* <div
           className="rounded-xl border p-8"

@@ -6,6 +6,7 @@ import * as kv from "./kv_store.tsx";
 import { extractInsuranceDataFromDocument } from "./extract_insurance.tsx";
 import { extractContractDataFromDocument } from "./extract_contract.tsx";
 import { handleTestEmail } from "./test_email.tsx";
+import { seedDemoData } from "./seed_demo.tsx";
 
 const app = new Hono();
 
@@ -189,6 +190,75 @@ app.get("/make-server-be7827e3/health", (c) => {
 // Test email endpoint - ADDED HERE FOR VISIBILITY
 app.post("/make-server-be7827e3/test-email", async (c) => {
   return handleTestEmail(c, verifyUser, kv);
+});
+
+// Seed demo data endpoint
+app.post("/make-server-be7827e3/seed-demo-data", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    const vendors = await seedDemoData(user.id);
+    
+    // Log overall activity
+    await logActivity(user.id, 'system', 'demo_seed', `Generated ${vendors.length} demo vendors`, 'positive');
+
+    return c.json({ 
+      success: true, 
+      message: `Successfully created ${vendors.length} demo vendors`,
+      count: vendors.length 
+    });
+  } catch (error) {
+    console.error('Seed demo data error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Clear demo data endpoint
+app.post("/make-server-be7827e3/clear-demo-data", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    // Get all vendors
+    const vendors = await kv.getByPrefix(`vendor:${user.id}:`);
+    
+    // Filter for demo vendors
+    const demoVendors = vendors.filter((v: any) => 
+      v.isDemo === true || 
+      (v.notes && typeof v.notes === 'string' && v.notes.startsWith('Demo vendor'))
+    );
+    
+    if (demoVendors.length === 0) {
+      return c.json({ 
+        success: true, 
+        message: 'No demo data found to clear',
+        count: 0
+      });
+    }
+
+    // Delete them
+    const keysToDelete = demoVendors.map((v: any) => `vendor:${user.id}:${v.id}`);
+    await kv.mdel(keysToDelete);
+    
+    // Log activity
+    await logActivity(user.id, 'system', 'demo_clear', `Cleared ${demoVendors.length} demo vendors`, 'neutral');
+
+    return c.json({ 
+      success: true, 
+      message: `Successfully removed ${demoVendors.length} demo vendors`,
+      count: demoVendors.length 
+    });
+  } catch (error) {
+    console.error('Clear demo data error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
 });
 
 // Demo request endpoint - sends demo request to admin email (no auth required for landing page)
@@ -892,6 +962,334 @@ app.get("/make-server-be7827e3/vendors", async (c) => {
   }
 });
 
+// Vendor Portal Endpoints
+
+// Validate upload token and get vendor data
+app.get("/make-server-be7827e3/vendor-portal/:token", async (c) => {
+  try {
+    const token = c.req.param('token');
+    const tokenData = await kv.get(`upload_token:${token}`);
+    
+    if (!tokenData) {
+      return c.json({ error: 'Invalid or expired token' }, 404);
+    }
+    
+    // Validate token expiry (optional, say 7 days)
+    const createdAt = new Date(tokenData.createdAt);
+    const now = new Date();
+    const diffDays = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
+    
+    if (diffDays > 7) {
+      return c.json({ error: 'Token expired' }, 401);
+    }
+    
+    const { userId, vendorId } = tokenData;
+    const vendor = await kv.get(`vendor:${userId}:${vendorId}`);
+    
+    if (!vendor) {
+      return c.json({ error: 'Vendor not found' }, 404);
+    }
+    
+    // Return only necessary data for the portal (public safe)
+    return c.json({
+      vendor: {
+        id: vendor.id,
+        name: vendor.name,
+        email: vendor.email,
+        phone: vendor.phone,
+        address: vendor.address,
+        vendorType: vendor.vendorType,
+        insuranceExpiry: vendor.insuranceExpiry,
+        insurancePolicies: vendor.insurancePolicies,
+        status: vendor.status,
+        missingDocs: vendor.missingDocs,
+        documents: vendor.documents // To show what they've already uploaded
+      },
+      organizationName: 'Covera Client' // You might want to fetch the user's org name
+    });
+  } catch (error) {
+    console.error('Portal access error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Update vendor info from portal
+app.post("/make-server-be7827e3/vendor-portal/:token/update", async (c) => {
+  try {
+    const token = c.req.param('token');
+    const tokenData = await kv.get(`upload_token:${token}`);
+    
+    if (!tokenData) {
+      return c.json({ error: 'Invalid or expired token' }, 401);
+    }
+    
+    const { userId, vendorId } = tokenData;
+    const vendor = await kv.get(`vendor:${userId}:${vendorId}`);
+    
+    if (!vendor) {
+      return c.json({ error: 'Vendor not found' }, 404);
+    }
+    
+    const updates = await c.req.json();
+    
+    // Only allow updating specific fields
+    const allowedFields = ['name', 'email', 'phone', 'address', 'contactName'];
+    let hasUpdates = false;
+    
+    for (const field of allowedFields) {
+      if (updates[field] !== undefined) {
+        vendor[field] = updates[field];
+        hasUpdates = true;
+      }
+    }
+    
+    if (hasUpdates) {
+      vendor.updatedAt = new Date().toISOString();
+      await kv.set(`vendor:${userId}:${vendorId}`, vendor);
+      await logActivity(userId, vendorId, 'portal_update', 'Vendor updated their information via portal', 'neutral');
+    }
+    
+    return c.json({ success: true, vendor });
+  } catch (error) {
+    console.error('Portal update error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Upload COI from portal
+app.post("/make-server-be7827e3/vendor-portal/:token/upload-coi", async (c) => {
+  try {
+    const token = c.req.param('token');
+    const tokenData = await kv.get(`upload_token:${token}`);
+    
+    if (!tokenData) {
+      return c.json({ error: 'Invalid or expired token' }, 401);
+    }
+    
+    const { userId, vendorId } = tokenData;
+    const vendor = await kv.get(`vendor:${userId}:${vendorId}`);
+    
+    if (!vendor) {
+      return c.json({ error: 'Vendor not found' }, 404);
+    }
+
+    const formData = await c.req.formData();
+    const file = formData.get('file') as File;
+    
+    if (!file) {
+      return c.json({ error: 'No file uploaded' }, 400);
+    }
+
+    // Reuse the same logic as the main upload-coi route, but authenticated via token
+    // Validate file type
+    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+    if (!allowedTypes.includes(file.type)) {
+      return c.json({ error: 'Invalid file type. Only PDF, PNG, and JPG are allowed.' }, 400);
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      return c.json({ error: 'File size must be less than 10MB' }, 400);
+    }
+
+    console.log(`📄 Portal COI upload for vendor ${vendorId}: ${file.name}`);
+
+    const bucketName = 'make-92f9f116-vendor-documents';
+    
+    // Ensure bucket exists
+    const { data: buckets } = await supabase.storage.listBuckets();
+    const bucketExists = buckets?.some(bucket => bucket.name === bucketName);
+    
+    if (!bucketExists) {
+      await supabase.storage.createBucket(bucketName, {
+        public: false,
+        fileSizeLimit: 10485760, // 10MB
+      });
+    }
+
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${userId}/${vendorId}/${Date.now()}_portal_${crypto.randomUUID()}.${fileExtension}`;
+    const fileBuffer = await file.arrayBuffer();
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(bucketName)
+      .upload(fileName, fileBuffer, {
+        contentType: file.type,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error('Storage upload error:', uploadError);
+      return c.json({ error: 'Failed to upload file' }, 500);
+    }
+
+    const { data: urlData, error: urlError } = await supabase.storage
+      .from(bucketName)
+      .createSignedUrl(fileName, 31536000); // 1 year
+
+    if (urlError) {
+      console.error('Signed URL error:', urlError);
+      return c.json({ error: 'Failed to generate file URL' }, 500);
+    }
+
+    const document = {
+      name: file.name,
+      type: file.type.includes('pdf') ? 'PDF' : 'Image',
+      size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+      uploaded: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      uploadedAt: new Date().toISOString(),
+      url: urlData.signedUrl,
+      path: fileName,
+      source: 'portal'
+    };
+
+    // AI Extraction
+    let extractedData = null;
+    try {
+      console.log('🤖 Extracting insurance data (Portal)...');
+      extractedData = await extractInsuranceDataFromDocument(fileBuffer, file.type);
+    } catch (extractError) {
+      console.error('Extraction failed:', extractError);
+    }
+
+    // Update vendor
+    const existingDocuments = vendor.documents || [];
+    vendor.documents = [...existingDocuments, document];
+
+    if (extractedData) {
+      if (extractedData.expirationDate) {
+        vendor.insuranceExpiry = extractedData.expirationDate;
+        vendor.nextExpiry = extractedData.expirationDate;
+      }
+      
+      const extractedPolicies = extractedData.policies || [];
+      const existingPolicies = vendor.insurancePolicies || [];
+      const updatedPolicies = [...existingPolicies];
+      
+      for (const newPolicy of extractedPolicies) {
+        const existingIndex = updatedPolicies.findIndex(
+          p => p.type.toLowerCase() === newPolicy.type.toLowerCase()
+        );
+        
+        if (existingIndex >= 0) {
+          updatedPolicies[existingIndex] = {
+            ...updatedPolicies[existingIndex],
+            ...newPolicy,
+            status: calculateVendorStatus(newPolicy.expiryDate)
+          };
+        } else {
+          updatedPolicies.push({
+            ...newPolicy,
+            status: calculateVendorStatus(newPolicy.expiryDate)
+          });
+        }
+      }
+      vendor.insurancePolicies = updatedPolicies;
+      
+      const allExpiryDates = updatedPolicies
+        .map(p => p.expiryDate)
+        .filter(d => d && d !== 'Invalid Date' && d.trim() !== '');
+      
+      if (allExpiryDates.length > 0) {
+        const earliestExpiry = allExpiryDates.reduce((earliest, current) => {
+          const currentDate = new Date(current);
+          const earliestDate = new Date(earliest);
+          return currentDate < earliestDate ? current : earliest;
+        });
+        vendor.status = calculateVendorStatus(earliestExpiry);
+        vendor.nextExpiry = earliestExpiry;
+      }
+    }
+
+    vendor.updatedAt = new Date().toISOString();
+    await kv.set(`vendor:${userId}:${vendorId}`, vendor);
+    
+    await logActivity(userId, vendorId, 'portal_upload', `Vendor uploaded COI via portal`, 'positive');
+
+    return c.json({ 
+      success: true, 
+      message: 'Document uploaded successfully',
+      extractedData,
+      updatedStatus: vendor.status
+    });
+
+  } catch (error) {
+    console.error('Portal upload error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Upload W9 from portal
+app.post("/make-server-be7827e3/vendor-portal/:token/upload-w9", async (c) => {
+  try {
+    const token = c.req.param('token');
+    const tokenData = await kv.get(`upload_token:${token}`);
+    
+    if (!tokenData) {
+      return c.json({ error: 'Invalid or expired token' }, 401);
+    }
+    
+    const { userId, vendorId } = tokenData;
+    const vendor = await kv.get(`vendor:${userId}:${vendorId}`);
+    
+    if (!vendor) {
+      return c.json({ error: 'Vendor not found' }, 404);
+    }
+
+    const formData = await c.req.formData();
+    const file = formData.get('file') as File;
+    
+    if (!file) {
+      return c.json({ error: 'No file uploaded' }, 400);
+    }
+
+    // Only allow PDF for W9 typically, but image ok too
+    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+    if (!allowedTypes.includes(file.type)) {
+      return c.json({ error: 'Invalid file type.' }, 400);
+    }
+
+    const bucketName = 'make-92f9f116-vendor-documents';
+    // Bucket creation check omitted for brevity, assuming exists or COI check created it
+
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${userId}/${vendorId}/${Date.now()}_w9_${crypto.randomUUID()}.${fileExtension}`;
+    const fileBuffer = await file.arrayBuffer();
+    
+    const { error: uploadError } = await supabase.storage
+      .from(bucketName)
+      .upload(fileName, fileBuffer, { contentType: file.type });
+
+    if (uploadError) return c.json({ error: 'Failed to upload W9' }, 500);
+
+    const { data: urlData } = await supabase.storage
+      .from(bucketName)
+      .createSignedUrl(fileName, 31536000);
+
+    const document = {
+      name: file.name,
+      type: 'W9',
+      size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+      uploaded: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      uploadedAt: new Date().toISOString(),
+      url: urlData?.signedUrl,
+      path: fileName,
+      source: 'portal'
+    };
+
+    vendor.documents = [...(vendor.documents || []), document];
+    vendor.w9Uploaded = true; // Flag for W9 status
+    
+    await kv.set(`vendor:${userId}:${vendorId}`, vendor);
+    await logActivity(userId, vendorId, 'portal_upload_w9', `Vendor uploaded W9 via portal`, 'positive');
+
+    return c.json({ success: true, message: 'W9 uploaded successfully' });
+  } catch (error) {
+    console.error('Portal W9 upload error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
 // Get single vendor
 app.get("/make-server-be7827e3/vendors/:id", async (c) => {
   try {
@@ -922,6 +1320,23 @@ app.post("/make-server-be7827e3/vendors", async (c) => {
     
     if (error || !user) {
       return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    // Check vendor limit based on plan
+    const profile = await kv.get(`user:${user.id}`);
+    const plan = profile?.plan || 'free';
+    
+    // Get existing vendors count
+    const existingVendors = await kv.getByPrefix(`vendor:${user.id}:`);
+    const vendorCount = existingVendors?.length || 0;
+    
+    // Define limits: Core/Free = 150, Enterprise = Unlimited
+    const limit = (plan === 'enterprise' || plan === 'unlimited') ? Infinity : 150;
+    
+    if (vendorCount >= limit) {
+      return c.json({ 
+        error: `Vendor limit reached (${vendorCount}/${limit}). Upgrade to Enterprise for unlimited vendors.` 
+      }, 403);
     }
 
     const vendorData = await c.req.json();

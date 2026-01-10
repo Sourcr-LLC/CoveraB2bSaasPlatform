@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus } from 'lucide-react';
+import { TrendingUp, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import PaywallModal from './PaywallModal';
 import ContactSalesModal from './ContactSalesModal';
@@ -331,76 +331,84 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-4 md:p-8 lg:p-12" style={{ backgroundColor: 'var(--background)' }}>
+    <div className="p-4 md:p-8 lg:p-12 min-h-screen" style={{ 
+      backgroundColor: 'var(--background)',
+      backgroundImage: 'radial-gradient(at 0% 0%, rgba(58, 79, 106, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(58, 79, 106, 0.03) 0px, transparent 50%)' 
+    }}>
       {/* Header */}
-      <div className="mb-6 md:mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+      <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
-          <h1 className="mb-1 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+          <h1 className="mb-2 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
             Dashboard
           </h1>
-          <p className="text-sm" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
+          <p className="text-sm md:text-base" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
             Real-time overview of your vendor compliance status
           </p>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-6 md:mb-10">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
         {kpiCards.map((card, index) => (
           <div
             key={index}
-            className="rounded-lg border p-6"
+            className="rounded-xl border p-6 md:p-8 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             style={{
-              backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
+              backgroundColor: 'var(--glass-bg)',
+              borderColor: 'var(--glass-border)',
+              backdropFilter: 'blur(12px)',
+              boxShadow: 'var(--shadow-card, var(--shadow-md))'
             }}
           >
-            <div className="text-xs uppercase tracking-wider mb-4" style={{ color: 'var(--foreground-muted)', fontWeight: 600, letterSpacing: '0.06em' }}>
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="text-xs uppercase tracking-wider mb-4 font-semibold" style={{ color: 'var(--foreground-subtle)', letterSpacing: '0.08em' }}>
               {card.label}
             </div>
-            <div className="flex items-baseline gap-2 mb-3">
-              <div className="tracking-tight" style={{ color: 'var(--foreground)', fontSize: '2.125rem', fontWeight: 600, lineHeight: 1, letterSpacing: '-0.02em' }}>
+            <div className="flex items-baseline gap-3 mb-3">
+              <div className="tracking-tighter" style={{ color: 'var(--foreground)', fontSize: '2.5rem', fontWeight: 600, lineHeight: 1 }}>
                 {card.value}
               </div>
               {card.change && (
                 <div 
-                  className="text-xs flex items-center gap-1"
+                  className="text-xs flex items-center gap-1 px-2 py-0.5 rounded-full bg-opacity-10"
                   style={{ 
                     color: card.percentageColor,
-                    fontWeight: 600
+                    fontWeight: 600,
+                    backgroundColor: `${card.percentageColor}15`
                   }}
                 >
-                  {card.trend === 'up' && <TrendingUp className="w-3.5 h-3.5" />}
-                  {card.trend === 'down' && <TrendingUp className="w-3.5 h-3.5" />}
-                  {card.trend === 'neutral' && <Minus className="w-3.5 h-3.5" />}
+                  {card.trend === 'up' && <TrendingUp className="w-3 h-3" />}
+                  {card.trend === 'down' && <TrendingUp className="w-3 h-3" />}
+                  {card.trend === 'neutral' && <Minus className="w-3 h-3" />}
                   <span>{card.change}</span>
                 </div>
               )}
             </div>
-            <div className="text-xs" style={{ color: 'var(--foreground-subtle)', fontWeight: 400 }}>
+            <div className="text-sm" style={{ color: 'var(--foreground-subtle)', fontWeight: 400 }}>
               {card.subtitle}
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
         {/* High-risk Vendors Table */}
         <div className="lg:col-span-7">
           <div
-            className="rounded-xl border overflow-hidden"
+            className="rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <div className="px-4 md:px-8 py-4 md:py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-              <h3 className="text-lg">High-risk vendors</h3>
-              <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>
-                Vendors requiring immediate attention
-              </p>
+            <div className="px-6 md:px-8 py-6 border-b flex justify-between items-start" style={{ borderColor: 'var(--border-subtle)' }}>
+              <div>
+                <h3 className="text-lg font-semibold tracking-tight mb-1">High-risk vendors</h3>
+                <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  Vendors requiring immediate attention
+                </p>
+              </div>
             </div>
             
             {/* Desktop Table View */}
@@ -408,16 +416,16 @@ export default function Dashboard() {
               <table className="w-full">
                 <thead>
                   <tr style={{ backgroundColor: 'var(--panel)' }}>
-                    <th className="px-8 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-8 py-4 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Vendor
                     </th>
-                    <th className="px-6 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-4 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-4 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Expiry
                     </th>
-                    <th className="px-6 py-4 text-right text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-4 text-right text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Action
                     </th>
                   </tr>
@@ -426,12 +434,12 @@ export default function Dashboard() {
                   {highRiskVendors.map((vendor, index) => (
                     <tr 
                       key={index}
-                      className="border-t transition-colors hover:bg-opacity-50"
+                      className="border-t transition-colors hover:bg-slate-50/50"
                       style={{ borderColor: 'var(--border-subtle)' }}
                     >
                       <td className="px-8 py-5">
                         <div>
-                          <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>
+                          <div className="text-sm font-medium mb-0.5" style={{ color: 'var(--foreground)' }}>
                             {vendor.name}
                           </div>
                           {vendor.missing > 0 && (
@@ -443,7 +451,7 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-5">
                         <span
-                          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border"
                           style={{
                             backgroundColor: vendor.status === 'at-risk' 
                               ? 'var(--status-at-risk-bg)' 
@@ -451,9 +459,9 @@ export default function Dashboard() {
                             color: vendor.status === 'at-risk'
                               ? 'var(--status-at-risk)'
                               : 'var(--status-non-compliant)',
-                            border: `1px solid ${vendor.status === 'at-risk' 
+                            borderColor: vendor.status === 'at-risk' 
                               ? 'var(--status-at-risk-border)' 
-                              : 'var(--status-non-compliant-border)'}`
+                              : 'var(--status-non-compliant-border)'
                           }}
                         >
                           {vendor.status === 'at-risk' ? (
@@ -478,7 +486,7 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-5 text-right">
                         <button 
-                          className="text-sm px-4 py-2 rounded-lg border transition-all"
+                          className="text-sm px-4 py-2 rounded-lg border transition-all hover:bg-white hover:shadow-sm"
                           style={{ 
                             borderColor: 'var(--border)',
                             color: 'var(--foreground)'
@@ -596,30 +604,30 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column - Upcoming Expirations & Quick Actions */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-5 space-y-6 md:space-y-8">
           {/* Upcoming Expirations */}
           <div
-            className="rounded-xl border p-8"
+            className="rounded-xl border p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <h3 className="text-lg mb-6">Upcoming expirations</h3>
-            <div className="space-y-5">
+            <h3 className="text-lg font-semibold tracking-tight mb-6">Upcoming expirations</h3>
+            <div className="space-y-4">
               {upcomingExpirations.map((item, index) => (
-                <div key={index} className="flex items-center justify-between">
+                <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors">
                   <div className="flex items-center gap-3">
                     <div 
-                      className="w-2 h-2 rounded-full"
+                      className="w-2.5 h-2.5 rounded-full shadow-sm"
                       style={{ backgroundColor: item.color }}
                     />
-                    <span className="text-sm" style={{ color: 'var(--foreground)' }}>
+                    <span className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
                       Within {item.label}
                     </span>
                   </div>
-                  <div className="text-2xl tracking-tight" style={{ color: 'var(--foreground)' }}>
+                  <div className="text-xl font-semibold tracking-tight" style={{ color: 'var(--foreground)' }}>
                     {item.count}
                   </div>
                 </div>
@@ -629,13 +637,15 @@ export default function Dashboard() {
             <div className="mt-8 pt-6 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
               <Link to="/insurance">
                 <button 
-                  className="w-full py-3 rounded-lg text-sm transition-all flex items-center justify-center"
+                  className="w-full py-3 rounded-lg text-sm font-medium transition-all flex items-center justify-center hover:bg-opacity-80"
                   style={{ 
                     backgroundColor: 'var(--panel)',
-                    color: 'var(--foreground)'
+                    color: 'var(--foreground)',
+                    border: '1px solid var(--border)'
                   }}
                 >
                   View all expirations
+                  <ArrowUpRight className="w-4 h-4 ml-2 opacity-50" />
                 </button>
               </Link>
             </div>
@@ -643,23 +653,24 @@ export default function Dashboard() {
 
           {/* Quick Actions */}
           <div
-            className="rounded-xl border p-8"
+            className="rounded-xl border p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <h3 className="text-lg mb-6">Quick actions</h3>
-            <div className="space-y-3">
+            <h3 className="text-lg font-semibold tracking-tight mb-6">Quick actions</h3>
+            <div className="space-y-4">
               {isPremium ? (
                 <>
                   <Link to="/add-vendor">
                     <button 
-                      className="w-full py-3.5 rounded-lg text-sm transition-all flex items-center justify-center px-4"
+                      className="w-full py-3.5 rounded-lg text-sm font-medium transition-all flex items-center justify-center px-4 hover:-translate-y-0.5 hover:shadow-md"
                       style={{ 
                         backgroundColor: 'var(--primary)',
-                        color: 'var(--primary-foreground)'
+                        color: 'var(--primary-foreground)',
+                        boxShadow: '0 4px 6px -1px rgba(58, 79, 106, 0.2)'
                       }}
                     >
                       Add new vendor
@@ -667,7 +678,7 @@ export default function Dashboard() {
                   </Link>
                   <Link to="/insurance">
                     <button 
-                      className="w-full py-3.5 rounded-lg border text-sm transition-all flex items-center justify-center px-4"
+                      className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 hover:bg-slate-50"
                       style={{ 
                         borderColor: 'var(--border)',
                         color: 'var(--foreground)'
@@ -678,7 +689,7 @@ export default function Dashboard() {
                   </Link>
                   <Link to="/reports">
                     <button 
-                      className="w-full py-3.5 rounded-lg border text-sm transition-all flex items-center justify-center px-4"
+                      className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 hover:bg-slate-50"
                       style={{ 
                         borderColor: 'var(--border)',
                         color: 'var(--foreground)'
@@ -691,40 +702,37 @@ export default function Dashboard() {
               ) : (
                 <>
                   <button 
-                    className="w-full py-3.5 rounded-lg text-sm transition-all flex items-center justify-center px-4"
+                    className="w-full py-3.5 rounded-lg text-sm font-medium transition-all flex items-center justify-center px-4 grayscale opacity-70 cursor-not-allowed"
                     style={{ 
                       backgroundColor: 'var(--primary)',
-                      color: 'var(--primary-foreground)',
-                      opacity: 0.6,
-                      cursor: 'not-allowed'
+                      color: 'var(--primary-foreground)'
                     }}
                     onClick={() => setIsPaywallOpen(true)}
                   >
                     Add new vendor
+                    <Lock className="w-3.5 h-3.5 ml-2 opacity-70" />
                   </button>
                   <button 
-                    className="w-full py-3.5 rounded-lg border text-sm transition-all flex items-center justify-center px-4"
+                    className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 opacity-60 cursor-not-allowed"
                     style={{ 
                       borderColor: 'var(--border)',
-                      color: 'var(--foreground)',
-                      opacity: 0.6,
-                      cursor: 'not-allowed'
+                      color: 'var(--foreground)'
                     }}
                     onClick={() => setIsPaywallOpen(true)}
                   >
                     Upload COI
+                    <Lock className="w-3.5 h-3.5 ml-2 opacity-70" />
                   </button>
                   <button 
-                    className="w-full py-3.5 rounded-lg border text-sm transition-all flex items-center justify-center px-4"
+                    className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 opacity-60 cursor-not-allowed"
                     style={{ 
                       borderColor: 'var(--border)',
-                      color: 'var(--foreground)',
-                      opacity: 0.6,
-                      cursor: 'not-allowed'
+                      color: 'var(--foreground)'
                     }}
                     onClick={() => setIsPaywallOpen(true)}
                   >
                     Export compliance report
+                    <Lock className="w-3.5 h-3.5 ml-2 opacity-70" />
                   </button>
                 </>
               )}
@@ -733,28 +741,28 @@ export default function Dashboard() {
 
           {/* Activity Summary */}
           <div
-            className="rounded-xl border p-8"
+            className="rounded-xl border p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <h4 className="mb-5">Recent alerts</h4>
+            <h4 className="text-lg font-semibold tracking-tight mb-6">Recent alerts</h4>
             <div className="space-y-4">
               {alerts.slice(0, 3).map((alert, index) => (
-                <div key={index} className="flex items-center gap-3 text-sm">
-                  <AlertCircle className="w-4 h-4" style={{ color: 'var(--status-at-risk)' }} />
-                  <span style={{ color: 'var(--foreground-muted)' }}>
+                <div key={index} className="flex items-start gap-3 text-sm p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--status-at-risk)' }} />
+                  <span style={{ color: 'var(--foreground-muted)', lineHeight: 1.5 }}>
                     {alert.message}
                   </span>
                 </div>
               ))}
               {alerts.length === 0 && (
-                <div className="flex items-center gap-3 text-sm">
+                <div className="flex items-center gap-3 text-sm p-3 rounded-lg bg-green-50/50 border border-green-100">
                   <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--status-compliant)' }} />
                   <span style={{ color: 'var(--foreground-muted)' }}>
-                    No active alerts
+                    No active alerts. All systems operational.
                   </span>
                 </div>
               )}

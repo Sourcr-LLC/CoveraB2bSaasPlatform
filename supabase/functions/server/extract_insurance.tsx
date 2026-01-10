@@ -71,7 +71,10 @@ Return a JSON object with this EXACT structure:
   "policies": [
     {
       "type": "EXACT name of policy type as shown (e.g., COMMERCIAL GENERAL LIABILITY, WORKERS COMPENSATION, etc.)",
-      "coverageLimit": "Numeric value of coverage limit without $ or commas, or null if not visible",
+      "limits": {
+        "eachOccurrence": "Numeric value of Each Occurrence / Combined Single Limit without $ or commas (e.g. 1000000), or null",
+        "aggregate": "Numeric value of General Aggregate without $ or commas (e.g. 2000000), or null"
+      },
       "expiryDate": "YYYY-MM-DD format of expiration date EXACTLY as shown, or null if not found",
       "carrier": "Insurance carrier company name EXACTLY as shown, or null if not visible",
       "policyNumber": "Policy number EXACTLY as shown, or null if not visible"
@@ -93,9 +96,10 @@ IMPORTANT FOR POLICY TYPES:
 - Do not rename or standardize them
 
 IMPORTANT FOR COVERAGE LIMITS:
-- Look for numbers near "EACH OCCURRENCE", "AGGREGATE", "COMBINED SINGLE LIMIT"
-- Extract only the number (e.g., if you see "$1,000,000" return 1000000)
-- If multiple limits exist, use the primary/occurrence limit
+- Look for columns like "EACH OCCURRENCE", "AGGREGATE", "COMBINED SINGLE LIMIT", "STATUTORY LIMITS"
+- Extract numeric values (e.g., "$1,000,000" -> 1000000)
+- "eachOccurrence" corresponds to the primary per-incident limit
+- "aggregate" corresponds to the general aggregate limit (if present)
 - If unclear, use null
 
 PDF TEXT CONTENT:
@@ -142,7 +146,10 @@ Return a JSON object with this EXACT structure:
   "policies": [
     {
       "type": "EXACT name of policy type as shown (e.g., COMMERCIAL GENERAL LIABILITY, WORKERS COMPENSATION, etc.)",
-      "coverageLimit": "Numeric value of coverage limit without $ or commas, or null if not visible",
+      "limits": {
+        "eachOccurrence": "Numeric value of Each Occurrence / Combined Single Limit without $ or commas (e.g. 1000000), or null",
+        "aggregate": "Numeric value of General Aggregate without $ or commas (e.g. 2000000), or null"
+      },
       "expiryDate": "YYYY-MM-DD format of expiration date EXACTLY as shown, or null if not found",
       "carrier": "Insurance carrier company name EXACTLY as shown, or null if not visible",
       "policyNumber": "Policy number EXACTLY as shown, or null if not visible"
@@ -164,9 +171,10 @@ IMPORTANT FOR POLICY TYPES:
 - Do not rename or standardize them
 
 IMPORTANT FOR COVERAGE LIMITS:
-- Look for "EACH OCCURRENCE", "AGGREGATE", "COMBINED SINGLE LIMIT" columns
-- Extract only the number (e.g., if you see "$1,000,000" return 1000000)
-- If multiple limits exist, use the primary/occurrence limit
+- Look for columns like "EACH OCCURRENCE", "AGGREGATE", "COMBINED SINGLE LIMIT", "STATUTORY LIMITS"
+- Extract numeric values (e.g., "$1,000,000" -> 1000000)
+- "eachOccurrence" corresponds to the primary per-incident limit
+- "aggregate" corresponds to the general aggregate limit (if present)
 - If unclear, use null
 
 Return ONLY valid JSON. If the image is not a valid COI or data cannot be extracted, return:

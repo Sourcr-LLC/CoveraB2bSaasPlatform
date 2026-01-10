@@ -1,8 +1,25 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Mail, Phone, MapPin, CheckCircle2, AlertCircle, Clock, Upload, FileText, ExternalLink, Send, Copy, X, FileUp, Eye, Trash2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, CheckCircle2, AlertCircle, Clock, Upload, FileText, ExternalLink, Send, Copy, X, FileUp, Eye, Trash2, AlertTriangle } from 'lucide-react';
 import { vendorApi } from '../lib/api';
 import { toast } from 'sonner';
+
+// Standard coverage requirements for "AI Verification"
+const REQUIRED_LIMITS: Record<string, { occurrence?: number; aggregate?: number }> = {
+  generalLiability: { occurrence: 1000000, aggregate: 2000000 }, // $1M / $2M
+  workersComp: { occurrence: 500000 }, // $500k
+  autoLiability: { occurrence: 1000000 } // $1M
+};
+
+// Helper to normalize policy type from AI to our keys
+const normalizePolicyType = (type: string) => {
+  if (!type) return null;
+  const lower = type.toLowerCase();
+  if (lower.includes('general liability')) return 'generalLiability';
+  if (lower.includes('workers') || lower.includes('work comp')) return 'workersComp';
+  if (lower.includes('auto') || lower.includes('vehicle')) return 'autoLiability';
+  return null;
+};
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -79,8 +96,13 @@ export default function VendorDetail() {
       setActivities(activitiesResponse.activities || []);
       setError(null);
     } catch (error: any) {
-      console.error('Failed to load vendor data:', error);
-      setError(error.message || 'Failed to load vendor');
+      if (error.message === 'Vendor not found') {
+        console.warn('Vendor lookup failed: Vendor not found');
+        setError('Vendor not found');
+      } else {
+        console.error('Failed to load vendor data:', error);
+        setError(error.message || 'Failed to load vendor');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -462,14 +484,43 @@ export default function VendorDetail() {
                 insurancePolicies.map((policy: any, index: number) => {
                   const policyStatus = getStatusBadge(policy.status || 'compliant');
                   const PolicyIcon = policyStatus.icon;
+
+                  // --- AI VERIFICATION LOGIC ---
+                  const normalizedType = normalizePolicyType(policy.type);
+                  const required = normalizedType ? REQUIRED_LIMITS[normalizedType] : null;
+                  
+                  let gapWarning = null;
+                  let limitDisplay = 'N/A';
+                  
+                  // Handle new "limits" structure or fallback to old "coverageLimit"
+                  const eachOccurrence = policy.limits?.eachOccurrence || policy.coverageLimit;
+                  const aggregate = policy.limits?.aggregate;
+                  
+                  // Check for gaps against standard
+                  if (required && eachOccurrence) {
+                    if (required.occurrence && eachOccurrence < required.occurrence) {
+                      gapWarning = `Limit too low (< ${formatCurrency(required.occurrence)})`;
+                    } else if (required.aggregate && aggregate && aggregate < required.aggregate) {
+                      gapWarning = `Aggregate too low (< ${formatCurrency(required.aggregate)})`;
+                    }
+                  }
+
+                  // Format the display string (e.g. "$1,000,000 / $2,000,000")
+                  if (eachOccurrence) {
+                    limitDisplay = formatCurrency(eachOccurrence);
+                    if (aggregate) {
+                      limitDisplay += ` / ${formatCurrency(aggregate)}`;
+                    }
+                  }
+                  // -----------------------------
                   
                   return (
                     <div
                       key={index}
                       className="border rounded-xl p-6"
                       style={{
-                        borderColor: 'var(--border)',
-                        backgroundColor: 'var(--background)'
+                        borderColor: gapWarning ? '#fee2e2' : 'var(--border)', // Red border if gap
+                        backgroundColor: gapWarning ? '#fef2f2' : 'var(--background)' // Red bg if gap
                       }}
                     >
                       <div className="flex items-start justify-between mb-4">
@@ -489,6 +540,14 @@ export default function VendorDetail() {
                               <PolicyIcon className="w-3.5 h-3.5" />
                               {policyStatus.label}
                             </div>
+                            
+                            {/* Warning Badge */}
+                            {gapWarning && (
+                              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 border border-red-200">
+                                <AlertTriangle className="w-3 h-3" />
+                                Coverage Gap
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -496,9 +555,14 @@ export default function VendorDetail() {
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
                           <div className="mb-1" style={{ color: 'var(--foreground-muted)' }}>Coverage limit</div>
-                          <div style={{ color: 'var(--foreground)' }}>
-                            {policy.coverageLimit ? formatCurrency(policy.coverageLimit) : 'N/A'}
+                          <div style={{ color: gapWarning ? '#b91c1c' : 'var(--foreground)', fontWeight: gapWarning ? 600 : 400 }}>
+                            {limitDisplay}
                           </div>
+                          {gapWarning && (
+                            <div className="text-xs text-red-600 mt-1">
+                              {gapWarning}
+                            </div>
+                          )}
                         </div>
                         <div>
                           <div className="mb-1" style={{ color: 'var(--foreground-muted)' }}>Expiry date</div>
@@ -742,7 +806,13 @@ export default function VendorDetail() {
             </div>
             
             <p className="text-sm mb-6" style={{ color: 'var(--foreground-muted)' }}>
-              Share this secure link with <strong>{vendor.name}</strong> to allow them to upload documents. The link will expire in 30 days.
+              Share this secure link with <strong>{vendor.name}</strong> to allow them to:
+              <ul className="list-disc list-inside mt-2 space-y-1 ml-1">
+                <li>Upload their own Certificates of Insurance (COI)</li>
+                <li>Submit W9 tax forms</li>
+                <li>Update their company contact information</li>
+              </ul>
+              <div className="mt-3 text-xs opacity-70">The link will expire in 7 days.</div>
             </p>
             
             <div className="flex items-center gap-3 mb-6">

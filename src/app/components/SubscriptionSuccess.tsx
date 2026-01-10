@@ -16,7 +16,7 @@ export default function SubscriptionSuccess() {
       <SEO 
         title="Subscription Confirmed | Covera" 
         description="Your subscription has been successfully confirmed. Welcome to Covera." 
-        canonicalUrl="https://getcovera.co/subscription-success"
+        canonical="https://getcovera.co/subscription-success"
       />
 
       {/* Background decorations */}

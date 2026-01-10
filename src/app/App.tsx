@@ -60,6 +60,7 @@ import Settings from './components/Settings';
 import ContractManagement from './components/ContractManagement';
 import AddVendor from './components/AddVendor';
 import Billing from './components/Billing';
+import VendorPortal from './components/VendorPortal';
 
 function ProtectedRoute({ isAuthenticated, children }: { isAuthenticated: boolean; children: React.ReactNode }) {
   if (!isAuthenticated) {
@@ -149,6 +150,7 @@ export default function App() {
             path="/login" 
             element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginScreen onLogin={() => setIsAuthenticated(true)} />} 
           />
+          <Route path="/upload/:token" element={<VendorPortal />} />
           <Route
             path="/dashboard"
             element={
