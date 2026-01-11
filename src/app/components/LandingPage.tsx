@@ -128,8 +128,8 @@ export default function LandingPage() {
             <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl" aria-hidden="true">
               <DashboardPreview />
               
-              {/* Floating Element: Magic Link Notification */}
-              <motion.div 
+              {/* Floating Element: Magic Link Notification - HIDDEN */}
+              {/* <motion.div 
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
@@ -148,7 +148,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </motion.div> */}
             </div>
           </motion.div>
         </div>
