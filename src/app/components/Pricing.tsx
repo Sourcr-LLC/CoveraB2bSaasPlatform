@@ -29,7 +29,7 @@ export default function Pricing() {
     },
     {
       question: 'Do you offer annual billing?',
-      answer: 'Yes! Contact our sales team for annual billing options with additional savings. Perfect for organizations looking for predictable budgeting.'
+      answer: 'Yes! Contact our sales team at sales@covera.co for annual billing options with additional savings. Perfect for organizations looking for predictable budgeting.'
     },
     {
       question: 'What payment methods do you accept?',
@@ -37,7 +37,7 @@ export default function Pricing() {
     },
     {
       question: 'Can I get a custom plan for my organization?',
-      answer: 'Yes! For organizations with unique requirements, high vendor volumes, or specific compliance needs, we offer custom enterprise plans. Schedule a call with our team to discuss your needs.'
+      answer: 'Yes! For organizations with unique requirements, high vendor volumes, or specific compliance needs, we offer custom enterprise plans. Contact sales@covera.co to discuss your needs.'
     },
     {
       question: 'What happens to my data if I cancel?',

@@ -333,8 +333,8 @@ app.post("/make-server-be7827e3/demo-request", async (c) => {
 
     console.log(`📧 Demo request from ${name} (${email}) at ${company}`);
     
-    // Send notification email to admin
-    const adminEmail = 'or@getcovera.co'; // Change this to your actual email
+    // Send notification email to sales team for demo requests
+    const adminEmail = 'sales@covera.co';
     
     let emailResponse;
     let attempt = 0;
@@ -445,6 +445,109 @@ app.post("/make-server-be7827e3/demo-request", async (c) => {
     
   } catch (error) {
     console.error('Demo request error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+    return c.json({ error: errorMessage }, 500);
+  }
+});
+
+// General contact endpoint - sends general inquiries to hello@covera.co
+app.post("/make-server-be7827e3/contact", async (c) => {
+  try {
+    const { name, email, company, message } = await c.req.json();
+    
+    if (!name || !email) {
+      return c.json({ error: 'Missing required fields' }, 400);
+    }
+
+    const resendApiKey = Deno.env.get('RESEND_API_KEY');
+    
+    if (!resendApiKey) {
+      console.error('RESEND_API_KEY not configured');
+      return c.json({ error: 'Email service not configured' }, 500);
+    }
+
+    console.log(`📧 General inquiry from ${name} (${email})`);
+    
+    // Send notification email to general support
+    const supportEmail = 'hello@covera.co';
+    
+    const emailResponse = await sendEmailWithRetry(resendApiKey, {
+      from: 'Covera Contact Form <noreply@covera.co>',
+      to: [supportEmail],
+      reply_to: email,
+      subject: `Contact Form Submission from ${name}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1F2937; margin: 0; padding: 0; background: #F9FAFB; }
+              .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+              .header { text-align: center; margin-bottom: 32px; }
+              .logo { font-size: 28px; font-weight: 600; color: #3A4F6A; }
+              .content { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; padding: 32px; }
+              h1 { font-size: 20px; font-weight: 600; margin: 0 0 24px 0; }
+              .info-row { padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
+              .label { font-size: 14px; font-weight: 500; color: #6B7280; }
+              .value { font-size: 16px; color: #1F2937; margin-top: 4px; }
+              .message-box { background: #F9FAFB; padding: 16px; border-radius: 8px; margin-top: 24px; }
+              .badge { background: #3B82F6; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <div class="logo">Covera</div>
+                <div style="margin-top: 8px;"><span class="badge">CONTACT FORM</span></div>
+              </div>
+              <div class="content">
+                <h1>💬 New Contact Form Submission</h1>
+                <p style="color: #6B7280; font-size: 14px;">Someone has reached out through the contact form.</p>
+                
+                <div class="info-row">
+                  <div class="label">Name</div>
+                  <div class="value">${name}</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="label">Email</div>
+                  <div class="value"><a href="mailto:${email}" style="color: #3B82F6; text-decoration: none;">${email}</a></div>
+                </div>
+                
+                ${company ? `
+                <div class="info-row">
+                  <div class="label">Company</div>
+                  <div class="value">${company}</div>
+                </div>
+                ` : ''}
+                
+                ${message ? `
+                <div class="message-box">
+                  <div class="label" style="margin-bottom: 8px;">Message</div>
+                  <div style="color: #1F2937; white-space: pre-wrap;">${message}</div>
+                </div>
+                ` : ''}
+              </div>
+            </div>
+          </body>
+        </html>
+      `,
+    });
+
+    if (!emailResponse || !emailResponse.ok) {
+      const errorData = await emailResponse.json().catch(() => ({ message: 'Unknown error' }));
+      console.error('Resend API error:', errorData);
+      return c.json({ error: `Failed to send contact form email: ${errorData.message || 'Unknown error'}` }, 500);
+    }
+
+    const emailData = await emailResponse.json();
+    console.log(`✅ Contact form email sent! ID: ${emailData.id}`);
+    
+    return c.json({ success: true });
+    
+  } catch (error) {
+    console.error('Contact form error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Internal server error';
     return c.json({ error: errorMessage }, 500);
   }
@@ -3764,8 +3867,8 @@ app.post("/make-server-be7827e3/contact-sales", async (c) => {
 
         // Send email to sales team
         const emailResponse = await sendEmailWithRetry(resendApiKey, {
-              from: 'Covera <noreply@getcovera.co>',
-              to: ['or@getcovera.co'],
+              from: 'Covera <noreply@covera.co>',
+              to: ['sales@covera.co'],
               subject: `Enterprise Inquiry from ${userName}`,
               html: `
                 <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto;">

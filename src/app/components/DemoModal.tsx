@@ -283,6 +283,15 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
           <p className="text-xs text-center" style={{ color: 'var(--foreground-subtle)', fontWeight: 400 }}>
             By submitting, you agree to our privacy policy. We'll contact you within 24 hours.
           </p>
+
+          <div className="text-center pt-2 border-t" style={{ borderColor: 'var(--border)' }}>
+            <p className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
+              Prefer email? Contact us directly at{' '}
+              <a href="mailto:sales@covera.co" className="font-medium hover:underline" style={{ color: 'var(--primary)' }}>
+                sales@covera.co
+              </a>
+            </p>
+          </div>
         </form>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye } from 'lucide-react';
+import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye, Mail, MessageSquare } from 'lucide-react';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
@@ -618,6 +618,83 @@ export default function Settings() {
           >
             {demoEnabled ? 'Disable Demo Mode' : 'Enable Demo Mode'}
           </button>
+        </div>
+
+        {/* Support & Help */}
+        <div
+          className="rounded-xl border p-8 mt-6"
+          style={{
+            backgroundColor: 'var(--card)',
+            borderColor: 'var(--border)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div className="mb-6">
+            <h3 className="text-lg mb-2" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+              Support & Help
+            </h3>
+            <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
+              Need assistance? Our team is here to help
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Sales Inquiries */}
+            <a
+              href="mailto:sales@covera.co"
+              className="flex items-start gap-4 p-4 rounded-lg border transition-all hover:shadow-md"
+              style={{
+                borderColor: 'var(--border)',
+                backgroundColor: 'var(--panel)',
+              }}
+            >
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: 'rgba(58, 79, 106, 0.1)' }}
+              >
+                <Mail size={20} style={{ color: 'var(--primary)' }} />
+              </div>
+              <div>
+                <h4 className="text-sm mb-1" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+                  Sales Inquiries
+                </h4>
+                <p className="text-xs mb-2" style={{ color: 'var(--foreground-muted)' }}>
+                  Questions about plans, pricing, or features
+                </p>
+                <span className="text-xs" style={{ color: 'var(--primary)', fontWeight: 500 }}>
+                  sales@covera.co
+                </span>
+              </div>
+            </a>
+
+            {/* Customer Support */}
+            <a
+              href="mailto:support@covera.co"
+              className="flex items-start gap-4 p-4 rounded-lg border transition-all hover:shadow-md"
+              style={{
+                borderColor: 'var(--border)',
+                backgroundColor: 'var(--panel)',
+              }}
+            >
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)' }}
+              >
+                <MessageSquare size={20} style={{ color: '#22c55e' }} />
+              </div>
+              <div>
+                <h4 className="text-sm mb-1" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+                  Customer Support
+                </h4>
+                <p className="text-xs mb-2" style={{ color: 'var(--foreground-muted)' }}>
+                  Technical help and troubleshooting
+                </p>
+                <span className="text-xs" style={{ color: '#22c55e', fontWeight: 500 }}>
+                  support@covera.co
+                </span>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
       <PaywallModal

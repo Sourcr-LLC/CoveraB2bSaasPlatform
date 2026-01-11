@@ -30,16 +30,13 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      const url = `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/demo-request`;
+      const url = `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/contact`;
       
       const payload = {
         name: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
         company: formData.company,
-        message: formData.message,
-        // Optional fields expected by endpoint
-        phone: '', 
-        vendors: '' 
+        message: formData.message
       };
 
       const response = await fetch(url, {
