@@ -72,6 +72,9 @@ export default function Billing() {
   const [updatePaymentClientSecret, setUpdatePaymentClientSecret] = useState<string | null>(null);
   const [updatePaymentSetupIntentId, setUpdatePaymentSetupIntentId] = useState<string | null>(null);
 
+  // Initialize stripeMode from localStorage
+  const stripeMode = (localStorage.getItem('stripe_mode') as 'production' | 'test') || 'production';
+
   useEffect(() => {
     fetchSubscription();
     fetchPaymentMethod();
@@ -93,6 +96,7 @@ export default function Billing() {
         {
           headers: {
             'Authorization': `Bearer ${accessToken}`,
+            'X-Stripe-Mode': stripeMode,
           },
         }
       );
@@ -124,6 +128,7 @@ export default function Billing() {
         {
           headers: {
             'Authorization': `Bearer ${accessToken}`,
+            'X-Stripe-Mode': stripeMode,
           },
         }
       );
@@ -154,6 +159,7 @@ export default function Billing() {
         {
           headers: {
             'Authorization': `Bearer ${accessToken}`,
+            'X-Stripe-Mode': stripeMode,
           },
         }
       );
@@ -198,6 +204,7 @@ export default function Billing() {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
+            'X-Stripe-Mode': stripeMode,
           },
         }
       );
@@ -235,8 +242,9 @@ export default function Billing() {
           headers: {
             'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
-            'body': JSON.stringify({ setupIntentId }),
-          }
+            'X-Stripe-Mode': stripeMode,
+          },
+          body: JSON.stringify({ setupIntentId }),
         }
       );
 
@@ -281,6 +289,7 @@ export default function Billing() {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
+            'X-Stripe-Mode': stripeMode,
           },
         }
       );
@@ -320,6 +329,7 @@ export default function Billing() {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
+            'X-Stripe-Mode': stripeMode,
           },
         }
       );
@@ -750,7 +760,7 @@ export default function Billing() {
                     <button 
                       className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
                       title="Download Invoice"
-                      onClick={() => window.open(invoice.pdfUrl, '_blank')}
+                      onClick={() => window.open(invoice.pdf, '_blank')}
                     >
                       <Download className="w-4 h-4 text-slate-400" />
                     </button>
