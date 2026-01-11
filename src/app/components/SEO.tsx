@@ -103,7 +103,10 @@ export default function SEO({
         scriptTag.setAttribute('type', 'application/ld+json');
         document.head.appendChild(scriptTag);
       }
-      scriptTag.textContent = JSON.stringify(schema);
+      
+      // Handle both array and single object schemas
+      const schemaData = Array.isArray(schema) ? schema : [schema];
+      scriptTag.textContent = JSON.stringify(schemaData);
     }
 
     // Add alternate links for mobile

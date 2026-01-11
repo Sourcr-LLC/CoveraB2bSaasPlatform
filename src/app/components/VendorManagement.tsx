@@ -35,6 +35,8 @@ export default function VendorManagement() {
   const [filterStatus, setFilterStatus] = useState('all');
   const [vendors, setVendors] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { getMaxVendors, loading: subscriptionLoading } = useSubscription();
+  const navigate = useNavigate();
 
   const loadVendors = useCallback(async () => {
     try {
