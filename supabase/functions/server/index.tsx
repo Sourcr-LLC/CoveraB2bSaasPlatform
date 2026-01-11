@@ -1305,6 +1305,29 @@ app.get("/make-server-be7827e3/vendor-portal/:token", async (c) => {
     const token = c.req.param('token');
     console.log(`[Vendor Portal] Attempting to validate token: ${token}`);
     
+    // Handle demo tokens - return mock data for testing
+    if (token.startsWith('demo-')) {
+      console.log(`[Vendor Portal] Demo token detected, returning mock data`);
+      return c.json({
+        vendor: {
+          id: 'demo-vendor-1',
+          name: 'Quick Silver Towing Inc.',
+          email: 'contact@quicksilvertowing.com',
+          phone: '(555) 123-4567',
+          address: '456 Road Ave, Los Angeles, CA 90025',
+          contactName: 'John Smith',
+          vendorType: 'Towing Service',
+          status: 'non-compliant',
+          insuranceExpiry: '2025-12-31',
+          insurancePolicies: [],
+          missingDocs: ['COI', 'W9'],
+          documents: [],
+          w9Uploaded: false
+        },
+        organizationName: 'Covera Demo Client'
+      });
+    }
+    
     const tokenData = await kv.get(`upload_token:${token}`);
     console.log(`[Vendor Portal] Token data retrieved:`, tokenData ? 'Found' : 'Not found');
     
@@ -1313,14 +1336,14 @@ app.get("/make-server-be7827e3/vendor-portal/:token", async (c) => {
       return c.json({ error: 'Invalid or expired token' }, 404);
     }
     
-    // Validate token expiry (optional, say 7 days)
+    // Validate token expiry (optional, say 30 days for testing)
     const createdAt = new Date(tokenData.createdAt);
     const now = new Date();
     const diffDays = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
     
     console.log(`[Vendor Portal] Token age: ${diffDays.toFixed(2)} days`);
     
-    if (diffDays > 7) {
+    if (diffDays > 30) {
       console.log(`[Vendor Portal] Token expired (${diffDays.toFixed(2)} days old)`);
       return c.json({ error: 'Token expired' }, 401);
     }
@@ -1366,6 +1389,17 @@ app.get("/make-server-be7827e3/vendor-portal/:token", async (c) => {
 app.post("/make-server-be7827e3/vendor-portal/:token/update", async (c) => {
   try {
     const token = c.req.param('token');
+    
+    // Handle demo tokens
+    if (token.startsWith('demo-')) {
+      console.log(`[Vendor Portal Update] Demo mode - simulating update`);
+      const updates = await c.req.json();
+      return c.json({ 
+        vendor: { ...updates, id: 'demo-vendor-1' },
+        message: 'Updated (demo mode)' 
+      });
+    }
+    
     const tokenData = await kv.get(`upload_token:${token}`);
     
     if (!tokenData) {
@@ -1409,6 +1443,17 @@ app.post("/make-server-be7827e3/vendor-portal/:token/update", async (c) => {
 app.post("/make-server-be7827e3/vendor-portal/:token/upload-coi", async (c) => {
   try {
     const token = c.req.param('token');
+    
+    // Handle demo tokens
+    if (token.startsWith('demo-')) {
+      console.log(`[Vendor Portal COI Upload] Demo mode - simulating upload`);
+      return c.json({ 
+        success: true,
+        message: 'COI uploaded (demo mode)',
+        extractedData: { policies: [] }
+      });
+    }
+    
     const tokenData = await kv.get(`upload_token:${token}`);
     
     if (!tokenData) {
@@ -1572,6 +1617,16 @@ app.post("/make-server-be7827e3/vendor-portal/:token/upload-coi", async (c) => {
 app.post("/make-server-be7827e3/vendor-portal/:token/upload-w9", async (c) => {
   try {
     const token = c.req.param('token');
+    
+    // Handle demo tokens
+    if (token.startsWith('demo-')) {
+      console.log(`[Vendor Portal W9 Upload] Demo mode - simulating upload`);
+      return c.json({ 
+        success: true,
+        message: 'W9 uploaded (demo mode)'
+      });
+    }
+    
     const tokenData = await kv.get(`upload_token:${token}`);
     
     if (!tokenData) {
@@ -1847,16 +1902,8 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
     
     console.log(`[Generate Upload Link] Token stored in KV: upload_token:${uploadToken}`);
 
-    // Use origin from body if provided (from frontend), otherwise fall back to header or production domain
-    const { origin } = await c.req.json().catch(() => ({ origin: null }));
-    
-    let baseUrl = origin || c.req.header('origin') || 'https://covera.co';
-
-    // Keep the current environment URL for testing purposes
-    // This ensures upload links work in development/preview environments
-    console.log(`[Generate Upload Link] Using base URL: ${baseUrl}`);
-
-    const uploadLink = `${baseUrl}/upload/${uploadToken}`;
+    // Always use the production domain for upload links
+    const uploadLink = `https://covera.co/upload/${uploadToken}`;
     
     console.log(`[Generate Upload Link] Generated link: ${uploadLink}`);
     

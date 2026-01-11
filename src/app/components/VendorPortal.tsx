@@ -36,7 +36,7 @@ export default function VendorPortal() {
   const loadVendorData = async () => {
     try {
       // Check if this is a demo token
-      if (token?.startsWith('demo-token-')) {
+      if (token?.startsWith('demo-'))  {
         // Create mock vendor data for demo
         const mockVendor = {
           id: 'demo-vendor-1',
@@ -75,6 +75,7 @@ export default function VendorPortal() {
       }
       
       const data = await response.json();
+      
       setVendor(data.vendor);
       setOrganizationName(data.organizationName || 'Covera');
       
