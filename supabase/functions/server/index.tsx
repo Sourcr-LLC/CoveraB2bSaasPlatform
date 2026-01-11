@@ -1852,11 +1852,9 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
     
     let baseUrl = origin || c.req.header('origin') || 'https://covera.co';
 
-    // If we are in the Figma preview environment, force the production domain
-    // This ensures generated links look professional and match the intended domain
-    if (baseUrl && baseUrl.includes('figmaiframepreview.figma.site')) {
-      baseUrl = 'https://covera.co';
-    }
+    // Keep the current environment URL for testing purposes
+    // This ensures upload links work in development/preview environments
+    console.log(`[Generate Upload Link] Using base URL: ${baseUrl}`);
 
     const uploadLink = `${baseUrl}/upload/${uploadToken}`;
     
