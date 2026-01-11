@@ -1303,9 +1303,13 @@ app.get("/make-server-be7827e3/vendors", async (c) => {
 app.get("/make-server-be7827e3/vendor-portal/:token", async (c) => {
   try {
     const token = c.req.param('token');
+    console.log(`[Vendor Portal] Attempting to validate token: ${token}`);
+    
     const tokenData = await kv.get(`upload_token:${token}`);
+    console.log(`[Vendor Portal] Token data retrieved:`, tokenData ? 'Found' : 'Not found');
     
     if (!tokenData) {
+      console.log(`[Vendor Portal] Token not found in database: upload_token:${token}`);
       return c.json({ error: 'Invalid or expired token' }, 404);
     }
     
@@ -1314,16 +1318,24 @@ app.get("/make-server-be7827e3/vendor-portal/:token", async (c) => {
     const now = new Date();
     const diffDays = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
     
+    console.log(`[Vendor Portal] Token age: ${diffDays.toFixed(2)} days`);
+    
     if (diffDays > 7) {
+      console.log(`[Vendor Portal] Token expired (${diffDays.toFixed(2)} days old)`);
       return c.json({ error: 'Token expired' }, 401);
     }
     
     const { userId, vendorId } = tokenData;
+    console.log(`[Vendor Portal] Loading vendor: ${vendorId} for user: ${userId}`);
+    
     const vendor = await kv.get(`vendor:${userId}:${vendorId}`);
     
     if (!vendor) {
+      console.log(`[Vendor Portal] Vendor not found: vendor:${userId}:${vendorId}`);
       return c.json({ error: 'Vendor not found' }, 404);
     }
+    
+    console.log(`[Vendor Portal] Successfully loaded vendor portal for: ${vendor.name}`);
     
     // Return only necessary data for the portal (public safe)
     return c.json({
@@ -1333,17 +1345,19 @@ app.get("/make-server-be7827e3/vendor-portal/:token", async (c) => {
         email: vendor.email,
         phone: vendor.phone,
         address: vendor.address,
+        contactName: vendor.contactName,
         vendorType: vendor.vendorType,
         insuranceExpiry: vendor.insuranceExpiry,
         insurancePolicies: vendor.insurancePolicies,
         status: vendor.status,
         missingDocs: vendor.missingDocs,
-        documents: vendor.documents // To show what they've already uploaded
+        documents: vendor.documents,
+        w9Uploaded: vendor.w9Uploaded
       },
       organizationName: 'Covera Client' // You might want to fetch the user's org name
     });
   } catch (error) {
-    console.error('Portal access error:', error);
+    console.error('[Vendor Portal] Portal access error:', error);
     return c.json({ error: 'Internal server error' }, 500);
   }
 });
@@ -1814,11 +1828,15 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
     const { user, error } = await verifyUser(c.req.header('Authorization'));
     
     if (error || !user) {
+      console.log('[Generate Upload Link] Unauthorized - no valid user');
       return c.json({ error: 'Unauthorized' }, 401);
     }
 
     const vendorId = c.req.param('id');
     const uploadToken = crypto.randomUUID();
+    
+    console.log(`[Generate Upload Link] Creating token for vendor ${vendorId}, user ${user.id}`);
+    console.log(`[Generate Upload Link] Token: ${uploadToken}`);
     
     // Store token temporarily (you could add expiration logic)
     await kv.set(`upload_token:${uploadToken}`, {
@@ -1826,6 +1844,8 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
       userId: user.id,
       createdAt: new Date().toISOString(),
     });
+    
+    console.log(`[Generate Upload Link] Token stored in KV: upload_token:${uploadToken}`);
 
     // Use origin from body if provided (from frontend), otherwise fall back to header or production domain
     const { origin } = await c.req.json().catch(() => ({ origin: null }));
@@ -1840,11 +1860,13 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
 
     const uploadLink = `${baseUrl}/upload/${uploadToken}`;
     
+    console.log(`[Generate Upload Link] Generated link: ${uploadLink}`);
+    
     await logActivity(user.id, vendorId, 'upload_link', 'Upload link generated', 'neutral');
 
     return c.json({ uploadLink });
   } catch (error) {
-    console.error('Generate upload link error:', error);
+    console.error('[Generate Upload Link] Error:', error);
     return c.json({ error: 'Internal server error' }, 500);
   }
 });

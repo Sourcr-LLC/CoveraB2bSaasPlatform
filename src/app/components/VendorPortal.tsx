@@ -35,6 +35,37 @@ export default function VendorPortal() {
 
   const loadVendorData = async () => {
     try {
+      // Check if this is a demo token
+      if (token?.startsWith('demo-token-')) {
+        // Create mock vendor data for demo
+        const mockVendor = {
+          id: 'demo-vendor-1',
+          name: 'Quick Silver Towing Inc.',
+          email: 'contact@quicksilvertowing.com',
+          phone: '(555) 123-4567',
+          address: '456 Road Ave, Los Angeles, CA 90025',
+          contactName: 'John Smith',
+          vendorType: 'Towing Service',
+          status: 'non-compliant',
+          insuranceExpiry: '2025-12-31',
+          insurancePolicies: [],
+          missingDocs: ['COI', 'W9'],
+          documents: []
+        };
+        
+        setVendor(mockVendor);
+        setOrganizationName('Covera Demo Client');
+        setFormData({
+          name: mockVendor.name,
+          contactName: mockVendor.contactName || '',
+          email: mockVendor.email,
+          phone: mockVendor.phone,
+          address: mockVendor.address || ''
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       const response = await fetch(`${API_URL}/vendor-portal/${token}`);
       
       if (!response.ok) {
@@ -67,6 +98,16 @@ export default function VendorPortal() {
     setIsSaving(true);
     
     try {
+      // Handle demo mode
+      if (token?.startsWith('demo-token-')) {
+        setTimeout(() => {
+          toast.success('Information updated successfully (Demo Mode)');
+          setVendor((prev: any) => ({ ...prev, ...formData }));
+          setIsSaving(false);
+        }, 1000);
+        return;
+      }
+      
       const response = await fetch(`${API_URL}/vendor-portal/${token}/update`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -98,6 +139,20 @@ export default function VendorPortal() {
     const setIsUploading = type === 'coi' ? setIsUploadingCOI : setIsUploadingW9;
 
     setIsUploading(true);
+    
+    // Handle demo mode
+    if (token?.startsWith('demo-token-')) {
+      setTimeout(() => {
+        toast.success(`${type === 'coi' ? 'Certificate of Insurance' : 'W9 Form'} uploaded successfully! (Demo Mode)`);
+        if (type === 'w9') {
+          setVendor((prev: any) => ({ ...prev, w9Uploaded: true }));
+        }
+        setIsUploading(false);
+        e.target.value = '';
+      }, 2000);
+      return;
+    }
+    
     const formData = new FormData();
     formData.append('file', file);
 

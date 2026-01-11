@@ -189,7 +189,9 @@ export default function VendorDetail() {
     
     if (isDemoMode()) {
       setTimeout(() => {
-        setUploadLink(`https://covera.co/upload/demo-token-${Math.random().toString(36).substring(7)}`);
+        // Use current origin instead of hardcoding covera.co for better demo experience
+        const demoToken = `demo-token-${Math.random().toString(36).substring(7)}`;
+        setUploadLink(`${window.location.origin}/upload/${demoToken}`);
         setShowLinkModal(true);
         setIsGeneratingLink(false);
         // Add mock activity
@@ -938,13 +940,15 @@ export default function VendorDetail() {
             
             <p className="text-sm mb-6" style={{ color: 'var(--foreground-muted)' }}>
               Share this secure link with <strong>{vendor.name}</strong> to allow them to:
-              <ul className="list-disc list-inside mt-2 space-y-1 ml-1">
-                <li>Upload their own Certificates of Insurance (COI)</li>
-                <li>Submit W9 tax forms</li>
-                <li>Update their company contact information</li>
-              </ul>
-              <div className="mt-3 text-xs opacity-70">The link will expire in 7 days.</div>
             </p>
+            <ul className="list-disc list-inside mt-2 space-y-1 ml-1 text-sm mb-3" style={{ color: 'var(--foreground-muted)' }}>
+              <li>Upload their own Certificates of Insurance (COI)</li>
+              <li>Submit W9 tax forms</li>
+              <li>Update their company contact information</li>
+            </ul>
+            <div className="text-xs mb-6" style={{ color: 'var(--foreground-muted)', opacity: 0.7 }}>
+              The link will expire in 7 days.
+            </div>
             
             <div className="flex items-center gap-3 mb-6">
               <input
