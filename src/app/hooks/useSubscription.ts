@@ -93,12 +93,25 @@ export function useSubscription() {
     return isPremium();
   };
 
+  const getMaxVendors = () => {
+    if (!subscription) return 5;
+    
+    // Check for plan-specific limits
+    if (subscription.plan === 'essentials') return 50;
+    if (subscription.plan === 'core') return 150;
+    if (subscription.plan === 'enterprise') return 999999; // Effectively unlimited
+    
+    // Default/Free plan limit
+    return 5;
+  };
+
   return {
     subscription,
     loading,
     isPremium: isPremium(),
     isFree: isFree(),
     canAccessFeature,
+    getMaxVendors,
     refresh: fetchSubscription,
   };
 }

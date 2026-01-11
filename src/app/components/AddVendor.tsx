@@ -1,11 +1,15 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
-import { Upload, Sparkles, ArrowLeft } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Upload, Sparkles, ArrowLeft, AlertCircle } from 'lucide-react';
 import { vendorApi } from '../lib/api';
+import { useSubscription } from '../hooks/useSubscription';
 
 export default function AddVendor() {
   const navigate = useNavigate();
+  const { getMaxVendors, isPremium, loading: subscriptionLoading } = useSubscription();
   const [isLoading, setIsLoading] = useState(false);
+  const [checkingLimit, setCheckingLimit] = useState(true);
+  const [vendorCount, setVendorCount] = useState(0);
   const [error, setError] = useState('');
   const [coiFile, setCoiFile] = useState<File | null>(null);
   const [isAnalyzingCOI, setIsAnalyzingCOI] = useState(false);
@@ -22,8 +26,28 @@ export default function AddVendor() {
     lastContact: new Date().toISOString()
   });
 
+  useEffect(() => {
+    const checkLimit = async () => {
+      try {
+        const { vendors } = await vendorApi.getAll();
+        setVendorCount(vendors.length);
+      } catch (err) {
+        console.error('Failed to fetch vendor count:', err);
+      } finally {
+        setCheckingLimit(false);
+      }
+    };
+    
+    checkLimit();
+  }, []);
+
+  const maxVendors = getMaxVendors();
+  const isLimitReached = !checkingLimit && !subscriptionLoading && vendorCount >= maxVendors;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (checkingLimit || subscriptionLoading || isLimitReached) return;
+    
     setError('');
     setIsLoading(true);
 
@@ -134,6 +158,19 @@ export default function AddVendor() {
 
       {/* Form */}
       <div className="px-4 md:px-12 py-6 md:py-8 max-w-4xl">
+        {isLimitReached && (
+          <div className="mb-8 p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="font-semibold mb-1">Vendor Limit Reached</h3>
+              <p className="text-sm">
+                You have reached the limit of {maxVendors} vendors for your current plan. 
+                Please <Link to="/billing" className="underline font-medium hover:text-amber-900">upgrade your plan</Link> to add more vendors.
+              </p>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           {error && (
             <div 
@@ -431,7 +468,10 @@ export default function AddVendor() {
             </Link>
             <button
               type="submit"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl transition-colors flex items-center justify-center"
+              disabled={isLoading || isLimitReached || checkingLimit || subscriptionLoading}
+              className={`w-full sm:w-auto px-6 py-3 rounded-xl transition-colors flex items-center justify-center ${
+                (isLoading || isLimitReached || checkingLimit || subscriptionLoading) ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
               style={{
                 backgroundColor: 'var(--primary)',
                 color: 'var(--primary-foreground)'

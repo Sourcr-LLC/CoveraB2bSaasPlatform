@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, Filter, Plus, ChevronRight, Download, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 import { vendorApi } from '../lib/api';
 import { isDemoMode, demoVendors } from '../lib/demoData';
+import { useSubscription } from '../hooks/useSubscription';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -100,8 +101,25 @@ export default function VendorManagement() {
     nonCompliant: vendors.filter(v => v.status === 'non-compliant').length
   }), [vendors]);
 
+  const maxVendors = getMaxVendors();
+  const isLimitReached = !isLoading && !subscriptionLoading && vendors.length >= maxVendors;
+
   return (
     <div className="p-4 md:p-8 lg:p-12">
+      {isLimitReached && (
+        <div className="mb-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <p className="text-sm font-medium">
+              You have reached your plan limit of {maxVendors} vendors.
+            </p>
+          </div>
+          <Link to="/billing" className="text-sm font-semibold hover:underline whitespace-nowrap">
+            Upgrade Plan
+          </Link>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 md:mb-12 gap-4">
         <div>
@@ -110,10 +128,11 @@ export default function VendorManagement() {
             Manage and monitor all vendor relationships and compliance status
           </p>
         </div>
-        <Link to="/add-vendor">
+        <Link to={isLimitReached ? "#" : "/add-vendor"} onClick={(e) => isLimitReached && e.preventDefault()}>
           <button 
             data-tour="add-vendor-button"
-            className="px-6 py-3 rounded-lg transition-all text-sm inline-flex items-center gap-2 w-full md:w-auto justify-center"
+            disabled={isLimitReached}
+            className={`px-6 py-3 rounded-lg transition-all text-sm inline-flex items-center gap-2 w-full md:w-auto justify-center ${isLimitReached ? 'opacity-50 cursor-not-allowed' : ''}`}
             style={{ 
               backgroundColor: 'var(--primary)',
               color: 'var(--primary-foreground)',
