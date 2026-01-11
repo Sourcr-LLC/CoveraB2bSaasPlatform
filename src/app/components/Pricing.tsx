@@ -13,7 +13,7 @@ export default function Pricing() {
   const faqs = [
     {
       question: 'What\'s included in the 7-day free trial?',
-      answer: 'Full access to all premium features with no credit card required. Add unlimited vendors, upload COIs, set up automated alerts, and explore the complete platform. No limitations, no strings attached.'
+      answer: 'Full access to all premium features. Add unlimited vendors, upload COIs, set up automated alerts, and explore the complete platform. No limitations, no strings attached.'
     },
     {
       question: 'How does the pre-authorization work?',
@@ -122,7 +122,7 @@ export default function Pricing() {
                 </Link>
                 
                 <p className="text-xs text-center text-slate-400">
-                  7-day free trial • No credit card required
+                  7-day free trial • Cancel anytime
                 </p>
               </div>
 
@@ -174,7 +174,7 @@ export default function Pricing() {
                 </Link>
                 
                 <p className="text-xs text-center text-slate-400">
-                  7-day free trial • No credit card required
+                  7-day free trial • Cancel anytime
                 </p>
               </div>
 

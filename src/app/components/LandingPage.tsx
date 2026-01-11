@@ -389,7 +389,7 @@ export default function LandingPage() {
             </button>
           </div>
           <p className="mt-6 text-sm text-slate-300">
-            No credit card required for trial • Cancel anytime
+            7-day free trial • Cancel anytime
           </p>
         </div>
       </section>

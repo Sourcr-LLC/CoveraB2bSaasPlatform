@@ -231,7 +231,7 @@ export default function BlogList() {
             Start free trial
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <p className="text-sm text-slate-400 mt-4">No credit card required • Setup in 5 minutes</p>
+          <p className="text-sm text-slate-400 mt-4">Setup in 5 minutes</p>
         </div>
       </section>
 

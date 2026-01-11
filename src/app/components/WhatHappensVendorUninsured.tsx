@@ -397,7 +397,7 @@ export default function WhatHappensVendorUninsured() {
               Start Free 7-Day Trial
               <ArrowRight className="w-5 h-5" />
             </Link>
-            <p className="text-sm text-white/70 mt-4">No credit card required • Setup in 5 minutes • Cancel anytime</p>
+            <p className="text-sm text-white/70 mt-4">Setup in 5 minutes • Cancel anytime</p>
           </div>
 
         </div>

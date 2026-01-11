@@ -21,11 +21,14 @@ export function useSubscription() {
         return;
       }
       
+      const stripeMode = (localStorage.getItem('stripe_mode') as 'production' | 'test') || 'production';
+      
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/stripe/subscription-status`,
         {
           headers: {
             'Authorization': `Bearer ${accessToken}`,
+            'X-Stripe-Mode': stripeMode,
           },
         }
       );
@@ -48,7 +51,7 @@ export function useSubscription() {
         console.log('✅ Subscription data loaded:', {
           plan: data.plan,
           status: data.subscriptionStatus,
-          isPremium: (data.plan === 'core' || data.plan === 'enterprise') && 
+          isPremium: (data.plan === 'essentials' || data.plan === 'core' || data.plan === 'enterprise') && 
                     (data.subscriptionStatus === 'active' || data.subscriptionStatus === 'trialing')
         });
         setSubscription(data);
@@ -66,10 +69,11 @@ export function useSubscription() {
     // Check if user has an active subscription (including trial)
     if (!subscription) return false;
     
-    const hasCorePlan = subscription.plan === 'core' || subscription.plan === 'enterprise';
+    // Include all paid plans: essentials, core, enterprise
+    const hasPaidPlan = subscription.plan === 'essentials' || subscription.plan === 'core' || subscription.plan === 'enterprise';
     const isActive = subscription.subscriptionStatus === 'active' || subscription.subscriptionStatus === 'trialing';
     
-    return hasCorePlan && isActive;
+    return hasPaidPlan && isActive;
   };
 
   const isFree = () => {
@@ -77,7 +81,15 @@ export function useSubscription() {
   };
 
   const canAccessFeature = (feature: 'reports' | 'bulk-operations' | 'advanced-analytics') => {
-    // For now, all premium features require Core or Enterprise plan
+    if (!subscription) return false;
+    
+    // Essentials features (basic access)
+    if (subscription.plan === 'essentials') {
+      // Essentials does not include reports or advanced analytics
+      return feature !== 'reports' && feature !== 'advanced-analytics';
+    }
+    
+    // Core and Enterprise have access to all current features
     return isPremium();
   };
 
