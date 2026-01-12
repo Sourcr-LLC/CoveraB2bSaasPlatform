@@ -385,4 +385,9 @@ export const adminApi = {
       method: 'DELETE',
     });
   },
+  ensureAdminUser: async () => {
+    return apiCall('/admin/ensure-admin-user', {
+      method: 'POST',
+    });
+  },
 };

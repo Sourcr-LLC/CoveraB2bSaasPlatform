@@ -101,8 +101,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Check if current route requires premium subscription
   const isPremiumRoute = () => {
-    // Free routes that anyone can access: Settings and Billing only
-    const freeRoutes = ['/settings', '/billing'];
+    // Free routes that anyone can access: Settings, Billing, and Admin only
+    const freeRoutes = ['/settings', '/billing', '/admin'];
     return !freeRoutes.includes(location.pathname);
   };
 

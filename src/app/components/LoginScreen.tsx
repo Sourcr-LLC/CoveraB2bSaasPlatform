@@ -19,12 +19,14 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
   const [name, setName] = useState('');
   const [organizationName, setOrganizationName] = useState('');
   const [error, setError] = useState('');
+  const [isAdminSetupNeeded, setIsAdminSetupNeeded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsAdminSetupNeeded(false);
     setIsLoading(true);
 
     try {
@@ -43,11 +45,43 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
         await authApi.signIn(email, password);
         analytics.trackLogin('email');
         onLogin();
-        navigate('/dashboard');
+        
+        // Redirect admin to admin dashboard
+        if (email === 'admin@covera.co') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       }
     } catch (err: any) {
       console.error('Auth error:', err);
-      setError(err.message || 'Authentication failed. Please try again.');
+      const errorMessage = err.message || 'Authentication failed. Please try again.';
+      setError(errorMessage);
+      
+      // Check if this is the admin user trying to login but failing
+      if (email === 'admin@covera.co' && !isSignUp && errorMessage.includes('Invalid login credentials')) {
+        setIsAdminSetupNeeded(true);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAdminSetup = async () => {
+    setIsLoading(true);
+    try {
+      // Import dynamically to avoid circular dependencies if any, though likely fine here
+      const { adminApi } = await import('../lib/api');
+      await adminApi.ensureAdminUser();
+      setError('');
+      setIsAdminSetupNeeded(false);
+      // Auto login after setup
+      await authApi.signIn(email, password);
+      onLogin();
+      navigate('/admin');
+    } catch (err: any) {
+      console.error('Admin setup failed:', err);
+      setError('Failed to setup admin account: ' + (err.message || 'Unknown error'));
     } finally {
       setIsLoading(false);
     }
@@ -253,6 +287,18 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                     }}
                   >
                     {error}
+                    {isAdminSetupNeeded && (
+                      <div className="mt-3 pt-3 border-t border-red-200">
+                        <p className="mb-2 font-medium">Admin account not found or password incorrect.</p>
+                        <button
+                          type="button"
+                          onClick={handleAdminSetup}
+                          className="text-xs px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors w-full"
+                        >
+                          Initialize Admin Account
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 
