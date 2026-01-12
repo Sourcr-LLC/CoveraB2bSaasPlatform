@@ -214,9 +214,9 @@ export default function VendorDetail() {
       // Reload activities to show the new activity
       const activitiesResponse = await vendorApi.getActivities(id);
       setActivities(activitiesResponse.activities || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to generate upload link:', error);
-      toast.error('Failed to generate upload link. Please try again.');
+      toast.error(error.message || 'Failed to generate upload link. Please try again.');
     } finally {
       setIsGeneratingLink(false);
     }

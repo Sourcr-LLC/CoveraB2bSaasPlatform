@@ -1884,7 +1884,11 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
     
     if (error || !user) {
       console.log('[Generate Upload Link] Unauthorized - no valid user');
-      return c.json({ error: 'Unauthorized' }, 401);
+      return c.json({ 
+        error: 'Unauthorized',
+        debug_error: error,
+        debug_header_present: !!c.req.header('Authorization')
+      }, 401);
     }
 
     const vendorId = c.req.param('id');
