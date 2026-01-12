@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, XCircle, AlertTriangle, TrendingUp, FileText, Download, Mail, Calendar, Clock, AlertCircle, Shield } from 'lucide-react';
 import { supabase } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
@@ -31,6 +32,7 @@ function calculateVendorStatus(insuranceExpiry: string | undefined): string {
 }
 
 export default function ComplianceDashboard() {
+  const navigate = useNavigate();
   const [vendors, setVendors] = useState<any[]>([]);
 
   useEffect(() => {
@@ -144,6 +146,48 @@ export default function ComplianceDashboard() {
 
   const getCompliancePercentage = (category: any) => {
     return ((category.compliant / category.total) * 100).toFixed(1);
+  };
+
+  const handleExportReport = () => {
+    // Basic CSV export functionality
+    try {
+      if (vendors.length === 0) {
+        toast.error("No data available to export");
+        return;
+      }
+
+      // Define CSV headers
+      const headers = ['Name', 'Category', 'Status', 'Contact', 'Insurance Expiry', 'Last Contact'];
+      
+      // Convert vendors data to CSV rows
+      const rows = vendors.map(v => [
+        v.name || '',
+        v.category || '',
+        v.status || '',
+        v.contactEmail || '',
+        v.insuranceExpiry || '',
+        v.lastContact || ''
+      ].map(field => `"${field}"`).join(','));
+
+      // Combine headers and rows
+      const csvContent = [headers.join(','), ...rows].join('\n');
+      
+      // Create blob and download link
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `compliance_audit_report_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success("Audit report downloaded successfully");
+    } catch (error) {
+      console.error("Export error:", error);
+      toast.error("Failed to export report");
+    }
   };
 
   return (
@@ -395,7 +439,8 @@ export default function ComplianceDashboard() {
             <h4 className="mb-5">Compliance actions</h4>
             <div className="space-y-3">
               <button 
-                className="w-full py-3 rounded-lg text-sm transition-all text-left px-4 flex items-center gap-3"
+                onClick={handleExportReport}
+                className="w-full py-3 rounded-lg text-sm transition-all text-left px-4 flex items-center gap-3 hover:opacity-90 active:scale-[0.99]"
                 style={{ 
                   backgroundColor: 'var(--primary)',
                   color: 'var(--primary-foreground)'
@@ -405,7 +450,8 @@ export default function ComplianceDashboard() {
                 Export audit report
               </button>
               <button 
-                className="w-full py-3 rounded-lg border text-sm transition-all text-left px-4 flex items-center gap-3"
+                onClick={() => navigate('/insurance')}
+                className="w-full py-3 rounded-lg border text-sm transition-all text-left px-4 flex items-center gap-3 hover:bg-[var(--panel)] active:scale-[0.99]"
                 style={{ 
                   borderColor: 'var(--border)',
                   color: 'var(--foreground)'
