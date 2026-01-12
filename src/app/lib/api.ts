@@ -374,4 +374,15 @@ export const adminApi = {
   getUsers: async () => {
     return apiCall('/admin/users');
   },
+  cancelSubscription: async (userId: string) => {
+    return apiCall('/admin/cancel-subscription', {
+      method: 'POST',
+      body: JSON.stringify({ userId }),
+    });
+  },
+  deleteUser: async (userId: string) => {
+    return apiCall(`/admin/users/${userId}`, {
+      method: 'DELETE',
+    });
+  },
 };

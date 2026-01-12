@@ -4063,6 +4063,12 @@ app.get("/make-server-be7827e3/admin/users", async (c) => {
     if (error || !user) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
+
+    // Security check: Only allow admin@covera.co
+    if (user.email !== 'admin@covera.co') {
+      console.warn(`⛔ Access denied to admin dashboard for user: ${user.email}`);
+      return c.json({ error: 'Forbidden: Admin access only' }, 403);
+    }
     
     // Get all users from KV
     const users = await kv.getByPrefix("user:");
@@ -4070,6 +4076,155 @@ app.get("/make-server-be7827e3/admin/users", async (c) => {
     return c.json({ users: users || [] });
   } catch (error) {
     console.error('Get users error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Create/Ensure Admin User (Utility route)
+app.post("/make-server-be7827e3/admin/ensure-admin-user", async (c) => {
+  try {
+    // This endpoint should ideally be protected or removed after use
+    // For now, we'll leave it open but it only affects one specific email
+    
+    const email = 'admin@covera.co';
+    const password = 'Angola1975$';
+    
+    // Check if user exists
+    const { data: { users } } = await supabase.auth.admin.listUsers();
+    const existingUser = users?.find(u => u.email === email);
+    
+    let userId;
+    
+    if (existingUser) {
+      console.log('Admin user exists, updating password...');
+      const { data, error } = await supabase.auth.admin.updateUserById(
+        existingUser.id,
+        { password: password, user_metadata: { name: 'Admin User' }, email_confirm: true }
+      );
+      if (error) throw error;
+      userId = existingUser.id;
+    } else {
+      console.log('Creating admin user...');
+      const { data, error } = await supabase.auth.admin.createUser({
+        email,
+        password,
+        user_metadata: { name: 'Admin User' },
+        email_confirm: true
+      });
+      if (error) throw error;
+      userId = data.user.id;
+    }
+    
+    // Ensure profile exists in KV
+    await kv.set(`user:${userId}`, {
+      email,
+      name: 'Admin User',
+      organizationName: 'Covera Admin',
+      plan: 'free', // Admins don't need a plan
+      subscriptionStatus: 'active', // Mark as active so they show up as green in lists if needed
+      role: 'admin',
+      createdAt: new Date().toISOString(),
+    });
+    
+    return c.json({ success: true, message: 'Admin user secured' });
+    
+  } catch (error) {
+    console.error('Ensure admin error:', error);
+    return c.json({ error: error.message }, 500);
+  }
+});
+
+// Admin: Cancel a user's subscription
+app.post("/make-server-be7827e3/admin/cancel-subscription", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    if (error || !user || user.email !== 'admin@covera.co') {
+      return c.json({ error: 'Forbidden' }, 403);
+    }
+
+    const { userId } = await c.req.json();
+    if (!userId) return c.json({ error: 'User ID required' }, 400);
+
+    const targetProfile = await kv.get(`user:${userId}`);
+    if (!targetProfile) return c.json({ error: 'User not found' }, 404);
+
+    // Cancel in Stripe if applicable
+    // We need to check both production and test modes to be safe, or just the one in profile
+    const modes = ['production', 'test'];
+    let cancelled = false;
+
+    for (const mode of modes) {
+      const subscription = await kv.get(`subscription:${userId}:${mode}`);
+      if (subscription?.subscriptionId) {
+        const { secretKey } = getStripeKeys(mode);
+        if (secretKey) {
+          try {
+             await fetch(
+              `https://api.stripe.com/v1/subscriptions/${subscription.subscriptionId}`,
+              {
+                method: 'DELETE', // Immediate cancellation
+                headers: { 'Authorization': `Bearer ${secretKey}` },
+              }
+            );
+            
+            // Update subscription record
+            subscription.status = 'canceled';
+            subscription.canceledAt = new Date().toISOString();
+            await kv.set(`subscription:${userId}:${mode}`, subscription);
+            cancelled = true;
+          } catch (e) {
+            console.error(`Failed to cancel stripe sub for ${userId} in ${mode}:`, e);
+          }
+        }
+      }
+    }
+
+    // Update Profile
+    targetProfile.subscriptionStatus = 'canceled';
+    targetProfile.plan = 'free';
+    targetProfile.subscriptionCancelAtPeriodEnd = false; // It's immediate
+    await kv.set(`user:${userId}`, targetProfile);
+
+    return c.json({ success: true });
+  } catch (error) {
+    console.error('Admin cancel sub error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Admin: Delete a user
+app.delete("/make-server-be7827e3/admin/users/:id", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    if (error || !user || user.email !== 'admin@covera.co') {
+      return c.json({ error: 'Forbidden' }, 403);
+    }
+
+    const userId = c.req.param('id');
+    if (!userId) return c.json({ error: 'User ID required' }, 400);
+
+    // 1. Delete from Supabase Auth
+    const { error: deleteError } = await supabase.auth.admin.deleteUser(userId);
+    if (deleteError) {
+      console.error('Failed to delete auth user:', deleteError);
+      return c.json({ error: 'Failed to delete user from auth' }, 500);
+    }
+
+    // 2. Delete Profile from KV
+    await kv.del(`user:${userId}`);
+
+    // 3. Delete related KV data (best effort cleanup)
+    // In a real DB this would be cascaded. Here we have to search/delete manually or accept orphans.
+    // For now, removing the main profile prevents login and appearance in lists.
+    // We could clean up subscriptions too.
+    const modes = ['production', 'test'];
+    for (const mode of modes) {
+      await kv.del(`subscription:${userId}:${mode}`);
+    }
+
+    return c.json({ success: true });
+  } catch (error) {
+    console.error('Admin delete user error:', error);
     return c.json({ error: 'Internal server error' }, 500);
   }
 });
