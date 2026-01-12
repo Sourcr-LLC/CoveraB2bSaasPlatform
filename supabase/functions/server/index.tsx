@@ -4223,8 +4223,8 @@ app.delete("/make-server-be7827e3/admin/users/:id", async (c) => {
     // 1. Delete from Supabase Auth
     const { error: deleteError } = await supabase.auth.admin.deleteUser(userId);
     if (deleteError) {
-      console.error('Failed to delete auth user:', deleteError);
-      return c.json({ error: 'Failed to delete user from auth' }, 500);
+      console.log('Info: Auth user missing or delete failed, proceeding to cleanup KV:', deleteError.message);
+      // We continue even if Auth delete fails (e.g. user not found), so we can clean up KV orphans
     }
 
     // 2. Delete Profile from KV

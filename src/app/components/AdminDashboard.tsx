@@ -210,7 +210,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Users Table */}
-      <Card className="border-t-4 border-t-blue-600">
+      <Card className="border-t-4 border-primary">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
