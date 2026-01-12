@@ -1972,6 +1972,15 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
     let activityMessage = 'Reminder logged';
     
+    // Get origin from request body (or default to production)
+    let origin = 'https://covera.co';
+    try {
+      const body = await c.req.json().catch(() => ({}));
+      if (body.origin) origin = body.origin;
+    } catch (e) {
+      // Ignore JSON parse error if body is empty
+    }
+    
     if (resendApiKey) {
       try {
         // Domain verified - send emails to actual vendor contacts
@@ -1984,7 +1993,9 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
           userId: user.id,
           createdAt: new Date().toISOString(),
         });
-        const uploadLink = `https://covera.co/upload/${uploadToken}`;
+        
+        // Construct link using dynamic origin
+        const uploadLink = `${origin}/upload/${uploadToken}`;
 
         console.log(`📧 Sending reminder email to ${recipientEmail} with link ${uploadLink}`);
         

@@ -192,6 +192,7 @@ export const vendorApi = {
   sendReminder: async (id: string) => {
     return apiCall(`/vendors/${id}/send-reminder`, {
       method: 'POST',
+      body: JSON.stringify({ origin: window.location.origin }),
     });
   },
 
