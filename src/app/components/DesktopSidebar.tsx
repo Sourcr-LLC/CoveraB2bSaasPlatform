@@ -10,7 +10,8 @@ import {
   Settings,
   CreditCard,
   LogOut,
-  Loader2
+  Loader2,
+  Lock
 } from 'lucide-react';
 import { authApi } from '../lib/api';
 import { useState } from 'react';
@@ -60,6 +61,11 @@ export default function DesktopSidebar({ organizationName, userEmail, userInitia
     { name: 'Alerts', href: '/alerts', icon: Bell },
     { name: 'Reports', href: '/reports', icon: BarChart3 },
   ];
+
+  // Admin override
+  if (userEmail === 'admin@covera.co') {
+    navigation.push({ name: 'Admin Dashboard', href: '/admin', icon: Lock });
+  }
 
   const isActive = (href: string) => location.pathname === href || location.pathname.startsWith(href + '/');
 

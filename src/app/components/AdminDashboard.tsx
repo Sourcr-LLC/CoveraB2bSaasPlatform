@@ -241,8 +241,8 @@ export default function AdminDashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUsers.map((user) => (
-                <TableRow key={user.id || user.email}>
+              {filteredUsers.map((user, index) => (
+                <TableRow key={`${user.id || 'no-id'}-${user.email || 'no-email'}-${index}`}>
                   <TableCell>
                     <div className="flex flex-col">
                       <span className="font-medium">{user.name || 'N/A'}</span>

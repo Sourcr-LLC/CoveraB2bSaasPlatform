@@ -4070,10 +4070,27 @@ app.get("/make-server-be7827e3/admin/users", async (c) => {
       return c.json({ error: 'Forbidden: Admin access only' }, 403);
     }
     
-    // Get all users from KV
-    const users = await kv.getByPrefix("user:");
+    // Get all users from KV directly to ensure we get the IDs from keys
+    const { data: kvRows, error: kvError } = await supabase
+      .from("kv_store_92f9f116")
+      .select("key, value")
+      .like("key", "user:%");
+      
+    if (kvError) {
+      console.error('KV fetch error:', kvError);
+      throw new Error('Failed to fetch users from KV');
+    }
+
+    const users = (kvRows || []).map(row => {
+      // Extract ID from key "user:UUID"
+      const id = row.key.replace('user:', '');
+      return {
+        ...row.value,
+        id: id // Ensure ID is present
+      };
+    });
     
-    return c.json({ users: users || [] });
+    return c.json({ users });
   } catch (error) {
     console.error('Get users error:', error);
     return c.json({ error: 'Internal server error' }, 500);

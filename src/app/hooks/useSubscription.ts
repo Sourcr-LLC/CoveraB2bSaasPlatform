@@ -20,6 +20,17 @@ export function useSubscription() {
         setLoading(false);
         return;
       }
+
+      // Admin override - always premium (bypass server check)
+      if (session?.user?.email === 'admin@covera.co') {
+        console.log('👑 Admin user detected - granting premium access immediately');
+        setSubscription({
+          plan: 'enterprise',
+          subscriptionStatus: 'active'
+        });
+        setLoading(false);
+        return;
+      }
       
       const stripeMode = (localStorage.getItem('stripe_mode') as 'production' | 'test') || 'production';
       
@@ -48,6 +59,19 @@ export function useSubscription() {
 
       if (response.ok) {
         const data = await response.json();
+        
+        // Admin override - always premium
+        if (session.user.email === 'admin@covera.co') {
+          console.log('👑 Admin user detected - granting premium access');
+          setSubscription({
+            ...data,
+            plan: 'enterprise',
+            subscriptionStatus: 'active'
+          });
+          setLoading(false);
+          return;
+        }
+
         console.log('✅ Subscription data loaded:', {
           plan: data.plan,
           status: data.subscriptionStatus,

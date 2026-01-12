@@ -103,7 +103,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const isPremiumRoute = () => {
     // Free routes that anyone can access: Settings, Billing, and Admin only
     const freeRoutes = ['/settings', '/billing', '/admin'];
-    return !freeRoutes.includes(location.pathname);
+    
+    // Check if path is exactly one of the free routes OR starts with one of them (e.g. /admin/users)
+    const isFreeRoute = freeRoutes.some(route => 
+      location.pathname === route || location.pathname.startsWith(`${route}/`)
+    );
+    
+    return !isFreeRoute;
   };
 
   const shouldShowPaywall = !subscriptionLoading && !isPremium && isPremiumRoute();
