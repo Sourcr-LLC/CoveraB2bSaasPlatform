@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Upload, FileText, CheckCircle2, AlertCircle, Clock, Shield, Building2, User, Phone, Mail, MapPin, Loader2, FileCheck, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
-import { projectId } from '../../../utils/supabase/info';
+import { projectId, publicAnonKey } from '../../../utils/supabase/info';
 
 const API_URL = `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3`;
 
@@ -62,7 +62,11 @@ export default function VendorPortal() {
           return;
         }
         
-        const response = await fetch(`${API_URL}/vendor-portal/${token}`);
+        const response = await fetch(`${API_URL}/vendor-portal/${token}`, {
+          headers: {
+            'Authorization': `Bearer ${publicAnonKey}`
+          }
+        });
         
         if (!response.ok) {
           if (response.status === 404) throw new Error('Link expired or invalid');
@@ -112,7 +116,10 @@ export default function VendorPortal() {
       
       const response = await fetch(`${API_URL}/vendor-portal/${token}/update`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${publicAnonKey}`
+        },
         body: JSON.stringify(formData)
       });
       
@@ -161,6 +168,9 @@ export default function VendorPortal() {
     try {
       const response = await fetch(`${API_URL}/vendor-portal/${token}/${endpoint}`, {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${publicAnonKey}`
+        },
         body: uploadFormData
       });
 
