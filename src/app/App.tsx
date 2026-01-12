@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect, Suspense, lazy } from 'react';
 import { supabase } from './lib/api';
 import { Toaster } from 'sonner';
-import favicon from 'figma:asset/af26cd5ca4aa83f65e3c431f1055335f1327881a.png';
 
 // Import loader for Suspense fallback
 import PremiumLoader from './components/PremiumLoader';
@@ -118,19 +117,6 @@ export default function App() {
     };
 
     checkSession();
-  }, []);
-
-  // Update Favicon
-  useEffect(() => {
-    const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-    if (link) {
-      link.href = favicon;
-    } else {
-      const newLink = document.createElement('link');
-      newLink.rel = 'icon';
-      newLink.href = favicon;
-      document.head.appendChild(newLink);
-    }
   }, []);
 
   if (isLoading) {
