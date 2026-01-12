@@ -8,6 +8,8 @@ import PremiumLoader from './components/PremiumLoader';
 import ScrollToTop from './components/ScrollToTop';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
+import AdminDashboard from './components/AdminDashboard';
+
 // Lazy load components to optimize bundle size and performance
 const DashboardLayout = lazy(() => import('./components/DashboardLayoutNew'));
 const LandingPage = lazy(() => import('./components/LandingPage'));
@@ -64,7 +66,6 @@ const ContractManagement = lazy(() => import('./components/ContractManagement'))
 const AddVendor = lazy(() => import('./components/AddVendor'));
 const Billing = lazy(() => import('./components/Billing'));
 const VendorPortal = lazy(() => import('./components/VendorPortal'));
-const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 
 function ProtectedRoute({ isAuthenticated, children }: { isAuthenticated: boolean; children: React.ReactNode }) {
   if (!isAuthenticated) {
