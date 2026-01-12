@@ -172,21 +172,21 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 bg-gray-50/50 min-h-screen">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 bg-gray-50/50 min-h-screen">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Master Admin</h1>
           <p className="text-gray-500 mt-1">Manage users, subscriptions, and revenue.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={loadUsers} disabled={isLoading}>
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <Button variant="outline" onClick={loadUsers} disabled={isLoading} className="w-full md:w-auto">
             Refresh Data
           </Button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -227,115 +227,128 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Users Table */}
+      {/* Users Table / List */}
       <Card className="border-t-4 border-primary">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <CardTitle>User Directory</CardTitle>
               <CardDescription>Manage all registered users and their subscriptions</CardDescription>
             </div>
-            <div className="relative w-64">
+            <div className="relative w-full md:w-64">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search users..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8"
+                className="pl-8 w-full"
               />
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Organization</TableHead>
-                <TableHead>Plan</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Joined</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.map((user, index) => (
-                <TableRow key={`${user.id || 'no-id'}-${user.email || 'no-email'}-${index}`}>
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span className="font-medium">{user.name || 'N/A'}</span>
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Mail className="w-3 h-3" /> {user.email}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Building2 className="w-4 h-4 text-gray-400" />
-                      {user.organizationName || 'N/A'}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="capitalize font-medium">
-                      {user.plan || 'Free'}
-                      {user.plan === 'core' && <span className="ml-2 text-xs text-blue-600">($399)</span>}
-                      {user.plan === 'essentials' && <span className="ml-2 text-xs text-blue-600">($199)</span>}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {getSubscriptionBadge(user.subscriptionStatus)}
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user.email)}>
-                          Copy Email
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        
-                        {(user.subscriptionStatus === 'active' || user.subscriptionStatus === 'trialing') && user.email !== 'admin@covera.co' && (
-                          <DropdownMenuItem 
-                            onClick={() => setUserToCancel(user.id)}
-                            className="text-orange-600 focus:text-orange-600"
-                          >
-                            <Ban className="mr-2 h-4 w-4" />
-                            Cancel Subscription
-                          </DropdownMenuItem>
-                        )}
-                        
-                        {user.email !== 'admin@covera.co' && (
-                          <DropdownMenuItem 
-                            onClick={() => setUserToDelete(user.id)}
-                            className="text-red-600 focus:text-red-600"
-                          >
-                            <UserX className="mr-2 h-4 w-4" />
-                            Delete User
-                          </DropdownMenuItem>
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {filteredUsers.length === 0 && (
+          {/* Desktop Table View */}
+          <div className="hidden md:block">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                    No users found matching "{searchQuery}"
-                  </TableCell>
+                  <TableHead>User</TableHead>
+                  <TableHead>Organization</TableHead>
+                  <TableHead>Plan</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Joined</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredUsers.map((user, index) => (
+                  <TableRow key={`${user.id || 'no-id'}-${user.email || 'no-email'}-${index}`}>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{user.name || 'N/A'}</span>
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Mail className="w-3 h-3" /> {user.email}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-gray-400" />
+                        {user.organizationName || 'N/A'}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="capitalize font-medium">
+                        {user.plan || 'Free'}
+                        {user.plan === 'core' && <span className="ml-2 text-xs text-blue-600">($399)</span>}
+                        {user.plan === 'essentials' && <span className="ml-2 text-xs text-blue-600">($199)</span>}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {getSubscriptionBadge(user.subscriptionStatus)}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <AdminActionMenu 
+                        user={user} 
+                        onCancel={() => setUserToCancel(user.id)}
+                        onDelete={() => setUserToDelete(user.id)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {filteredUsers.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                      No users found matching "{searchQuery}"
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Mobile List View */}
+          <div className="md:hidden space-y-4">
+            {filteredUsers.map((user, index) => (
+              <div key={`${user.id || 'mobile'}-${index}`} className="p-4 border rounded-lg bg-white shadow-sm space-y-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <div className="font-medium text-gray-900">{user.name || 'N/A'}</div>
+                    <div className="text-xs text-muted-foreground break-all">{user.email}</div>
+                  </div>
+                  {getSubscriptionBadge(user.subscriptionStatus)}
+                </div>
+                
+                <div className="flex justify-between items-center text-sm pt-2">
+                  <div className="flex items-center gap-2 text-gray-700 font-medium">
+                    <Building2 className="w-4 h-4 text-gray-400" />
+                    {user.organizationName || 'N/A'}
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center text-sm text-muted-foreground">
+                  <span className="capitalize">Plan: {user.plan || 'Free'}</span>
+                  <span>Joined: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</span>
+                </div>
+
+                <div className="flex justify-end pt-3 border-t mt-2">
+                  <AdminActionMenu 
+                     user={user} 
+                     onCancel={() => setUserToCancel(user.id)}
+                     onDelete={() => setUserToDelete(user.id)}
+                  />
+                </div>
+              </div>
+            ))}
+            {filteredUsers.length === 0 && (
+              <div className="text-center py-8 text-muted-foreground border rounded-lg">
+                No users found matching "{searchQuery}"
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
 
@@ -388,6 +401,47 @@ export default function AdminDashboard() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+}
+
+// Extracted Action Menu to re-use in both views
+function AdminActionMenu({ user, onCancel, onDelete }: { user: any, onCancel: () => void, onDelete: () => void }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user.email)}>
+          Copy Email
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        
+        {(user.subscriptionStatus === 'active' || user.subscriptionStatus === 'trialing') && user.email !== 'admin@covera.co' && (
+          <DropdownMenuItem 
+            onClick={onCancel}
+            className="text-orange-600 focus:text-orange-600"
+          >
+            <Ban className="mr-2 h-4 w-4" />
+            Cancel Subscription
+          </DropdownMenuItem>
+        )}
+        
+        {user.email !== 'admin@covera.co' && (
+          <DropdownMenuItem 
+            onClick={onDelete}
+            className="text-red-600 focus:text-red-600"
+          >
+            <UserX className="mr-2 h-4 w-4" />
+            Delete User
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
