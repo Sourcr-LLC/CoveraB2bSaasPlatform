@@ -1,14 +1,16 @@
-# Netlify/Vercel Cache Headers Configuration
-# Rename this file to "_headers" when deploying
+# Netlify Cache Headers Configuration
+# Save this file as "_headers" at the site root (or /public/_headers)
 
-# Cache static assets for 1 year (they are versioned/hashed)
+# -----------------------------
+# Long-term cached, versioned assets
+# -----------------------------
+
 /*.js
   Cache-Control: public, max-age=31536000, immutable
 
 /*.css
   Cache-Control: public, max-age=31536000, immutable
 
-# Cache fonts for 1 year
 /*.woff2
   Cache-Control: public, max-age=31536000, immutable
 
@@ -18,7 +20,6 @@
 /*.ttf
   Cache-Control: public, max-age=31536000, immutable
 
-# Cache images for 1 year
 /*.png
   Cache-Control: public, max-age=31536000, immutable
 
@@ -34,18 +35,35 @@
 /*.webp
   Cache-Control: public, max-age=31536000, immutable
 
+
+# -----------------------------
+# Favicons (DO NOT make immutable)
+# -----------------------------
+
 /*.ico
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 
-# Cache HTML for 1 hour only (for updates)
+
+# -----------------------------
+# HTML documents
+# -----------------------------
+
 /*.html
-  Cache-Control: public, max-age=3600, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
 
-# Root path - always check for updates
+
+# -----------------------------
+# Root path – always revalidate
+# -----------------------------
+
 /
   Cache-Control: public, max-age=0, must-revalidate
-  
-# Security and performance headers for all routes
+
+
+# -----------------------------
+# Security headers (all routes)
+# -----------------------------
+
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
