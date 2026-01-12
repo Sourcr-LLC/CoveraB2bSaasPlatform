@@ -64,6 +64,7 @@ const ContractManagement = lazy(() => import('./components/ContractManagement'))
 const AddVendor = lazy(() => import('./components/AddVendor'));
 const Billing = lazy(() => import('./components/Billing'));
 const VendorPortal = lazy(() => import('./components/VendorPortal'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 
 function ProtectedRoute({ isAuthenticated, children }: { isAuthenticated: boolean; children: React.ReactNode }) {
   if (!isAuthenticated) {
@@ -135,6 +136,14 @@ export default function App() {
               element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginScreen onLogin={() => setIsAuthenticated(true)} />} 
             />
             <Route path="/upload/:token" element={<VendorPortal />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/dashboard"
               element={

@@ -4053,4 +4053,25 @@ app.post("/make-server-be7827e3/contact-sales", async (c) => {
 
 // ==================== BACKEND INTEGRATION ====================
 
+// ==================== ADMIN ROUTES ====================
+
+// Get all users (Admin only - for dashboard)
+app.get("/make-server-be7827e3/admin/users", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+    
+    // Get all users from KV
+    const users = await kv.getByPrefix("user:");
+    
+    return c.json({ users: users || [] });
+  } catch (error) {
+    console.error('Get users error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
 Deno.serve(app.fetch);

@@ -368,3 +368,10 @@ export const alertApi = {
     });
   },
 };
+
+// Admin API
+export const adminApi = {
+  getUsers: async () => {
+    return apiCall('/admin/users');
+  },
+};
