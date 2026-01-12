@@ -185,7 +185,7 @@ export const SEO_CONFIGS = {
         "description": "Enterprise vendor compliance and insurance tracking platform",
         "sameAs": [
           "https://twitter.com/getcovera",
-          "https://linkedin.com/company/getcovera"
+          "https://www.linkedin.com/company/covera-co/"
         ],
         "potentialAction": {
           "@type": "SearchAction",
