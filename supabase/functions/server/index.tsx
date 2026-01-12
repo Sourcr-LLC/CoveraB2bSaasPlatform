@@ -1888,6 +1888,11 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
     }
 
     const vendorId = c.req.param('id');
+    
+    // Get origin from request body to support testing in different environments
+    const { origin } = await c.req.json().catch(() => ({ origin: 'https://covera.co' }));
+    const baseUrl = origin || 'https://covera.co';
+    
     const uploadToken = crypto.randomUUID();
     
     console.log(`[Generate Upload Link] Creating token for vendor ${vendorId}, user ${user.id}`);
@@ -1902,8 +1907,8 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
     
     console.log(`[Generate Upload Link] Token stored in KV: upload_token:${uploadToken}`);
 
-    // Always use the production domain for upload links
-    const uploadLink = `https://covera.co/upload/${uploadToken}`;
+    // Use the requested origin for the link
+    const uploadLink = `${baseUrl}/upload/${uploadToken}`;
     
     console.log(`[Generate Upload Link] Generated link: ${uploadLink}`);
     
@@ -1968,7 +1973,16 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
         // Domain verified - send emails to actual vendor contacts
         const recipientEmail = vendor.email;
         
-        console.log(`📧 Sending reminder email to ${recipientEmail}`);
+        // Generate upload token
+        const uploadToken = crypto.randomUUID();
+        await kv.set(`upload_token:${uploadToken}`, {
+          vendorId,
+          userId: user.id,
+          createdAt: new Date().toISOString(),
+        });
+        const uploadLink = `https://covera.co/upload/${uploadToken}`;
+
+        console.log(`📧 Sending reminder email to ${recipientEmail} with link ${uploadLink}`);
         
         const emailResponse = await sendEmailWithRetry(resendApiKey, {
               from: 'Covera <noreply@covera.co>',
@@ -2008,6 +2022,14 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
                     
                     <p style="color: #4a5568; line-height: 1.6; margin: 0 0 30px 0;">
                       Please upload your Certificate of Insurance at your earliest convenience to maintain compliance and avoid any disruptions.
+                    </p>
+
+                    <div style="text-align: center; margin: 30px 0;">
+                      <a href="${uploadLink}" style="background-color: #3A4F6A; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">Upload Certificate of Insurance</a>
+                    </div>
+
+                    <p style="text-align: center; color: #718096; font-size: 13px; margin-bottom: 30px;">
+                      Or copy this link: <a href="${uploadLink}" style="color: #3A4F6A;">${uploadLink}</a>
                     </p>
                     
                     <p style="color: #718096; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; padding-top: 20px; border-top: 1px solid #e2e8f0;">
