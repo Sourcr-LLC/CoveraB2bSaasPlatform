@@ -39,6 +39,24 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     checkAdminAndLoad();
+
+    // Subscribe to real-time updates from server
+    const channel = supabase
+      .channel('admin-dashboard')
+      .on(
+        'broadcast',
+        { event: 'users-updated' },
+        (payload) => {
+          console.log('Real-time update detected:', payload);
+          // Reload data when update is received
+          checkAdminAndLoad();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const checkAdminAndLoad = async () => {

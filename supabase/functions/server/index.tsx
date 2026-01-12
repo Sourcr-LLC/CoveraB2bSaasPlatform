@@ -43,6 +43,25 @@ async function verifyUser(authHeader: string | null) {
   return { user, error };
 }
 
+// Helper function to broadcast updates via Supabase Realtime
+async function broadcastUpdate(event: string, payload: any = {}) {
+  try {
+    const channel = supabase.channel('admin-dashboard');
+    await channel.subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await channel.send({
+          type: 'broadcast',
+          event: event,
+          payload: payload,
+        });
+        supabase.removeChannel(channel);
+      }
+    });
+  } catch (error) {
+    console.error('Broadcast failed:', error);
+  }
+}
+
 // Helper function to send email via Resend with robust retry logic
 async function sendEmailWithRetry(resendApiKey: string, body: any) {
   let emailResponse;
@@ -259,6 +278,9 @@ app.post("/make-server-be7827e3/seed-demo-data", async (c) => {
     // Log overall activity
     await logActivity(user.id, 'system', 'demo_seed', `Generated ${vendors.length} demo vendors`, 'positive');
 
+    // Broadcast update
+    await broadcastUpdate('users-updated');
+
     return c.json({ 
       success: true, 
       message: `Successfully created ${vendors.length} demo vendors`,
@@ -303,6 +325,9 @@ app.post("/make-server-be7827e3/clear-demo-data", async (c) => {
     
     // Log activity
     await logActivity(user.id, 'system', 'demo_clear', `Cleared ${demoVendors.length} demo vendors`, 'neutral');
+
+    // Broadcast update
+    await broadcastUpdate('users-updated');
 
     return c.json({ 
       success: true, 
@@ -772,6 +797,9 @@ app.post("/make-server-be7827e3/auth/signup-verify", async (c) => {
     // Cleanup verification code
     await kv.del(`signup_verification:${email.toLowerCase()}`);
 
+    // Broadcast update
+    await broadcastUpdate('users-updated', { userId: data.user.id });
+
     return c.json({ user: data.user });
 
   } catch (error) {
@@ -811,6 +839,9 @@ app.post("/make-server-be7827e3/auth/signup", async (c) => {
       subscriptionStatus: 'inactive',
       createdAt: new Date().toISOString(),
     });
+
+    // Broadcast update
+    await broadcastUpdate('users-updated', { userId: data.user.id });
 
     return c.json({ user: data.user });
   } catch (error) {
@@ -4202,6 +4233,9 @@ app.post("/make-server-be7827e3/admin/cancel-subscription", async (c) => {
     targetProfile.subscriptionCancelAtPeriodEnd = false; // It's immediate
     await kv.set(`user:${userId}`, targetProfile);
 
+    // Broadcast update
+    await broadcastUpdate('users-updated', { userId });
+
     return c.json({ success: true });
   } catch (error) {
     console.error('Admin cancel sub error:', error);
@@ -4238,6 +4272,9 @@ app.delete("/make-server-be7827e3/admin/users/:id", async (c) => {
     for (const mode of modes) {
       await kv.del(`subscription:${userId}:${mode}`);
     }
+
+    // Broadcast update
+    await broadcastUpdate('users-updated', { userId });
 
     return c.json({ success: true });
   } catch (error) {
