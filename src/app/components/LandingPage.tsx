@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Shield, Bell, FileText, TrendingUp, ArrowRight, Building2, Hospital, Store, Truck, MapPin, FileCheck, CheckCircle, Upload, Zap, Lock, Globe, X } from 'lucide-react';
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
-const DashboardPreview = lazy(() => import('./DashboardPreview'));
+import DashboardPreview from './DashboardPreview';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 
@@ -14,16 +14,6 @@ export default function LandingPage() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('self-service');
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Testimonials data
   const testimonials = [
@@ -80,10 +70,9 @@ export default function LandingPage() {
       
       {/* Background Ambience */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        {/* Reduce blur radius and opacity on mobile to improve performance */}
-        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-[#3A4F6A]/5 blur-[60px] md:blur-[120px]" style={{ willChange: 'transform' }} />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/3 blur-[50px] md:blur-[100px]" style={{ willChange: 'transform' }} />
-        <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] rounded-full bg-blue-400/5 blur-[40px] md:blur-[80px]" style={{ willChange: 'transform' }} />
+        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-[#3A4F6A]/5 blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/3 blur-[100px]" />
+        <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] rounded-full bg-blue-400/5 blur-[80px]" />
       </div>
 
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
@@ -136,10 +125,8 @@ export default function LandingPage() {
             className="relative mx-auto max-w-6xl"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
-            <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl min-h-[200px]" aria-hidden="true">
-              <Suspense fallback={<div className="w-full aspect-video bg-slate-50 animate-pulse" />}>
-                <DashboardPreview />
-              </Suspense>
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl" aria-hidden="true">
+              <DashboardPreview />
               
               {/* Floating Element: Magic Link Notification - HIDDEN */}
               {/* <motion.div 
@@ -295,7 +282,7 @@ export default function LandingPage() {
                 <div className="flex flex-col gap-6">
                   {/* Step 1 */}
                   <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 1 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-105' : 'bg-slate-100 text-slate-500 scale-100'}`}>1</div>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>1</div>
                     <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>Generate Link</div>
                       <div className="text-sm text-slate-600 mt-1">Create a secure, time-limited upload token.</div>
@@ -303,7 +290,7 @@ export default function LandingPage() {
                   </div>
                   {/* Step 2 */}
                   <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 2 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-105' : 'bg-slate-100 text-slate-500 scale-100'}`}>2</div>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>2</div>
                     <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 2 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className={`font-bold mb-2 flex items-center gap-2 ${activeStep === 2 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>
                         Vendor Uploads
@@ -323,7 +310,7 @@ export default function LandingPage() {
                   </div>
                   {/* Step 3 */}
                   <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 3 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-105' : 'bg-slate-100 text-slate-500 scale-100'}`}>3</div>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>3</div>
                     <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className="font-medium text-slate-700">AI Verification</div>
                       <div className="text-sm text-slate-600 mt-1">Coverage limits extracted and checked instantly.</div>
