@@ -596,32 +596,45 @@ export default function Settings() {
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <AlertCircle size={18} style={{ color: 'var(--primary)' }} />
-                      <h4 className="font-semibold" style={{ color: 'var(--foreground)' }}>DNS Configuration Required</h4>
+                      <h4 className="font-semibold" style={{ color: 'var(--foreground)' }}>Setup Required</h4>
                     </div>
-                    <p className="mb-3" style={{ color: 'var(--foreground-muted)' }}>
-                      Create a CNAME record in your DNS provider with the following values:
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div className="p-3 rounded bg-white border border-gray-200">
-                        <div className="text-xs text-gray-500 mb-1">Type</div>
-                        <div className="font-mono text-sm">CNAME</div>
+                    
+                    {/* Step 1: DNS Configuration */}
+                    <div className="mb-4">
+                      <h5 className="font-semibold mb-2 flex items-center gap-2" style={{ color: 'var(--foreground)' }}>
+                        <span className="flex items-center justify-center w-6 h-6 rounded-full" style={{ backgroundColor: '#3b82f6', color: 'white', fontSize: '12px' }}>1</span>
+                        Configure DNS
+                      </h5>
+                      <p className="mb-3 text-xs" style={{ color: 'var(--foreground-muted)' }}>
+                        Add a CNAME record in your DNS provider pointing to Covera:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div className="p-3 rounded bg-white border border-gray-200">
+                          <div className="text-xs text-gray-500 mb-1">Type</div>
+                          <div className="font-mono text-sm">CNAME</div>
+                        </div>
+                        <div className="p-3 rounded bg-white border border-gray-200">
+                          <div className="text-xs text-gray-500 mb-1">Name / Host</div>
+                          <div className="font-mono text-sm">{customDomain.split('.')[0]}</div>
+                        </div>
+                        <div className="col-span-1 md:col-span-2 p-3 rounded bg-white border border-gray-200">
+                          <div className="text-xs text-gray-500 mb-1">Value / Target</div>
+                          <div className="font-mono text-sm">proxy.covera.co</div>
+                        </div>
                       </div>
-                      <div className="p-3 rounded bg-white border border-gray-200">
-                        <div className="text-xs text-gray-500 mb-1">Name / Host</div>
-                        <div className="font-mono text-sm">{customDomain.split('.')[0]}</div>
-                      </div>
-                      <div className="col-span-1 md:col-span-2 p-3 rounded bg-white border border-gray-200">
-                        <div className="text-xs text-gray-500 mb-1">Value / Target</div>
-                        <div className="font-mono text-sm">alias.netlify.app</div>
-                      </div>
+                      <p className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
+                        DNS changes may take 5-30 minutes to propagate
+                      </p>
                     </div>
+
                     <button
                       onClick={() => handleSaveDomain({ verify: true })}
-                      className="flex items-center gap-2 text-xs font-medium hover:underline"
+                      disabled={savingDomain}
+                      className="flex items-center gap-2 text-xs font-medium hover:underline disabled:opacity-50"
                       style={{ color: 'var(--primary)' }}
                     >
                       <RefreshCw size={12} />
-                      Verify DNS Configuration
+                      {savingDomain ? 'Verifying...' : 'Verify DNS Configuration'}
                     </button>
                   </div>
                 )}

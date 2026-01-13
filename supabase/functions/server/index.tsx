@@ -4429,4 +4429,49 @@ app.post("/make-server-be7827e3/auth/domain", async (c) => {
   }
 });
 
+// Public domain lookup endpoint (no auth required - used by proxy)
+app.get("/make-server-be7827e3/public/domain-lookup/:domain", async (c) => {
+  try {
+    const domain = c.req.param('domain');
+    
+    if (!domain) {
+      return c.json({ error: 'Domain parameter required' }, 400);
+    }
+
+    console.log(`🔍 Domain lookup request for: ${domain}`);
+
+    // Look up which user owns this domain
+    const ownerId = await kv.get(`domain_owner:${domain}`);
+    
+    if (!ownerId) {
+      console.log(`❌ Domain ${domain} not found in registry`);
+      return c.json({ error: 'Domain not registered' }, 404);
+    }
+
+    // Get the domain configuration
+    const domainData = await kv.get(`domain:${ownerId}`);
+    
+    if (!domainData || domainData.status !== 'verified') {
+      console.log(`❌ Domain ${domain} not verified`);
+      return c.json({ error: 'Domain not verified' }, 404);
+    }
+
+    // Get organization info
+    const userProfile = await kv.get(`user:${ownerId}`);
+    
+    console.log(`✅ Domain ${domain} belongs to user ${ownerId}`);
+
+    return c.json({
+      userId: ownerId,
+      organizationName: userProfile?.organizationName || 'Organization',
+      logoUrl: userProfile?.logoUrl || null,
+      verified: true,
+    });
+
+  } catch (error) {
+    console.error('Domain lookup error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
 Deno.serve(app.fetch);

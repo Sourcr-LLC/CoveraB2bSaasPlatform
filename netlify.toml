@@ -2,6 +2,29 @@
   publish = "dist"
   command = "npm run build"
 
+# Build optimization settings
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--production=false"
+
+# Post-processing optimizations
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = false
+
+[build.processing.images]
+  compress = true
+
 # Ensure sitemap.xml is served with correct headers
 [[headers]]
   for = "/sitemap.xml"
