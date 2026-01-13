@@ -2,6 +2,26 @@
 @import './tailwind.css';
 @import './theme.css';
 
+/* Performance & Best Practices */
+
+/* Ensure images maintain aspect ratio */
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+/* Allow paste in input fields for better UX */
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Optimize font loading */
+body {
+  font-display: swap;
+}
+
 /* Custom Slick Carousel Styles for Covera */
 .slick-slider {
   overflow: hidden !important;
