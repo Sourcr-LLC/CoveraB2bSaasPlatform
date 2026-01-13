@@ -52,9 +52,9 @@ export default function GoogleAnalytics() {
     // Defer GA loading until after initial render
     // Use requestIdleCallback for best performance, fallback to setTimeout
     if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadGA, { timeout: 2000 });
+      requestIdleCallback(loadGA, { timeout: 5000 });
     } else {
-      setTimeout(loadGA, 1);
+      setTimeout(loadGA, 5000);
     }
   }, []);
 

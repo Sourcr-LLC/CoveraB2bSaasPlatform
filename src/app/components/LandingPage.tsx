@@ -281,17 +281,17 @@ export default function LandingPage() {
               <div className="bg-white rounded-[32px] border border-slate-200 p-4 md:p-8 shadow-xl relative z-10">
                 <div className="flex flex-col gap-6">
                   {/* Step 1 */}
-                  <div className={`flex gap-4 transition-all duration-300 ${activeStep === 1 ? 'opacity-100' : 'grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>1</div>
-                    <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+                  <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 1 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>1</div>
+                    <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>Generate Link</div>
                       <div className="text-sm text-slate-600 mt-1">Create a secure, time-limited upload token.</div>
                     </div>
                   </div>
                   {/* Step 2 */}
-                  <div className={`flex gap-4 transition-all duration-300 ${activeStep === 2 ? 'opacity-100' : 'grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>2</div>
-                    <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 2 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+                  <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 2 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>2</div>
+                    <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 2 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className={`font-bold mb-2 flex items-center gap-2 ${activeStep === 2 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>
                         Vendor Uploads
                         <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] uppercase tracking-wide">Magic Link</span>
@@ -309,9 +309,9 @@ export default function LandingPage() {
                     </div>
                   </div>
                   {/* Step 3 */}
-                  <div className={`flex gap-4 transition-all duration-300 ${activeStep === 3 ? 'opacity-100' : 'grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-all ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>3</div>
-                    <div className={`flex-1 p-4 rounded-xl border transition-all ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+                  <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 3 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>3</div>
+                    <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
                       <div className="font-medium text-slate-700">AI Verification</div>
                       <div className="text-sm text-slate-600 mt-1">Coverage limits extracted and checked instantly.</div>
                     </div>
