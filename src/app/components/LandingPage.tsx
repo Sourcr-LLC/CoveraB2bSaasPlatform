@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Shield, Bell, FileText, TrendingUp, ArrowRight, Building2, Hospital, Store, Truck, MapPin, FileCheck, CheckCircle, Upload, Zap, Lock, Globe, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
-import DashboardPreview from './DashboardPreview';
+const DashboardPreview = lazy(() => import('./DashboardPreview'));
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 
@@ -126,7 +126,9 @@ export default function LandingPage() {
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
             <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl" aria-hidden="true">
-              <DashboardPreview />
+              <Suspense fallback={<div className="w-full aspect-video bg-slate-50 animate-pulse" />}>
+                <DashboardPreview />
+              </Suspense>
               
               {/* Floating Element: Magic Link Notification - HIDDEN */}
               {/* <motion.div 

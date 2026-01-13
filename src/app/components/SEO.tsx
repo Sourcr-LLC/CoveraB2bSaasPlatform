@@ -122,8 +122,8 @@ export default function SEO({
     // Add preconnect links for performance
     const preconnectOrigins = [
       'https://gpnvockmgvysulsxxtyi.supabase.co',
-      'https://js.stripe.com',
-      'https://m.stripe.network'
+      // 'https://js.stripe.com', // Deferred until needed
+      // 'https://m.stripe.network'
     ];
 
     preconnectOrigins.forEach(origin => {
