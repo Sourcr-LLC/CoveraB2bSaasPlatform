@@ -1,4 +1,4 @@
-import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye, Mail, MessageSquare } from 'lucide-react';
+import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye, Mail, MessageSquare, Globe, AlertCircle, RefreshCw } from 'lucide-react';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
@@ -17,14 +17,102 @@ export default function Settings() {
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [demoEnabled, setDemoEnabled] = useState(false);
+  const [customDomain, setCustomDomain] = useState('');
+  const [domainStatus, setDomainStatus] = useState<'none' | 'pending' | 'verified' | 'failed'>('none');
+  const [savingDomain, setSavingDomain] = useState(false);
   const { resetWalkthrough } = useWalkthrough();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchSubscriptionStatus();
     fetchProfile();
+    fetchCustomDomain();
     setDemoEnabled(isDemoMode());
   }, []);
+
+  const fetchCustomDomain = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
+      
+      if (!accessToken) return;
+
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/auth/domain`,
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.domain) {
+          setCustomDomain(data.domain);
+          setDomainStatus(data.status || 'pending');
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching domain:', error);
+    }
+  };
+
+  const handleSaveDomain = async (options?: { verify?: boolean }) => {
+    if (!customDomain) return;
+    const isVerify = options?.verify === true;
+
+    // Basic domain validation regex
+    const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/;
+    if (!domainRegex.test(customDomain)) {
+      toast.error("Please enter a valid domain (e.g., portal.yourcompany.com)");
+      return;
+    }
+
+    setSavingDomain(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
+      
+      if (!accessToken) {
+        toast.error('Not authenticated');
+        return;
+      }
+
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/auth/domain`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ domain: customDomain, verify: isVerify }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setDomainStatus(data.status);
+        
+        if (data.status === 'verified') {
+          toast.success('Domain successfully verified!');
+        } else if (data.status === 'failed') {
+          toast.error(data.message || 'Verification failed. Please check your DNS settings.');
+        } else {
+          toast.success(data.message || 'Domain saved successfully');
+        }
+      } else {
+        const error = await response.json();
+        toast.error(error.error || 'Failed to save domain');
+      }
+    } catch (error) {
+      console.error('Error saving domain:', error);
+      toast.error('An error occurred. Please try again.');
+    } finally {
+      setSavingDomain(false);
+    }
+  };
 
   const toggleDemoMode = () => {
     if (demoEnabled) {
@@ -392,6 +480,7 @@ export default function Settings() {
                       src={profile.logoUrl}
                       alt="Company Logo"
                       className="w-8 h-8 rounded-full"
+                      style={{ objectFit: 'cover' }}
                     />
                     <button
                       onClick={handleRemoveLogo}
@@ -416,6 +505,7 @@ export default function Settings() {
                         backgroundColor: 'var(--background)',
                         color: 'var(--foreground)',
                         outline: 'none',
+                        maxWidth: '200px'
                       }}
                     />
                     {uploadingLogo && (
@@ -429,6 +519,116 @@ export default function Settings() {
             </div>
           </div>
         )}
+
+        {/* Custom Domain Card */}
+        <div
+          className="rounded-xl border p-8 mb-6"
+          style={{
+            backgroundColor: 'var(--card)',
+            borderColor: 'var(--border)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h2 className="text-lg mb-2" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+                Custom Domain
+              </h2>
+              <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                Use your own domain (e.g., portal.yourcompany.com) for the vendor portal
+              </p>
+            </div>
+            <Globe size={24} style={{ color: 'var(--foreground-muted)' }} />
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              <div className="flex-1 w-full">
+                <input
+                  type="text"
+                  value={customDomain}
+                  onChange={(e) => setCustomDomain(e.target.value)}
+                  placeholder="portal.yourcompany.com"
+                  className="w-full border px-4 py-2.5 rounded-lg text-sm"
+                  style={{ 
+                    borderColor: 'var(--border)', 
+                    backgroundColor: 'var(--background)',
+                    color: 'var(--foreground)',
+                    outline: 'none',
+                  }}
+                  disabled={domainStatus === 'verified'}
+                />
+              </div>
+              <button
+                onClick={() => handleSaveDomain({ verify: false })}
+                disabled={savingDomain || domainStatus === 'verified' || !customDomain}
+                className="px-6 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap"
+                style={{
+                  backgroundColor: domainStatus === 'verified' ? '#10b981' : 'var(--primary)',
+                  color: 'white',
+                  fontWeight: 500,
+                  opacity: savingDomain || (domainStatus === 'verified') ? 0.7 : 1,
+                  cursor: (savingDomain || domainStatus === 'verified') ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {savingDomain ? 'Saving...' : domainStatus === 'verified' ? 'Verified' : 'Save Domain'}
+              </button>
+            </div>
+
+            {/* DNS Instructions */}
+            {customDomain && domainStatus !== 'none' && (
+              <div 
+                className="mt-6 p-4 rounded-lg text-sm"
+                style={{
+                  backgroundColor: domainStatus === 'verified' ? 'rgba(16, 185, 129, 0.1)' : 'var(--panel)',
+                  border: `1px solid ${domainStatus === 'verified' ? 'rgba(16, 185, 129, 0.2)' : 'var(--border)'}`,
+                }}
+              >
+                {domainStatus === 'verified' ? (
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 size={20} style={{ color: '#10b981' }} />
+                    <div>
+                      <h4 className="font-semibold mb-1" style={{ color: 'var(--foreground)' }}>Domain Active</h4>
+                      <p style={{ color: 'var(--foreground-muted)' }}>Your vendor portal is now accessible at {customDomain}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <AlertCircle size={18} style={{ color: 'var(--primary)' }} />
+                      <h4 className="font-semibold" style={{ color: 'var(--foreground)' }}>DNS Configuration Required</h4>
+                    </div>
+                    <p className="mb-3" style={{ color: 'var(--foreground-muted)' }}>
+                      Create a CNAME record in your DNS provider with the following values:
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div className="p-3 rounded bg-white border border-gray-200">
+                        <div className="text-xs text-gray-500 mb-1">Type</div>
+                        <div className="font-mono text-sm">CNAME</div>
+                      </div>
+                      <div className="p-3 rounded bg-white border border-gray-200">
+                        <div className="text-xs text-gray-500 mb-1">Name / Host</div>
+                        <div className="font-mono text-sm">{customDomain.split('.')[0]}</div>
+                      </div>
+                      <div className="col-span-1 md:col-span-2 p-3 rounded bg-white border border-gray-200">
+                        <div className="text-xs text-gray-500 mb-1">Value / Target</div>
+                        <div className="font-mono text-sm">alias.netlify.app</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleSaveDomain({ verify: true })}
+                      className="flex items-center gap-2 text-xs font-medium hover:underline"
+                      style={{ color: 'var(--primary)' }}
+                    >
+                      <RefreshCw size={12} />
+                      Verify DNS Configuration
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Subscription Card */}
         <div

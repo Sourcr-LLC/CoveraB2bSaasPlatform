@@ -1924,9 +1924,21 @@ app.post("/make-server-be7827e3/vendors/:id/upload-link", async (c) => {
 
     const vendorId = c.req.param('id');
     
-    // Get origin from request body to support testing in different environments
-    const { origin } = await c.req.json().catch(() => ({ origin: 'https://covera.co' }));
-    const baseUrl = origin || 'https://covera.co';
+    // Determine base URL: Custom Domain > Request Origin > Default
+    let baseUrl = 'https://covera.co';
+    try {
+      // 1. Check verified custom domain
+      const domainData = await kv.get(`domain:${user.id}`);
+      if (domainData && domainData.status === 'verified') {
+        baseUrl = `https://${domainData.domain}`;
+      } else {
+        // 2. Fallback to request origin
+        const { origin } = await c.req.json().catch(() => ({ origin: null }));
+        if (origin) baseUrl = origin;
+      }
+    } catch (e) {
+      console.log('Error checking domain/origin:', e);
+    }
     
     const uploadToken = crypto.randomUUID();
     
@@ -2002,14 +2014,22 @@ app.post("/make-server-be7827e3/vendors/:id/send-reminder", async (c) => {
     // Send email via Resend
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
     let activityMessage = 'Reminder logged';
-    
+
     // Get origin from request body (or default to production)
+    // Check if user has a custom domain configured
     let origin = 'https://covera.co';
     try {
-      const body = await c.req.json().catch(() => ({}));
-      if (body.origin) origin = body.origin;
+      // First check KV for custom domain
+      const domainData = await kv.get(`domain:${user.id}`);
+      if (domainData && domainData.status === 'verified') {
+        origin = `https://${domainData.domain}`;
+      } else {
+         const body = await c.req.json().catch(() => ({}));
+         if (body.origin) origin = body.origin;
+      }
     } catch (e) {
       // Ignore JSON parse error if body is empty
+      console.log('Error determining origin:', e);
     }
     
     if (resendApiKey) {
@@ -4279,6 +4299,132 @@ app.delete("/make-server-be7827e3/admin/users/:id", async (c) => {
     return c.json({ success: true });
   } catch (error) {
     console.error('Admin delete user error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// ==================== DOMAIN ROUTES ====================
+
+// Get custom domain
+app.get("/make-server-be7827e3/auth/domain", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    const domainData = await kv.get(`domain:${user.id}`);
+    
+    if (!domainData) {
+      return c.json({ domain: null, status: 'none' });
+    }
+
+    return c.json(domainData);
+  } catch (error) {
+    console.error('Get domain error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Save/Verify custom domain
+app.post("/make-server-be7827e3/auth/domain", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    const { domain } = await c.req.json();
+    
+    if (!domain) {
+      return c.json({ error: 'Domain is required' }, 400);
+    }
+
+    // Basic validation
+    const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/;
+    if (!domainRegex.test(domain)) {
+      return c.json({ error: 'Invalid domain format' }, 400);
+    }
+
+    // Check if domain is already taken by another user
+    // Note: KV store doesn't support unique constraints easily, so we'd need a reverse lookup 
+    // "domain_lookup:example.com" -> userId. Implementing basic check here.
+    const existingOwner = await kv.get(`domain_owner:${domain}`);
+    if (existingOwner && existingOwner !== user.id) {
+      return c.json({ error: 'Domain is already registered to another account' }, 409);
+    }
+
+    const { verify } = await c.req.json();
+
+    // Verification Logic
+    let status = 'pending';
+    let message = 'Domain saved. Please configure your DNS settings.';
+
+    if (verify) {
+      console.log(`🔍 Verifying DNS for ${domain}...`);
+      try {
+        // Use Cloudflare DNS-over-HTTPS to check CNAME
+        const dohResponse = await fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=CNAME`, {
+          headers: { 'Accept': 'application/dns-json' }
+        });
+        
+        if (dohResponse.ok) {
+          const dnsData = await dohResponse.json();
+          // Check if any answer exists (we are lenient about the target for now, just checking CNAME exists)
+          // In production, you would check if it points to your specific ingress (e.g., alias.netlify.app)
+          const hasCname = dnsData.Answer && dnsData.Answer.some((record: any) => record.type === 5); // Type 5 is CNAME
+          
+          if (hasCname) {
+            status = 'verified';
+            message = 'Domain verified successfully!';
+            
+            // Send notification
+            await createNotification(user.id, {
+              type: 'success',
+              title: 'Domain Verified',
+              message: `Your custom domain ${domain} is now active.`,
+            });
+          } else {
+             status = 'failed';
+             message = 'DNS record not found. Please verify your CNAME record propagation.';
+          }
+        } else {
+          console.error('DNS query failed:', dohResponse.status);
+          status = 'failed';
+          message = 'Could not verify DNS settings. Please try again later.';
+        }
+      } catch (dnsError) {
+        console.error('DNS verification error:', dnsError);
+        status = 'failed';
+        message = 'Verification failed due to network error.';
+      }
+    }
+
+    // Save domain info
+    const domainData = {
+      domain,
+      status, 
+      updatedAt: new Date().toISOString(),
+      lastChecked: new Date().toISOString()
+    };
+
+    await kv.set(`domain:${user.id}`, domainData);
+    await kv.set(`domain_owner:${domain}`, user.id); // Reserve domain
+    
+    if (!verify) {
+        await logActivity(user.id, 'system', 'domain_update', `Custom domain updated to ${domain}`, 'neutral');
+    }
+
+    return c.json({ 
+      success: status === 'verified', 
+      message,
+      domain,
+      status
+    });
+  } catch (error) {
+    console.error('Save domain error:', error);
     return c.json({ error: 'Internal server error' }, 500);
   }
 });
