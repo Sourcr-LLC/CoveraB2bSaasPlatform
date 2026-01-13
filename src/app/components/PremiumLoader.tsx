@@ -1,3 +1,5 @@
+import { motion } from 'motion/react';
+
 interface PremiumLoaderProps {
   fullScreen?: boolean;
 }
