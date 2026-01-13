@@ -62,6 +62,19 @@
 # Long-term cached, versioned assets
 # -----------------------------
 
+# JavaScript files with version hashes
+[[headers]]
+  for = "/assets/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# CSS files with version hashes
+[[headers]]
+  for = "/assets/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Root level JS/CSS (for any not in assets folder)
 [[headers]]
   for = "/*.js"
   [headers.values]
@@ -69,6 +82,22 @@
 
 [[headers]]
   for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Font files
+[[headers]]
+  for = "/assets/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.woff"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.ttf"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
@@ -84,6 +113,32 @@
 
 [[headers]]
   for = "/*.ttf"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Image files
+[[headers]]
+  for = "/assets/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.webp"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 

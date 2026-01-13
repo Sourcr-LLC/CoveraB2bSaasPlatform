@@ -50,6 +50,9 @@
     <!-- Preload critical font for faster text rendering -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap" as="style" />
     
+    <!-- Preload critical CSS to reduce render blocking -->
+    <link rel="modulepreload" href="/src/app/index.tsx" />
+    
     <!-- Google Fonts - optimized with display=swap -->
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     

@@ -21,6 +21,8 @@ export default defineConfig({
   build: {
     // Enable source maps for better debugging
     sourcemap: true,
+    // CSS code splitting
+    cssCodeSplit: true,
     // Enable code splitting
     rollupOptions: {
       output: {
@@ -51,10 +53,10 @@ export default defineConfig({
           // Material UI (if used)
           'mui': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
           
-          // PDF generation
+          // PDF generation - separate chunk for lazy loading
           'pdf': ['jspdf', 'jspdf-autotable'],
           
-          // Excel generation
+          // Excel generation - separate chunk for lazy loading
           'excel': ['xlsx'],
           
           // Date handling
@@ -72,6 +74,10 @@ export default defineConfig({
           // Other libraries
           'libs': ['sonner', 'react-slick', 'slick-carousel'],
         },
+        // Optimize chunk naming for better caching
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
     // Minification settings
@@ -80,9 +86,15 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+      format: {
+        comments: false,
       },
     },
     // Chunk size warnings
     chunkSizeWarningLimit: 500,
+    // Optimize asset inlining
+    assetsInlineLimit: 4096, // Inline assets smaller than 4kb
   },
 })

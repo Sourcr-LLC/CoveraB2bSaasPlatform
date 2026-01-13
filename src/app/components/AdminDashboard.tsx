@@ -40,22 +40,51 @@ export default function AdminDashboard() {
   useEffect(() => {
     checkAdminAndLoad();
 
-    // Subscribe to real-time updates from server
-    const channel = supabase
-      .channel('admin-dashboard')
-      .on(
-        'broadcast',
-        { event: 'users-updated' },
-        (payload) => {
-          console.log('Real-time update detected:', payload);
-          // Reload data when update is received
-          checkAdminAndLoad();
-        }
-      )
-      .subscribe();
+    // Subscribe to real-time updates from server with proper connection handling
+    let channel: any = null;
+    
+    // Delay subscription to ensure Supabase is fully initialized
+    const setupRealtimeSubscription = async () => {
+      try {
+        // Wait for auth to be ready
+        await supabase.auth.getSession();
+        
+        channel = supabase
+          .channel('admin-dashboard', {
+            config: {
+              broadcast: { self: true },
+            },
+          })
+          .on(
+            'broadcast',
+            { event: 'users-updated' },
+            (payload) => {
+              console.log('Real-time update detected:', payload);
+              // Reload data when update is received
+              checkAdminAndLoad();
+            }
+          )
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              console.log('Successfully subscribed to admin-dashboard channel');
+            } else if (status === 'CHANNEL_ERROR') {
+              console.error('Failed to subscribe to admin-dashboard channel');
+            }
+          });
+      } catch (error) {
+        console.error('Failed to setup realtime subscription:', error);
+        // Non-critical error - app can still function without realtime updates
+      }
+    };
+
+    // Setup subscription after a brief delay to ensure everything is initialized
+    const timeoutId = setTimeout(setupRealtimeSubscription, 1000);
 
     return () => {
-      supabase.removeChannel(channel);
+      clearTimeout(timeoutId);
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
     };
   }, []);
 

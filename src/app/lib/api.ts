@@ -26,7 +26,19 @@ export const supabase = (() => {
         autoRefreshToken: true,
         detectSessionInUrl: true,
         storageKey: 'sb-gpnvockmgvysulsxxtyi-auth-token',
-      }
+      },
+      realtime: {
+        params: {
+          eventsPerSecond: 2,
+        },
+        // Prevent realtime errors from breaking the app
+        log_level: 'info',
+      },
+      global: {
+        headers: {
+          'x-application-name': 'covera',
+        },
+      },
     }
   );
   

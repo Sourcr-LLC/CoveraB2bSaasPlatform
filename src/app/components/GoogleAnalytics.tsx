@@ -16,32 +16,45 @@ export default function GoogleAnalytics() {
   const location = useLocation();
 
   useEffect(() => {
-    // Initialize dataLayer
-    window.dataLayer = window.dataLayer || [];
-    
-    // Define gtag function
-    window.gtag = function() {
-      window.dataLayer.push(arguments);
+    // Defer Google Analytics loading until after page is interactive
+    // This prevents blocking the critical rendering path
+    const loadGA = () => {
+      // Initialize dataLayer
+      window.dataLayer = window.dataLayer || [];
+      
+      // Define gtag function
+      window.gtag = function() {
+        window.dataLayer.push(arguments);
+      };
+
+      // Check if script is already loaded
+      const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`);
+      
+      if (!existingScript) {
+        // Create and load gtag.js script with async
+        const script = document.createElement('script');
+        script.async = true;
+        script.defer = true; // Also defer for non-blocking load
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+        document.head.appendChild(script);
+
+        // Initialize GA
+        script.onload = () => {
+          window.gtag('js', new Date());
+          window.gtag('config', GA_MEASUREMENT_ID, {
+            page_path: location.pathname + location.search,
+            send_page_view: true
+          });
+        };
+      }
     };
 
-    // Check if script is already loaded
-    const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`);
-    
-    if (!existingScript) {
-      // Create and load gtag.js script
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-      document.head.appendChild(script);
-
-      // Initialize GA
-      script.onload = () => {
-        window.gtag('js', new Date());
-        window.gtag('config', GA_MEASUREMENT_ID, {
-          page_path: location.pathname + location.search,
-          send_page_view: true
-        });
-      };
+    // Defer GA loading until after initial render
+    // Use requestIdleCallback for best performance, fallback to setTimeout
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadGA, { timeout: 2000 });
+    } else {
+      setTimeout(loadGA, 1);
     }
   }, []);
 
