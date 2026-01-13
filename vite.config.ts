@@ -19,6 +19,8 @@ export default defineConfig({
   // Ensure public directory is copied to dist
   publicDir: 'public',
   build: {
+    // Enable source maps for better debugging
+    sourcemap: true,
     // Enable code splitting
     rollupOptions: {
       output: {
