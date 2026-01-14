@@ -6,6 +6,7 @@ import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import ComparisonSection from './landing/ComparisonSection';
+import AIScannerSection from './landing/AIScannerSection';
 import SEO, { SEO_CONFIGS } from './SEO';
 const InteractiveHeroVisual = lazy(() => import('./landing/InteractiveHeroVisual'));
 import LandingNav from './LandingNav';
@@ -63,10 +64,27 @@ export default function LandingPage() {
       <SEO {...SEO_CONFIGS.landing} />
       
       {/* Background Ambience */}
-      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-[#3A4F6A]/5 blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/3 blur-[100px]" />
-        <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] rounded-full bg-blue-400/5 blur-[80px]" />
+      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden bg-[#fafaf9]">
+        {/* Animated Blueprint Grid */}
+        <div className="absolute inset-0 opacity-[0.03]" 
+             style={{ 
+               backgroundImage: `linear-gradient(#1a1a1a 1px, transparent 1px), linear-gradient(90deg, #1a1a1a 1px, transparent 1px)`,
+               backgroundSize: '40px 40px',
+               maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)'
+             }} 
+        />
+        
+        {/* Subtle glowing orbs replacing the blobs */}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-blue-100/50 blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/5 blur-[100px]" 
+        />
       </div>
 
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
@@ -144,6 +162,9 @@ export default function LandingPage() {
 
       {/* The Shift Section */}
       <ComparisonSection />
+
+      {/* AI Deep Dive */}
+      <AIScannerSection />
 
       {/* Testimonials */}
       <section className="py-24 bg-slate-50 border-y border-slate-200">
