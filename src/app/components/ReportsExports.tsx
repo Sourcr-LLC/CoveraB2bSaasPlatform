@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 import { FileText, FileSpreadsheet, Download, Filter } from 'lucide-react';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import * as XLSX from 'xlsx';
 import { vendorApi } from '../lib/api';
 
 // Helper function to calculate vendor status client-side
@@ -78,7 +75,10 @@ export default function ReportsExports() {
     return labels[status as keyof typeof labels] || status;
   };
 
-  const generatePDFReport = () => {
+  const generatePDFReport = async () => {
+    const { default: jsPDF } = await import('jspdf');
+    const { default: autoTable } = await import('jspdf-autotable');
+    
     const doc = new jsPDF();
     
     // Header
@@ -131,7 +131,7 @@ export default function ReportsExports() {
       alternateRowStyles: {
         fillColor: [245, 247, 250]
       },
-      didParseCell: (data) => {
+      didParseCell: (data: any) => {
         if (data.column.index === 3 && data.section === 'body') {
           const status = vendors[data.row.index].status;
           const color = getStatusColor(status);
@@ -170,7 +170,8 @@ export default function ReportsExports() {
     link.click();
   };
 
-  const generateExcelReport = () => {
+  const generateExcelReport = async () => {
+    const XLSX = await import('xlsx');
     const worksheet = XLSX.utils.json_to_sheet(
       vendors.map(v => ({
         'Vendor Name': v.name,

@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Shield, Bell, FileText, TrendingUp, ArrowRight, Building2, Hospital, Store, Truck, MapPin, FileCheck, CheckCircle, Upload, Zap, Lock, Globe, X } from 'lucide-react';
-import { useState, useEffect, Suspense, lazy, memo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
+import { useState, Suspense, lazy } from 'react';
+import { motion } from 'motion/react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
+import ComparisonSection from './landing/ComparisonSection';
 import SEO, { SEO_CONFIGS } from './SEO';
 const InteractiveHeroVisual = lazy(() => import('./landing/InteractiveHeroVisual'));
 import LandingNav from './LandingNav';
@@ -50,58 +51,8 @@ const TESTIMONIALS = [
   }
 ];
 
-// Memoize FeatureSteps to isolate re-renders
-const FeatureSteps = memo(function FeatureSteps() {
-  const [activeStep, setActiveStep] = useState(1);
+// Memoize FeatureSteps removed to reduce redundancy
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev % 3) + 1);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="flex flex-col gap-6">
-      {/* Step 1 */}
-      <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 1 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>1</div>
-        <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
-          <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>Generate Link</div>
-          <div className="text-sm text-slate-600 mt-1">Create a secure, time-limited upload token.</div>
-        </div>
-      </div>
-      {/* Step 2 */}
-      <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 2 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>2</div>
-        <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 2 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
-          <div className={`font-bold mb-2 flex items-center gap-2 ${activeStep === 2 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>
-            Vendor Uploads
-            <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] uppercase tracking-wide">Magic Link</span>
-          </div>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border border-slate-100">
-              <FileText className="w-5 h-5 text-slate-400 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-slate-700 truncate">GL_Insurance_2024.pdf</div>
-                <div className="text-xs text-slate-600">2.4 MB • Uploading...</div>
-              </div>
-              <div className="w-5 h-5 rounded-full border-2 border-slate-200 border-t-[#3A4F6A] animate-spin flex-shrink-0" />
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* Step 3 */}
-      <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 3 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>3</div>
-        <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
-          <div className="font-medium text-slate-700">AI Verification</div>
-          <div className="text-sm text-slate-600 mt-1">Coverage limits extracted and checked instantly.</div>
-        </div>
-      </div>
-    </div>
-  );
-});
 
 export default function LandingPage() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
@@ -192,150 +143,7 @@ export default function LandingPage() {
       </section>
 
       {/* The Shift Section */}
-      <section className="py-24 md:py-32 px-4 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">The Old Way is Broken</h2>
-            <p className="text-lg text-slate-600">
-              Why are you still manually data-entering expirations from PDF attachments?
-              There is a better way.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {/* The Old Way */}
-            <div className="p-6 md:p-8 rounded-3xl bg-slate-50 border border-slate-100 relative group">
-              <div className="absolute top-6 right-6 md:top-8 md:right-8 text-slate-300">
-                <X className="w-6 h-6 md:w-8 md:h-8" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-4">Manual Admin (Bottleneck)</h3>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3 text-slate-600">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
-                  <span>You email vendor asking for COI</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-600">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
-                  <span>Vendor emails back a PDF (eventually)</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-600">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
-                  <span>You open PDF, type dates into Excel</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-700">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2.5" />
-                  <span>Repeat 100x per month</span>
-                </li>
-              </ul>
-              <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed relative overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                  <div className="grid grid-cols-2 gap-4 rotate-12 scale-110">
-                     <FileText className="w-16 h-16 text-slate-400" />
-                     <FileText className="w-16 h-16 text-slate-400" />
-                     <FileText className="w-16 h-16 text-slate-400" />
-                     <FileText className="w-16 h-16 text-slate-400" />
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-2 relative z-10">
-                  <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-slate-500 rotate-90" />
-                  </div>
-                  <span className="text-slate-600 font-medium">Costly & Slow</span>
-                </div>
-              </div>
-            </div>
-
-            {/* The New Way */}
-            <div className="p-6 md:p-8 rounded-3xl bg-[#3A4F6A] text-white relative shadow-2xl shadow-[#3A4F6A]/20 overflow-hidden group">
-              {/* Glossy overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              
-              <div className="absolute top-6 right-6 md:top-8 md:right-8 text-emerald-400">
-                <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2 pr-12 relative z-10">
-                The Network Effect
-                <span className="px-2 py-0.5 rounded-full bg-white/20 text-xs font-medium backdrop-blur-sm whitespace-nowrap">Automated</span>
-              </h3>
-              <ul className="space-y-4 mb-8 relative z-10">
-                <li className="flex items-start gap-3 text-slate-200">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
-                  <span>You send one "Magic Link"</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-200">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
-                  <span>Vendor uploads their own COI & W9</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-200">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
-                  <span>AI scans & verifies coverage instantly</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-200">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2.5" />
-                  <span>Vendor updates their own expired docs</span>
-                </li>
-              </ul>
-              <div className="h-48 bg-white/10 rounded-xl backdrop-blur-md border border-white/10 p-6 flex flex-col justify-between relative z-10">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <Globe className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-white">Vendor Portal</div>
-                    <div className="text-xs text-white/80">Active now</div>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="h-2 w-3/4 bg-white/20 rounded-full" />
-                  <div className="h-2 w-1/2 bg-white/20 rounded-full" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature Deep Dive */}
-      <section className="py-24 md:py-32 px-4 relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="order-2 lg:order-1 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-[40px] transform rotate-3 scale-95 opacity-50" />
-              <div className="bg-white rounded-[32px] border border-slate-200 p-4 md:p-8 shadow-xl relative z-10">
-                <FeatureSteps />
-              </div>
-            </div>
-            
-            <div className="order-1 lg:order-2">
-              <h2 className="text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
-                Zero-Friction <br />
-                <span className="text-[#3A4F6A]">Vendor Onboarding</span>
-              </h2>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                Vendors don't need to create an account. They just click the link, drag-and-drop their files, and they're done. 
-                It's the easiest compliance workflow they've ever used.
-              </p>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                <div className="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
-                    <Lock className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Secure Access</h3>
-                  <p className="text-sm text-slate-600">Encrypted links expire automatically after 7 days.</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
-                    <Upload className="w-5 h-5 text-emerald-600" />
-                  </div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Self-Correction</h3>
-                  <p className="text-sm text-slate-600">Vendors can update their own phone & address info.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ComparisonSection />
 
       {/* Testimonials */}
       <section className="py-24 bg-slate-50 border-y border-slate-200">
