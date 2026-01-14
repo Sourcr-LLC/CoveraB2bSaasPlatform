@@ -19,6 +19,9 @@
   --primary-hover: #2d3d52;
   --primary-foreground: #ffffff;
   
+  --brand-blue: #3A4F6A;
+  --brand-blue-hover: #2c3e53;
+  
   /* Status colors - calm and restrained */
   --status-compliant: #059669;
   --status-compliant-bg: #d1fae5;

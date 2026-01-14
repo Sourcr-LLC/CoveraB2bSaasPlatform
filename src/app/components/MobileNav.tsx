@@ -160,8 +160,8 @@ export default function MobileNav({ organizationName, userEmail, userInitials, l
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-sm"
                 style={{
-                  backgroundColor: active ? 'var(--panel)' : 'transparent',
-                  color: active ? 'var(--foreground)' : 'var(--foreground-muted)',
+                  backgroundColor: active ? '#3A4F6A' : 'transparent',
+                  color: active ? '#ffffff' : 'var(--foreground-muted)',
                 }}
               >
                 <Icon className="w-5 h-5" />

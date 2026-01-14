@@ -69,6 +69,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       if (sessionData?.user?.email) {
         setUserEmail(sessionData.user.email);
       }
+
+      // Cache profile data for loading fallback
+      localStorage.setItem('covera-profile-cache', JSON.stringify({
+        organizationName: profileData?.organizationName || organizationName,
+        userEmail: sessionData?.user?.email || userEmail,
+        userName: profileData?.name || userName,
+        logoUrl: profileData?.logoUrl || null
+      }));
     } catch (error: any) {
       console.error('Failed to load profile:', error);
       // If it's an auth error, the apiCall helper will handle the redirect
@@ -116,8 +124,29 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   if (subscriptionLoading) {
     return (
-      <div className="flex h-screen items-center justify-center" style={{ backgroundColor: 'var(--background)' }}>
-        <PremiumLoader fullScreen />
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+        {/* Desktop Sidebar */}
+        <DesktopSidebar
+          organizationName={organizationName}
+          userEmail={userEmail}
+          userInitials={userInitials}
+          logoUrl={logoUrl}
+        />
+
+        {/* Mobile Navigation */}
+        <MobileNav
+          organizationName={organizationName}
+          userEmail={userEmail}
+          userInitials={userInitials}
+          logoUrl={logoUrl}
+        />
+
+        {/* Loading Content */}
+        <main className="lg:ml-64 pb-6">
+          <div className="flex h-screen items-center justify-center">
+            <PremiumLoader fullScreen />
+          </div>
+        </main>
       </div>
     );
   }

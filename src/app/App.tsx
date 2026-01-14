@@ -5,6 +5,7 @@ import { Toaster } from 'sonner';
 
 // Import loader for Suspense fallback
 import PremiumLoader from './components/PremiumLoader';
+import DashboardLoadingFallback from './components/DashboardLoadingFallback';
 import ScrollToTop from './components/ScrollToTop';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
@@ -125,145 +126,323 @@ export default function App() {
   return (
     <div className="overflow-x-hidden">
       <BrowserRouter>
-        <Suspense fallback={<PremiumLoader fullScreen />}>
-          <Routes>
-            <Route 
-              path="/" 
-              element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LandingPage />} 
-            />
-            <Route 
-              path="/login" 
-              element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginScreen onLogin={() => setIsAuthenticated(true)} />} 
-            />
-            <Route path="/upload/:token" element={<VendorPortal />} />
-            <Route
-              path="/admin"
-              element={
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <Suspense fallback={<PremiumLoader fullScreen />}>
+                {isAuthenticated ? <Navigate to="/dashboard" replace /> : <LandingPage />}
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/login" 
+            element={
+              <Suspense fallback={<PremiumLoader fullScreen />}>
+                {isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginScreen onLogin={() => setIsAuthenticated(true)} />}
+              </Suspense>
+            } 
+          />
+          <Route path="/upload/:token" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <VendorPortal />
+            </Suspense>
+          } />
+          
+          {/* Protected routes with sidebar */}
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <AdminDashboard />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Dashboard />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/vendors"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/vendors"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <VendorManagement />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/vendors/:id"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/vendors/:id"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <VendorDetail />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/insurance"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/insurance"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <InsuranceTracking />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/alerts"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/alerts"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <AlertsReminders />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/compliance"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/compliance"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <ComplianceDashboard />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/reports"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <ReportsExports />
                 </ProtectedRoute>
-              }
-            />
-            <Route path="/settings" element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
-                  <Settings />
-                </ProtectedRoute>
-              } />
-            <Route path="/billing" element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
-                  <Billing />
-                </ProtectedRoute>
-              } />
-            <Route
-              path="/contracts"
-              element={
+              </Suspense>
+            }
+          />
+          <Route path="/settings" element={
+            <Suspense fallback={<DashboardLoadingFallback />}>
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Settings />
+              </ProtectedRoute>
+            </Suspense>
+          } />
+          <Route path="/billing" element={
+            <Suspense fallback={<DashboardLoadingFallback />}>
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Billing />
+              </ProtectedRoute>
+            </Suspense>
+          } />
+          <Route
+            path="/contracts"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <ContractManagement />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/add-vendor"
-              element={
+              </Suspense>
+            }
+          />
+          <Route
+            path="/add-vendor"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <AddVendor />
                 </ProtectedRoute>
-              }
-            />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/security" element={<Security />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/solutions-property-management" element={<SolutionsPropertyManagement />} />
-            <Route path="/solutions-construction" element={<SolutionsConstruction />} />
-            <Route path="/features-coi-tracking" element={<FeaturesCOITracking />} />
-            <Route path="/industries-healthcare" element={<IndustriesHealthcare />} />
-            <Route path="/industries-logistics" element={<IndustriesLogistics />} />
-            <Route path="/industries-franchise" element={<IndustriesFranchise />} />
-            <Route path="/industries-facilities" element={<IndustriesFacilities />} />
-            <Route path="/industries-government" element={<IndustriesGovernment />} />
-            <Route path="/industries-education" element={<IndustriesEducation />} />
-            <Route path="/industries-retail" element={<IndustriesRetail />} />
-            <Route path="/industries-hospitality" element={<IndustriesHospitality />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/sitemap" element={<Sitemap />} />
-            <Route path="/how-to-track-vendor-compliance" element={<HowToTrackVendorCompliance />} />
-            <Route path="/what-happens-vendor-uninsured" element={<WhatHappensVendorUninsured />} />
-            <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/what-is-certificate-of-insurance" element={<WhatIsCertificateOfInsurance />} />
-            <Route path="/blog/track-vendor-insurance-expiration-automatically" element={<TrackVendorInsuranceExpiration />} />
-            <Route path="/blog/vendor-compliance-checklist" element={<VendorComplianceChecklist />} />
-            <Route path="/blog/property-managers-verify-vendor-insurance" element={<PropertyManagersVerifyVendorInsurance />} />
-            <Route path="/blog/coi-tracking-spreadsheet-vs-software" element={<COITrackingSpreadsheetVsSoftware />} />
-            <Route path="/blog/expired-vendor-insurance-what-to-do" element={<ExpiredVendorInsurance />} />
-            <Route path="/blog/construction-vendor-insurance-requirements" element={<ConstructionVendorInsuranceRequirements />} />
-            <Route path="/blog/additional-insured-vs-certificate-holder" element={<AdditionalInsuredVsCertificateHolder />} />
-            <Route path="/blog/vendor-insurance-tracking-mistakes" element={<VendorInsuranceTrackingMistakes />} />
-            <Route path="/blog/general-liability-coverage-limits" element={<GeneralLiabilityCoverageLimits />} />
-            <Route path="/blog/automate-coi-collection" element={<AutomateCOICollection />} />
-            <Route path="/blog/vendor-insurance-compliance-small-business" element={<VendorInsuranceComplianceSmallBusiness />} />
-            <Route path="/subscription-success" element={<SubscriptionSuccess />} />
-            <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
-          </Routes>
-        </Suspense>
+              </Suspense>
+            }
+          />
+          
+          {/* Public pages */}
+          <Route path="/forgot-password" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <ForgotPassword />
+            </Suspense>
+          } />
+          <Route path="/terms-of-service" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <TermsOfService />
+            </Suspense>
+          } />
+          <Route path="/privacy-policy" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <PrivacyPolicy />
+            </Suspense>
+          } />
+          <Route path="/security" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <Security />
+            </Suspense>
+          } />
+          <Route path="/pricing" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <Pricing />
+            </Suspense>
+          } />
+          <Route path="/solutions-property-management" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <SolutionsPropertyManagement />
+            </Suspense>
+          } />
+          <Route path="/solutions-construction" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <SolutionsConstruction />
+            </Suspense>
+          } />
+          <Route path="/features-coi-tracking" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <FeaturesCOITracking />
+            </Suspense>
+          } />
+          <Route path="/industries-healthcare" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesHealthcare />
+            </Suspense>
+          } />
+          <Route path="/industries-logistics" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesLogistics />
+            </Suspense>
+          } />
+          <Route path="/industries-franchise" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesFranchise />
+            </Suspense>
+          } />
+          <Route path="/industries-facilities" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesFacilities />
+            </Suspense>
+          } />
+          <Route path="/industries-government" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesGovernment />
+            </Suspense>
+          } />
+          <Route path="/industries-education" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesEducation />
+            </Suspense>
+          } />
+          <Route path="/industries-retail" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesRetail />
+            </Suspense>
+          } />
+          <Route path="/industries-hospitality" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndustriesHospitality />
+            </Suspense>
+          } />
+          <Route path="/about-us" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <AboutUs />
+            </Suspense>
+          } />
+          <Route path="/contact" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <Contact />
+            </Suspense>
+          } />
+          <Route path="/sitemap" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <Sitemap />
+            </Suspense>
+          } />
+          <Route path="/how-to-track-vendor-compliance" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <HowToTrackVendorCompliance />
+            </Suspense>
+          } />
+          <Route path="/what-happens-vendor-uninsured" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <WhatHappensVendorUninsured />
+            </Suspense>
+          } />
+          <Route path="/blog" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <BlogList />
+            </Suspense>
+          } />
+          <Route path="/blog/what-is-certificate-of-insurance" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <WhatIsCertificateOfInsurance />
+            </Suspense>
+          } />
+          <Route path="/blog/track-vendor-insurance-expiration-automatically" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <TrackVendorInsuranceExpiration />
+            </Suspense>
+          } />
+          <Route path="/blog/vendor-compliance-checklist" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <VendorComplianceChecklist />
+            </Suspense>
+          } />
+          <Route path="/blog/property-managers-verify-vendor-insurance" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <PropertyManagersVerifyVendorInsurance />
+            </Suspense>
+          } />
+          <Route path="/blog/coi-tracking-spreadsheet-vs-software" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <COITrackingSpreadsheetVsSoftware />
+            </Suspense>
+          } />
+          <Route path="/blog/expired-vendor-insurance-what-to-do" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <ExpiredVendorInsurance />
+            </Suspense>
+          } />
+          <Route path="/blog/construction-vendor-insurance-requirements" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <ConstructionVendorInsuranceRequirements />
+            </Suspense>
+          } />
+          <Route path="/blog/additional-insured-vs-certificate-holder" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <AdditionalInsuredVsCertificateHolder />
+            </Suspense>
+          } />
+          <Route path="/blog/vendor-insurance-tracking-mistakes" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <VendorInsuranceTrackingMistakes />
+            </Suspense>
+          } />
+          <Route path="/blog/general-liability-coverage-limits" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <GeneralLiabilityCoverageLimits />
+            </Suspense>
+          } />
+          <Route path="/blog/automate-coi-collection" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <AutomateCOICollection />
+            </Suspense>
+          } />
+          <Route path="/blog/vendor-insurance-compliance-small-business" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <VendorInsuranceComplianceSmallBusiness />
+            </Suspense>
+          } />
+          <Route path="/subscription-success" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <SubscriptionSuccess />
+            </Suspense>
+          } />
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
+        </Routes>
         <Toaster />
         <ScrollToTop />
         <GoogleAnalytics />
