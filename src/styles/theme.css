@@ -141,10 +141,33 @@
   --color-status-non-compliant: var(--status-non-compliant);
   --color-status-non-compliant-bg: var(--status-non-compliant-bg);
   --color-status-non-compliant-border: var(--status-non-compliant-border);
-  
+
   /* Glass effect */
   --color-glass-bg: var(--glass-bg);
   --color-glass-border: var(--glass-border);
+}
+
+@layer utilities {
+  .animate-pulse-slow {
+    animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  .animate-pulse-slower {
+    animation: pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 @layer base {

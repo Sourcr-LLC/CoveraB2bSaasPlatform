@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useState, Suspense, lazy } from 'react';
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
@@ -8,7 +8,7 @@ import TestimonialCarousel from './TestimonialCarousel';
 import ComparisonSection from './landing/ComparisonSection';
 import AIScannerSection from './landing/AIScannerSection';
 import SEO, { SEO_CONFIGS } from './SEO';
-const InteractiveHeroVisual = lazy(() => import('./landing/InteractiveHeroVisual'));
+import InteractiveHeroVisual from './landing/InteractiveHeroVisual';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 
@@ -74,17 +74,9 @@ export default function LandingPage() {
              }} 
         />
         
-        {/* Subtle glowing orbs replacing the blobs */}
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-blue-100/50 blur-[120px]" 
-        />
-        <motion.div 
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/5 blur-[100px]" 
-        />
+        {/* Subtle glowing orbs replacing the blobs - Optimized for performance */}
+        <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-blue-100/50 blur-[100px] opacity-40 animate-pulse-slow" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/10 blur-[80px] opacity-30 animate-pulse-slower" />
       </div>
 
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
@@ -130,19 +122,12 @@ export default function LandingPage() {
           </div>
 
           {/* Hero Visual */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="relative mx-auto max-w-6xl"
-          >
+          <div className="relative mx-auto max-w-6xl mt-16 animate-fade-in-up">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
             <div className="relative z-10" aria-hidden="true">
-              <Suspense fallback={<div className="w-full aspect-video bg-slate-50 animate-pulse rounded-2xl shadow-2xl" />}>
-                <InteractiveHeroVisual />
-              </Suspense>
+              <InteractiveHeroVisual />
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

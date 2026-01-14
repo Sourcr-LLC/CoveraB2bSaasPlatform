@@ -48,9 +48,9 @@ function DashboardContent() {
       </div>
 
       {/* MAIN */}
-      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-white">
         {/* HEADER */}
-        <div className="h-16 border-b border-[#e7e5e4] bg-white flex items-center justify-between px-4 md:px-8">
+        <div className="h-16 border-b border-[#e7e5e4] flex items-center justify-between px-4 md:px-8">
           <h1 className="text-lg md:text-xl font-bold text-slate-900">Dashboard</h1>
           <div className="flex items-center gap-4">
             <Search className="w-5 h-5 text-slate-400" />
@@ -160,9 +160,9 @@ function VendorRow({ name, type, status, date }: any) {
   if (status === "Missing") statusColor = "bg-[#f5f5f4] text-slate-600 border-[#e7e5e4]";
 
   return (
-    <div className="px-4 md:px-6 py-3 md:py-4 flex items-center justify-between group hover:bg-[#fafaf9] transition-colors relative overflow-hidden">
+    <div className="px-4 md:px-6 py-3 md:py-4 flex items-center justify-between group hover:bg-[#fafaf9] transition-colors duration-200 relative overflow-hidden">
        <div className="flex items-center gap-3 md:gap-4 relative z-10">
-         <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all duration-500 flex-shrink-0 ${status === "Verified" ? "bg-emerald-100 text-emerald-600" : "bg-[#f5f5f4] text-slate-500"}`}>
+         <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-colors duration-300 flex-shrink-0 ${status === "Verified" ? "bg-emerald-100 text-emerald-600" : "bg-[#f5f5f4] text-slate-500"}`}>
            {status === "Verified" ? <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5" /> : name.charAt(0)}
          </div>
          <div className="min-w-0">
@@ -172,7 +172,7 @@ function VendorRow({ name, type, status, date }: any) {
        </div>
 
        <div className="relative z-10 text-right flex-shrink-0 ml-2">
-         <div className={`inline-flex items-center px-2 md:px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-bold border ${statusColor} transition-colors duration-500`}>
+         <div className={`inline-flex items-center px-2 md:px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-bold border ${statusColor} transition-colors duration-300`}>
            {status}
          </div>
          <div className="text-[10px] text-slate-400 mt-1 font-medium hidden sm:block">{date}</div>
