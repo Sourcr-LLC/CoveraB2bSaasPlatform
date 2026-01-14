@@ -287,28 +287,14 @@ export default function Dashboard() {
 
   const kpiCards = useMemo(() => [
     {
-      label: 'Total Vendors',
-      value: stats.total.toString(),
-      change: stats.total > 0 ? '+12%' : '0%',
-      trend: stats.total > 0 ? 'up' : 'neutral',
-      subtitle: 'active vendors',
-      percentageColor: stats.total > 0 ? '#10b981' : 'var(--foreground-muted)' // Green for active, gray for none
-    },
-    {
-      label: 'Compliant',
-      value: stats.compliant.toString(),
-      change: stats.total > 0 ? `${((stats.compliant / stats.total) * 100).toFixed(1)}%` : '0.0%',
-      trend: stats.compliant > 0 ? 'up' : 'neutral',
-      subtitle: 'of total vendors',
-      percentageColor: stats.compliant > 0 ? '#10b981' : 'var(--foreground-muted)' // Green when compliant, gray when 0
-    },
-    {
       label: 'At Risk',
       value: stats.atRisk.toString(),
       change: stats.total > 0 ? `${((stats.atRisk / stats.total) * 100).toFixed(1)}%` : '0.0%',
       trend: stats.atRisk > 0 ? 'neutral' : 'neutral',
       subtitle: 'expiring within 30 days',
-      percentageColor: stats.atRisk > 0 ? '#f59e0b' : 'var(--foreground-muted)' // Orange/warning when at risk, gray when 0
+      percentageColor: stats.atRisk > 0 ? '#f59e0b' : 'var(--foreground-muted)', // Orange/warning when at risk, gray when 0
+      bgTint: 'rgba(245, 158, 11, 0.03)',
+      borderColor: 'rgba(245, 158, 11, 0.2)'
     },
     {
       label: 'Non-Compliant',
@@ -316,7 +302,29 @@ export default function Dashboard() {
       change: stats.total > 0 ? `${((stats.nonCompliant / stats.total) * 100).toFixed(1)}%` : '0.0%',
       trend: stats.nonCompliant > 0 ? 'down' : 'up',
       subtitle: 'of total vendors',
-      percentageColor: stats.nonCompliant > 0 ? '#ef4444' : '#10b981' // Red when non-compliant, green when 0 (good!)
+      percentageColor: stats.nonCompliant > 0 ? '#ef4444' : '#10b981', // Red when non-compliant, green when 0 (good!)
+      bgTint: 'rgba(239, 68, 68, 0.03)',
+      borderColor: 'rgba(239, 68, 68, 0.2)'
+    },
+    {
+      label: 'Compliant',
+      value: stats.compliant.toString(),
+      change: stats.total > 0 ? `${((stats.compliant / stats.total) * 100).toFixed(1)}%` : '0.0%',
+      trend: stats.compliant > 0 ? 'up' : 'neutral',
+      subtitle: 'of total vendors',
+      percentageColor: stats.compliant > 0 ? '#10b981' : 'var(--foreground-muted)', // Green when compliant, gray when 0
+      bgTint: 'rgba(16, 185, 129, 0.03)',
+      borderColor: 'rgba(16, 185, 129, 0.2)'
+    },
+    {
+      label: 'Total Vendors',
+      value: stats.total.toString(),
+      change: stats.total > 0 ? '+12%' : '0%',
+      trend: stats.total > 0 ? 'up' : 'neutral',
+      subtitle: 'active vendors',
+      percentageColor: stats.total > 0 ? '#10b981' : 'var(--foreground-muted)', // Green for active, gray for none
+      bgTint: 'var(--glass-bg)',
+      borderColor: 'var(--glass-border)'
     },
   ], [stats]);
 
@@ -354,19 +362,15 @@ export default function Dashboard() {
             key={index}
             className="rounded-xl border p-6 md:p-8 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             style={{
-              backgroundColor: 'var(--glass-bg)',
-              borderColor: 'var(--glass-border)',
+              backgroundColor: card.bgTint,
+              borderColor: card.borderColor,
               backdropFilter: 'blur(12px)',
               boxShadow: 'var(--shadow-card, var(--shadow-md))'
             }}
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="text-xs uppercase tracking-wider mb-4 font-semibold" style={{ color: 'var(--foreground-subtle)', letterSpacing: '0.08em' }}>
-              {card.label}
-            </div>
-            <div className="flex items-baseline gap-3 mb-3">
-              <div className="tracking-tighter" style={{ color: 'var(--foreground)', fontSize: '2.5rem', fontWeight: 600, lineHeight: 1 }}>
-                {card.value}
+            <div className="flex justify-between items-start mb-2">
+              <div className="text-xs uppercase tracking-wider font-medium" style={{ color: 'var(--foreground-muted)', opacity: 0.7, letterSpacing: '0.08em' }}>
+                {card.label}
               </div>
               {card.change && (
                 <div 
@@ -384,6 +388,13 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
+
+            <div className="flex items-baseline gap-3 mb-1">
+              <div className="tracking-tighter" style={{ color: 'var(--foreground)', fontSize: '3.5rem', fontWeight: 700, lineHeight: 1 }}>
+                {card.value}
+              </div>
+            </div>
+
             <div className="text-sm" style={{ color: 'var(--foreground-subtle)', fontWeight: 400 }}>
               {card.subtitle}
             </div>
@@ -416,16 +427,16 @@ export default function Dashboard() {
               <table className="w-full">
                 <thead>
                   <tr style={{ backgroundColor: 'var(--panel)' }}>
-                    <th className="px-8 py-4 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-8 py-5 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Vendor
                     </th>
-                    <th className="px-6 py-4 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Expiry
                     </th>
-                    <th className="px-6 py-4 text-right text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-5 text-right text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
                       Action
                     </th>
                   </tr>
@@ -437,9 +448,9 @@ export default function Dashboard() {
                       className="border-t transition-colors hover:bg-slate-50/50"
                       style={{ borderColor: 'var(--border-subtle)' }}
                     >
-                      <td className="px-8 py-5">
+                      <td className="px-8 py-6">
                         <div>
-                          <div className="text-sm font-medium mb-0.5" style={{ color: 'var(--foreground)' }}>
+                          <div className="text-sm font-semibold mb-0.5" style={{ color: 'var(--foreground)' }}>
                             {vendor.name}
                           </div>
                           {vendor.missing > 0 && (
@@ -449,7 +460,7 @@ export default function Dashboard() {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-5">
+                      <td className="px-6 py-6">
                         <span
                           className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border"
                           style={{
@@ -472,7 +483,7 @@ export default function Dashboard() {
                           {vendor.statusLabel}
                         </span>
                       </td>
-                      <td className="px-6 py-5">
+                      <td className="px-6 py-6">
                         <div className="text-sm" style={{ color: 'var(--foreground)' }}>
                           {vendor.expiryDate}
                         </div>
@@ -484,7 +495,7 @@ export default function Dashboard() {
                             : `${vendor.daysLeft} days left`}
                         </div>
                       </td>
-                      <td className="px-6 py-5 text-right">
+                      <td className="px-6 py-6 text-right">
                         <button 
                           className="text-sm px-4 py-2 rounded-lg border transition-all hover:bg-white hover:shadow-sm"
                           style={{ 
@@ -513,7 +524,7 @@ export default function Dashboard() {
                   {/* Row 1: Vendor Name & Vendor Type */}
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium truncate" style={{ color: 'var(--foreground)' }}>
+                      <div className="text-sm font-semibold truncate" style={{ color: 'var(--foreground)' }}>
                         {vendor.name}
                       </div>
                     </div>
@@ -614,7 +625,7 @@ export default function Dashboard() {
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <h3 className="text-lg font-semibold tracking-tight mb-6">Upcoming expirations</h3>
+            <h3 className="text-xl font-semibold tracking-tight mb-6">Upcoming expirations</h3>
             <div className="space-y-4">
               {upcomingExpirations.map((item, index) => (
                 <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors">
@@ -660,7 +671,7 @@ export default function Dashboard() {
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <h3 className="text-lg font-semibold tracking-tight mb-6">Quick actions</h3>
+            <h3 className="text-xl font-semibold tracking-tight mb-6">Quick actions</h3>
             <div className="space-y-4">
               {isPremium ? (
                 <>

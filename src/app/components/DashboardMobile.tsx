@@ -119,79 +119,24 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-        {/* Total Vendors */}
-        <div 
-          className="rounded-xl border p-4"
-          style={{
-            backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-        >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500 }}>
-            TOTAL VENDORS
-          </div>
-          <div className="flex items-end justify-between">
-            <div className="text-3xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
-              {stats.total}
-            </div>
-            {stats.total > 0 && (
-              <div className="flex items-center gap-1 text-xs" style={{ color: '#10b981' }}>
-                <TrendingUp className="w-3 h-3" />
-                +{stats.total}
-              </div>
-            )}
-          </div>
-          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
-            active vendors
-          </div>
-        </div>
-
-        {/* Compliant */}
-        <div 
-          className="rounded-xl border p-4"
-          style={{
-            backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-        >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500 }}>
-            COMPLIANT
-          </div>
-          <div className="flex items-end justify-between">
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
-                {stats.compliant}
-              </span>
-              <span className="text-sm" style={{ color: 'var(--foreground-subtle)' }}>
-                — {stats.total}
-              </span>
-            </div>
-          </div>
-          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
-            of total vendors
-          </div>
-        </div>
-
         {/* At Risk */}
         <div 
           className="rounded-xl border p-4"
           style={{
-            backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
+            backgroundColor: 'rgba(245, 158, 11, 0.03)',
+            borderColor: 'rgba(245, 158, 11, 0.2)',
             boxShadow: 'var(--shadow-sm)'
           }}
         >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500 }}>
+          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
             AT RISK
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-3xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+            <div className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
               {stats.atRisk}
             </div>
             {stats.atRisk > 0 && (
-              <div className="flex items-center gap-1 text-xs" style={{ color: '#f59e0b' }}>
+              <div className="flex items-center gap-1 text-xs" style={{ color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', padding: '2px 6px', borderRadius: '999px' }}>
                 <TrendingDown className="w-3 h-3" />
                 {stats.atRisk}
               </div>
@@ -206,26 +151,82 @@ export default function Dashboard() {
         <div 
           className="rounded-xl border p-4"
           style={{
-            backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
+            backgroundColor: 'rgba(239, 68, 68, 0.03)',
+            borderColor: 'rgba(239, 68, 68, 0.2)',
             boxShadow: 'var(--shadow-sm)'
           }}
         >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500 }}>
+          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
             NON-COMPLIANT
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-3xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+            <div className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
               {stats.nonCompliant}
             </div>
             {stats.nonCompliant > 0 && (
-              <div className="flex items-center gap-1 text-xs" style={{ color: '#10b981' }}>
-                +0.0%
+              <div className="flex items-center gap-1 text-xs" style={{ color: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: '2px 6px', borderRadius: '999px' }}>
+                <TrendingDown className="w-3 h-3" />
+                {stats.nonCompliant}
               </div>
             )}
           </div>
           <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
             of total vendors
+          </div>
+        </div>
+
+        {/* Compliant */}
+        <div 
+          className="rounded-xl border p-4"
+          style={{
+            backgroundColor: 'rgba(16, 185, 129, 0.03)',
+            borderColor: 'rgba(16, 185, 129, 0.2)',
+            boxShadow: 'var(--shadow-sm)'
+          }}
+        >
+          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
+            COMPLIANT
+          </div>
+          <div className="flex items-end justify-between">
+            <div className="flex items-baseline gap-1">
+              <span className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
+                {stats.compliant}
+              </span>
+              <span className="text-sm" style={{ color: 'var(--foreground-subtle)' }}>
+                — {stats.total}
+              </span>
+            </div>
+          </div>
+          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
+            of total vendors
+          </div>
+        </div>
+
+        {/* Total Vendors */}
+        <div 
+          className="rounded-xl border p-4"
+          style={{
+            backgroundColor: 'var(--card)',
+            borderColor: 'var(--border)',
+            boxShadow: 'var(--shadow-sm)'
+          }}
+        >
+          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
+            TOTAL VENDORS
+          </div>
+          <div className="flex items-end justify-between">
+            <div className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
+              {stats.total}
+            </div>
+            {stats.total > 0 && (
+              <div className="flex items-center gap-1 text-xs" style={{ color: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', padding: '2px 6px', borderRadius: '999px' }}>
+                <TrendingUp className="w-3 h-3" />
+                +{stats.total}
+              </div>
+            )}
+          </div>
+          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
+            active vendors
           </div>
         </div>
       </div>

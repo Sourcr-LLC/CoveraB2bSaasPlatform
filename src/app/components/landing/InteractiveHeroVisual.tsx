@@ -1,6 +1,6 @@
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, Check, ArrowUpRight, AlertCircle, Clock, FileText 
+  CheckCircle2, Check, ArrowUpRight, AlertCircle, Clock, FileText, TrendingUp
 } from 'lucide-react';
 
 export default function InteractiveHeroVisual() {
@@ -64,28 +64,36 @@ function DashboardContent() {
           {/* STATS ROW */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             <StatCard 
-              label="Total Vendors" 
-              value={stats.total} 
-              trend="+12%" 
-              trendColor="text-emerald-600 bg-emerald-50"
+              label="At Risk" 
+              value={stats.atRisk} 
+              subtext={`${Math.round((stats.atRisk/stats.total)*100)}%`}
+              percentageColor="#f59e0b"
+              bgTint="rgba(245, 158, 11, 0.03)"
+              borderColor="rgba(245, 158, 11, 0.2)"
+            />
+            <StatCard 
+              label="Non-Compliant" 
+              value={stats.nonCompliant} 
+              subtext={`${Math.round((stats.nonCompliant/stats.total)*100)}%`}
+              percentageColor="#ef4444"
+              bgTint="rgba(239, 68, 68, 0.03)"
+              borderColor="rgba(239, 68, 68, 0.2)"
             />
             <StatCard 
               label="Compliant" 
               value={stats.compliant} 
               subtext={`${Math.round((stats.compliant/stats.total)*100)}%`}
-              color="emerald"
+              percentageColor="#10b981"
+              bgTint="rgba(16, 185, 129, 0.03)"
+              borderColor="rgba(16, 185, 129, 0.2)"
             />
             <StatCard 
-              label="At Risk" 
-              value={stats.atRisk} 
-              subtext="30 days"
-              color="orange"
-            />
-            <StatCard 
-              label="Action Needed" 
-              value={stats.nonCompliant} 
-              subtext="Expired"
-              color="red"
+              label="Total Vendors" 
+              value={stats.total} 
+              trend="+12%" 
+              percentageColor="#10b981"
+              bgTint="#ffffff"
+              borderColor="#e7e5e4"
             />
           </div>
 
@@ -137,16 +145,48 @@ function NavItem({ icon: Icon, label, active = false }: any) {
   );
 }
 
-function StatCard({ label, value, trend, trendColor, subtext, color }: any) {
+function StatCard({ label, value, trend, percentageColor, subtext, bgTint, borderColor }: any) {
   return (
-    <div className={`p-4 rounded-xl border bg-white border-[#e7e5e4] shadow-sm`}>
-      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{label}</div>
-      <div className="flex items-end gap-2">
-        <div className="text-2xl font-bold text-slate-900">
+    <div 
+      className="rounded-xl border p-4 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      style={{
+        backgroundColor: bgTint || '#ffffff',
+        borderColor: borderColor || '#e7e5e4',
+      }}
+    >
+      <div className="flex justify-between items-start mb-2">
+        <div className="text-xs uppercase tracking-wider font-medium text-slate-500 opacity-70" style={{ letterSpacing: '0.08em' }}>
+          {label}
+        </div>
+        {(trend || subtext) && (
+          <div 
+            className="text-xs flex items-center gap-1 px-2 py-0.5 rounded-full bg-opacity-10"
+            style={{ 
+              color: percentageColor || '#64748b',
+              fontWeight: 600,
+              backgroundColor: percentageColor ? `${percentageColor}15` : '#f1f5f9'
+            }}
+          >
+            {trend ? (
+                <>
+                  <TrendingUp className="w-3 h-3" />
+                  <span>{trend}</span>
+                </>
+            ) : (
+                <span>{subtext}</span>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-baseline gap-3 mb-1">
+        <div className="tracking-tighter text-slate-900" style={{ fontSize: '2.5rem', fontWeight: 700, lineHeight: 1 }}>
           {value}
         </div>
-        {trend && <div className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${trendColor}`}>{trend}</div>}
-        {subtext && <div className="text-xs text-slate-400 mb-1">{subtext}</div>}
+      </div>
+      
+      <div className="text-xs text-slate-400 font-normal">
+        {trend ? 'active vendors' : (label === 'Compliant' ? 'of total vendors' : (label === 'At Risk' ? 'expiring within 30 days' : 'of total vendors'))}
       </div>
     </div>
   );
@@ -160,19 +200,21 @@ function VendorRow({ name, type, status, date }: any) {
   if (status === "Missing") statusColor = "bg-[#f5f5f4] text-slate-600 border-[#e7e5e4]";
 
   return (
-    <div className="px-4 md:px-6 py-3 md:py-4 flex items-center justify-between group hover:bg-[#fafaf9] transition-colors duration-200 relative overflow-hidden">
+    <div className="px-4 md:px-6 py-5 md:py-6 flex items-center justify-between group hover:bg-[#fafaf9] transition-colors duration-200 relative overflow-hidden">
        <div className="flex items-center gap-3 md:gap-4 relative z-10">
          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-colors duration-300 flex-shrink-0 ${status === "Verified" ? "bg-emerald-100 text-emerald-600" : "bg-[#f5f5f4] text-slate-500"}`}>
            {status === "Verified" ? <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5" /> : name.charAt(0)}
          </div>
          <div className="min-w-0">
-           <div className="font-bold text-slate-900 text-sm truncate">{name}</div>
+           <div className="font-semibold text-slate-900 text-sm truncate">{name}</div>
            <div className="text-xs text-slate-500 truncate">{type}</div>
          </div>
        </div>
 
        <div className="relative z-10 text-right flex-shrink-0 ml-2">
          <div className={`inline-flex items-center px-2 md:px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-bold border ${statusColor} transition-colors duration-300`}>
+           {status === "At Risk" && <Clock className="w-3 h-3 mr-1" />}
+           {status === "Expired" && <AlertCircle className="w-3 h-3 mr-1" />}
            {status}
          </div>
          <div className="text-xs text-slate-400 mt-1 font-medium hidden sm:block">{date}</div>
