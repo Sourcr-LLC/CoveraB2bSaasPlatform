@@ -8,6 +8,7 @@ import { supabase, vendorApi } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { useSubscription } from '../hooks/useSubscription';
 import { isDemoMode, demoVendors, getDemoStats } from '../lib/demoData';
+import { KpiCard } from './dashboard/KpiCard';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -285,48 +286,62 @@ export default function Dashboard() {
     };
   }, [vendors]);
 
-  const kpiCards = useMemo(() => [
-    {
-      label: 'At Risk',
-      value: stats.atRisk.toString(),
-      change: stats.total > 0 ? `${((stats.atRisk / stats.total) * 100).toFixed(1)}%` : '0.0%',
-      trend: stats.atRisk > 0 ? 'neutral' : 'neutral',
-      subtitle: 'expiring within 30 days',
-      percentageColor: stats.atRisk > 0 ? '#f59e0b' : 'var(--foreground-muted)', // Orange/warning when at risk, gray when 0
-      bgTint: 'rgba(245, 158, 11, 0.03)',
-      borderColor: 'rgba(245, 158, 11, 0.2)'
-    },
-    {
-      label: 'Non-Compliant',
-      value: stats.nonCompliant.toString(),
-      change: stats.total > 0 ? `${((stats.nonCompliant / stats.total) * 100).toFixed(1)}%` : '0.0%',
-      trend: stats.nonCompliant > 0 ? 'down' : 'up',
-      subtitle: 'of total vendors',
-      percentageColor: stats.nonCompliant > 0 ? '#ef4444' : '#10b981', // Red when non-compliant, green when 0 (good!)
-      bgTint: 'rgba(239, 68, 68, 0.03)',
-      borderColor: 'rgba(239, 68, 68, 0.2)'
-    },
-    {
-      label: 'Compliant',
-      value: stats.compliant.toString(),
-      change: stats.total > 0 ? `${((stats.compliant / stats.total) * 100).toFixed(1)}%` : '0.0%',
-      trend: stats.compliant > 0 ? 'up' : 'neutral',
-      subtitle: 'of total vendors',
-      percentageColor: stats.compliant > 0 ? '#10b981' : 'var(--foreground-muted)', // Green when compliant, gray when 0
-      bgTint: 'rgba(16, 185, 129, 0.03)',
-      borderColor: 'rgba(16, 185, 129, 0.2)'
-    },
-    {
-      label: 'Total Vendors',
-      value: stats.total.toString(),
-      change: stats.total > 0 ? '+12%' : '0%',
-      trend: stats.total > 0 ? 'up' : 'neutral',
-      subtitle: 'active vendors',
-      percentageColor: stats.total > 0 ? '#10b981' : 'var(--foreground-muted)', // Green for active, gray for none
-      bgTint: 'var(--glass-bg)',
-      borderColor: 'var(--glass-border)'
-    },
-  ], [stats]);
+  const kpiCards = useMemo(() => {
+    // Helper for small totals - hide deltas/percentages if < 5 vendors
+    const showDeltas = stats.total >= 5;
+
+    return [
+      {
+        label: 'At Risk',
+        value: stats.atRisk.toString(),
+        change: (showDeltas && stats.atRisk > 0)
+          ? `${((stats.atRisk / stats.total) * 100).toFixed(1)}%` 
+          : undefined,
+        trend: 'neutral',
+        subtitle: 'expiring within 30 days',
+        // Zero-state intelligence: remove urgency cues when 0
+        percentageColor: stats.atRisk > 0 ? '#f59e0b' : 'var(--foreground-muted)',
+        bgTint: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.03)' : 'var(--card)',
+        borderColor: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.2)' : 'var(--border)',
+        isAtRisk: stats.atRisk > 0,
+        icon: stats.atRisk > 0 ? TrendingDown : undefined
+      },
+      {
+        label: 'Non-Compliant',
+        value: stats.nonCompliant.toString(),
+        change: (showDeltas && stats.nonCompliant > 0)
+          ? `${((stats.nonCompliant / stats.total) * 100).toFixed(1)}%` 
+          : undefined,
+        trend: 'neutral',
+        subtitle: 'of total vendors',
+        // Zero-state intelligence
+        percentageColor: stats.nonCompliant > 0 ? '#ef4444' : 'var(--foreground-muted)',
+        bgTint: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.03)' : 'var(--card)',
+        borderColor: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.2)' : 'var(--border)',
+        icon: stats.nonCompliant > 0 ? TrendingDown : undefined
+      },
+      {
+        label: 'Compliant',
+        value: stats.compliant.toString(),
+        change: undefined,
+        trend: 'neutral',
+        subtitle: 'of total vendors',
+        percentageColor: 'var(--foreground-muted)',
+        bgTint: stats.compliant > 0 ? 'rgba(16, 185, 129, 0.03)' : 'var(--card)',
+        borderColor: stats.compliant > 0 ? 'rgba(16, 185, 129, 0.2)' : 'var(--border)'
+      },
+      {
+        label: 'Total Vendors',
+        value: stats.total.toString(),
+        change: (showDeltas && stats.total > 0) ? '+12%' : undefined,
+        trend: (showDeltas && stats.total > 0) ? 'up' : 'neutral',
+        subtitle: 'active vendors',
+        percentageColor: stats.total > 0 ? '#10b981' : 'var(--foreground-muted)',
+        bgTint: 'var(--glass-bg)',
+        borderColor: 'var(--glass-border)'
+      },
+    ];
+  }, [stats]);
 
   const upcomingExpirations = [
     { count: expirations.sevenDays, label: '7 days', color: 'var(--status-non-compliant)' },
@@ -358,47 +373,19 @@ export default function Dashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
         {kpiCards.map((card, index) => (
-          <div
+          <KpiCard
             key={index}
-            className="rounded-xl border p-4 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-            style={{
-              backgroundColor: card.bgTint,
-              borderColor: card.borderColor,
-              backdropFilter: 'blur(12px)',
-              boxShadow: 'var(--shadow-card, var(--shadow-md))'
-            }}
-          >
-            <div className="flex justify-between items-center mb-1.5 h-5">
-              <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
-                {card.label}
-              </div>
-              {card.change && (
-                <div 
-                  className="text-[11px] flex items-center gap-1 px-1.5 h-5 rounded-full bg-opacity-10"
-                  style={{ 
-                    color: card.percentageColor,
-                    fontWeight: 700,
-                    backgroundColor: `${card.percentageColor}15`
-                  }}
-                >
-                  {card.trend === 'up' && <TrendingUp className="w-3 h-3" />}
-                  {card.trend === 'down' && <TrendingDown className="w-3 h-3" />}
-                  {card.trend === 'neutral' && <Minus className="w-3 h-3" />}
-                  <span>{card.change}</span>
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-baseline gap-3 mb-1">
-              <div className="tracking-tighter" style={{ color: 'var(--foreground)', fontSize: '2rem', fontWeight: 700, lineHeight: 1 }}>
-                {card.value}
-              </div>
-            </div>
-
-            <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
-              {card.subtitle}
-            </div>
-          </div>
+            label={card.label}
+            value={card.value}
+            change={card.change}
+            trend={card.trend as 'up' | 'down' | 'neutral'}
+            percentageColor={card.percentageColor}
+            bgTint={card.bgTint}
+            borderColor={card.borderColor}
+            subtext={card.subtitle}
+            isAtRisk={card.isAtRisk}
+            icon={card.icon}
+          />
         ))}
       </div>
 

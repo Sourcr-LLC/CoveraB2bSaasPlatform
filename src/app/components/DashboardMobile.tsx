@@ -4,6 +4,7 @@ import { TrendingUp, TrendingDown, Bell, AlertCircle, Clock } from 'lucide-react
 import { vendorApi } from '../lib/api';
 import { toast } from 'sonner';
 import PremiumLoader from './PremiumLoader';
+import { KpiCard } from './dashboard/KpiCard';
 
 // Helper function to calculate vendor status
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -120,121 +121,50 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         {/* At Risk */}
-        <div 
-          className="rounded-xl border p-4"
-          style={{
-            backgroundColor: 'rgba(245, 158, 11, 0.03)',
-            borderColor: 'rgba(245, 158, 11, 0.2)',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-        >
-          <div className="flex justify-between items-center mb-1.5 h-5">
-            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
-              AT RISK
-            </div>
-            {stats.atRisk > 0 && (
-              <div className="flex items-center gap-1 text-[11px] font-bold h-5 px-1.5 rounded-full" style={{ color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)' }}>
-                <TrendingDown className="w-3 h-3" />
-                {stats.atRisk}
-              </div>
-            )}
-          </div>
-          <div className="flex items-baseline gap-3 mb-1">
-            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
-              {stats.atRisk}
-            </div>
-          </div>
-          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
-            expiring within 30 days
-          </div>
-        </div>
+        <KpiCard
+          label="AT RISK"
+          value={stats.atRisk}
+          subtext="expiring within 30 days"
+          change={(stats.total >= 5 && stats.atRisk > 0) ? `${((stats.atRisk / stats.total) * 100).toFixed(1)}%` : undefined}
+          icon={stats.atRisk > 0 ? TrendingDown : undefined}
+          percentageColor={stats.atRisk > 0 ? '#f59e0b' : 'var(--foreground-muted)'}
+          bgTint={stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.03)' : 'var(--card)'}
+          borderColor={stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.2)' : 'var(--border)'}
+          isAtRisk={stats.atRisk > 0}
+        />
 
         {/* Non-Compliant */}
-        <div 
-          className="rounded-xl border p-4"
-          style={{
-            backgroundColor: 'rgba(239, 68, 68, 0.03)',
-            borderColor: 'rgba(239, 68, 68, 0.2)',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-        >
-          <div className="flex justify-between items-center mb-1.5 h-5">
-            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
-              NON-COMPLIANT
-            </div>
-            {stats.nonCompliant > 0 && (
-              <div className="flex items-center gap-1 text-[11px] font-bold h-5 px-1.5 rounded-full" style={{ color: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)' }}>
-                <TrendingDown className="w-3 h-3" />
-                {stats.nonCompliant}
-              </div>
-            )}
-          </div>
-          <div className="flex items-baseline gap-3 mb-1">
-            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
-              {stats.nonCompliant}
-            </div>
-          </div>
-          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
-            of total vendors
-          </div>
-        </div>
+        <KpiCard
+          label="NON-COMPLIANT"
+          value={stats.nonCompliant}
+          subtext="of total vendors"
+          change={(stats.total >= 5 && stats.nonCompliant > 0) ? `${((stats.nonCompliant / stats.total) * 100).toFixed(1)}%` : undefined}
+          icon={stats.nonCompliant > 0 ? TrendingDown : undefined}
+          percentageColor={stats.nonCompliant > 0 ? '#ef4444' : 'var(--foreground-muted)'}
+          bgTint={stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.03)' : 'var(--card)'}
+          borderColor={stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.2)' : 'var(--border)'}
+        />
 
         {/* Compliant */}
-        <div 
-          className="rounded-xl border p-4"
-          style={{
-            backgroundColor: 'rgba(16, 185, 129, 0.03)',
-            borderColor: 'rgba(16, 185, 129, 0.2)',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-        >
-          <div className="flex justify-between items-center mb-1.5 h-5">
-            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
-              COMPLIANT
-            </div>
-          </div>
-          <div className="flex items-baseline gap-1 mb-1">
-            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
-              {stats.compliant}
-            </div>
-            <span className="text-sm font-medium relative -top-1" style={{ color: 'var(--foreground-subtle)' }}>
-              / {stats.total}
-            </span>
-          </div>
-          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
-            of total vendors
-          </div>
-        </div>
+        <KpiCard
+          label="COMPLIANT"
+          value={stats.compliant}
+          subtext="of total vendors"
+          bgTint={stats.compliant > 0 ? 'rgba(16, 185, 129, 0.03)' : 'var(--card)'}
+          borderColor={stats.compliant > 0 ? 'rgba(16, 185, 129, 0.2)' : 'var(--border)'}
+        />
 
         {/* Total Vendors */}
-        <div 
-          className="rounded-xl border p-4"
-          style={{
-            backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-        >
-          <div className="flex justify-between items-center mb-1.5 h-5">
-            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
-              TOTAL VENDORS
-            </div>
-            {stats.total > 0 && (
-              <div className="flex items-center gap-1 text-[11px] font-bold h-5 px-1.5 rounded-full" style={{ color: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>
-                <TrendingUp className="w-3 h-3" />
-                +{stats.total}
-              </div>
-            )}
-          </div>
-          <div className="flex items-baseline gap-3 mb-1">
-            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
-              {stats.total}
-            </div>
-          </div>
-          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
-            active vendors
-          </div>
-        </div>
+        <KpiCard
+          label="TOTAL VENDORS"
+          value={stats.total}
+          subtext="active vendors"
+          change={(stats.total >= 5 && stats.total > 0) ? `+${stats.total}` : undefined}
+          trend={stats.total >= 5 && stats.total > 0 ? "up" : undefined}
+          percentageColor={stats.total > 0 ? "#10b981" : "var(--foreground-muted)"}
+          bgTint="var(--card)"
+          borderColor="var(--border)"
+        />
       </div>
 
       {/* Two Column Layout */}

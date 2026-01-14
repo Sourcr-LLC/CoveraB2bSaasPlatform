@@ -1,7 +1,8 @@
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, Check, ArrowUpRight, AlertCircle, Clock, FileText, TrendingUp
+  CheckCircle2, AlertCircle, Clock, TrendingDown
 } from 'lucide-react';
+import { KpiCard } from '../dashboard/KpiCard';
 
 export default function InteractiveHeroVisual() {
   return (
@@ -63,34 +64,45 @@ function DashboardContent() {
           
           {/* STATS ROW */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-            <StatCard 
+            <KpiCard 
               label="At Risk" 
               value={stats.atRisk} 
-              subtext={`${Math.round((stats.atRisk/stats.total)*100)}%`}
+              change={`${Math.round((stats.atRisk/stats.total)*100)}%`}
+              subtext="expiring within 30 days"
               percentageColor="#f59e0b"
               bgTint="rgba(245, 158, 11, 0.03)"
               borderColor="rgba(245, 158, 11, 0.2)"
+              icon={TrendingDown}
+              isAtRisk={true}
+              trend="neutral"
             />
-            <StatCard 
+            <KpiCard 
               label="Non-Compliant" 
               value={stats.nonCompliant} 
-              subtext={`${Math.round((stats.nonCompliant/stats.total)*100)}%`}
+              change={`${Math.round((stats.nonCompliant/stats.total)*100)}%`}
+              subtext="of total vendors"
               percentageColor="#ef4444"
               bgTint="rgba(239, 68, 68, 0.03)"
               borderColor="rgba(239, 68, 68, 0.2)"
+              icon={TrendingDown}
+              trend="neutral"
             />
-            <StatCard 
+            <KpiCard 
               label="Compliant" 
               value={stats.compliant} 
-              subtext={`${Math.round((stats.compliant/stats.total)*100)}%`}
+              change={`${Math.round((stats.compliant/stats.total)*100)}%`}
+              subtext="of total vendors"
               percentageColor="#10b981"
               bgTint="rgba(16, 185, 129, 0.03)"
               borderColor="rgba(16, 185, 129, 0.2)"
+              trend="neutral"
             />
-            <StatCard 
+            <KpiCard 
               label="Total Vendors" 
               value={stats.total} 
-              trend="+12%" 
+              change="+12%"
+              subtext="active vendors"
+              trend="up" 
               percentageColor="#10b981"
               bgTint="#ffffff"
               borderColor="#e7e5e4"
@@ -141,53 +153,6 @@ function NavItem({ icon: Icon, label, active = false }: any) {
     <div className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${active ? 'bg-white/15 text-white' : 'text-white hover:bg-white/5'}`}>
       <Icon className="w-4 h-4" />
       {label}
-    </div>
-  );
-}
-
-function StatCard({ label, value, trend, percentageColor, subtext, bgTint, borderColor }: any) {
-  return (
-    <div 
-      className="rounded-xl border p-3.5 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-      style={{
-        backgroundColor: bgTint || '#ffffff',
-        borderColor: borderColor || '#e7e5e4',
-      }}
-    >
-      <div className="flex justify-between items-center mb-1.5 h-5">
-        <div className="text-[11px] uppercase tracking-wider font-bold text-slate-500 opacity-80" style={{ letterSpacing: '0.05em' }}>
-          {label}
-        </div>
-        {(trend || subtext) && (
-          <div 
-            className="text-[11px] flex items-center gap-1 px-1.5 h-5 rounded-full bg-opacity-10"
-            style={{ 
-              color: percentageColor || '#64748b',
-              fontWeight: 700,
-              backgroundColor: percentageColor ? `${percentageColor}15` : '#f1f5f9'
-            }}
-          >
-            {trend ? (
-                <>
-                  <TrendingUp className="w-3 h-3" />
-                  <span>{trend}</span>
-                </>
-            ) : (
-                <span>{subtext}</span>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-baseline gap-3 mb-1">
-        <div className="tracking-tighter text-slate-900" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1 }}>
-          {value}
-        </div>
-      </div>
-      
-      <div className="text-[11px] text-slate-400 font-medium">
-        {trend ? 'active vendors' : (label === 'Compliant' ? 'of total vendors' : (label === 'At Risk' ? 'expiring within 30 days' : 'of total vendors'))}
-      </div>
     </div>
   );
 }
