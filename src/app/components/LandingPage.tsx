@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Shield, Bell, FileText, TrendingUp, ArrowRight, Building2, Hospital, Store, Truck, MapPin, FileCheck, CheckCircle, Upload, Zap, Lock, Globe, X } from 'lucide-react';
-import { useState, useEffect, Suspense, lazy } from 'react';
+import { useState, useEffect, Suspense, lazy, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
@@ -10,51 +10,48 @@ const InteractiveHeroVisual = lazy(() => import('./landing/InteractiveHeroVisual
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 
-export default function LandingPage() {
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
-  const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('self-service');
+// Move constant data outside component to prevent re-creation on render
+const TESTIMONIALS = [
+  {
+    quote: "Before Covera, tracking vendor insurance was a full-time nightmare. Now our compliance rate is 98% and our team spends zero time chasing COIs. It's eliminated a massive liability risk.",
+    author: "Jessica Martinez",
+    title: "Director of Operations, Summit Properties",
+    initials: "JM"
+  },
+  {
+    quote: "We manage 200+ subcontractors across active job sites. Covera's automated reminders and vendor portal mean we never miss an expiration. Our legal team can finally sleep at night.",
+    author: "David Kim",
+    title: "VP of Risk Management, BuildRight Construction",
+    initials: "DK"
+  },
+  {
+    quote: "As a healthcare administrator managing vendor compliance across 14 facilities, Covera has been transformative. The audit exports alone have saved us countless hours during regulatory reviews.",
+    author: "Sarah Chen",
+    title: "Compliance Director, MedCore Health Systems",
+    initials: "SC"
+  },
+  {
+    quote: "We went from 60% compliance to 97% in just 3 months. The automated workflows and vendor portal eliminated the constant back-and-forth. Our insurance broker was genuinely impressed.",
+    author: "Michael Torres",
+    title: "Operations Manager, FastFleet Logistics",
+    initials: "MT"
+  },
+  {
+    quote: "Managing franchise vendor compliance used to require a dedicated FTE. Now it's completely automated. The dashboard gives our corporate team instant visibility across all 50+ locations.",
+    author: "Rachel Williams",
+    title: "Head of Franchise Operations, FranchiseCo",
+    initials: "RW"
+  },
+  {
+    quote: "The ROI was immediate. Between avoided liability exposure and recovered staff time, Covera paid for itself in the first month. Our general counsel calls it essential infrastructure.",
+    author: "James Patterson",
+    title: "CFO, Apex Development Group",
+    initials: "JP"
+  }
+];
 
-  // Testimonials data
-  const testimonials = [
-    {
-      quote: "Before Covera, tracking vendor insurance was a full-time nightmare. Now our compliance rate is 98% and our team spends zero time chasing COIs. It's eliminated a massive liability risk.",
-      author: "Jessica Martinez",
-      title: "Director of Operations, Summit Properties",
-      initials: "JM"
-    },
-    {
-      quote: "We manage 200+ subcontractors across active job sites. Covera's automated reminders and vendor portal mean we never miss an expiration. Our legal team can finally sleep at night.",
-      author: "David Kim",
-      title: "VP of Risk Management, BuildRight Construction",
-      initials: "DK"
-    },
-    {
-      quote: "As a healthcare administrator managing vendor compliance across 14 facilities, Covera has been transformative. The audit exports alone have saved us countless hours during regulatory reviews.",
-      author: "Sarah Chen",
-      title: "Compliance Director, MedCore Health Systems",
-      initials: "SC"
-    },
-    {
-      quote: "We went from 60% compliance to 97% in just 3 months. The automated workflows and vendor portal eliminated the constant back-and-forth. Our insurance broker was genuinely impressed.",
-      author: "Michael Torres",
-      title: "Operations Manager, FastFleet Logistics",
-      initials: "MT"
-    },
-    {
-      quote: "Managing franchise vendor compliance used to require a dedicated FTE. Now it's completely automated. The dashboard gives our corporate team instant visibility across all 50+ locations.",
-      author: "Rachel Williams",
-      title: "Head of Franchise Operations, FranchiseCo",
-      initials: "RW"
-    },
-    {
-      quote: "The ROI was immediate. Between avoided liability exposure and recovered staff time, Covera paid for itself in the first month. Our general counsel calls it essential infrastructure.",
-      author: "James Patterson",
-      title: "CFO, Apex Development Group",
-      initials: "JP"
-    }
-  ];
-
+// Memoize FeatureSteps to isolate re-renders
+const FeatureSteps = memo(function FeatureSteps() {
   const [activeStep, setActiveStep] = useState(1);
 
   useEffect(() => {
@@ -63,6 +60,52 @@ export default function LandingPage() {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Step 1 */}
+      <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 1 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>1</div>
+        <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+          <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>Generate Link</div>
+          <div className="text-sm text-slate-600 mt-1">Create a secure, time-limited upload token.</div>
+        </div>
+      </div>
+      {/* Step 2 */}
+      <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 2 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>2</div>
+        <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 2 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+          <div className={`font-bold mb-2 flex items-center gap-2 ${activeStep === 2 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>
+            Vendor Uploads
+            <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] uppercase tracking-wide">Magic Link</span>
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border border-slate-100">
+              <FileText className="w-5 h-5 text-slate-400 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-slate-700 truncate">GL_Insurance_2024.pdf</div>
+                <div className="text-xs text-slate-600">2.4 MB • Uploading...</div>
+              </div>
+              <div className="w-5 h-5 rounded-full border-2 border-slate-200 border-t-[#3A4F6A] animate-spin flex-shrink-0" />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Step 3 */}
+      <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 3 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>3</div>
+        <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
+          <div className="font-medium text-slate-700">AI Verification</div>
+          <div className="text-sm text-slate-600 mt-1">Coverage limits extracted and checked instantly.</div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+export default function LandingPage() {
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
@@ -129,28 +172,6 @@ export default function LandingPage() {
               <Suspense fallback={<div className="w-full aspect-video bg-slate-50 animate-pulse rounded-2xl shadow-2xl" />}>
                 <InteractiveHeroVisual />
               </Suspense>
-              
-              {/* Floating Element: Magic Link Notification - HIDDEN */}
-              {/* <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1, duration: 0.6 }}
-                className="absolute -right-4 top-12 md:right-8 md:top-20 bg-white/90 backdrop-blur-md border border-white/40 p-4 rounded-xl shadow-lg shadow-black/5 max-w-xs hidden lg:block"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-slate-900">Acme Corp uploaded COI</h4>
-                    <p className="text-xs text-slate-500 mt-1">Via Secure Magic Link • Just now</p>
-                    <div className="mt-2 flex items-center gap-1 text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md inline-flex">
-                      <Shield className="w-3 h-3" />
-                      Verified by AI
-                    </div>
-                  </div>
-                </div>
-              </motion.div> */}
             </div>
           </motion.div>
         </div>
@@ -281,44 +302,7 @@ export default function LandingPage() {
             <div className="order-2 lg:order-1 relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-[40px] transform rotate-3 scale-95 opacity-50" />
               <div className="bg-white rounded-[32px] border border-slate-200 p-4 md:p-8 shadow-xl relative z-10">
-                <div className="flex flex-col gap-6">
-                  {/* Step 1 */}
-                  <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 1 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 1 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>1</div>
-                    <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 1 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
-                      <div className={`font-medium ${activeStep === 1 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>Generate Link</div>
-                      <div className="text-sm text-slate-600 mt-1">Create a secure, time-limited upload token.</div>
-                    </div>
-                  </div>
-                  {/* Step 2 */}
-                  <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 2 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 2 ? 'bg-[#3A4F6A] text-white shadow-[#3A4F6A]/30 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>2</div>
-                    <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 2 ? 'border-[#3A4F6A]/10 bg-white shadow-md' : 'border-slate-100 bg-slate-50'}`}>
-                      <div className={`font-bold mb-2 flex items-center gap-2 ${activeStep === 2 ? 'text-[#3A4F6A]' : 'text-slate-700'}`}>
-                        Vendor Uploads
-                        <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] uppercase tracking-wide">Magic Link</span>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border border-slate-100">
-                          <FileText className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium text-slate-700 truncate">GL_Insurance_2024.pdf</div>
-                            <div className="text-xs text-slate-600">2.4 MB • Uploading...</div>
-                          </div>
-                          <div className="w-5 h-5 rounded-full border-2 border-slate-200 border-t-[#3A4F6A] animate-spin flex-shrink-0" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Step 3 */}
-                  <div className={`flex gap-4 transition-opacity duration-300 ${activeStep === 3 ? 'opacity-100' : 'opacity-50 grayscale'}`}>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg flex-shrink-0 transition-transform duration-300 ${activeStep === 3 ? 'bg-emerald-100 text-emerald-600 scale-110' : 'bg-slate-100 text-slate-500 scale-100'}`}>3</div>
-                    <div className={`flex-1 p-4 rounded-xl border transition-colors duration-300 ${activeStep === 3 ? 'border-emerald-100 bg-emerald-50/50 shadow-md' : 'border-slate-100 bg-slate-50'}`}>
-                      <div className="font-medium text-slate-700">AI Verification</div>
-                      <div className="text-sm text-slate-600 mt-1">Coverage limits extracted and checked instantly.</div>
-                    </div>
-                  </div>
-                </div>
+                <FeatureSteps />
               </div>
             </div>
             
@@ -359,7 +343,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-[#1a1a1a]">Loved by Operations Teams</h2>
           </div>
-          <TestimonialCarousel testimonials={testimonials} />
+          <TestimonialCarousel testimonials={TESTIMONIALS} />
         </div>
       </section>
 

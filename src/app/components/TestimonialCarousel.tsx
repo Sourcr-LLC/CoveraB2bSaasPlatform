@@ -22,14 +22,21 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
     return null;
   }
 
-  // Detect mobile/desktop
+  // Detect mobile/desktop using matchMedia to avoid forced reflow from window.innerWidth
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    // Set initial value
+    setIsMobile(mediaQuery.matches);
+
+    // Handler for changes
+    const handleResize = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    // Add listener
+    mediaQuery.addEventListener('change', handleResize);
+    return () => mediaQuery.removeEventListener('change', handleResize);
   }, []);
 
   // Items per slide: 1 on mobile, 2 on desktop
@@ -139,12 +146,23 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
                 className="w-12 h-12 flex items-center justify-center transition-all rounded-full relative"
                 aria-label={`Go to testimonial ${index + 1}`}
               >
+                {/* 
+                  Using scale transform instead of width animation to prevent layout thrashing (reflow).
+                  The container is 8px wide, and we scale it up to emulate the wider dot.
+                  Wait, to emulate 24px from 8px, we need scaleX(3).
+                  However, standard dots usually just change color or opacity.
+                  Let's stick to width but ensure we don't read layout.
+                  Actually, best practice for avoiding reflow is to NOT animate width.
+                  Let's use a constant size dot that changes opacity/color, or a transform.
+                */}
                 <span 
-                  className="rounded-full transition-all"
+                  className="rounded-full transition-all duration-300 block"
                   style={{
-                    width: currentIndex === index ? '24px' : '8px',
+                    width: '24px', // Fixed width container
                     height: '8px',
                     backgroundColor: currentIndex === index ? 'var(--primary)' : 'var(--border)',
+                    transform: currentIndex === index ? 'scaleX(1)' : 'scaleX(0.33)', // Animate scale instead of width
+                    transformOrigin: 'center'
                   }}
                 />
               </button>
