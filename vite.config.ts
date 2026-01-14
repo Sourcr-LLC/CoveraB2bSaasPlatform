@@ -36,7 +36,6 @@ export default defineConfig({
             '@radix-ui/react-dropdown-menu',
             '@radix-ui/react-select',
             '@radix-ui/react-tabs',
-            '@radix-ui/react-toast',
             '@radix-ui/react-alert-dialog',
             '@radix-ui/react-checkbox',
             '@radix-ui/react-label',
