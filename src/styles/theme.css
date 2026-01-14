@@ -168,6 +168,26 @@
       transform: translateY(0);
     }
   }
+
+  @keyframes progress-loading {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+  
+  .animate-progress {
+    animation: progress-loading 4s linear infinite;
+  }
+  
+  @keyframes scan-down {
+    0% { top: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  .animate-scan-down {
+    animation: scan-down 4s ease-in-out infinite;
+  }
 }
 
 @layer base {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { X, CheckCircle2, TrendingUp, Globe, FileText, ArrowRight, Mail, Clock, ShieldCheck, Upload, AlertCircle, RefreshCw } from 'lucide-react';
+import { X, CheckCircle2, TrendingUp, Globe, FileText, ArrowRight, Mail, Clock, ShieldCheck, Upload, RefreshCw } from 'lucide-react';
 
 export default function ComparisonSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -88,7 +87,7 @@ export default function ComparisonSection() {
 
           {/* Old Way Card */}
           <div 
-            className="p-6 md:p-8 rounded-3xl bg-slate-50 border border-slate-100 relative group transition-all duration-500"
+            className="p-6 md:p-8 rounded-3xl bg-slate-50 border border-slate-100 relative group transition-all duration-300"
             onMouseEnter={() => setIsAutoPlaying(false)}
           >
             <div className="absolute top-6 right-6 md:top-8 md:right-8 text-slate-300">
@@ -103,10 +102,9 @@ export default function ComparisonSection() {
             <div className="space-y-2 mb-10">
               {steps.map((step, idx) => {
                 const isActive = hoveredIndex !== null ? hoveredIndex === idx : activeIndex === idx;
-                const isHovered = hoveredIndex === idx;
                 
                 return (
-                  <motion.div
+                  <div
                     key={idx}
                     className={`relative p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
                       isActive 
@@ -115,59 +113,45 @@ export default function ComparisonSection() {
                     } ${hoveredIndex !== null && !isActive ? 'opacity-40 blur-[1px]' : 'opacity-100'}`}
                     onMouseEnter={() => handleHover(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    layout
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`mt-1 w-2 h-2 rounded-full ${isActive ? 'bg-red-400' : 'bg-slate-300'}`} />
-                      <span className={`text-sm md:text-base transition-colors ${isActive ? 'text-slate-900 font-medium' : 'text-slate-600'}`}>
+                      <div className={`mt-1 w-2 h-2 rounded-full transition-colors duration-300 ${isActive ? 'bg-red-400' : 'bg-slate-300'}`} />
+                      <span className={`text-sm md:text-base transition-colors duration-300 ${isActive ? 'text-slate-900 font-medium' : 'text-slate-600'}`}>
                         {step.old}
                       </span>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
 
             {/* Visual: Costly & Slow */}
-            <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed relative overflow-hidden">
+            <div className="h-48 bg-slate-200/50 rounded-xl flex items-center justify-center border border-slate-200 border-dashed relative overflow-hidden group/visual">
               <div className="absolute inset-0 flex items-center justify-center opacity-10">
                 <div className="grid grid-cols-2 gap-4">
-                   <motion.div 
-                      animate={{ rotate: [0, 5, -5, 0], y: [0, -5, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                   >
+                   <div className="transform rotate-3 group-hover/visual:rotate-6 transition-transform duration-700">
                      <FileText className="w-16 h-16 text-slate-400" />
-                   </motion.div>
-                   <motion.div 
-                      animate={{ rotate: [0, -5, 5, 0], y: [0, 5, 0] }}
-                      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                   >
+                   </div>
+                   <div className="transform -rotate-6 group-hover/visual:-rotate-12 transition-transform duration-700 delay-75">
                      <FileText className="w-16 h-16 text-slate-400" />
-                   </motion.div>
-                   <motion.div 
-                      animate={{ rotate: [0, 3, -3, 0], scale: [1, 1.05, 1] }}
-                      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                   >
+                   </div>
+                   <div className="transform rotate-6 group-hover/visual:rotate-12 transition-transform duration-700 delay-100">
                      <FileText className="w-16 h-16 text-slate-400" />
-                   </motion.div>
-                   <motion.div 
-                      animate={{ rotate: [0, -3, 3, 0] }}
-                      transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                   >
+                   </div>
+                   <div className="transform -rotate-3 group-hover/visual:-rotate-6 transition-transform duration-700 delay-150">
                      <FileText className="w-16 h-16 text-slate-400" />
-                   </motion.div>
+                   </div>
                 </div>
               </div>
               
-              <motion.div 
-                className="flex flex-col items-center gap-2 relative z-10"
-                animate={hoveredIndex !== null ? { scale: 0.95, opacity: 0.8 } : { scale: 1, opacity: 1 }}
+              <div 
+                className={`flex flex-col items-center gap-2 relative z-10 transition-all duration-300 ${hoveredIndex !== null ? 'scale-95 opacity-80' : 'scale-100 opacity-100'}`}
               >
                 <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
                   <TrendingUp className="w-5 h-5 text-slate-500 rotate-90" />
                 </div>
                 <span className="text-slate-600 font-medium">Costly & Slow</span>
-              </motion.div>
+              </div>
             </div>
           </div>
 
@@ -178,10 +162,8 @@ export default function ComparisonSection() {
           >
             {/* Background Effects */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-            <motion.div 
-              className="absolute -right-20 -top-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"
-              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-              transition={{ duration: 8, repeat: Infinity }}
+            <div 
+              className="absolute -right-20 -top-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse-slow"
             />
 
             <div className="absolute top-6 right-6 md:top-8 md:right-8 text-emerald-400">
@@ -200,7 +182,7 @@ export default function ComparisonSection() {
                 const isActive = hoveredIndex !== null ? hoveredIndex === idx : activeIndex === idx;
                 
                 return (
-                  <motion.div
+                  <div
                     key={idx}
                     className={`relative p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
                       isActive 
@@ -209,15 +191,14 @@ export default function ComparisonSection() {
                     } ${hoveredIndex !== null && !isActive ? 'opacity-40 blur-[1px]' : 'opacity-100'}`}
                     onMouseEnter={() => handleHover(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    layout
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`mt-1 w-2 h-2 rounded-full ${isActive ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]' : 'bg-slate-400/50'}`} />
-                      <span className={`text-sm md:text-base transition-colors ${isActive ? 'text-white font-medium' : 'text-slate-300'}`}>
+                      <div className={`mt-1 w-2 h-2 rounded-full transition-all duration-300 ${isActive ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]' : 'bg-slate-400/50'}`} />
+                      <span className={`text-sm md:text-base transition-colors duration-300 ${isActive ? 'text-white font-medium' : 'text-slate-300'}`}>
                         {step.new}
                       </span>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -250,27 +231,21 @@ export default function ComparisonSection() {
                 </div>
                 
                 <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                   <motion.div 
-                     className="h-full bg-gradient-to-r from-emerald-500 to-teal-400"
-                     animate={{ 
-                       width: hoveredIndex !== null 
-                         ? [`${(hoveredIndex + 1) * 25}%`] 
-                         : ['0%', '25%', '50%', '75%', '100%'],
+                   <div 
+                     className={`h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500 ease-in-out ${hoveredIndex === null ? 'animate-progress' : ''}`}
+                     style={{ 
+                       width: hoveredIndex !== null ? `${(hoveredIndex + 1) * 25}%` : undefined,
                        opacity: hoveredIndex !== null ? 1 : 0.8
                      }}
-                     transition={hoveredIndex !== null 
-                       ? { duration: 0.3 } 
-                       : { duration: 4, repeat: Infinity, ease: "linear" }
-                     }
                    />
                 </div>
                 
                 <div className="flex gap-2">
                   {[0, 1, 2, 3].map((i) => (
-                    <motion.div 
+                    <div 
                       key={i}
-                      className="h-1 flex-1 rounded-full"
-                      animate={{ 
+                      className="h-1 flex-1 rounded-full transition-colors duration-300"
+                      style={{ 
                         backgroundColor: (hoveredIndex !== null ? hoveredIndex >= i : activeIndex >= i) 
                           ? 'rgba(52, 211, 153, 0.6)' 
                           : 'rgba(255, 255, 255, 0.1)' 
