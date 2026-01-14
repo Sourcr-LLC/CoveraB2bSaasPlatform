@@ -6,6 +6,7 @@ import StripePaymentForm from './StripePaymentForm';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
+import { Switch } from './ui/switch';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
   });
   const [isAnimating, setIsAnimating] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<'core' | 'essentials'>('core');
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
 
   useEffect(() => {
     if (isOpen) {
@@ -33,6 +35,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
       setTimeout(() => {
         setClientSecret(null);
         setSelectedPlan('core');
+        setBillingCycle('yearly');
       }, 200);
     }
   }, [isOpen]);
@@ -68,6 +71,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
           },
           body: JSON.stringify({
             plan: selectedPlan,
+            interval: billingCycle,
           }),
         }
       );
@@ -106,7 +110,8 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
   const planDetails = {
     essentials: {
       name: 'Essentials',
-      price: 199,
+      monthlyPrice: 199,
+      yearlyPrice: 1990,
       vendors: 50,
       features: [
         'Track up to 50 vendors',
@@ -119,7 +124,8 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
     },
     core: {
       name: 'Core',
-      price: 399,
+      monthlyPrice: 399,
+      yearlyPrice: 3990,
       vendors: 150,
       features: [
         'Track up to 150 vendors',
@@ -135,6 +141,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
   };
 
   const currentPlan = planDetails[selectedPlan];
+  const price = billingCycle === 'yearly' ? Math.round(currentPlan.yearlyPrice / 12) : currentPlan.monthlyPrice;
 
   return (
     <div
@@ -207,10 +214,21 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
 
           {!clientSecret && (
             <div className="mb-6">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <span className={`text-sm cursor-pointer transition-colors ${billingCycle === 'monthly' ? 'font-semibold text-foreground' : 'text-foreground-muted'}`} onClick={() => setBillingCycle('monthly')}>Monthly</span>
+                <Switch 
+                  checked={billingCycle === 'yearly'}
+                  onCheckedChange={(checked) => setBillingCycle(checked ? 'yearly' : 'monthly')}
+                />
+                <span className={`text-sm cursor-pointer transition-colors ${billingCycle === 'yearly' ? 'font-semibold text-foreground' : 'text-foreground-muted'}`} onClick={() => setBillingCycle('yearly')}>
+                  Yearly <span className="text-emerald-600 text-xs ml-1 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-100">Save 2 months</span>
+                </span>
+              </div>
+
               <Tabs defaultValue="core" value={selectedPlan} onValueChange={(val) => setSelectedPlan(val as 'core' | 'essentials')} className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-4">
-                  <TabsTrigger value="essentials">Essentials ($199)</TabsTrigger>
-                  <TabsTrigger value="core">Core ($399)</TabsTrigger>
+                  <TabsTrigger value="essentials">Essentials</TabsTrigger>
+                  <TabsTrigger value="core">Core</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -248,12 +266,22 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
 
             <div className="flex items-baseline gap-2 mb-4">
               <span className="text-4xl" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
-                ${currentPlan.price}
+                ${price.toLocaleString()}
               </span>
               <span className="text-lg" style={{ color: 'var(--foreground-muted)' }}>
                 / month after trial
               </span>
             </div>
+            {billingCycle === 'yearly' && (
+               <p className="text-sm text-muted-foreground mb-1">
+                 Billed ${currentPlan.yearlyPrice.toLocaleString()} yearly
+               </p>
+            )}
+            {billingCycle === 'yearly' && (
+               <p className="text-sm text-emerald-600 font-medium mb-1">
+                 You save ${((currentPlan.monthlyPrice * 12) - currentPlan.yearlyPrice).toLocaleString()} per year
+               </p>
+            )}
             <p className="text-sm mb-6" style={{ color: 'var(--foreground-muted)' }}>
               {selectedPlan === 'core' 
                 ? 'Perfect for growing companies managing compliance at scale.' 

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
+import { Switch } from './ui/switch';
 import SEO from './SEO';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
@@ -9,6 +10,22 @@ import DemoModal from './DemoModal';
 export default function Pricing() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
+
+  const plans = {
+    essentials: {
+      monthly: 199,
+      yearly: 1990
+    },
+    core: {
+      monthly: 399,
+      yearly: 3990
+    },
+    enterprise: {
+      monthly: 1200,
+      yearly: 12000
+    }
+  };
 
   const faqs = [
     {
@@ -95,6 +112,19 @@ export default function Pricing() {
       {/* Pricing Cards */}
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
+          
+          <div className="flex items-center justify-center gap-4 mb-12">
+            <span className={`text-base cursor-pointer transition-colors ${billingCycle === 'monthly' ? 'font-bold text-[#1a1a1a]' : 'text-slate-500'}`} onClick={() => setBillingCycle('monthly')}>Monthly</span>
+            <Switch 
+              checked={billingCycle === 'yearly'}
+              onCheckedChange={(checked) => setBillingCycle(checked ? 'yearly' : 'monthly')}
+            />
+            <span className={`text-base cursor-pointer transition-colors flex items-center gap-2 ${billingCycle === 'yearly' ? 'font-bold text-[#1a1a1a]' : 'text-slate-500'}`} onClick={() => setBillingCycle('yearly')}>
+              Yearly 
+              <span className="text-emerald-700 bg-emerald-50 border border-emerald-200 text-xs font-bold px-2 py-0.5 rounded-full">Save 2 months</span>
+            </span>
+          </div>
+
           <div className="grid lg:grid-cols-3 gap-8 items-start">
             
             {/* Essentials Plan */}
@@ -106,9 +136,16 @@ export default function Pricing() {
 
                 <div className="mb-6">
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-bold text-[#1a1a1a] tracking-tight">$199</span>
+                    <span className="text-5xl font-bold text-[#1a1a1a] tracking-tight">
+                      ${(billingCycle === 'yearly' ? Math.round(plans.essentials.yearly / 12) : plans.essentials.monthly).toLocaleString()}
+                    </span>
                     <span className="text-lg text-slate-500">/month</span>
                   </div>
+                  {billingCycle === 'yearly' && (
+                    <p className="text-sm text-slate-400 mb-1">
+                      Billed ${plans.essentials.yearly.toLocaleString()} yearly
+                    </p>
+                  )}
                   <p className="text-sm text-slate-500">
                     Perfect for smaller teams getting started
                   </p>
@@ -157,9 +194,16 @@ export default function Pricing() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-bold text-[#1a1a1a] tracking-tight">$399</span>
-                    <span className="text-lg text-slate-500">/month</span>
+                  <div className="flex flex-col mb-2">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-5xl font-bold text-[#1a1a1a] tracking-tight">
+                        ${(billingCycle === 'yearly' ? Math.round(plans.core.yearly / 12) : plans.core.monthly).toLocaleString()}
+                      </span>
+                      <span className="text-lg text-slate-500">/month</span>
+                    </div>
+                    {billingCycle === 'yearly' && (
+                      <span className="text-sm text-slate-400">Billed ${plans.core.yearly.toLocaleString()} yearly</span>
+                    )}
                   </div>
                   <p className="text-sm text-slate-500">
                     Everything most businesses actually need
@@ -207,10 +251,17 @@ export default function Pricing() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-sm text-slate-500">from</span>
-                    <span className="text-5xl font-bold text-[#1a1a1a] tracking-tight">$1,200</span>
-                    <span className="text-lg text-slate-500">/month</span>
+                  <div className="flex flex-col mb-2">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm text-slate-500">from</span>
+                      <span className="text-5xl font-bold text-[#1a1a1a] tracking-tight">
+                        ${(billingCycle === 'yearly' ? Math.round(plans.enterprise.yearly / 12) : plans.enterprise.monthly).toLocaleString()}
+                      </span>
+                      <span className="text-lg text-slate-500">/month</span>
+                    </div>
+                    {billingCycle === 'yearly' && (
+                      <span className="text-sm text-slate-400">Billed ${plans.enterprise.yearly.toLocaleString()} yearly</span>
+                    )}
                   </div>
                   <p className="text-sm text-slate-500">
                     For complex or regulated organizations

@@ -8,9 +8,10 @@ import StripePaymentForm from './StripePaymentForm';
 import ContactSalesModal from './ContactSalesModal';
 import PremiumLoader from './PremiumLoader';
 
-const PLAN_DETAILS: Record<string, { price: number; name: string; features: string[] }> = {
+const PLAN_DETAILS: Record<string, { monthlyPrice: number; yearlyPrice: number; name: string; features: string[] }> = {
   free: {
-    price: 0,
+    monthlyPrice: 0,
+    yearlyPrice: 0,
     name: 'Free',
     features: [
       'Track up to 15 vendors',
@@ -19,7 +20,8 @@ const PLAN_DETAILS: Record<string, { price: number; name: string; features: stri
     ]
   },
   essentials: {
-    price: 199,
+    monthlyPrice: 199,
+    yearlyPrice: 1990,
     name: 'Essentials',
     features: [
       'Track up to 50 vendors',
@@ -31,7 +33,8 @@ const PLAN_DETAILS: Record<string, { price: number; name: string; features: stri
     ]
   },
   core: {
-    price: 399,
+    monthlyPrice: 399,
+    yearlyPrice: 3990,
     name: 'Core',
     features: [
       'Track up to 150 vendors',
@@ -45,7 +48,8 @@ const PLAN_DETAILS: Record<string, { price: number; name: string; features: stri
     ]
   },
   enterprise: {
-    price: 1200,
+    monthlyPrice: 1200,
+    yearlyPrice: 12000,
     name: 'Enterprise',
     features: [
       'Unlimited vendors',
@@ -361,7 +365,9 @@ export default function Billing() {
   const isFreePlan = !subscription || subscription.plan === 'free';
   const isActive = subscription?.subscriptionStatus === 'active' || subscription?.subscriptionStatus === 'trialing';
   const currentPlan = subscription?.plan || 'free';
+  const interval = subscription?.interval || 'monthly';
   const planInfo = PLAN_DETAILS[currentPlan] || PLAN_DETAILS.core;
+  const currentPrice = interval === 'yearly' ? planInfo.yearlyPrice : planInfo.monthlyPrice;
 
   return (
     <div className="h-full" style={{ backgroundColor: 'var(--background)' }}>
@@ -403,7 +409,7 @@ export default function Billing() {
                 </p>
                 <button
                   onClick={handleUpgrade}
-                  className="px-5 md:px-6 py-2.5 md:py-3 rounded-lg text-sm transition-all w-full md:w-auto"
+                  className="px-5 md:px-6 py-2.5 md:py-3 rounded-lg text-sm transition-all w-full md:w-auto hover:brightness-110"
                   style={{ 
                     backgroundColor: 'var(--primary)',
                     color: 'var(--primary-foreground)',
@@ -467,9 +473,16 @@ export default function Billing() {
                 <h2 className="text-lg md:text-xl mb-2" style={{ color: 'var(--foreground)' }}>
                   Current Plan
                 </h2>
-                <p className="text-sm md:text-base" style={{ color: 'var(--foreground-muted)' }}>
-                  You are currently on the {planInfo.name} plan
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm md:text-base" style={{ color: 'var(--foreground-muted)' }}>
+                    You are currently on the {planInfo.name} plan
+                  </p>
+                  {interval === 'yearly' && (
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                      Yearly
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <div 
@@ -508,10 +521,10 @@ export default function Billing() {
               </div>
               <div>
                 <div className="text-xs md:text-sm mb-2" style={{ color: 'var(--foreground-subtle)' }}>
-                  Monthly cost
+                  {interval === 'yearly' ? 'Yearly cost' : 'Monthly cost'}
                 </div>
                 <div className="text-xl md:text-2xl" style={{ color: 'var(--foreground)', fontWeight: 600 }}>
-                  ${planInfo.price}
+                  ${currentPrice.toLocaleString()}
                 </div>
               </div>
               <div>

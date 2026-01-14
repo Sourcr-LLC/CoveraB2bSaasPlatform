@@ -192,9 +192,25 @@ function getStripeKeys(mode: string | null) {
     ? Deno.env.get('STRIPE_PRICE_ID_ESSENTIALS_TEST')
     : Deno.env.get('STRIPE_PRICE_ID_ESSENTIALS');
   
+  const priceIdCoreYearly = isTestMode
+    ? Deno.env.get('STRIPE_PRICE_ID_CORE_YEARLY_TEST')
+    : Deno.env.get('STRIPE_PRICE_ID_CORE_YEARLY');
+
+  const priceIdEssentialsYearly = isTestMode
+    ? Deno.env.get('STRIPE_PRICE_ID_ESSENTIALS_YEARLY_TEST')
+    : Deno.env.get('STRIPE_PRICE_ID_ESSENTIALS_YEARLY');
+  
   console.log(`Using Stripe ${isTestMode ? 'TEST' : 'PRODUCTION'} mode`);
   
-  return { secretKey, publishableKey, priceIdCore, priceIdEssentials, isTestMode };
+  return { 
+    secretKey, 
+    publishableKey, 
+    priceIdCore, 
+    priceIdEssentials, 
+    priceIdCoreYearly, 
+    priceIdEssentialsYearly, 
+    isTestMode 
+  };
 }
 
 // Helper function to detect which Stripe mode is actually configured
@@ -2912,7 +2928,7 @@ app.post("/make-server-be7827e3/stripe/create-payment-intent", async (c) => {
       return c.json({ error: 'Unauthorized' }, 401);
     }
 
-    const { plan } = await c.req.json();
+    const { plan, interval = 'monthly' } = await c.req.json();
     
     if (!plan) {
       return c.json({ error: 'Missing plan' }, 400);
@@ -2920,24 +2936,30 @@ app.post("/make-server-be7827e3/stripe/create-payment-intent", async (c) => {
 
     // Get Stripe keys based on mode
     const stripeMode = c.req.header('X-Stripe-Mode') || 'production';
-    const { secretKey, priceIdCore, priceIdEssentials } = getStripeKeys(stripeMode);
+    const { 
+      secretKey, 
+      priceIdCore, 
+      priceIdEssentials,
+      priceIdCoreYearly,
+      priceIdEssentialsYearly 
+    } = getStripeKeys(stripeMode);
     
     if (!secretKey) {
       console.error(`STRIPE_SECRET_KEY not configured for ${stripeMode} mode`);
       return c.json({ error: 'Stripe not configured' }, 500);
     }
 
-    // Determine price ID based on plan
+    // Determine price ID based on plan and interval
     let finalPriceId;
     if (plan === 'essentials') {
-      finalPriceId = priceIdEssentials;
+      finalPriceId = interval === 'yearly' ? priceIdEssentialsYearly : priceIdEssentials;
     } else {
-      finalPriceId = priceIdCore;
+      finalPriceId = interval === 'yearly' ? priceIdCoreYearly : priceIdCore;
     }
     
     if (!finalPriceId) {
-      console.error(`STRIPE_PRICE_ID for ${plan} not configured for ${stripeMode} mode`);
-      return c.json({ error: `Price ID for ${plan} plan not configured` }, 500);
+      console.error(`STRIPE_PRICE_ID for ${plan} (${interval}) not configured for ${stripeMode} mode`);
+      return c.json({ error: `Price ID for ${plan} plan (${interval}) not configured` }, 500);
     }
 
     // Get user profile
@@ -3000,6 +3022,7 @@ app.post("/make-server-be7827e3/stripe/create-payment-intent", async (c) => {
       customerId: customerId,
       priceId: finalPriceId,
       plan,
+      interval,
       createdAt: new Date().toISOString(),
       stripeMode,
     });
@@ -3159,6 +3182,7 @@ app.post("/make-server-be7827e3/stripe/verify-payment-intent", async (c) => {
       // Store mode-specific subscription info
       await kv.set(`subscription:${user.id}:${stripeMode}`, {
         plan: pendingSubscription.plan,
+        interval: pendingSubscription.interval || 'monthly',
         customerId: customerId,
         subscriptionId: subscription.id,
         status: subscription.status, // Will be "trialing" during trial period
@@ -3214,7 +3238,7 @@ app.post("/make-server-be7827e3/stripe/create-checkout-session", async (c) => {
       return c.json({ error: 'Unauthorized' }, 401);
     }
 
-    const { plan } = await c.req.json();
+    const { plan, interval = 'monthly' } = await c.req.json();
     
     if (!plan) {
       return c.json({ error: 'Missing plan' }, 400);
@@ -3222,7 +3246,13 @@ app.post("/make-server-be7827e3/stripe/create-checkout-session", async (c) => {
 
     // Get Stripe keys based on mode
     const stripeMode = c.req.header('X-Stripe-Mode') || 'production';
-    const { secretKey, priceIdCore, priceIdEssentials } = getStripeKeys(stripeMode);
+    const { 
+      secretKey, 
+      priceIdCore, 
+      priceIdEssentials,
+      priceIdCoreYearly,
+      priceIdEssentialsYearly
+    } = getStripeKeys(stripeMode);
     
     if (!secretKey) {
       console.error(`STRIPE_SECRET_KEY not configured for ${stripeMode} mode`);
@@ -3232,13 +3262,13 @@ app.post("/make-server-be7827e3/stripe/create-checkout-session", async (c) => {
     // Determine price ID based on plan
     let finalPriceId;
     if (plan === 'essentials') {
-      finalPriceId = priceIdEssentials;
+      finalPriceId = interval === 'yearly' ? priceIdEssentialsYearly : priceIdEssentials;
     } else {
-      finalPriceId = priceIdCore;
+      finalPriceId = interval === 'yearly' ? priceIdCoreYearly : priceIdCore;
     }
     
     if (!finalPriceId) {
-      console.error(`STRIPE_PRICE_ID not configured for ${stripeMode} mode`);
+      console.error(`STRIPE_PRICE_ID for ${plan} (${interval}) not configured for ${stripeMode} mode`);
       return c.json({ error: 'Price ID not configured' }, 500);
     }
 
@@ -3265,6 +3295,7 @@ app.post("/make-server-be7827e3/stripe/create-checkout-session", async (c) => {
         'client_reference_id': user.id,
         'metadata[userId]': user.id,
         'metadata[plan]': plan,
+        'metadata[interval]': interval, // Store interval in metadata
       }).toString(),
     });
 
@@ -3329,6 +3360,7 @@ app.post("/make-server-be7827e3/stripe/verify-session", async (c) => {
     // Check if payment was successful
     if (session.payment_status === 'paid') {
       const plan = session.metadata?.plan || 'core';
+      const interval = session.metadata?.interval || 'monthly';
       
       // Fetch the actual subscription to get correct trial/billing dates
       const subscriptionResponse = await fetch(`https://api.stripe.com/v1/subscriptions/${session.subscription}`, {
@@ -3352,6 +3384,7 @@ app.post("/make-server-be7827e3/stripe/verify-session", async (c) => {
       // Update user's subscription in KV store
       const profile = await kv.get(`user:${user.id}`) || {};
       profile.plan = plan;
+      profile.interval = interval;
       profile.stripeCustomerId = session.customer;
       profile.stripeSubscriptionId = session.subscription;
       profile.subscriptionStatus = subscriptionStatus;
@@ -3360,7 +3393,7 @@ app.post("/make-server-be7827e3/stripe/verify-session", async (c) => {
       
       await kv.set(`user:${user.id}`, profile);
       
-      console.log(`Subscription activated for user ${user.id}, plan: ${plan}`);
+      console.log(`Subscription activated for user ${user.id}, plan: ${plan}, interval: ${interval}`);
       
       return c.json({
         success: true,
@@ -3411,6 +3444,7 @@ app.get("/make-server-be7827e3/stripe/subscription-status", async (c) => {
     if (subscription) {
       return c.json({
         plan: subscription.plan,
+        interval: subscription.interval || 'monthly',
         subscriptionStatus: subscription.status === 'trialing' ? 'active' : subscription.status, // Treat trialing as active
         stripeCustomerId: subscription.customerId,
         stripeSubscriptionId: subscription.subscriptionId,
@@ -3421,6 +3455,7 @@ app.get("/make-server-be7827e3/stripe/subscription-status", async (c) => {
     
     return c.json({
       plan: profile?.plan || 'free',
+      interval: profile?.interval || 'monthly',
       subscriptionStatus: profile?.subscriptionStatus || 'inactive',
       stripeCustomerId: profile?.stripeCustomerId,
       stripeSubscriptionId: profile?.stripeSubscriptionId,
