@@ -1,4 +1,4 @@
-import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye, Mail, MessageSquare, Globe, AlertCircle, RefreshCw } from 'lucide-react';
+import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye, Mail, MessageSquare, Globe, AlertCircle, RefreshCw, TestTube } from 'lucide-react';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
@@ -20,6 +20,9 @@ export default function Settings() {
   const [customDomain, setCustomDomain] = useState('');
   const [domainStatus, setDomainStatus] = useState<'none' | 'pending' | 'verified' | 'failed'>('none');
   const [savingDomain, setSavingDomain] = useState(false);
+  const [stripeTestMode, setStripeTestMode] = useState<boolean>(() => {
+    return localStorage.getItem('stripe_mode') === 'test';
+  });
   const { resetWalkthrough } = useWalkthrough();
   const navigate = useNavigate();
 
@@ -797,9 +800,10 @@ export default function Settings() {
           </button>
         </div>
 
-        {/* Demo Mode Toggle */}
+        {/* Demo Mode Toggle - Hidden for now */}
+        {false && (
         <div
-          className="rounded-xl border p-8"
+          className="rounded-xl border p-8 mb-6"
           style={{
             backgroundColor: 'var(--card)',
             borderColor: 'var(--border)',
@@ -834,6 +838,71 @@ export default function Settings() {
             {demoEnabled ? 'Disable Demo Mode' : 'Enable Demo Mode'}
           </button>
         </div>
+        )}
+
+        {/* Stripe Test Mode Toggle - Hidden for now */}
+        {false && (
+        <div
+          className="rounded-xl border p-8 mb-6"
+          style={{
+            backgroundColor: 'var(--card)',
+            borderColor: 'var(--border)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <TestTube size={20} style={{ color: stripeTestMode ? '#f59e0b' : 'var(--primary)' }} />
+                <h3 className="text-lg" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+                  Stripe Test Mode {stripeTestMode && <span style={{ color: '#f59e0b' }}>(Active)</span>}
+                </h3>
+              </div>
+              <p className="text-sm mb-3" style={{ color: 'var(--foreground-muted)' }}>
+                Enable test mode to use Stripe's test environment for yearly subscription testing. Use test card: <code style={{ 
+                  backgroundColor: 'var(--panel)', 
+                  padding: '2px 6px', 
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontFamily: 'monospace'
+                }}>4242 4242 4242 4242</code>
+              </p>
+              <div 
+                className="p-3 rounded-lg text-xs"
+                style={{
+                  backgroundColor: stripeTestMode ? 'rgba(245, 158, 11, 0.1)' : 'rgba(59, 130, 246, 0.1)',
+                  border: `1px solid ${stripeTestMode ? 'rgba(245, 158, 11, 0.2)' : 'rgba(59, 130, 246, 0.2)'}`,
+                  color: 'var(--foreground-muted)'
+                }}
+              >
+                <strong style={{ color: 'var(--foreground)' }}>Note:</strong> Changes take effect immediately. In test mode, no real charges will be made. Use any future expiry date and any 3-digit CVC.
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              const newMode = stripeTestMode ? 'production' : 'test';
+              localStorage.setItem('stripe_mode', newMode);
+              setStripeTestMode(!stripeTestMode);
+              toast.success(
+                stripeTestMode 
+                  ? 'Switched to Production mode - Real transactions enabled' 
+                  : 'Switched to Test mode - Use test cards only',
+                { duration: 4000 }
+              );
+            }}
+            className="px-6 py-3 rounded-lg text-sm transition-all"
+            style={{
+              backgroundColor: stripeTestMode ? 'var(--primary)' : 'rgba(245, 158, 11, 0.1)',
+              color: stripeTestMode ? 'var(--primary-foreground)' : '#f59e0b',
+              fontWeight: 500,
+              border: stripeTestMode ? 'none' : '1px solid rgba(245, 158, 11, 0.3)'
+            }}
+          >
+            {stripeTestMode ? 'Switch to Production Mode' : 'Enable Test Mode'}
+          </button>
+        </div>
+        )}
 
         {/* Support & Help */}
         <div
