@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import PaywallModal from './PaywallModal';
 import ContactSalesModal from './ContactSalesModal';
@@ -360,7 +360,7 @@ export default function Dashboard() {
         {kpiCards.map((card, index) => (
           <div
             key={index}
-            className="rounded-xl border p-6 md:p-8 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            className="rounded-xl border p-4 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             style={{
               backgroundColor: card.bgTint,
               borderColor: card.borderColor,
@@ -368,21 +368,21 @@ export default function Dashboard() {
               boxShadow: 'var(--shadow-card, var(--shadow-md))'
             }}
           >
-            <div className="flex justify-between items-start mb-2">
-              <div className="text-xs uppercase tracking-wider font-medium" style={{ color: 'var(--foreground-muted)', opacity: 0.7, letterSpacing: '0.08em' }}>
+            <div className="flex justify-between items-center mb-1.5 h-5">
+              <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
                 {card.label}
               </div>
               {card.change && (
                 <div 
-                  className="text-xs flex items-center gap-1 px-2 py-0.5 rounded-full bg-opacity-10"
+                  className="text-[11px] flex items-center gap-1 px-1.5 h-5 rounded-full bg-opacity-10"
                   style={{ 
                     color: card.percentageColor,
-                    fontWeight: 600,
+                    fontWeight: 700,
                     backgroundColor: `${card.percentageColor}15`
                   }}
                 >
                   {card.trend === 'up' && <TrendingUp className="w-3 h-3" />}
-                  {card.trend === 'down' && <TrendingUp className="w-3 h-3" />}
+                  {card.trend === 'down' && <TrendingDown className="w-3 h-3" />}
                   {card.trend === 'neutral' && <Minus className="w-3 h-3" />}
                   <span>{card.change}</span>
                 </div>
@@ -390,12 +390,12 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-baseline gap-3 mb-1">
-              <div className="tracking-tighter" style={{ color: 'var(--foreground)', fontSize: '3.5rem', fontWeight: 700, lineHeight: 1 }}>
+              <div className="tracking-tighter" style={{ color: 'var(--foreground)', fontSize: '2rem', fontWeight: 700, lineHeight: 1 }}>
                 {card.value}
               </div>
             </div>
 
-            <div className="text-sm" style={{ color: 'var(--foreground-subtle)', fontWeight: 400 }}>
+            <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
               {card.subtitle}
             </div>
           </div>

@@ -128,21 +128,23 @@ export default function Dashboard() {
             boxShadow: 'var(--shadow-sm)'
           }}
         >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
-            AT RISK
-          </div>
-          <div className="flex items-end justify-between">
-            <div className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
-              {stats.atRisk}
+          <div className="flex justify-between items-center mb-1.5 h-5">
+            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
+              AT RISK
             </div>
             {stats.atRisk > 0 && (
-              <div className="flex items-center gap-1 text-xs" style={{ color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', padding: '2px 6px', borderRadius: '999px' }}>
+              <div className="flex items-center gap-1 text-[11px] font-bold h-5 px-1.5 rounded-full" style={{ color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)' }}>
                 <TrendingDown className="w-3 h-3" />
                 {stats.atRisk}
               </div>
             )}
           </div>
-          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
+          <div className="flex items-baseline gap-3 mb-1">
+            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
+              {stats.atRisk}
+            </div>
+          </div>
+          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
             expiring within 30 days
           </div>
         </div>
@@ -156,21 +158,23 @@ export default function Dashboard() {
             boxShadow: 'var(--shadow-sm)'
           }}
         >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
-            NON-COMPLIANT
-          </div>
-          <div className="flex items-end justify-between">
-            <div className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
-              {stats.nonCompliant}
+          <div className="flex justify-between items-center mb-1.5 h-5">
+            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
+              NON-COMPLIANT
             </div>
             {stats.nonCompliant > 0 && (
-              <div className="flex items-center gap-1 text-xs" style={{ color: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: '2px 6px', borderRadius: '999px' }}>
+              <div className="flex items-center gap-1 text-[11px] font-bold h-5 px-1.5 rounded-full" style={{ color: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)' }}>
                 <TrendingDown className="w-3 h-3" />
                 {stats.nonCompliant}
               </div>
             )}
           </div>
-          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
+          <div className="flex items-baseline gap-3 mb-1">
+            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
+              {stats.nonCompliant}
+            </div>
+          </div>
+          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
             of total vendors
           </div>
         </div>
@@ -184,20 +188,20 @@ export default function Dashboard() {
             boxShadow: 'var(--shadow-sm)'
           }}
         >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
-            COMPLIANT
-          </div>
-          <div className="flex items-end justify-between">
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
-                {stats.compliant}
-              </span>
-              <span className="text-sm" style={{ color: 'var(--foreground-subtle)' }}>
-                — {stats.total}
-              </span>
+          <div className="flex justify-between items-center mb-1.5 h-5">
+            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
+              COMPLIANT
             </div>
           </div>
-          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
+          <div className="flex items-baseline gap-1 mb-1">
+            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
+              {stats.compliant}
+            </div>
+            <span className="text-sm font-medium relative -top-1" style={{ color: 'var(--foreground-subtle)' }}>
+              / {stats.total}
+            </span>
+          </div>
+          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
             of total vendors
           </div>
         </div>
@@ -211,21 +215,23 @@ export default function Dashboard() {
             boxShadow: 'var(--shadow-sm)'
           }}
         >
-          <div className="text-xs mb-2" style={{ color: 'var(--foreground-muted)', fontWeight: 500, opacity: 0.7 }}>
-            TOTAL VENDORS
-          </div>
-          <div className="flex items-end justify-between">
-            <div className="text-3xl" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
-              {stats.total}
+          <div className="flex justify-between items-center mb-1.5 h-5">
+            <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
+              TOTAL VENDORS
             </div>
             {stats.total > 0 && (
-              <div className="flex items-center gap-1 text-xs" style={{ color: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', padding: '2px 6px', borderRadius: '999px' }}>
+              <div className="flex items-center gap-1 text-[11px] font-bold h-5 px-1.5 rounded-full" style={{ color: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>
                 <TrendingUp className="w-3 h-3" />
                 +{stats.total}
               </div>
             )}
           </div>
-          <div className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
+          <div className="flex items-baseline gap-3 mb-1">
+            <div className="tracking-tighter" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1, color: 'var(--foreground)' }}>
+              {stats.total}
+            </div>
+          </div>
+          <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
             active vendors
           </div>
         </div>

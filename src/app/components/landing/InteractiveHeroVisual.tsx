@@ -148,22 +148,22 @@ function NavItem({ icon: Icon, label, active = false }: any) {
 function StatCard({ label, value, trend, percentageColor, subtext, bgTint, borderColor }: any) {
   return (
     <div 
-      className="rounded-xl border p-4 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className="rounded-xl border p-3.5 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
       style={{
         backgroundColor: bgTint || '#ffffff',
         borderColor: borderColor || '#e7e5e4',
       }}
     >
-      <div className="flex justify-between items-start mb-2">
-        <div className="text-xs uppercase tracking-wider font-medium text-slate-500 opacity-70" style={{ letterSpacing: '0.08em' }}>
+      <div className="flex justify-between items-center mb-1.5 h-5">
+        <div className="text-[11px] uppercase tracking-wider font-bold text-slate-500 opacity-80" style={{ letterSpacing: '0.05em' }}>
           {label}
         </div>
         {(trend || subtext) && (
           <div 
-            className="text-xs flex items-center gap-1 px-2 py-0.5 rounded-full bg-opacity-10"
+            className="text-[11px] flex items-center gap-1 px-1.5 h-5 rounded-full bg-opacity-10"
             style={{ 
               color: percentageColor || '#64748b',
-              fontWeight: 600,
+              fontWeight: 700,
               backgroundColor: percentageColor ? `${percentageColor}15` : '#f1f5f9'
             }}
           >
@@ -180,12 +180,12 @@ function StatCard({ label, value, trend, percentageColor, subtext, bgTint, borde
       </div>
 
       <div className="flex items-baseline gap-3 mb-1">
-        <div className="tracking-tighter text-slate-900" style={{ fontSize: '2.5rem', fontWeight: 700, lineHeight: 1 }}>
+        <div className="tracking-tighter text-slate-900" style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1 }}>
           {value}
         </div>
       </div>
       
-      <div className="text-xs text-slate-400 font-normal">
+      <div className="text-[11px] text-slate-400 font-medium">
         {trend ? 'active vendors' : (label === 'Compliant' ? 'of total vendors' : (label === 'At Risk' ? 'expiring within 30 days' : 'of total vendors'))}
       </div>
     </div>
