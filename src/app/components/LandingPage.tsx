@@ -6,7 +6,7 @@ import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import SEO, { SEO_CONFIGS } from './SEO';
-const DashboardPreview = lazy(() => import('./DashboardPreview'));
+const InteractiveHeroVisual = lazy(() => import('./landing/InteractiveHeroVisual'));
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 
@@ -125,9 +125,9 @@ export default function LandingPage() {
             className="relative mx-auto max-w-6xl"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
-            <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 bg-white/50 backdrop-blur-sm shadow-2xl" aria-hidden="true">
-              <Suspense fallback={<div className="w-full aspect-video bg-slate-50 animate-pulse" />}>
-                <DashboardPreview />
+            <div className="relative z-10" aria-hidden="true">
+              <Suspense fallback={<div className="w-full aspect-video bg-slate-50 animate-pulse rounded-2xl shadow-2xl" />}>
+                <InteractiveHeroVisual />
               </Suspense>
               
               {/* Floating Element: Magic Link Notification - HIDDEN */}
