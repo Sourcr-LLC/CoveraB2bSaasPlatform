@@ -70,7 +70,7 @@ function DashboardContent() {
               change={`${Math.round((stats.atRisk/stats.total)*100)}%`}
               subtext="expiring within 30 days"
               percentageColor="#f59e0b"
-              bgTint="rgba(245, 158, 11, 0.03)"
+              bgTint="#ffffff"
               borderColor="rgba(245, 158, 11, 0.2)"
               icon={TrendingDown}
               isAtRisk={true}
@@ -82,7 +82,7 @@ function DashboardContent() {
               change={`${Math.round((stats.nonCompliant/stats.total)*100)}%`}
               subtext="of total vendors"
               percentageColor="#ef4444"
-              bgTint="rgba(239, 68, 68, 0.03)"
+              bgTint="#ffffff"
               borderColor="rgba(239, 68, 68, 0.2)"
               icon={TrendingDown}
               trend="neutral"
@@ -93,7 +93,7 @@ function DashboardContent() {
               change={`${Math.round((stats.compliant/stats.total)*100)}%`}
               subtext="of total vendors"
               percentageColor="#10b981"
-              bgTint="rgba(16, 185, 129, 0.03)"
+              bgTint="#ffffff"
               borderColor="rgba(16, 185, 129, 0.2)"
               trend="neutral"
             />
