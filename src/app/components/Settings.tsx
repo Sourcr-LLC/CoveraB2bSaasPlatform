@@ -520,7 +520,8 @@ export default function Settings() {
           </div>
         )}
 
-        {/* Custom Domain Card */}
+        {/* Custom Domain Card - Hidden for now */}
+        {false && (
         <div
           className="rounded-xl border p-8 mb-6"
           style={{
@@ -642,6 +643,7 @@ export default function Settings() {
             )}
           </div>
         </div>
+        )}
 
         {/* Subscription Card */}
         <div
