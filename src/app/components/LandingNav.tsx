@@ -80,7 +80,7 @@ export default function LandingNav() {
               <Link to="/blog" className="text-sm font-medium text-slate-600 hover:text-[#3A4F6A] transition-colors">Blog</Link>
             </div>
             <div className="h-4 w-px bg-slate-200" />
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-6">
               <Link to="/login" className="text-sm font-medium text-slate-600 hover:text-[#3A4F6A] transition-colors">Log in</Link>
               <Link 
                 to="/login" 
