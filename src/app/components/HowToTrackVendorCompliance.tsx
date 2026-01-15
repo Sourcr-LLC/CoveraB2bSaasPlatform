@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle, Shield, Clock, AlertTriangle, FileText, ArrowRight } from 'lucide-react';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
+import MarketingFeatures from './MarketingFeatures';
 
 export default function HowToTrackVendorCompliance() {
   return (
@@ -335,6 +336,15 @@ export default function HowToTrackVendorCompliance() {
               </div>
             </div>
           </div>
+
+        </div>
+      </section>
+
+      {/* Visual Feature Breakdown */}
+      <MarketingFeatures />
+
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto space-y-16">
 
           {/* CTA Section */}
           <div className="bg-gradient-to-br from-[#3A4F6A] to-[#2a3f5a] rounded-2xl p-12 text-center text-white my-16">

@@ -15,18 +15,14 @@ export default function AIScannerSection() {
           
           {/* Text Content */}
           <div className="lg:w-1/2">
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3A4F6A]/5 text-[#3A4F6A] text-xs font-bold uppercase tracking-widest mb-6"
-            >
-              <BrainCircuit className="w-4 h-4" />
-              <span>Intelligent Parsing</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+              <BrainCircuit className="w-3 h-3" />
+              Intelligent Parsing
             </div>
             
-            <h2 
-              className="text-4xl md:text-6xl font-bold text-[#1a1a1a] mb-6 leading-[1.1]"
-            >
+            <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight mb-6">
               It reads the <br/>
-              <span className="text-[#3A4F6A]">fine print</span> for you.
+              <span className="text-stone-400">fine print for you.</span>
             </h2>
             
             <p 

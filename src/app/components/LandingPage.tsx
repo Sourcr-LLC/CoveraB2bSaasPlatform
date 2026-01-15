@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MessageSquare } from 'lucide-react';
 import { useState } from 'react';
 import DemoModal from './DemoModal';
 import ContactSalesModal from './ContactSalesModal';
 import TestimonialCarousel from './TestimonialCarousel';
 import ComparisonSection from './landing/ComparisonSection';
+import MarketingFeatures from './MarketingFeatures';
 import AIScannerSection from './landing/AIScannerSection';
 import SEO, { SEO_CONFIGS } from './SEO';
 import InteractiveHeroVisual from './landing/InteractiveHeroVisual';
@@ -142,6 +143,9 @@ export default function LandingPage() {
       {/* The Shift Section */}
       <ComparisonSection />
 
+      {/* New Marketing Features (Inspired by JeevaAI) */}
+      <MarketingFeatures />
+
       {/* AI Deep Dive */}
       <AIScannerSection />
 
@@ -149,7 +153,13 @@ export default function LandingPage() {
       <section className="py-24 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-[#1a1a1a]">Loved by Operations Teams</h2>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+               <MessageSquare className="w-3 h-3" />
+               Testimonials
+            </div>
+            <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight">
+              Loved by <span className="text-stone-400">Operations Teams</span>
+            </h2>
           </div>
           <TestimonialCarousel testimonials={TESTIMONIALS} />
         </div>

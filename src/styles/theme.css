@@ -150,6 +150,24 @@
   --color-glass-border: var(--glass-border);
 }
 
+@layer components {
+  /* Premium Pill Badge */
+  .badge-pill {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border;
+  }
+  .badge-pill-blue {
+    @apply bg-blue-50 text-[#3A4F6A] border-blue-100;
+  }
+  
+  /* Two-tone Heading Utilities */
+  .heading-premium {
+    @apply font-bold text-[#1a1a1a] leading-tight;
+  }
+  .heading-premium-muted {
+    @apply text-stone-400;
+  }
+}
+
 @layer utilities {
   .animate-pulse-slow {
     animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;

@@ -1,3 +1,7 @@
+interface PremiumLoaderProps {
+  fullScreen?: boolean;
+}
+
 export default function PremiumLoader({ fullScreen = false }: PremiumLoaderProps) {
   return (
     <div 
