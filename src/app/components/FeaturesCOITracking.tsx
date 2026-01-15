@@ -57,8 +57,8 @@ export default function FeaturesCOITracking() {
               <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Feature Spotlight</span>
             </div>
             
-            <h1 className="mb-6 text-4xl md:text-6xl font-semibold leading-[1.1]" style={{ color: 'var(--foreground)' }}>
-              Automated <span style={{ color: 'var(--primary)' }}>Certificate of Insurance</span> Tracking
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Automated Certificate <span className="text-[#3A4F6A]">of Insurance Tracking</span>
             </h1>
             
             <p className="text-xl mb-8" style={{ color: 'var(--foreground-muted)', lineHeight: 1.6 }}>
@@ -130,8 +130,8 @@ export default function FeaturesCOITracking() {
       {/* CTA */}
       <section className="py-20" style={{ backgroundColor: 'var(--background)' }}>
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl mb-6" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
-            Start Tracking COIs Automatically
+          <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] mb-6">
+            Start Tracking COIs <span className="text-[#3A4F6A]">Automatically</span>
           </h2>
           <p className="text-xl mb-8" style={{ color: 'var(--foreground-muted)' }}>
             Join companies managing thousands of insurance certificates with Covera

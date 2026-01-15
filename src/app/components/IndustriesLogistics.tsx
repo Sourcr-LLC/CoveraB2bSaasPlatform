@@ -53,8 +53,8 @@ export default function IndustriesLogistics() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
           <div className="max-w-4xl mx-auto text-center">
             
-            <h1 className="mb-6 text-3xl sm:text-4xl md:text-6xl" style={{ fontWeight: 600, letterSpacing: '-0.03em', color: 'var(--foreground)' }}>
-              Vendor compliance for logistics & warehousing operations
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Vendor compliance for logistics <span className="text-[#3A4F6A]">& warehousing operations</span>
             </h1>
             
             <p className="text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
@@ -228,8 +228,8 @@ export default function IndustriesLogistics() {
       {/* CTA Section */}
       <section className="border-t" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-16 md:py-24 text-center">
-          <h2 className="mb-4 text-2xl md:text-5xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
-            Ready to automate fleet compliance?
+          <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] mb-6">
+            Ready to automate <span className="text-[#3A4F6A]">fleet compliance?</span>
           </h2>
           <p className="text-sm md:text-lg mb-8 leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
             Join logistics companies that have eliminated manual carrier tracking and coverage gaps.

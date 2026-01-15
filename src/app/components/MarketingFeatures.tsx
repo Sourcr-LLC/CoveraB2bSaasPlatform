@@ -21,7 +21,7 @@ import {
 
 export default function MarketingFeatures() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-16 md:py-24 relative overflow-hidden">
       {/* Background gradients */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-stone-100 rounded-full blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2" />
@@ -44,9 +44,8 @@ export default function MarketingFeatures() {
                 <Sparkles className="w-3 h-3" />
                 Simple Workflow
               </div>
-              <h2 className="text-4xl font-semibold text-[#1a1a1a] leading-tight">
-                From Upload to Compliance<br/>
-                <span className="text-stone-400">in Seconds.</span>
+              <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
+                From Upload to Compliance<br className="hidden md:block"/> <span className="text-[#3A4F6A]">in Seconds.</span>
               </h2>
             </div>
           </div>
@@ -150,9 +149,8 @@ export default function MarketingFeatures() {
                 <Zap className="w-3 h-3" />
                 Features
               </div>
-              <h2 className="text-4xl font-semibold text-[#1a1a1a] leading-tight">
-                Everything You Need to<br/>
-                <span className="text-stone-400">Protect Your Business</span>
+              <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
+                Everything You Need to<br className="hidden md:block"/> <span className="text-[#3A4F6A]">Protect Your Business</span>
               </h2>
             </div>
           </div>

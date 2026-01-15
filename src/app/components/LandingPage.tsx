@@ -86,7 +86,7 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <main>
-        <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative">
+        <section className="pt-32 pb-16 md:pt-48 md:pb-32 px-4 relative">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-4xl mx-auto mb-16">
             
@@ -127,7 +127,7 @@ export default function LandingPage() {
       </section>
 
       {/* Social Proof */}
-      <section className="py-12 border-y border-slate-100 bg-white/50">
+      <section className="py-8 md:py-12 border-y border-slate-100 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-sm font-medium text-slate-600 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
@@ -150,14 +150,14 @@ export default function LandingPage() {
       <AIScannerSection />
 
       {/* Testimonials */}
-      <section className="py-24 bg-slate-50 border-y border-slate-200">
+      <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
                <MessageSquare className="w-3 h-3" />
                Testimonials
             </div>
-            <h2 className="text-4xl font-semibold text-[#1a1a1a] leading-tight">
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
               Loved by <span className="text-[#3A4F6A]">Operations Teams</span>
             </h2>
           </div>
@@ -166,7 +166,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-4 relative overflow-hidden">
+      <section className="py-16 md:py-24 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-[#3A4F6A]" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay" />
         

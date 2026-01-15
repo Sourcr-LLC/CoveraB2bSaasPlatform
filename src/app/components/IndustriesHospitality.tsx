@@ -53,8 +53,8 @@ export default function IndustriesHospitality() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
           <div className="max-w-4xl mx-auto text-center">
             
-            <h1 className="mb-6 text-3xl sm:text-4xl md:text-6xl" style={{ fontWeight: 600, letterSpacing: '-0.03em', color: 'var(--foreground)' }}>
-              Vendor compliance for hotels, resorts & hospitality operations
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Vendor compliance for hotels, resorts <span className="text-[#3A4F6A]">& hospitality operations</span>
             </h1>
             
             <p className="text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
@@ -283,8 +283,8 @@ export default function IndustriesHospitality() {
       {/* CTA */}
       <section className="py-20" style={{ backgroundColor: 'var(--background)' }}>
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl mb-6" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
-            Protect Your Guests and Properties
+          <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] mb-6">
+            Protect Your Guests <span className="text-[#3A4F6A]">and Properties</span>
           </h2>
           <p className="text-xl mb-8" style={{ color: 'var(--foreground-muted)' }}>
             Join hospitality operations ensuring vendor compliance with Covera

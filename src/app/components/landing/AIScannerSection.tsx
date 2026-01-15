@@ -2,7 +2,7 @@ import { CheckCircle2, ShieldCheck, BrainCircuit, ScanLine } from 'lucide-react'
 
 export default function AIScannerSection() {
   return (
-    <section className="py-24 md:py-32 bg-[#fafaf9] relative overflow-hidden">
+    <section className="py-16 md:py-32 bg-[#fafaf9] relative overflow-hidden">
       
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-30 pointer-events-none">
@@ -20,8 +20,8 @@ export default function AIScannerSection() {
               Intelligent Parsing
             </div>
             
-            <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight mb-6">
-              It reads the <br/>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] leading-tight mb-6">
+              It reads the <br className="hidden md:block"/>
               <span className="text-[#3A4F6A]">fine print for you.</span>
             </h2>
             

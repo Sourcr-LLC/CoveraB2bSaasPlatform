@@ -100,7 +100,7 @@ export default function Pricing() {
         <div className="max-w-6xl mx-auto px-4 md:px-12">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-              Transparent pricing for every team
+              Transparent pricing <span className="text-[#3A4F6A]">for every team</span>
             </h1>
             <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
               Start with everything you need. Scale when you're ready.
@@ -309,7 +309,7 @@ export default function Pricing() {
         <div className="max-w-4xl mx-auto px-4 md:px-12">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] mb-4">
-              Frequently asked questions
+              Frequently asked <span className="text-[#3A4F6A]">Questions</span>
             </h2>
             <p className="text-lg text-slate-500">
               Everything you need to know about pricing and billing
@@ -364,7 +364,7 @@ export default function Pricing() {
       <section className="py-24 bg-[#fafaf9]">
         <div className="max-w-4xl mx-auto px-4 md:px-12 text-center">
           <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] mb-6">
-            Ready to eliminate compliance headaches?
+            Ready to eliminate <span className="text-[#3A4F6A]">compliance headaches?</span>
           </h2>
           <p className="text-xl mb-10 leading-relaxed text-slate-500">
             Join hundreds of teams who've automated their vendor compliance with Covera
