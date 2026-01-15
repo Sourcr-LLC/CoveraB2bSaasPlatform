@@ -1,16 +1,25 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, MessageSquare } from 'lucide-react';
-import { useState } from 'react';
-import DemoModal from './DemoModal';
-import ContactSalesModal from './ContactSalesModal';
-import TestimonialCarousel from './TestimonialCarousel';
-import ComparisonSection from './landing/ComparisonSection';
-import MarketingFeatures from './MarketingFeatures';
-import AIScannerSection from './landing/AIScannerSection';
+import { useState, lazy, Suspense } from 'react';
 import SEO, { SEO_CONFIGS } from './SEO';
 import InteractiveHeroVisual from './landing/InteractiveHeroVisual';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
+
+// Lazy load heavy components and modals
+const DemoModal = lazy(() => import('./DemoModal'));
+const ContactSalesModal = lazy(() => import('./ContactSalesModal'));
+const TestimonialCarousel = lazy(() => import('./TestimonialCarousel'));
+const ComparisonSection = lazy(() => import('./landing/ComparisonSection'));
+const MarketingFeatures = lazy(() => import('./MarketingFeatures'));
+const AIScannerSection = lazy(() => import('./landing/AIScannerSection'));
+
+// Simple loading fallback for sections
+const SectionLoader = () => (
+  <div className="py-24 flex justify-center items-center">
+    <div className="w-8 h-8 border-2 border-slate-200 border-t-[#3A4F6A] rounded-full animate-spin" />
+  </div>
+);
 
 // Move constant data outside component to prevent re-creation on render
 const TESTIMONIALS = [
@@ -79,8 +88,10 @@ export default function LandingPage() {
         <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/10 blur-[80px] opacity-30 animate-pulse-slower" />
       </div>
 
-      <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
-      <ContactSalesModal isOpen={isContactSalesModalOpen} onClose={() => setIsContactSalesModalOpen(false)} />
+      <Suspense fallback={null}>
+        {isDemoModalOpen && <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />}
+        {isContactSalesModalOpen && <ContactSalesModal isOpen={isContactSalesModalOpen} onClose={() => setIsContactSalesModalOpen(false)} />}
+      </Suspense>
       
       <LandingNav />
 
@@ -143,13 +154,19 @@ export default function LandingPage() {
       </section>
 
       {/* The Shift Section */}
-      <ComparisonSection />
+      <Suspense fallback={<SectionLoader />}>
+        <ComparisonSection />
+      </Suspense>
 
       {/* New Marketing Features (Inspired by JeevaAI) */}
-      <MarketingFeatures />
+      <Suspense fallback={<SectionLoader />}>
+        <MarketingFeatures />
+      </Suspense>
 
       {/* AI Deep Dive */}
-      <AIScannerSection />
+      <Suspense fallback={<SectionLoader />}>
+        <AIScannerSection />
+      </Suspense>
 
       {/* Testimonials */}
       <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-200">
@@ -163,7 +180,9 @@ export default function LandingPage() {
               Loved by <span className="text-[#3A4F6A]">Operations Teams</span>
             </h2>
           </div>
-          <TestimonialCarousel testimonials={TESTIMONIALS} />
+          <Suspense fallback={<SectionLoader />}>
+            <TestimonialCarousel testimonials={TESTIMONIALS} />
+          </Suspense>
         </div>
       </section>
 

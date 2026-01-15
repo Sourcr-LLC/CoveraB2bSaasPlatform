@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 export default function LandingNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,32 +48,29 @@ export default function LandingNav() {
                   Industries
                   <ChevronDown className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <AnimatePresence>
-                  {isIndustriesOpen && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute top-full -left-4 pt-4 z-50 w-64"
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <div className="bg-white rounded-xl border border-slate-100 shadow-xl p-2 flex flex-col gap-1">
-                        <Link to="/solutions-property-management" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Property Management</Link>
-                        <Link to="/solutions-construction" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Construction & Contractors</Link>
-                        <Link to="/industries-healthcare" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Healthcare & Clinics</Link>
-                        <Link to="/industries-logistics" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Logistics & Warehousing</Link>
-                        <Link to="/industries-franchise" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Franchises</Link>
-                        <Link to="/industries-retail" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Retail & Multi-Location</Link>
-                        <Link to="/industries-government" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Government & Public Sector</Link>
-                        <Link to="/industries-education" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Education</Link>
-                        <Link to="/industries-facilities" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Facilities Management</Link>
-                        <Link to="/industries-hospitality" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Hospitality</Link>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                
+                <div 
+                  className={`absolute top-full -left-4 pt-4 z-50 w-64 transition-all duration-200 ${
+                    isIndustriesOpen 
+                      ? 'opacity-100 translate-y-0 pointer-events-auto' 
+                      : 'opacity-0 translate-y-2 pointer-events-none'
+                  }`}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div className="bg-white rounded-xl border border-slate-100 shadow-xl p-2 flex flex-col gap-1">
+                    <Link to="/solutions-property-management" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Property Management</Link>
+                    <Link to="/solutions-construction" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Construction & Contractors</Link>
+                    <Link to="/industries-healthcare" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Healthcare & Clinics</Link>
+                    <Link to="/industries-logistics" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Logistics & Warehousing</Link>
+                    <Link to="/industries-franchise" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Franchises</Link>
+                    <Link to="/industries-retail" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Retail & Multi-Location</Link>
+                    <Link to="/industries-government" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Government & Public Sector</Link>
+                    <Link to="/industries-education" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Education</Link>
+                    <Link to="/industries-facilities" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Facilities Management</Link>
+                    <Link to="/industries-hospitality" className="block px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#3A4F6A] transition-colors">Hospitality</Link>
+                  </div>
+                </div>
               </div>
               <Link to="/pricing" className="text-sm font-medium text-slate-600 hover:text-[#3A4F6A] transition-colors">Pricing</Link>
               <Link to="/blog" className="text-sm font-medium text-slate-600 hover:text-[#3A4F6A] transition-colors">Blog</Link>
@@ -103,53 +99,48 @@ export default function LandingNav() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-4 right-4 mt-2 p-4 rounded-2xl bg-white border border-slate-100 shadow-xl md:hidden"
-          >
-            <div className="flex flex-col gap-4">
-              <Link to="/about-us" className="text-sm font-medium text-slate-600 py-2">About</Link>
-              
-              {/* Mobile Industries */}
-              <div>
-                <button
-                  onClick={() => setIsMobileIndustriesOpen(!isMobileIndustriesOpen)}
-                  className="flex items-center justify-between w-full text-sm font-medium text-slate-600 py-2"
-                >
-                  <span>Industries</span>
-                  <ChevronDown 
-                    className={`w-4 h-4 transition-transform duration-200 ${isMobileIndustriesOpen ? 'rotate-180' : ''}`}
-                  />
-                </button>
-                {isMobileIndustriesOpen && (
-                  <div className="space-y-2 pl-3 mt-2 border-l border-slate-100">
-                    <Link to="/solutions-property-management" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Property Management</Link>
-                    <Link to="/solutions-construction" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Construction</Link>
-                    <Link to="/industries-healthcare" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Healthcare</Link>
-                    <Link to="/industries-logistics" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Logistics</Link>
-                    <Link to="/industries-franchise" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Franchises</Link>
-                    <Link to="/industries-retail" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Retail</Link>
-                    <Link to="/industries-government" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Government</Link>
-                    <Link to="/industries-education" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Education</Link>
-                    <Link to="/industries-facilities" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Facilities</Link>
-                    <Link to="/industries-hospitality" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Hospitality</Link>
-                  </div>
-                )}
-              </div>
-
-              <Link to="/pricing" className="text-sm font-medium text-slate-600 py-2">Pricing</Link>
-              <Link to="/blog" className="text-sm font-medium text-slate-600 py-2">Blog</Link>
-              <hr className="border-slate-100" />
-              <Link to="/login" className="text-sm font-medium text-slate-600 py-2">Log in</Link>
-              <Link to="/login" className="w-full py-3 rounded-xl text-sm font-medium bg-[#3A4F6A] text-white text-center">Start Free Trial</Link>
+      <div 
+        className={`absolute top-full left-4 right-4 mt-2 p-4 rounded-2xl bg-white border border-slate-100 shadow-xl md:hidden transition-all duration-300 origin-top ${
+          isMobileMenuOpen 
+            ? 'opacity-100 scale-100 translate-y-0' 
+            : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'
+        }`}
+      >
+        <div className="flex flex-col gap-4">
+          <Link to="/about-us" className="text-sm font-medium text-slate-600 py-2">About</Link>
+          
+          {/* Mobile Industries */}
+          <div>
+            <button
+              onClick={() => setIsMobileIndustriesOpen(!isMobileIndustriesOpen)}
+              className="flex items-center justify-between w-full text-sm font-medium text-slate-600 py-2"
+            >
+              <span>Industries</span>
+              <ChevronDown 
+                className={`w-4 h-4 transition-transform duration-200 ${isMobileIndustriesOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+            <div className={`space-y-2 pl-3 mt-2 border-l border-slate-100 overflow-hidden transition-all duration-300 ${isMobileIndustriesOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <Link to="/solutions-property-management" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Property Management</Link>
+              <Link to="/solutions-construction" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Construction</Link>
+              <Link to="/industries-healthcare" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Healthcare</Link>
+              <Link to="/industries-logistics" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Logistics</Link>
+              <Link to="/industries-franchise" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Franchises</Link>
+              <Link to="/industries-retail" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Retail</Link>
+              <Link to="/industries-government" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Government</Link>
+              <Link to="/industries-education" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Education</Link>
+              <Link to="/industries-facilities" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Facilities</Link>
+              <Link to="/industries-hospitality" className="block text-sm py-2 text-slate-500 hover:text-[#3A4F6A]">Hospitality</Link>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+
+          <Link to="/pricing" className="text-sm font-medium text-slate-600 py-2">Pricing</Link>
+          <Link to="/blog" className="text-sm font-medium text-slate-600 py-2">Blog</Link>
+          <hr className="border-slate-100" />
+          <Link to="/login" className="text-sm font-medium text-slate-600 py-2">Log in</Link>
+          <Link to="/login" className="w-full py-3 rounded-xl text-sm font-medium bg-[#3A4F6A] text-white text-center">Start Free Trial</Link>
+        </div>
+      </div>
     </nav>
   );
 }
