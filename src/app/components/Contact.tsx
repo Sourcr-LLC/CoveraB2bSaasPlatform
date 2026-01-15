@@ -80,7 +80,7 @@ export default function Contact() {
 
       <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative border-b border-slate-200">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
             Get in touch
           </h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">

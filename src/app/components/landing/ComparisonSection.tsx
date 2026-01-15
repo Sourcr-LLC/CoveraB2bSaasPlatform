@@ -73,7 +73,7 @@ export default function ComparisonSection() {
              The Problem
           </div>
           <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight mb-6">
-            The Old Way is <span className="text-stone-400">Broken</span>
+            The Old Way is <span className="text-stone-500">Broken</span>
           </h2>
           <p className="text-lg text-slate-600">
             See the difference automation makes. 

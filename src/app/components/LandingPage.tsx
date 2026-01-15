@@ -90,7 +90,7 @@ export default function LandingPage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-4xl mx-auto mb-16">
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               Vendor Insurance and Compliance <br className="hidden md:block" />
               <span className="text-[#3A4F6A]">Without Spreadsheets</span>
             </h1>
@@ -157,8 +157,8 @@ export default function LandingPage() {
                <MessageSquare className="w-3 h-3" />
                Testimonials
             </div>
-            <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight">
-              Loved by <span className="text-stone-400">Operations Teams</span>
+            <h2 className="text-4xl font-semibold text-[#1a1a1a] leading-tight">
+              Loved by <span className="text-[#3A4F6A]">Operations Teams</span>
             </h2>
           </div>
           <TestimonialCarousel testimonials={TESTIMONIALS} />
@@ -171,7 +171,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tight">
             Ready to automate your compliance?
           </h2>
           <p className="text-xl text-slate-200 mb-10 max-w-2xl mx-auto">

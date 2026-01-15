@@ -128,7 +128,7 @@ export default function BlogList() {
       <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 md:px-12">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               Vendor Compliance & Insurance Tracking Blog
             </h1>
             <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">

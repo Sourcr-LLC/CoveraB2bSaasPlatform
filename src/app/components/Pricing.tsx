@@ -99,7 +99,7 @@ export default function Pricing() {
       <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 md:px-12">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               Transparent pricing for every team
             </h1>
             <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
@@ -131,7 +131,7 @@ export default function Pricing() {
             <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300 transition-colors">
               <div className="mb-8">
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-[#1a1a1a]">Essentials</h3>
+                  <h3 className="text-2xl font-semibold text-[#1a1a1a]">Essentials</h3>
                 </div>
 
                 <div className="mb-6">
@@ -190,7 +190,7 @@ export default function Pricing() {
 
               <div className="mb-8">
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-[#1a1a1a]">Core</h3>
+                  <h3 className="text-2xl font-semibold text-[#1a1a1a]">Core</h3>
                 </div>
 
                 <div className="mb-6">
@@ -247,7 +247,7 @@ export default function Pricing() {
             <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300 transition-colors">
               <div className="mb-8">
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-[#1a1a1a]">Enterprise</h3>
+                  <h3 className="text-2xl font-semibold text-[#1a1a1a]">Enterprise</h3>
                 </div>
 
                 <div className="mb-6">
@@ -308,7 +308,7 @@ export default function Pricing() {
       <section className="py-24 bg-white border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 md:px-12">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-4">
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] mb-4">
               Frequently asked questions
             </h2>
             <p className="text-lg text-slate-500">
@@ -363,7 +363,7 @@ export default function Pricing() {
       {/* Final CTA Section */}
       <section className="py-24 bg-[#fafaf9]">
         <div className="max-w-4xl mx-auto px-4 md:px-12 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
+          <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] mb-6">
             Ready to eliminate compliance headaches?
           </h2>
           <p className="text-xl mb-10 leading-relaxed text-slate-500">

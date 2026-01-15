@@ -64,7 +64,7 @@ export default function AboutUs() {
             variants={staggerContainer}
             className="text-center max-w-4xl mx-auto mb-16"
           >
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               About Covera
             </motion.h1>
             
@@ -117,7 +117,7 @@ export default function AboutUs() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="max-w-3xl">
-            <h2 className="mb-6 text-3xl md:text-5xl font-bold text-[#1a1a1a]">
+            <h2 className="mb-6 text-3xl md:text-5xl font-semibold text-[#1a1a1a]">
               Why We Exist
             </h2>
             <p className="text-2xl mb-6 font-medium text-[#3A4F6A]">
@@ -140,7 +140,7 @@ export default function AboutUs() {
       <section className="py-24 bg-white border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="max-w-3xl mb-12">
-            <h2 className="mb-4 text-3xl md:text-5xl font-bold text-[#1a1a1a]">
+            <h2 className="mb-4 text-3xl md:text-5xl font-semibold text-[#1a1a1a]">
               What We Do
             </h2>
             <p className="text-lg text-slate-500">

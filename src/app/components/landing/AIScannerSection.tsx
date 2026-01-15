@@ -22,7 +22,7 @@ export default function AIScannerSection() {
             
             <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight mb-6">
               It reads the <br/>
-              <span className="text-stone-400">fine print for you.</span>
+              <span className="text-[#3A4F6A]">fine print for you.</span>
             </h2>
             
             <p 

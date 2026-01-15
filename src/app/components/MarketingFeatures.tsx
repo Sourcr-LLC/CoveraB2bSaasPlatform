@@ -44,7 +44,7 @@ export default function MarketingFeatures() {
                 <Sparkles className="w-3 h-3" />
                 Simple Workflow
               </div>
-              <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight">
+              <h2 className="text-4xl font-semibold text-[#1a1a1a] leading-tight">
                 From Upload to Compliance<br/>
                 <span className="text-stone-400">in Seconds.</span>
               </h2>
@@ -150,7 +150,7 @@ export default function MarketingFeatures() {
                 <Zap className="w-3 h-3" />
                 Features
               </div>
-              <h2 className="text-4xl font-bold text-[#1a1a1a] leading-tight">
+              <h2 className="text-4xl font-semibold text-[#1a1a1a] leading-tight">
                 Everything You Need to<br/>
                 <span className="text-stone-400">Protect Your Business</span>
               </h2>

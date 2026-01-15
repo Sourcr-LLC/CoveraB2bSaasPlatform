@@ -57,7 +57,7 @@ export default function FeaturesCOITracking() {
               <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Feature Spotlight</span>
             </div>
             
-            <h1 className="mb-6 text-4xl md:text-6xl font-bold leading-[1.1]" style={{ color: 'var(--foreground)' }}>
+            <h1 className="mb-6 text-4xl md:text-6xl font-semibold leading-[1.1]" style={{ color: 'var(--foreground)' }}>
               Automated <span style={{ color: 'var(--primary)' }}>Certificate of Insurance</span> Tracking
             </h1>
             
