@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { CheckCircle2, ArrowLeft } from 'lucide-react';
+import { PremiumCheck } from './ui/PremiumCheck';
 import { authApi } from '../lib/api';
 import SEO, { SEO_CONFIGS } from './SEO';
 import { motion } from 'motion/react';
@@ -357,7 +358,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             
             <div className="space-y-6">
               <div className="flex gap-4">
-                <CheckCircle2 className="w-5 h-5 mt-1 flex-shrink-0" style={{ color: 'var(--status-compliant)' }} />
+                <PremiumCheck className="mt-1" />
                 <div>
                   <h4 className="mb-2">Real-time tracking</h4>
                   <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -367,7 +368,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               </div>
 
               <div className="flex gap-4">
-                <CheckCircle2 className="w-5 h-5 mt-1 flex-shrink-0" style={{ color: 'var(--status-compliant)' }} />
+                <PremiumCheck className="mt-1" />
                 <div>
                   <h4 className="mb-2">Automated reminders</h4>
                   <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -377,7 +378,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               </div>
 
               <div className="flex gap-4">
-                <CheckCircle2 className="w-5 h-5 mt-1 flex-shrink-0" style={{ color: 'var(--status-compliant)' }} />
+                <PremiumCheck className="mt-1" />
                 <div>
                   <h4 className="mb-2">Audit-ready reports</h4>
                   <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>

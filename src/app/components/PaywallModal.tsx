@@ -1,4 +1,5 @@
 import { X, CheckCircle2, Shield, Loader2 } from 'lucide-react';
+import { PremiumCheck } from './ui/PremiumCheck';
 import { useState, useEffect } from 'react';
 import { projectId } from '../../../utils/supabase/info';
 import { supabase } from '../lib/api';
@@ -253,7 +254,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
                   fontWeight: 500,
                 }}
               >
-                <CheckCircle2 size={16} />
+                <PremiumCheck className="w-4 h-4 bg-transparent mt-0" />
                 7-Day Free Trial • $0 charged now
               </div>
               
@@ -293,10 +294,7 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
             <div className="space-y-3">
               {currentPlan.features.map((item, index) => (
                 <div key={index} className="flex items-start gap-3">
-                  <CheckCircle2
-                    size={18}
-                    style={{ color: 'var(--primary)', marginTop: '2px', flexShrink: 0 }}
-                  />
+                  <PremiumCheck />
                   <span className="text-sm" style={{ color: 'var(--foreground)' }}>
                     {item}
                   </span>

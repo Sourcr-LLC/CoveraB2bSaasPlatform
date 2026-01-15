@@ -1,4 +1,5 @@
 import { User, CreditCard, Building2, CheckCircle2, Edit2, Check, X, Upload, Image, Eye, Mail, MessageSquare, Globe, AlertCircle, RefreshCw, TestTube } from 'lucide-react';
+import { PremiumCheck } from './ui/PremiumCheck';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
@@ -742,10 +743,7 @@ export default function Settings() {
                 'Email support',
               ].map((feature, index) => (
                 <div key={index} className="flex items-start gap-3">
-                  <CheckCircle2
-                    size={20}
-                    style={{ color: 'var(--primary)', marginTop: '2px', flexShrink: 0 }}
-                  />
+                  <PremiumCheck />
                   <span className="text-sm" style={{ color: 'var(--foreground)' }}>
                     {feature}
                   </span>

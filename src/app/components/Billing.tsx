@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CreditCard, Check, AlertCircle, ArrowUpRight, Calendar, CheckCircle2, Zap, RefreshCw, Loader2, Download } from 'lucide-react';
+import { PremiumCheck } from './ui/PremiumCheck';
 import { projectId } from '../../../utils/supabase/info';
 import { supabase } from '../lib/api';
 import { toast } from 'sonner';
@@ -551,7 +552,7 @@ export default function Billing() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 {planInfo.features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-2 md:gap-3">
-                    <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--status-compliant)' }} />
+                    <PremiumCheck />
                     <span className="text-xs md:text-sm" style={{ color: 'var(--foreground)' }}>
                       {feature}
                     </span>
@@ -614,7 +615,7 @@ export default function Billing() {
                   'Security & legal review'
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-2 md:gap-3">
-                    <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--primary)' }} />
+                    <PremiumCheck />
                     <span className="text-xs md:text-sm" style={{ color: 'var(--foreground)' }}>
                       {feature}
                     </span>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle, Shield, Clock, AlertTriangle, FileText, ArrowRight } from 'lucide-react';
+import { PremiumCheck } from './ui/PremiumCheck';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 import MarketingFeatures from './MarketingFeatures';
@@ -197,7 +198,7 @@ export default function HowToTrackVendorCompliance() {
 
               <div className="bg-gray-50 rounded-xl p-8 my-8 space-y-6">
                 <div className="flex items-start gap-4">
-                  <CheckCircle className="w-6 h-6 text-[#3A4F6A] flex-shrink-0 mt-1" />
+                  <PremiumCheck className="mt-1" />
                   <div>
                     <h3 className="text-lg font-semibold text-[#0A0F1E] mb-2">Step 1: Collect Vendor Information</h3>
                     <p className="text-gray-600 mb-0">
@@ -207,7 +208,7 @@ export default function HowToTrackVendorCompliance() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <CheckCircle className="w-6 h-6 text-[#3A4F6A] flex-shrink-0 mt-1" />
+                  <PremiumCheck className="mt-1" />
                   <div>
                     <h3 className="text-lg font-semibold text-[#0A0F1E] mb-2">Step 2: Request COIs</h3>
                     <p className="text-gray-600 mb-0">
@@ -217,7 +218,7 @@ export default function HowToTrackVendorCompliance() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <CheckCircle className="w-6 h-6 text-[#3A4F6A] flex-shrink-0 mt-1" />
+                  <PremiumCheck className="mt-1" />
                   <div>
                     <h3 className="text-lg font-semibold text-[#0A0F1E] mb-2">Step 3: Review Each Document</h3>
                     <p className="text-gray-600 mb-0">
@@ -227,7 +228,7 @@ export default function HowToTrackVendorCompliance() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <CheckCircle className="w-6 h-6 text-[#3A4F6A] flex-shrink-0 mt-1" />
+                  <PremiumCheck className="mt-1" />
                   <div>
                     <h3 className="text-lg font-semibold text-[#0A0F1E] mb-2">Step 4: Store Documents Securely</h3>
                     <p className="text-gray-600 mb-0">
@@ -237,7 +238,7 @@ export default function HowToTrackVendorCompliance() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <CheckCircle className="w-6 h-6 text-[#3A4F6A] flex-shrink-0 mt-1" />
+                  <PremiumCheck className="mt-1" />
                   <div>
                     <h3 className="text-lg font-semibold text-[#0A0F1E] mb-2">Step 5: Add to Tracking Spreadsheet</h3>
                     <p className="text-gray-600 mb-0">
@@ -247,7 +248,7 @@ export default function HowToTrackVendorCompliance() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <CheckCircle className="w-6 h-6 text-[#3A4F6A] flex-shrink-0 mt-1" />
+                  <PremiumCheck className="mt-1" />
                   <div>
                     <h3 className="text-lg font-semibold text-[#0A0F1E] mb-2">Step 6: Set Calendar Reminders</h3>
                     <p className="text-gray-600 mb-0">
@@ -257,7 +258,7 @@ export default function HowToTrackVendorCompliance() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <CheckCircle className="w-6 h-6 text-[#3A4F6A] flex-shrink-0 mt-1" />
+                  <PremiumCheck className="mt-1" />
                   <div>
                     <h3 className="text-lg font-semibold text-[#0A0F1E] mb-2">Step 7: Repeat Monthly</h3>
                     <p className="text-gray-600 mb-0">
@@ -478,15 +479,15 @@ export default function HowToTrackVendorCompliance() {
                 <h3 className="text-xl font-semibold text-[#0A0F1E] mb-4">Free Resources</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <PremiumCheck />
                     <span className="text-gray-700">Vendor Compliance Checklist (PDF) - Coming Soon</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <PremiumCheck />
                     <span className="text-gray-700">COI Tracking Spreadsheet Template - Coming Soon</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <PremiumCheck />
                     <span className="text-gray-700">Insurance Requirements by State Guide - Coming Soon</span>
                   </div>
                 </div>
