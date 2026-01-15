@@ -255,7 +255,6 @@ export default function InteractiveWalkthrough({ onComplete, onSkip }: Interacti
         className="fixed inset-0 z-50 pointer-events-none"
         style={{
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          backdropFilter: 'blur(1px)'
         }}
       >
         {/* SVG mask for spotlight effect */}
@@ -286,20 +285,7 @@ export default function InteractiveWalkthrough({ onComplete, onSkip }: Interacti
         </svg>
       </div>
 
-      {/* Bright spotlight glow on highlighted element */}
-      <div
-        className="fixed z-50 pointer-events-none"
-        style={{
-          top: highlightRect.top - padding - 30,
-          left: highlightRect.left - padding - 30,
-          width: highlightRect.width + padding * 2 + 60,
-          height: highlightRect.height + padding * 2 + 60,
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(20px)',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-        }}
-      />
+      {/* Spotlight glow removed for performance */}
 
       {/* Clickable overlay on highlighted element */}
       {step.action === 'click' && (
@@ -331,11 +317,6 @@ export default function InteractiveWalkthrough({ onComplete, onSkip }: Interacti
           height: highlightRect.height + padding * 2,
           border: showClickFeedback ? '4px solid #10b981' : '3px solid #3b82f6',
           borderRadius: '12px',
-          boxShadow: showClickFeedback 
-            ? '0 0 0 6px rgba(16, 185, 129, 0.3), 0 0 60px rgba(16, 185, 129, 0.6)'
-            : '0 0 0 4px rgba(59, 130, 246, 0.25), 0 0 50px rgba(59, 130, 246, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.1)',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          animation: showClickFeedback ? 'none' : 'pulse-border 2s ease-in-out infinite'
         }}
       />
 
@@ -348,12 +329,10 @@ export default function InteractiveWalkthrough({ onComplete, onSkip }: Interacti
           left: tooltipPosition.left,
           width: '360px',
           maxWidth: 'calc(100vw - 40px)',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          animation: 'fadeInScale 0.3s ease-out'
         }}
       >
         <div
-          className="rounded-2xl border backdrop-blur-xl p-6 relative"
+          className="rounded-2xl border p-6 relative"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.98)',
             borderColor: 'rgba(59, 130, 246, 0.3)',

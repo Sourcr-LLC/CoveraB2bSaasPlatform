@@ -137,7 +137,7 @@ export default function AddVendor() {
         <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
           <Link to="/vendors">
             <button
-              className="p-2 rounded-lg transition-colors"
+              className="p-2 rounded-lg"
               style={{
                 color: 'var(--foreground-muted)'
               }}
@@ -209,7 +209,7 @@ export default function AddVendor() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -229,7 +229,7 @@ export default function AddVendor() {
                   value={formData.vendorType}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -254,7 +254,7 @@ export default function AddVendor() {
                   value={formData.contactName}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -275,7 +275,7 @@ export default function AddVendor() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -295,7 +295,7 @@ export default function AddVendor() {
                   name="phone"
                   value={formData.phone}
                   onChange={handlePhoneChange}
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -315,7 +315,7 @@ export default function AddVendor() {
                   name="site"
                   value={formData.site}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -335,7 +335,7 @@ export default function AddVendor() {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -355,7 +355,7 @@ export default function AddVendor() {
                   value={formData.notes}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-lg border transition-all"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--input-background)',
                     borderColor: 'var(--border)',
@@ -417,7 +417,7 @@ export default function AddVendor() {
                   </p>
                   <label 
                     htmlFor="coi-file-input"
-                    className="px-5 py-2.5 rounded-lg border transition-colors cursor-pointer inline-block"
+                    className="px-5 py-2.5 rounded-lg border cursor-pointer inline-block"
                     style={{
                       backgroundColor: 'var(--panel)',
                       borderColor: 'var(--border)',
@@ -438,7 +438,7 @@ export default function AddVendor() {
                   </p>
                   <label 
                     htmlFor="coi-file-input"
-                    className="px-5 py-2.5 rounded-lg border transition-colors cursor-pointer inline-block"
+                    className="px-5 py-2.5 rounded-lg border cursor-pointer inline-block"
                     style={{
                       backgroundColor: 'var(--panel)',
                       borderColor: 'var(--border)',
@@ -457,7 +457,7 @@ export default function AddVendor() {
             <Link to="/vendors" className="w-full sm:w-auto">
               <button
                 type="button"
-                className="w-full px-6 py-3 rounded-xl border transition-colors flex items-center justify-center"
+                className="w-full px-6 py-3 rounded-xl border flex items-center justify-center"
                 style={{
                   borderColor: 'var(--border)',
                   color: 'var(--foreground)'
@@ -469,7 +469,7 @@ export default function AddVendor() {
             <button
               type="submit"
               disabled={isLoading || isLimitReached || checkingLimit || subscriptionLoading}
-              className={`w-full sm:w-auto px-6 py-3 rounded-xl transition-colors flex items-center justify-center ${
+              className={`w-full sm:w-auto px-6 py-3 rounded-xl flex items-center justify-center ${
                 (isLoading || isLimitReached || checkingLimit || subscriptionLoading) ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               style={{

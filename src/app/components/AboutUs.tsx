@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Target, Users, Zap, Shield, ArrowRight, CheckCircle, TrendingUp, Lightbulb, Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
 import DemoModal from './DemoModal';
 import LandingNav from './LandingNav';
@@ -9,22 +8,6 @@ import Footer from './Footer';
 
 export default function AboutUs() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
-
-  // Animation variants
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
 
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
@@ -58,36 +41,33 @@ export default function AboutUs() {
       {/* Hero Section */}
       <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
+          <div 
             className="text-center max-w-4xl mx-auto mb-16"
           >
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               About Covera
-            </motion.h1>
+            </h1>
             
-            <motion.p variants={fadeInUp} className="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
               Covera helps businesses stay compliant with vendor insurance without spreadsheets, manual follow ups, or compliance chaos.
-            </motion.p>
+            </p>
             
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-all shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 hover:-translate-y-1 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 flex items-center justify-center gap-2"
               >
                 Start free trial
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <button 
                 onClick={() => setIsDemoModalOpen(true)}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 flex items-center justify-center gap-2"
               >
                 Schedule demo
               </button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -149,7 +129,7 @@ export default function AboutUs() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg transition-all">
+            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
               <TrendingUp className="w-8 h-8 mb-4 text-[#3A4F6A]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Track COI status in real time</h3>
               <p className="text-slate-500 leading-relaxed">
@@ -157,7 +137,7 @@ export default function AboutUs() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg transition-all">
+            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
               <Zap className="w-8 h-8 mb-4 text-[#3A4F6A]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Automated vendor reminders</h3>
               <p className="text-slate-500 leading-relaxed">
@@ -165,7 +145,7 @@ export default function AboutUs() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg transition-all">
+            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
               <CheckCircle className="w-8 h-8 mb-4 text-[#3A4F6A]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Clear compliance visibility</h3>
               <p className="text-slate-500 leading-relaxed">
@@ -173,7 +153,7 @@ export default function AboutUs() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg transition-all">
+            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
               <Shield className="w-8 h-8 mb-4 text-[#3A4F6A]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Instant audit-ready reports</h3>
               <p className="text-slate-500 leading-relaxed">

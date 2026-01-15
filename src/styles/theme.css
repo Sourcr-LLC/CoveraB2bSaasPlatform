@@ -169,6 +169,8 @@
 }
 
 @layer utilities {
+  /* Animations disabled for performance */
+  /*
   .animate-pulse-slow {
     animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
@@ -198,6 +200,7 @@
   .animate-progress {
     animation: progress-loading 4s linear infinite;
   }
+  */
   
   @keyframes scan-down {
     0% { top: 0%; opacity: 0; }

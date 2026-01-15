@@ -73,9 +73,8 @@ function ProtectedRoute({ isAuthenticated, children }: { isAuthenticated: boolea
   }
   return (
     <DashboardLayout>
-      <PageTransition>
-        {children}
-      </PageTransition>
+      {/* PageTransition removed for performance optimization */}
+      {children}
     </DashboardLayout>
   );
 }

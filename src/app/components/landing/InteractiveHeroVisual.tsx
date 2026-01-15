@@ -7,7 +7,7 @@ import { KpiCard } from '../dashboard/KpiCard';
 export default function InteractiveHeroVisual() {
   return (
     <div className="relative w-full max-w-6xl mx-auto" style={{ fontFamily: 'Red Hat Display, sans-serif' }}>
-      <div className="relative bg-white rounded-2xl shadow-2xl border border-[#e7e5e4] overflow-hidden">
+      <div className="relative bg-white overflow-hidden">
         <DashboardContent />
       </div>
     </div>

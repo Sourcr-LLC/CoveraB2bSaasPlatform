@@ -339,12 +339,12 @@ export default function VendorPortal() {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Certificate of Insurance (COI)
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition-colors">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100">
                   <FileText className="w-8 h-8 text-[#3A4F6A] mx-auto mb-2" />
                   <p className="text-sm text-gray-600 mb-3">
                     Drag & drop or click to upload PDF/Image
                   </p>
-                  <label className="inline-flex items-center justify-center px-4 py-2 bg-[#3A4F6A] text-white text-sm font-medium rounded-lg hover:bg-[#2c3e53] transition-colors cursor-pointer shadow-sm">
+                  <label className="inline-flex items-center justify-center px-4 py-2 bg-[#3A4F6A] text-white text-sm font-medium rounded-lg hover:bg-[#2c3e53] cursor-pointer shadow-sm">
                     {isUploadingCOI ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -415,7 +415,7 @@ export default function VendorPortal() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] transition-all text-sm"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] text-sm"
                     placeholder="Quick Silver Towing Inc."
                   />
                 </div>
@@ -431,7 +431,7 @@ export default function VendorPortal() {
                     type="text"
                     value={formData.contactName}
                     onChange={(e) => setFormData({...formData, contactName: e.target.value})}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] transition-all text-sm"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] text-sm"
                     placeholder="John Smith"
                   />
                 </div>
@@ -448,7 +448,7 @@ export default function VendorPortal() {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] text-sm"
                       placeholder="contact@qstow.com"
                     />
                   </div>
@@ -464,7 +464,7 @@ export default function VendorPortal() {
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] text-sm"
                       placeholder="(555) 123-4567"
                     />
                   </div>
@@ -481,7 +481,7 @@ export default function VendorPortal() {
                     rows={2}
                     value={formData.address}
                     onChange={(e) => setFormData({...formData, address: e.target.value})}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] transition-all text-sm resize-none"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#3A4F6A]/20 focus:border-[#3A4F6A] text-sm resize-none"
                     placeholder="456 Road Ave, Los Angeles, CA 90025"
                   />
                 </div>
@@ -491,7 +491,7 @@ export default function VendorPortal() {
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="w-full bg-[#3A4F6A] text-white font-medium py-2.5 rounded-lg hover:bg-[#2c3e53] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+                  className="w-full bg-[#3A4F6A] text-white font-medium py-2.5 rounded-lg hover:bg-[#2c3e53] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
                 >
                   {isSaving ? (
                     <>

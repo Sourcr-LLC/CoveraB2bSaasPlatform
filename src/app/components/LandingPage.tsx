@@ -83,9 +83,9 @@ export default function LandingPage() {
              }} 
         />
         
-        {/* Subtle glowing orbs replacing the blobs - Optimized for performance */}
-        <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-blue-100/50 blur-[100px] opacity-40 animate-pulse-slow" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/10 blur-[80px] opacity-30 animate-pulse-slower" />
+        {/* Subtle glowing orbs removed for performance */}
+        {/* <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-blue-100/50 blur-[100px] opacity-40" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/10 blur-[80px] opacity-30" /> */}
       </div>
 
       <Suspense fallback={null}>
@@ -110,7 +110,7 @@ export default function LandingPage() {
               Automatically track COIs, prevent expired coverage, and stay audit-ready without chasing vendors or exposing your business to legal risk.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
                 className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-colors shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 flex items-center justify-center gap-2"
@@ -128,9 +128,9 @@ export default function LandingPage() {
           </div>
 
           {/* Hero Visual */}
-          <div className="relative mx-auto max-w-6xl mt-16 animate-fade-in-up">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
-            <div className="relative z-10 overflow-hidden h-[240px] sm:h-[420px] md:h-[560px] lg:h-auto" aria-hidden="true">
+          <div className="relative mx-auto max-w-6xl mt-16">
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl opacity-40 blur-lg" />
+            <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-auto shadow-2xl shadow-slate-200 border border-slate-200/60 ring-1 ring-slate-900/5 bg-white" aria-hidden="true">
               <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
                 <InteractiveHeroVisual />
               </div>
@@ -143,7 +143,7 @@ export default function LandingPage() {
       <section className="py-8 md:py-12 border-y border-slate-100 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-sm font-medium text-slate-600 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0">
             {['Roadr', 'Summit Properties', 'BuildRight', 'MedCore Health', 'FranchiseCo', 'Apex Group'].map((name) => (
               <div key={name} className="text-xl font-bold font-display text-slate-800 flex items-center gap-2">
                 {name}

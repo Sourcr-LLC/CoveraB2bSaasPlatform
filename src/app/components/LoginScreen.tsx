@@ -4,7 +4,6 @@ import { CheckCircle2, ArrowLeft } from 'lucide-react';
 import { PremiumCheck } from './ui/PremiumCheck';
 import { authApi } from '../lib/api';
 import SEO, { SEO_CONFIGS } from './SEO';
-import { motion } from 'motion/react';
 import { analytics } from './GoogleAnalytics';
 
 interface LoginScreenProps {
@@ -110,10 +109,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
         </Link>
 
         {/* Left side - Login form */}
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
+        <div 
           className="flex-1 flex items-center justify-center px-8 py-12"
         >
           <div className="w-full max-w-md">
@@ -138,10 +134,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             >
               <form onSubmit={handleSubmit} className="space-y-6">
                 {isSignUp && step === 'verification' ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
+                  <div>
                     <div className="mb-6 text-center">
                       <h3 className="text-lg font-semibold mb-2">Check your email</h3>
                       <p className="text-sm text-slate-500">
@@ -158,7 +151,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                         id="code"
                         value={verificationCode}
                         onChange={(e) => setVerificationCode(e.target.value)}
-                        className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 text-center tracking-widest text-lg font-mono"
+                        className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 text-center tracking-widest text-lg font-mono"
                         style={{ 
                           backgroundColor: 'var(--input-background)',
                           borderColor: 'var(--input-border)',
@@ -177,7 +170,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                     >
                       Incorrect email? Go back
                     </button>
-                  </motion.div>
+                  </div>
                 ) : (
                   <>
                     {isSignUp && (
@@ -191,7 +184,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                             id="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
                             style={{ 
                               backgroundColor: 'var(--input-background)',
                               borderColor: 'var(--input-border)',
@@ -211,7 +204,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                             id="organizationName"
                             value={organizationName}
                             onChange={(e) => setOrganizationName(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
                             style={{ 
                               backgroundColor: 'var(--input-background)',
                               borderColor: 'var(--input-border)',
@@ -233,7 +226,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
+                        className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
                         style={{ 
                           backgroundColor: 'var(--input-background)',
                           borderColor: 'var(--input-border)',
@@ -253,7 +246,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
+                        className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
                         style={{ 
                           backgroundColor: 'var(--input-background)',
                           borderColor: 'var(--input-border)',
@@ -306,7 +299,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3.5 px-4 rounded-lg transition-all text-sm disabled:opacity-50"
+                  className="w-full py-3.5 px-4 rounded-lg text-sm disabled:opacity-50"
                   style={{ 
                     backgroundColor: 'var(--primary)', 
                     color: 'var(--primary-foreground)',
@@ -336,7 +329,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               <p>Trusted by compliance teams across the USA</p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Right side - Trust messaging */}
         <div 
@@ -346,10 +339,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             borderColor: 'var(--border-subtle)'
           }}
         >
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          <div 
             className="max-w-lg"
           >
             <h2 className="mb-8 leading-tight">
@@ -396,7 +386,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                 — Director of Operations, National Property Group
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </>

@@ -127,12 +127,12 @@ export default function Pricing() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           
           <div className="flex items-center justify-center gap-4 mb-12">
-            <span className={`text-base cursor-pointer transition-colors ${billingCycle === 'monthly' ? 'font-bold text-[#1a1a1a]' : 'text-slate-500'}`} onClick={() => setBillingCycle('monthly')}>Monthly</span>
+            <span className={`text-base cursor-pointer ${billingCycle === 'monthly' ? 'font-bold text-[#1a1a1a]' : 'text-slate-500'}`} onClick={() => setBillingCycle('monthly')}>Monthly</span>
             <Switch 
               checked={billingCycle === 'yearly'}
               onCheckedChange={(checked) => setBillingCycle(checked ? 'yearly' : 'monthly')}
             />
-            <span className={`text-base cursor-pointer transition-colors flex items-center gap-2 ${billingCycle === 'yearly' ? 'font-bold text-[#1a1a1a]' : 'text-slate-500'}`} onClick={() => setBillingCycle('yearly')}>
+            <span className={`text-base cursor-pointer flex items-center gap-2 ${billingCycle === 'yearly' ? 'font-bold text-[#1a1a1a]' : 'text-slate-500'}`} onClick={() => setBillingCycle('yearly')}>
               Yearly 
               <span className="text-emerald-700 bg-emerald-50 border border-emerald-200 text-xs font-bold px-2 py-0.5 rounded-full">Save 2 months</span>
             </span>
@@ -141,7 +141,7 @@ export default function Pricing() {
           <div className="grid lg:grid-cols-3 gap-8 items-start">
             
             {/* Essentials Plan */}
-            <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300 transition-colors">
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300">
               <div className="mb-8">
                 <div className="mb-6">
                   <h3 className="text-2xl font-semibold text-[#1a1a1a]">Essentials</h3>
@@ -166,7 +166,7 @@ export default function Pricing() {
 
                 <Link 
                   to="/login"
-                  className="block w-full py-4 rounded-xl text-center border-2 border-[#3A4F6A] text-[#3A4F6A] font-medium hover:bg-slate-50 transition-all mb-3"
+                  className="block w-full py-4 rounded-xl text-center border-2 border-[#3A4F6A] text-[#3A4F6A] font-medium hover:bg-slate-50 mb-3"
                 >
                   Start free trial
                 </Link>
@@ -225,7 +225,7 @@ export default function Pricing() {
 
                 <Link 
                   to="/login"
-                  className="block w-full py-4 rounded-xl text-center text-white bg-[#3A4F6A] hover:bg-[#2c3e53] font-medium transition-all shadow-lg shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 mb-3"
+                  className="block w-full py-4 rounded-xl text-center text-white bg-[#3A4F6A] hover:bg-[#2c3e53] font-medium shadow-lg shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 mb-3"
                 >
                   Start free trial
                 </Link>
@@ -257,7 +257,7 @@ export default function Pricing() {
             </div>
 
             {/* Enterprise Plan */}
-            <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300 transition-colors">
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300">
               <div className="mb-8">
                 <div className="mb-6">
                   <h3 className="text-2xl font-semibold text-[#1a1a1a]">Enterprise</h3>
@@ -283,7 +283,7 @@ export default function Pricing() {
 
                 <button 
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="block w-full py-4 rounded-xl text-center border-2 border-slate-200 text-slate-700 font-medium hover:border-slate-300 hover:bg-slate-50 transition-all mb-3"
+                  className="block w-full py-4 rounded-xl text-center border-2 border-slate-200 text-slate-700 font-medium hover:border-slate-300 hover:bg-slate-50 mb-3"
                 >
                   Contact sales
                 </button>
@@ -333,17 +333,17 @@ export default function Pricing() {
             {faqs.map((faq, index) => (
               <div 
                 key={index}
-                className={`rounded-xl border transition-all ${openFaqIndex === index ? 'border-[#3A4F6A] bg-slate-50' : 'border-slate-200 bg-white'}`}
+                className={`rounded-xl border ${openFaqIndex === index ? 'border-[#3A4F6A] bg-slate-50' : 'border-slate-200 bg-white'}`}
               >
                 <button
                   onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
-                  className="w-full px-6 py-5 flex items-start justify-between gap-4 text-left transition-all"
+                  className="w-full px-6 py-5 flex items-start justify-between gap-4 text-left"
                 >
                   <span className="font-medium text-[#1a1a1a] flex-1 text-lg">
                     {faq.question}
                   </span>
                   <span 
-                    className={`text-slate-400 transition-transform duration-200 ${openFaqIndex === index ? 'rotate-180' : ''}`}
+                    className={`text-slate-400 ${openFaqIndex === index ? 'rotate-180' : ''}`}
                   >
                     ▼
                   </span>

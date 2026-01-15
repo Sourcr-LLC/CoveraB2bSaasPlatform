@@ -131,7 +131,7 @@ export default function Contact() {
                       value={formData.firstName}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none transition-all" 
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
                       placeholder="Jane" 
                     />
                   </div>
@@ -143,7 +143,7 @@ export default function Contact() {
                       value={formData.lastName}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none transition-all" 
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
                       placeholder="Doe" 
                     />
                   </div>
@@ -157,7 +157,7 @@ export default function Contact() {
                     value={formData.company}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none transition-all" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
                     placeholder="Acme Corp" 
                   />
                 </div>
@@ -170,7 +170,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none transition-all" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
                     placeholder="jane@company.com" 
                   />
                 </div>
@@ -182,7 +182,7 @@ export default function Contact() {
                     rows={4} 
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none transition-all" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
                     placeholder="How can we help?" 
                   />
                 </div>
@@ -190,7 +190,7 @@ export default function Contact() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full py-4 rounded-xl bg-[#3A4F6A] text-white font-medium hover:bg-[#2c3e53] transition-all shadow-lg shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-xl bg-[#3A4F6A] text-white font-medium hover:bg-[#2c3e53] shadow-lg shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
