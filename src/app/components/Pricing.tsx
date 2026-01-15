@@ -180,7 +180,7 @@ export default function Pricing() {
                 {[
                   'Up to 50 vendors',
                   'COI uploads & storage',
-                  'Automated reminders (30 / 14 / 7 days)',
+                  'Automated reminders',
                   'Compliance dashboard',
                   'High-risk & non-compliant tracking',
                   'Standard email support'
@@ -239,7 +239,7 @@ export default function Pricing() {
                 {[
                   'Up to 150 vendors',
                   'COI uploads & storage',
-                  'Automated reminders (30 / 14 / 7 days)',
+                  'Automated reminders',
                   'Compliance dashboard',
                   'High-risk & non-compliant tracking',
                   'Audit-ready exports (PDF / CSV)',

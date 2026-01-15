@@ -159,7 +159,7 @@ export default function SolutionsPropertyManagement() {
               },
               {
                 title: 'Renewal Reminders',
-                description: 'Never miss an insurance renewal with automatic email reminders sent to contractors 30, 14, and 7 days before expiration',
+                description: 'Never miss an insurance renewal with automatic email reminders sent to contractors before expiration',
                 icon: Clock
               },
               {

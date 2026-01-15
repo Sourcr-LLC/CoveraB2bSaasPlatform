@@ -296,7 +296,7 @@ export default function HowToTrackVendorCompliance() {
                 <div className="bg-gradient-to-br from-[#3A4F6A]/5 to-[#3A4F6A]/10 rounded-xl p-6 border border-[#3A4F6A]/20">
                   <h3 className="text-lg font-semibold text-[#0A0F1E] mb-3">✅ Smart Expiration Alerts</h3>
                   <p className="text-gray-600 mb-0">
-                    Automated reminders sent to vendors and your team at 90, 60, 30, and 7 days before expiration.
+                    Automated reminders sent to vendors and your team before expiration.
                   </p>
                 </div>
 

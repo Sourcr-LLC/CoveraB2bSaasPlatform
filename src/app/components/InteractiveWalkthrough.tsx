@@ -48,7 +48,7 @@ const steps: WalkthroughStep[] = [
     id: 4,
     target: '[data-tour="alerts-nav"]',
     title: 'Smart Alerts',
-    description: 'Get notified 30, 14, and 7 days before insurance expires. Automated reminders keep you compliant. Click to continue.',
+    description: 'Get notified before insurance expires. Automated reminders keep you compliant. Click to continue.',
     position: 'right',
     action: 'click',
     highlightPadding: 12
