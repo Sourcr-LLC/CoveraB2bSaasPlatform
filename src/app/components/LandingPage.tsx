@@ -119,8 +119,10 @@ export default function LandingPage() {
           {/* Hero Visual */}
           <div className="relative mx-auto max-w-6xl mt-16 animate-fade-in-up">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl blur-2xl opacity-50" />
-            <div className="relative z-10" aria-hidden="true">
-              <InteractiveHeroVisual />
+            <div className="relative z-10 overflow-hidden h-[240px] sm:h-[420px] md:h-[560px] lg:h-auto" aria-hidden="true">
+              <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
+                <InteractiveHeroVisual />
+              </div>
             </div>
           </div>
         </div>
