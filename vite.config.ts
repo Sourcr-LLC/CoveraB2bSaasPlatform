@@ -71,7 +71,7 @@ export default defineConfig({
           'stripe': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
           
           // Other libraries
-          'libs': ['sonner', 'react-slick', 'slick-carousel'],
+          'libs': ['sonner'],
         },
         // Optimize chunk naming for better caching
         chunkFileNames: 'assets/[name]-[hash].js',
