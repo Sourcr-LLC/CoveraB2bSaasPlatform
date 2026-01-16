@@ -97,7 +97,7 @@ export default function MarketingFeatures() {
                 <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center font-bold text-stone-500 shrink-0">2</div>
                 <div>
                   <h3 className="font-bold text-lg text-[#1a1a1a] mb-2">AI Analysis & Extraction</h3>
-                  <p className="text-stone-500 text-sm leading-relaxed">Instantly pull policy limits, contract milestones, and expiration dates.</p>
+                  <p className="text-stone-500 text-sm leading-relaxed">Instantly pull policy limits, deliverables, SLAs, and expiration dates.</p>
                 </div>
               </div>
             </div>
@@ -188,7 +188,7 @@ export default function MarketingFeatures() {
                  </div>
                  <div>
                    <h3 className="text-2xl font-bold mb-2">Comprehensive Tracking</h3>
-                   <p className="text-white/70">Track Service Agreements, GL, Auto, Umbrella, and Workers Comp in one unified dashboard.</p>
+                   <p className="text-white/70">Track Service Agreements, SLAs, Deliverables, GL, Auto, and Workers Comp in one unified dashboard.</p>
                  </div>
               </div>
             </div>
@@ -216,7 +216,7 @@ export default function MarketingFeatures() {
                   <ScanLine className="w-5 h-5" />
                </div>
                <h3 className="font-bold text-[#1a1a1a] mb-1">OCR & Contract AI</h3>
-               <p className="text-xs text-stone-500">99% accuracy on ACORD forms and Service Agreements</p>
+               <p className="text-xs text-stone-500">99% accuracy on ACORD forms, Contracts, and SLAs</p>
             </div>
 
             {/* Small Card 2 */}

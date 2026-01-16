@@ -13,9 +13,9 @@ interface SEOProps {
 }
 
 export default function SEO({
-  title = 'Covera - Vendor Compliance & Insurance Tracking Platform',
-  description = 'Enterprise vendor compliance tracking software for property managers, construction firms, and franchises. Automate COI tracking, vendor management, and compliance monitoring in real-time.',
-  keywords = 'vendor compliance tracking, certificate of insurance tracking, COI management, vendor management software, compliance tracking software, insurance certificate tracking, vendor compliance management, construction vendor compliance, property management vendor tracking, B2B compliance software',
+  title = 'Covera - Vendor Contract & Compliance Management Platform',
+  description = 'Enterprise platform for vendor contract management and compliance. Track service agreements, deliverables, SLAs, and certificates of insurance in one place.',
+  keywords = 'vendor contract management, SLA tracking, deliverable tracking, milestone monitoring, service agreement management, vendor compliance tracking, certificate of insurance tracking, COI management, vendor management software',
   ogImage = 'https://gpnvockmgvysulsxxtyi.supabase.co/storage/v1/object/public/assets/covera-og-image.png',
   ogType = 'website',
   canonical,
@@ -153,9 +153,9 @@ export default function SEO({
 // Predefined SEO configurations for different pages
 export const SEO_CONFIGS = {
   landing: {
-    title: 'Covera - Vendor Compliance & COI Tracking Software | Enterprise Solution',
-    description: 'Automate vendor compliance tracking and certificate of insurance (COI) management. Track 1000+ vendors, get instant alerts, and eliminate compliance gaps. Trusted by property managers, construction firms, and franchises.',
-    keywords: 'vendor compliance tracking, COI tracking software, certificate of insurance management, vendor management platform, compliance automation, insurance tracking software, vendor compliance solution, construction compliance, property management compliance, franchise vendor management',
+    title: 'Covera - Vendor Contract & Compliance Management Platform',
+    description: 'Detailed vendor contract management for project and service agreements. Track deliverables, milestones, SLAs, and insurance compliance. Trusted by property managers and construction firms.',
+    keywords: 'vendor contract management, SLA tracking, deliverable tracking, milestone monitoring, service agreement management, vendor compliance tracking, COI tracking software',
     schema: [
       {
         "@context": "https://schema.org",
