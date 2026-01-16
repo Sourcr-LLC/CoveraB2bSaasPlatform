@@ -6,6 +6,33 @@ import SEO, { SEO_CONFIGS } from './SEO';
 
 const blogPosts = [
   {
+    slug: 'vendor-service-agreements-vs-sows',
+    title: 'Vendor Service Agreements vs. SOWs: What\'s the Difference?',
+    excerpt: 'Confused by MSAs vs SOWs? Learn the key differences and when to use each for better vendor contract management.',
+    category: 'Contracts',
+    readTime: '5 min read',
+    date: 'January 16, 2026',
+    featured: true
+  },
+  {
+    slug: 'tracking-vendor-deliverables-slas',
+    title: 'How to Track Vendor Deliverables & SLAs Effectively',
+    excerpt: 'Are you getting what you pay for? Learn how to monitor vendor performance and enforce Service Level Agreements.',
+    category: 'Performance',
+    readTime: '7 min read',
+    date: 'January 16, 2026',
+    featured: true
+  },
+  {
+    slug: 'vendor-contract-renewal-best-practices',
+    title: 'Vendor Contract Renewal: A Proactive Guide to Avoiding Auto-Renewals',
+    excerpt: 'Don\'t get locked into unwanted contracts. Learn how to manage renewals and notice periods proactively.',
+    category: 'Renewals',
+    readTime: '4 min read',
+    date: 'January 16, 2026',
+    featured: true
+  },
+  {
     slug: 'what-is-certificate-of-insurance',
     title: 'What Is a Certificate of Insurance (COI)?',
     excerpt: 'Everything you need to know about COIs, why they matter, and how to read them correctly to protect your business.',

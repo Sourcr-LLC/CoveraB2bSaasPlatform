@@ -317,13 +317,13 @@ export const SEO_CONFIGS = {
 
   aboutUs: {
     title: 'About Covera | Vendor Compliance Without the Chaos',
-    description: 'Covera helps businesses stay compliant with vendor insurance without spreadsheets, manual follow ups, or compliance chaos. Operations-first platform for automated COI tracking.',
-    keywords: 'about Covera, vendor compliance software, COI tracking platform, insurance compliance automation, vendor management company',
+    description: 'Covera helps businesses stay compliant with vendor contracts and insurance without spreadsheets, manual follow ups, or compliance chaos. Operations-first platform for automated vendor management.',
+    keywords: 'about Covera, vendor contract software, COI tracking platform, insurance compliance automation, vendor management company',
     schema: {
       "@context": "https://schema.org",
       "@type": "AboutPage",
       "name": "About Covera",
-      "description": "Covera helps businesses stay compliant with vendor insurance without spreadsheets, manual follow ups, or compliance chaos",
+      "description": "Covera helps businesses stay compliant with vendor contracts without spreadsheets, manual follow ups, or compliance chaos",
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -554,6 +554,54 @@ export const SEO_CONFIGS = {
       "@type": "Article",
       "headline": "How to Automate COI Collection",
       "datePublished": "2026-01-04",
+      "author": {
+        "@type": "Organization",
+        "name": "Covera"
+      }
+    }
+  },
+
+  blogVendorServiceAgreementsVsSows: {
+    title: 'Vendor Service Agreements vs. Statements of Work (SOW): What\'s the Difference?',
+    description: 'Understand the key differences between Master Service Agreements (MSA) and Statements of Work (SOW). Learn when to use each and how to structure your vendor contracts effectively.',
+    keywords: 'vendor service agreement vs sow, msa vs sow, master service agreement, statement of work, vendor contract types, vendor agreement structure',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Vendor Service Agreements vs. Statements of Work (SOW)",
+      "datePublished": "2026-01-16",
+      "author": {
+        "@type": "Organization",
+        "name": "Covera"
+      }
+    }
+  },
+
+  blogTrackingVendorDeliverablesAndSlas: {
+    title: 'How to Track Vendor Deliverables & SLAs Effectively',
+    description: 'Stop losing track of what your vendors owe you. Learn how to monitor deliverables, enforce Service Level Agreements (SLAs), and ensure you get what you pay for.',
+    keywords: 'track vendor deliverables, monitor SLAs, service level agreement tracking, vendor performance monitoring, vendor deliverable tracking',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Track Vendor Deliverables & SLAs Effectively",
+      "datePublished": "2026-01-16",
+      "author": {
+        "@type": "Organization",
+        "name": "Covera"
+      }
+    }
+  },
+
+  blogVendorContractRenewalBestPractices: {
+    title: 'Vendor Contract Renewal: A Proactive Guide to Avoiding Auto-Renewals',
+    description: 'Don\'t get stuck in unwanted contracts. Learn how to manage vendor contract renewals, set up alerts for notice periods, and negotiate better terms.',
+    keywords: 'vendor contract renewal, auto-renewal clauses, contract notice period, vendor contract management, renewal best practices',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Vendor Contract Renewal: A Proactive Guide to Avoiding Auto-Renewals",
+      "datePublished": "2026-01-16",
       "author": {
         "@type": "Organization",
         "name": "Covera"

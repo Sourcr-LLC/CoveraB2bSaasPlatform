@@ -13,13 +13,13 @@ export default function AboutUs() {
     <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
       <SEO
         title="About Covera | Vendor Compliance Without the Chaos"
-        description="Covera helps businesses stay compliant with vendor insurance without spreadsheets, manual follow ups, or compliance chaos."
-        keywords="about Covera, vendor compliance software, COI tracking platform"
+        description="Covera helps businesses stay compliant with vendor contracts without spreadsheets, manual follow ups, or compliance chaos."
+        keywords="about Covera, vendor contract software, COI tracking platform"
         schema={{
           "@context": "https://schema.org",
           "@type": "AboutPage",
           "name": "About Covera",
-          "description": "Covera helps businesses stay compliant with vendor insurance without spreadsheets, manual follow ups, or compliance chaos",
+          "description": "Covera helps businesses stay compliant with vendor contracts without spreadsheets, manual follow ups, or compliance chaos",
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
@@ -49,7 +49,7 @@ export default function AboutUs() {
             </h1>
             
             <p className="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Covera helps businesses stay compliant with vendor insurance without spreadsheets, manual follow ups, or compliance chaos.
+              Covera helps businesses stay compliant with vendor contracts without spreadsheets, manual follow ups, or compliance chaos.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

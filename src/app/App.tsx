@@ -51,6 +51,9 @@ const VendorInsuranceTrackingMistakes = lazy(() => import('./components/blogs/Ve
 const GeneralLiabilityCoverageLimits = lazy(() => import('./components/blogs/GeneralLiabilityCoverageLimits'));
 const AutomateCOICollection = lazy(() => import('./components/blogs/AutomateCOICollection'));
 const VendorInsuranceComplianceSmallBusiness = lazy(() => import('./components/blogs/VendorInsuranceComplianceSmallBusiness'));
+const VendorServiceAgreementsVsSows = lazy(() => import('./components/blogs/VendorServiceAgreementsVsSows'));
+const TrackingVendorDeliverablesAndSlas = lazy(() => import('./components/blogs/TrackingVendorDeliverablesAndSlas'));
+const VendorContractRenewalBestPractices = lazy(() => import('./components/blogs/VendorContractRenewalBestPractices'));
 const SubscriptionSuccess = lazy(() => import('./components/SubscriptionSuccess'));
 
 // Dashboard components
@@ -444,6 +447,21 @@ export default function App() {
           <Route path="/blog/vendor-insurance-compliance-small-business" element={
             <Suspense fallback={<PremiumLoader fullScreen />}>
               <VendorInsuranceComplianceSmallBusiness />
+            </Suspense>
+          } />
+          <Route path="/blog/vendor-service-agreements-vs-sows" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <VendorServiceAgreementsVsSows />
+            </Suspense>
+          } />
+          <Route path="/blog/tracking-vendor-deliverables-slas" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <TrackingVendorDeliverablesAndSlas />
+            </Suspense>
+          } />
+          <Route path="/blog/vendor-contract-renewal-best-practices" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <VendorContractRenewalBestPractices />
             </Suspense>
           } />
           <Route path="/subscription-success" element={

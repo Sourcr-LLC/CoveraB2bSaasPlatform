@@ -195,7 +195,7 @@ export default function Sitemap() {
   </url>
   
   <url>
-    <loc>https://covera.co/blog/expired-vendor-insurance</loc>
+    <loc>https://covera.co/blog/expired-vendor-insurance-what-to-do</loc>
     <lastmod>2026-01-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -239,6 +239,27 @@ export default function Sitemap() {
   <url>
     <loc>https://covera.co/blog/vendor-insurance-compliance-small-business</loc>
     <lastmod>2026-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://covera.co/blog/vendor-service-agreements-vs-sows</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://covera.co/blog/tracking-vendor-deliverables-slas</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://covera.co/blog/vendor-contract-renewal-best-practices</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
