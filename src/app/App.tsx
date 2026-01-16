@@ -63,6 +63,7 @@ const ComplianceDashboard = lazy(() => import('./components/ComplianceDashboard'
 const ReportsExports = lazy(() => import('./components/ReportsExports'));
 const Settings = lazy(() => import('./components/Settings'));
 const ContractManagement = lazy(() => import('./components/ContractManagement'));
+const ContractDetail = lazy(() => import('./components/ContractDetail'));
 const AddVendor = lazy(() => import('./components/AddVendor'));
 const Billing = lazy(() => import('./components/Billing'));
 const VendorPortal = lazy(() => import('./components/VendorPortal'));
@@ -249,6 +250,16 @@ export default function App() {
               <Suspense fallback={<DashboardLoadingFallback />}>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <ContractManagement />
+                </ProtectedRoute>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/contracts/:id"
+            element={
+              <Suspense fallback={<DashboardLoadingFallback />}>
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <ContractDetail />
                 </ProtectedRoute>
               </Suspense>
             }

@@ -2660,6 +2660,78 @@ app.post("/make-server-be7827e3/contracts", async (c) => {
   }
 });
 
+// Get single contract
+app.get("/make-server-be7827e3/contracts/:id", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    const contractId = c.req.param('id');
+    const contract = await kv.get(`contract:${user.id}:${contractId}`);
+
+    if (!contract) {
+      return c.json({ error: 'Contract not found' }, 404);
+    }
+    
+    // Generate signed URL if document exists
+    if (contract.documentPath) {
+      try {
+        const bucketName = 'make-92f9f116-vendor-documents';
+        const { data: urlData, error: urlError } = await supabase.storage
+          .from(bucketName)
+          .createSignedUrl(contract.documentPath, 31536000); // 1 year
+
+        if (!urlError && urlData?.signedUrl) {
+          contract.documentUrl = urlData.signedUrl;
+        }
+      } catch (err) {
+        console.error('Error generating signed URL for contract:', err);
+      }
+    }
+
+    return c.json(contract);
+  } catch (error) {
+    console.error('Get contract error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Update contract
+app.put("/make-server-be7827e3/contracts/:id", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    const contractId = c.req.param('id');
+    const updates = await c.req.json();
+    
+    const existingContract = await kv.get(`contract:${user.id}:${contractId}`);
+    
+    if (!existingContract) {
+      return c.json({ error: 'Contract not found' }, 404);
+    }
+
+    const contract = {
+      ...existingContract,
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+
+    await kv.set(`contract:${user.id}:${contractId}`, contract);
+
+    return c.json(contract);
+  } catch (error) {
+    console.error('Update contract error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
 // Upload contract document with file
 app.post("/make-server-be7827e3/contracts/upload", async (c) => {
   try {

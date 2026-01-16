@@ -514,6 +514,16 @@ export default function ContractManagement() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-2">
+                          <Link
+                            to={`/contracts/${contract.id}`}
+                            className="px-3 py-1.5 rounded-lg text-sm transition-colors hover:bg-gray-100 border"
+                            style={{
+                              borderColor: 'var(--border)',
+                              color: 'var(--foreground)'
+                            }}
+                          >
+                            Manage
+                          </Link>
                           {contract.documentUrl ? (
                             <>
                               <button
@@ -704,6 +714,19 @@ export default function ContractManagement() {
               </div>
 
               {/* Action Button */}
+              <div className="flex gap-2 mb-3">
+                <Link
+                  to={`/contracts/${contract.id}`}
+                  className="flex-1 px-3 py-2 rounded-lg text-sm transition-colors border text-center font-medium"
+                  style={{
+                    borderColor: 'var(--border)',
+                    color: 'var(--foreground)'
+                  }}
+                >
+                  Manage Details
+                </Link>
+              </div>
+
               {contract.documentUrl ? (
                 <button
                   onClick={() => setViewingDocument(contract)}

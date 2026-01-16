@@ -1,6 +1,6 @@
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, AlertCircle, Clock, TrendingDown
+  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText
 } from 'lucide-react';
 import { KpiCard } from '../dashboard/KpiCard';
 
@@ -37,6 +37,7 @@ function DashboardContent() {
         <div className="p-4 space-y-1">
           <NavItem icon={LayoutDashboard} label="Dashboard" active />
           <NavItem icon={Users} label="Vendors" />
+          <NavItem icon={FileText} label="Contracts" />
           <NavItem icon={Shield} label="Insurance" />
           <NavItem icon={FileCheck} label="Compliance" />
         </div>
@@ -132,6 +133,12 @@ function DashboardContent() {
                  date="Expires tomorrow"
                />
                <VendorRow 
+                 name="TechPro Solutions" 
+                 type="Service Agreement" 
+                 status="Active" 
+                 date="Milestone due soon"
+               />
+               <VendorRow 
                  name="Metro Maintenance" 
                  type="W-9 Form" 
                  status="Missing" 
@@ -158,7 +165,7 @@ function NavItem({ icon: Icon, label, active = false }: any) {
 
 function VendorRow({ name, type, status, date }: any) {
   let statusColor = "bg-[#f5f5f4] text-slate-600";
-  if (status === "Verified") statusColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
+  if (status === "Verified" || status === "Active") statusColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
   if (status === "Expired") statusColor = "bg-red-50 text-red-700 border-red-100";
   if (status === "At Risk") statusColor = "bg-orange-50 text-orange-700 border-orange-100";
   if (status === "Missing") statusColor = "bg-[#f5f5f4] text-slate-600 border-[#e7e5e4]";
@@ -166,8 +173,8 @@ function VendorRow({ name, type, status, date }: any) {
   return (
     <div className="px-6 py-6 flex items-center justify-between group hover:bg-[#fafaf9] transition-colors duration-200 relative overflow-hidden">
        <div className="flex items-center gap-4 relative z-10">
-         <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-colors duration-300 flex-shrink-0 ${status === "Verified" ? "bg-emerald-100 text-emerald-600" : "bg-[#f5f5f4] text-slate-500"}`}>
-           {status === "Verified" ? <CheckCircle2 className="w-5 h-5" /> : name.charAt(0)}
+         <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-colors duration-300 flex-shrink-0 ${status === "Verified" || status === "Active" ? "bg-emerald-100 text-emerald-600" : "bg-[#f5f5f4] text-slate-500"}`}>
+           {status === "Verified" || status === "Active" ? <CheckCircle2 className="w-5 h-5" /> : name.charAt(0)}
          </div>
          <div className="min-w-0">
            <div className="font-semibold text-slate-900 text-sm truncate">{name}</div>
