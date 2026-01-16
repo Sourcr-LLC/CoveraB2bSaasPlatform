@@ -102,12 +102,12 @@ export default function LandingPage() {
             <div className="text-center max-w-4xl mx-auto mb-16">
             
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-              Vendor Insurance and Compliance <br className="hidden md:block" />
+              Vendor Contracts & Insurance Compliance <br className="hidden md:block" />
               <span className="text-[#3A4F6A]">Without Spreadsheets</span>
             </h1>
             
             <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Automatically track COIs, prevent expired coverage, and stay audit-ready without chasing vendors or exposing your business to legal risk.
+              Automatically manage service agreements, track COIs, and monitor milestones. Stay audit-ready without chasing vendors or exposing your business to risk.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

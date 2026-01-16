@@ -28,14 +28,14 @@ export default function AIScannerSection() {
             <p 
               className="text-lg text-slate-600 mb-10 leading-relaxed"
             >
-              Our AI is trained specifically on ACORD 25 forms and complex insurance documents. It instantly extracts limits, policy numbers, and endorsements—flagging gaps before they become liabilities.
+              Our AI is trained specifically on ACORD 25 forms, Service Agreements, and complex legal documents. It instantly extracts limits, contract milestones, and endorsements—flagging gaps before they become liabilities.
             </p>
 
             <div className="space-y-6">
               {[
-                { title: "Zero Data Entry", desc: "Upload a PDF and get structured data in seconds." },
+                { title: "Zero Data Entry", desc: "Upload PDFs and get structured data in seconds." },
                 { title: "Audit-Proof Precision", desc: "Links every data point back to the source pixel." },
-                { title: "Smart Expiration Logic", desc: "Understands policy periods and auto-renewals." }
+                { title: "Smart Expiration Logic", desc: "Understands policy periods and contract terms." }
               ].map((item, idx) => (
                 <div 
                   key={idx}

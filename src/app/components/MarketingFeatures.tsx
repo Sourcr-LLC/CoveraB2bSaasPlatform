@@ -66,8 +66,8 @@ export default function MarketingFeatures() {
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center font-bold text-stone-500 shrink-0">1</div>
                 <div>
-                  <h3 className="font-bold text-lg text-[#1a1a1a] mb-2">Centralize Documents</h3>
-                  <p className="text-stone-500 text-sm leading-relaxed">Upload ACORD 25 forms directly or sync with Procore and QuickBooks.</p>
+                  <h3 className="font-bold text-lg text-[#1a1a1a] mb-2">Centralize Contracts & COIs</h3>
+                  <p className="text-stone-500 text-sm leading-relaxed">Upload Master Service Agreements, Statements of Work, and ACORD 25 forms directly.</p>
                 </div>
               </div>
             </div>
@@ -88,7 +88,7 @@ export default function MarketingFeatures() {
                     <div className="text-center space-y-2">
                       <div className="flex justify-between text-xs text-stone-500"><span>Limits</span> <span className="text-green-600">✓</span></div>
                       <div className="flex justify-between text-xs text-stone-500"><span>Dates</span> <span className="text-green-600">✓</span></div>
-                      <div className="flex justify-between text-xs text-stone-500"><span>Insured</span> <span className="text-green-600">✓</span></div>
+                      <div className="flex justify-between text-xs text-stone-500"><span>SLA Terms</span> <span className="text-green-600">✓</span></div>
                     </div>
                   </div>
                 </div>
@@ -96,8 +96,8 @@ export default function MarketingFeatures() {
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center font-bold text-stone-500 shrink-0">2</div>
                 <div>
-                  <h3 className="font-bold text-lg text-[#1a1a1a] mb-2">AI Extraction & Verify</h3>
-                  <p className="text-stone-500 text-sm leading-relaxed">Instantly pull policy limits, expiration dates, and endorsements.</p>
+                  <h3 className="font-bold text-lg text-[#1a1a1a] mb-2">AI Analysis & Extraction</h3>
+                  <p className="text-stone-500 text-sm leading-relaxed">Instantly pull policy limits, contract milestones, and expiration dates.</p>
                 </div>
               </div>
             </div>
@@ -128,8 +128,8 @@ export default function MarketingFeatures() {
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center font-bold text-stone-500 shrink-0">3</div>
                 <div>
-                  <h3 className="font-bold text-lg text-[#1a1a1a] mb-2">Automate Action</h3>
-                  <p className="text-stone-500 text-sm leading-relaxed">Auto-send emails for expired policies and missing documents.</p>
+                  <h3 className="font-bold text-lg text-[#1a1a1a] mb-2">Automate Compliance</h3>
+                  <p className="text-stone-500 text-sm leading-relaxed">Auto-send emails for expiring contracts, missing insurance, and upcoming milestones.</p>
                 </div>
               </div>
             </div>
@@ -180,15 +180,15 @@ export default function MarketingFeatures() {
                             <span className="text-green-400">Active</span>
                          </div>
                          <div className="flex justify-between items-center text-xs text-white/60 pb-2 border-b border-white/10">
-                            <span>Umbrella / Excess</span>
-                            <span className="text-amber-400">Expiring Soon</span>
+                            <span>Service Agreement</span>
+                            <span className="text-green-400">Active</span>
                          </div>
                       </div>
                     </div>
                  </div>
                  <div>
                    <h3 className="text-2xl font-bold mb-2">Comprehensive Tracking</h3>
-                   <p className="text-white/70">Track GL, Auto, Umbrella, Workers Comp, and specialized policies in one dashboard.</p>
+                   <p className="text-white/70">Track Service Agreements, GL, Auto, Umbrella, and Workers Comp in one unified dashboard.</p>
                  </div>
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function MarketingFeatures() {
                   </div>
                   <div className="mt-8">
                      <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">Audit-Ready History</h3>
-                     <p className="text-stone-500 text-sm">Full history of every document, verification attempt, and email sent for every vendor.</p>
+                     <p className="text-stone-500 text-sm">Full history of every contract, document, verification attempt, and email sent for every vendor.</p>
                   </div>
                </div>
             </div>
@@ -215,8 +215,8 @@ export default function MarketingFeatures() {
                <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-stone-100 flex items-center justify-center mb-4 text-[#3A4F6A]">
                   <ScanLine className="w-5 h-5" />
                </div>
-               <h3 className="font-bold text-[#1a1a1a] mb-1">OCR Precision</h3>
-               <p className="text-xs text-stone-500">99% accuracy on ACORD 25 forms and insurance docs</p>
+               <h3 className="font-bold text-[#1a1a1a] mb-1">OCR & Contract AI</h3>
+               <p className="text-xs text-stone-500">99% accuracy on ACORD forms and Service Agreements</p>
             </div>
 
             {/* Small Card 2 */}

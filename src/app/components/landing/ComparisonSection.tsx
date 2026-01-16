@@ -38,7 +38,7 @@ export default function ComparisonSection() {
     {
       id: 1,
       old: "Vendor emails back a PDF (eventually)",
-      new: "Vendor uploads their own COI & W9",
+      new: "Vendor uploads COI, Contracts & W9",
       oldIcon: Clock,
       newIcon: Upload,
       oldHighlight: "text-red-500",
@@ -47,7 +47,7 @@ export default function ComparisonSection() {
     {
       id: 2,
       old: "You open PDF, type dates into Excel",
-      new: "AI scans & verifies coverage instantly",
+      new: "AI verifies coverage & milestones",
       oldIcon: FileText,
       newIcon: ShieldCheck,
       oldHighlight: "text-red-500",
