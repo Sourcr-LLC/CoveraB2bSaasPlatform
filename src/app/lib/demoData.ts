@@ -28,6 +28,7 @@ export interface DemoContract {
   value: string;
   status: 'active' | 'expiring' | 'expired';
   autoRenew: boolean;
+  propertyName: string;
   documentName?: string;
   documentType?: string;
   documentSize?: string;
@@ -306,6 +307,7 @@ export const demoContracts: DemoContract[] = [
     value: '$450,000',
     status: 'active',
     autoRenew: false,
+    propertyName: 'Downtown Renovation',
     documentName: 'Contract_Atlas_2024.pdf',
     documentType: 'PDF',
     documentSize: '2.4 MB',
@@ -321,6 +323,7 @@ export const demoContracts: DemoContract[] = [
     value: '$84,000',
     status: 'active',
     autoRenew: true,
+    propertyName: 'Headquarters',
     documentName: 'Service_Agreement_Premier.pdf',
     documentType: 'PDF',
     documentSize: '1.1 MB',
@@ -335,7 +338,8 @@ export const demoContracts: DemoContract[] = [
     endDate: addMonths(4),
     value: '$120,000',
     status: 'active',
-    autoRenew: true
+    autoRenew: true,
+    propertyName: 'Corporate IT Hub'
   },
   {
     id: 'contract-4',
@@ -347,6 +351,7 @@ export const demoContracts: DemoContract[] = [
     value: '$36,000',
     status: 'expiring',
     autoRenew: false,
+    propertyName: 'West Campus',
     documentName: 'Security_Contract_2023.pdf',
     documentType: 'PDF',
     documentSize: '0.9 MB',
@@ -361,7 +366,8 @@ export const demoContracts: DemoContract[] = [
     endDate: addDays(-15),
     value: '$96,000',
     status: 'expired',
-    autoRenew: false
+    autoRenew: false,
+    propertyName: 'Logistics Bay'
   },
   {
     id: 'contract-6',
@@ -373,6 +379,7 @@ export const demoContracts: DemoContract[] = [
     value: '$72,000',
     status: 'active',
     autoRenew: true,
+    propertyName: 'Data Center A',
     documentName: 'SLA_DataSecure.pdf',
     documentType: 'PDF',
     documentSize: '3.2 MB',
@@ -387,7 +394,8 @@ export const demoContracts: DemoContract[] = [
     endDate: addMonths(10),
     value: '$48,000',
     status: 'active',
-    autoRenew: false
+    autoRenew: false,
+    propertyName: 'Central Cafeteria'
   },
   {
     id: 'contract-8',
@@ -398,7 +406,8 @@ export const demoContracts: DemoContract[] = [
     endDate: addMonths(5),
     value: '$28,500',
     status: 'active',
-    autoRenew: false
+    autoRenew: false,
+    propertyName: 'Interior Renovation'
   }
 ];
 

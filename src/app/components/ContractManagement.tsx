@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileText, Calendar, AlertTriangle, CheckCircle2, Upload, Clock, Eye, Plus, Filter, Download, Search, X } from 'lucide-react';
+import { FileText, Calendar, AlertTriangle, CheckCircle2, Upload, Clock, Eye, Plus, Filter, Download, Search, X, Building2, ArrowUpDown, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router';
 import { supabase } from '../lib/api';
 import { projectId, publicAnonKey } from '../../../utils/supabase/info';
@@ -12,6 +12,7 @@ interface Contract {
   id: string;
   vendorName: string;
   contractType: string;
+  propertyName: string;
   startDate: string;
   endDate: string;
   value: string;
@@ -83,6 +84,8 @@ export default function ContractManagement() {
   const [filteredContracts, setFilteredContracts] = useState<Contract[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'expiring' | 'expired'>('all');
+  const [sortField, setSortField] = useState<'propertyName' | 'vendorName' | 'endDate' | 'value'>('endDate');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [isNewContractModalOpen, setIsNewContractModalOpen] = useState(false);
   const [isUploadContractModalOpen, setIsUploadContractModalOpen] = useState(false);
   const [viewingDocument, setViewingDocument] = useState<Contract | null>(null);
@@ -99,6 +102,7 @@ export default function ContractManagement() {
         const mappedDemoContracts = demoContracts.map(dc => ({
           id: dc.id,
           vendorName: dc.vendorName,
+          propertyName: dc.propertyName || 'General',
           contractType: dc.contractName,
           startDate: dc.startDate,
           endDate: dc.endDate,
@@ -139,9 +143,36 @@ export default function ContractManagement() {
     if (filterStatus !== 'all') {
       result = result.filter(contract => contract.status === filterStatus);
     }
+
+    // Sorting
+    result.sort((a, b) => {
+      let comparison = 0;
+      
+      switch (sortField) {
+        case 'propertyName':
+          comparison = a.propertyName.localeCompare(b.propertyName);
+          break;
+        case 'vendorName':
+          comparison = a.vendorName.localeCompare(b.vendorName);
+          break;
+        case 'value':
+          // Remove currency symbols and commas for numeric comparison
+          const valA = parseFloat(a.value.replace(/[^0-9.-]+/g, ""));
+          const valB = parseFloat(b.value.replace(/[^0-9.-]+/g, ""));
+          comparison = valA - valB;
+          break;
+        case 'endDate':
+          comparison = new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+          break;
+        default:
+          comparison = 0;
+      }
+
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
     
     setFilteredContracts(result);
-  }, [searchTerm, filterStatus, contracts]);
+  }, [searchTerm, filterStatus, contracts, sortField, sortDirection]);
 
   const handleContractAdded = () => {
     loadContracts();
@@ -246,6 +277,26 @@ export default function ContractManagement() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <select
+                value={sortField}
+                onChange={(e) => setSortField(e.target.value as any)}
+                className="px-4 py-2.5 rounded-xl border appearance-none pr-10 cursor-pointer"
+                style={{
+                  backgroundColor: 'var(--card)',
+                  borderColor: 'var(--border)',
+                  color: 'var(--foreground)'
+                }}
+              >
+                <option value="endDate">Sort by Date</option>
+                <option value="propertyName">Sort by Property</option>
+                <option value="vendorName">Sort by Other Party</option>
+                <option value="value">Sort by Value</option>
+              </select>
+              <ArrowUpDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--foreground-muted)' }} />
+            </div>
+
             <button
               className="px-5 py-2.5 rounded-xl border transition-colors flex items-center justify-center gap-2"
               onClick={() => setIsUploadContractModalOpen(true)}
@@ -422,7 +473,10 @@ export default function ContractManagement() {
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                   <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                    Vendor Name
+                    Other Party (Vendor)
+                  </th>
+                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                    Property / Association
                   </th>
                   <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
                     Contract Type
@@ -472,6 +526,12 @@ export default function ContractManagement() {
                               {contract.vendorName}
                             </div>
                           </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2" style={{ color: 'var(--foreground)' }}>
+                          <Building2 className="w-4 h-4 text-slate-400" />
+                          {contract.propertyName}
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -622,11 +682,12 @@ export default function ContractManagement() {
                     <FileText className="w-5 h-5" style={{ color: 'var(--foreground-muted)' }} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="truncate" style={{ color: 'var(--foreground)' }}>
+                    <div className="truncate font-medium" style={{ color: 'var(--foreground)' }}>
                       {contract.vendorName}
                     </div>
-                    <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                      {contract.contractType}
+                    <div className="flex items-center gap-1.5 text-sm mt-0.5" style={{ color: 'var(--foreground-muted)' }}>
+                      <Building2 className="w-3 h-3" />
+                      {contract.propertyName}
                     </div>
                   </div>
                 </div>
