@@ -533,16 +533,16 @@ export default function Dashboard() {
               <table className="w-full">
                 <thead>
                   <tr style={{ backgroundColor: 'var(--panel)' }}>
-                    <th className="px-8 py-5 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-8 py-5 text-left text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
                       {activeTab === 'insurance' ? 'Vendor' : 'Contract Name'}
                     </th>
-                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
                       Status
                     </th>
-                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
                       Deadline
                     </th>
-                    <th className="px-6 py-5 text-right text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-5 text-right text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
                       Action
                     </th>
                   </tr>
@@ -554,7 +554,7 @@ export default function Dashboard() {
                       className="border-t transition-colors hover:bg-slate-50/50"
                       style={{ borderColor: 'var(--border-subtle)' }}
                     >
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6 whitespace-nowrap">
                         <div>
                           <div className="text-sm font-semibold mb-0.5" style={{ color: 'var(--foreground)' }}>
                             {activeTab === 'insurance' ? item.name : item.contractName}
@@ -567,7 +567,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-6">
+                      <td className="px-6 py-6 whitespace-nowrap">
                         <span
                           className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border"
                           style={{
@@ -590,7 +590,7 @@ export default function Dashboard() {
                           {item.statusLabel}
                         </span>
                       </td>
-                      <td className="px-6 py-6">
+                      <td className="px-6 py-6 whitespace-nowrap">
                         <div className="text-sm" style={{ color: 'var(--foreground)' }}>
                           {item.expiryDate}
                         </div>
@@ -602,7 +602,7 @@ export default function Dashboard() {
                             : `${item.daysLeft} days left`}
                         </div>
                       </td>
-                      <td className="px-6 py-6 text-right">
+                      <td className="px-6 py-6 text-right whitespace-nowrap">
                         <button 
                           className="text-sm px-4 py-2 rounded-lg border transition-all hover:bg-white hover:shadow-sm"
                           style={{ 

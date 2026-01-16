@@ -271,7 +271,7 @@ export default function ContractDetail() {
             )}
             <span className="mx-2">•</span>
             {contract.status === 'active' && <span className="text-green-600 font-medium">Active</span>}
-            {contract.status === 'expiring' && <span className="text-amber-600 font-medium">Expiring Soon</span>}
+            {contract.status === 'expiring' && <span className="text-amber-600 font-medium">Expiring</span>}
             {contract.status === 'expired' && <span className="text-red-600 font-medium">Expired</span>}
           </div>
         </div>

@@ -192,7 +192,7 @@ export default function ContractManagement() {
       case 'expiring':
         return {
           icon: Clock,
-          label: 'Expiring Soon',
+          label: 'Expiring',
           bg: 'var(--status-at-risk-bg)',
           text: 'var(--status-at-risk)',
           border: 'var(--status-at-risk-border)'
@@ -368,7 +368,7 @@ export default function ContractManagement() {
             }}
           >
             <div className="text-sm mb-1" style={{ color: 'var(--foreground-muted)' }}>
-              Expiring Soon
+              Expiring
             </div>
             <div className="text-3xl" style={{ color: 'var(--status-at-risk)' }}>
               {stats.expiring}
@@ -429,7 +429,7 @@ export default function ContractManagement() {
             >
               <option value="all">All Contracts</option>
               <option value="active">Active</option>
-              <option value="expiring">Expiring Soon</option>
+              <option value="expiring">Expiring</option>
               <option value="expired">Expired</option>
             </select>
           </div>
@@ -439,7 +439,7 @@ export default function ContractManagement() {
             {[
               { value: 'all', label: 'All Contracts' },
               { value: 'active', label: 'Active' },
-              { value: 'expiring', label: 'Expiring Soon' },
+              { value: 'expiring', label: 'Expiring' },
               { value: 'expired', label: 'Expired' }
             ].map(filter => (
               <button
@@ -472,31 +472,31 @@ export default function ContractManagement() {
             <table className="w-full">
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Other Party (Vendor)
                   </th>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Property / Association
                   </th>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Contract Type
                   </th>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Start Date
                   </th>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     End Date
                   </th>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Value
                   </th>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Status
                   </th>
-                  <th className="text-left px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Auto-Renewal
                   </th>
-                  <th className="text-right px-6 py-4 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  <th className="text-right px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Actions
                   </th>
                 </tr>
@@ -513,7 +513,7 @@ export default function ContractManagement() {
                         borderBottom: index < filteredContracts.length - 1 ? '1px solid var(--border-subtle)' : 'none'
                       }}
                     >
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-3">
                           <div 
                             className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -528,33 +528,33 @@ export default function ContractManagement() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2" style={{ color: 'var(--foreground)' }}>
                           <Building2 className="w-4 h-4 text-slate-400" />
                           {contract.propertyName}
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span style={{ color: 'var(--foreground-muted)' }}>
                           {contract.contractType}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span style={{ color: 'var(--foreground-muted)' }}>
                           {new Date(contract.startDate).toLocaleDateString()}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span style={{ color: 'var(--foreground-muted)' }}>
                           {new Date(contract.endDate).toLocaleDateString()}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span style={{ color: 'var(--foreground)' }}>
                           {contract.value}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <div 
                           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm"
                           style={{
@@ -567,12 +567,12 @@ export default function ContractManagement() {
                           {statusConfig.label}
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span style={{ color: 'var(--foreground-muted)' }}>
                           {contract.autoRenewal ? 'Yes' : 'No'}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center justify-end gap-2">
                           <Link
                             to={`/contracts/${contract.id}`}
