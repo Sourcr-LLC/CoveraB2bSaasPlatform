@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { TrendingUp, TrendingDown, Bell, AlertCircle, Clock } from 'lucide-react';
 import { vendorApi } from '../lib/api';
 import { toast } from 'sonner';

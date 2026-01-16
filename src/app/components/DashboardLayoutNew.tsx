@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import { Menu, X, Bell, Lock } from 'lucide-react';
 import { authApi, supabase } from '../lib/api';
 import { useSubscription } from '../hooks/useSubscription';

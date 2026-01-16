@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { AlertTriangle, Shield, DollarSign, Scale, FileText, Clock, ArrowRight } from 'lucide-react';
 import LandingNav from './LandingNav';
 

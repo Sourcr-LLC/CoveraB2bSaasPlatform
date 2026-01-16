@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { useState, useEffect, Suspense, lazy } from 'react';
 import { supabase } from './lib/api';
 import { Toaster } from 'sonner';

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { CheckCircle2, XCircle, AlertTriangle, TrendingUp, FileText, Download, Mail, Calendar, Clock, AlertCircle, Shield } from 'lucide-react';
 import { supabase } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';

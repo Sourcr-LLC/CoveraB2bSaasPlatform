@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { CheckCircle, Shield, Clock, AlertTriangle, FileText, ArrowRight } from 'lucide-react';
 import { PremiumCheck } from './ui/PremiumCheck';
 import LandingNav from './LandingNav';

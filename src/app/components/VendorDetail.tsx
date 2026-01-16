@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router';
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Mail, Phone, MapPin, CheckCircle2, AlertCircle, Clock, Upload, FileText, ExternalLink, Send, Copy, X, FileUp, Eye, Trash2, AlertTriangle } from 'lucide-react';
 import { vendorApi } from '../lib/api';

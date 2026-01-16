@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { Search, Filter, Plus, ChevronRight, Download, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 import { vendorApi } from '../lib/api';
 import { isDemoMode, demoVendors } from '../lib/demoData';

@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router';
 import { useState, useEffect } from 'react';
 import { Upload, Sparkles, ArrowLeft, AlertCircle } from 'lucide-react';
 import { vendorApi } from '../lib/api';

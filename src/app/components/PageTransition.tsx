@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { ReactNode } from 'react';
 
 interface PageTransitionProps {

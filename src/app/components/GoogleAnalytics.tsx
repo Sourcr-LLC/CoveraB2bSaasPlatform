@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 // Google Analytics Measurement ID
 const GA_MEASUREMENT_ID = 'G-K26HWY81S5';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Bell, Send, AlertTriangle, Clock, TrendingUp, Filter, Search, Calendar, Mail, Settings as SettingsIcon, CheckCircle2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { supabase } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';

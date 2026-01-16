@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { ArrowLeft, Shield, Lock, Eye, Server, FileCheck, Users } from 'lucide-react';
 import { useEffect } from 'react';
 import LandingNav from './LandingNav';

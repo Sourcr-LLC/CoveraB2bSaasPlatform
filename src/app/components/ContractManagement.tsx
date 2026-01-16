@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FileText, Calendar, AlertTriangle, CheckCircle2, Upload, Clock, Eye, Plus, Filter, Download, Search, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { supabase } from '../lib/api';
 import { projectId, publicAnonKey } from '../../../utils/supabase/info';
 import NewContractModal from './NewContractModal';

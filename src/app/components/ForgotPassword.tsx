@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { ArrowLeft, Mail, CheckCircle2 } from 'lucide-react';
 import { projectId, publicAnonKey } from '../../../utils/supabase/info';
 

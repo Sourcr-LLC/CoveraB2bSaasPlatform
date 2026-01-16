@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { FileCheck, ArrowRight } from 'lucide-react';
 import SEO from './SEO';
 import LandingNav from './LandingNav';

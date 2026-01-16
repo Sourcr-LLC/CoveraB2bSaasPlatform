@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { ArrowRight, MessageSquare } from 'lucide-react';
 import { useState, lazy, Suspense } from 'react';
 import SEO, { SEO_CONFIGS } from './SEO';

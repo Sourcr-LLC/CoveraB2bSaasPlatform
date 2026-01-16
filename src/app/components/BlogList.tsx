@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Calendar, ArrowRight, Clock } from 'lucide-react';
 import LandingNav from './LandingNav';
 import Footer from './Footer';

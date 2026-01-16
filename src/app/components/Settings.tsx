@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/api';
 import PaywallModal from './PaywallModal';
 import { useWalkthrough } from '../hooks/useWalkthrough';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { isDemoMode, enableDemoMode, disableDemoMode } from '../lib/demoData';
 
 export default function Settings() {

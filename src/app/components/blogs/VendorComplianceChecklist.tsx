@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Calendar, Clock, ArrowLeft, Download, CheckSquare } from 'lucide-react';
 import LandingNav from '../LandingNav';
 import BlogFooter from '../BlogFooter';

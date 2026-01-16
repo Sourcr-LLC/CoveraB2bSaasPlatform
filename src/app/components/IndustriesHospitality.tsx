@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Hotel, CheckCircle, Shield, ArrowRight, TrendingUp, Users, Clock, AlertTriangle, Star } from 'lucide-react';
 import { useState } from 'react';
 import SEO from './SEO';

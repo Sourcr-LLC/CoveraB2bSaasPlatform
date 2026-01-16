@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Store, CheckCircle, Shield, ArrowRight, TrendingUp, MapPin, Users } from 'lucide-react';
 import { useState } from 'react';
 import SEO from './SEO';

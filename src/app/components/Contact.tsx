@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Mail, MessageSquare, Phone, MapPin, ArrowRight } from 'lucide-react';
 import LandingNav from './LandingNav';
 import Footer from './Footer';

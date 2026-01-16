@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import PaywallModal from './PaywallModal';
 import ContactSalesModal from './ContactSalesModal';
 import { toast } from 'sonner';
