@@ -1,6 +1,6 @@
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText
+  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle
 } from 'lucide-react';
 import { KpiCard } from '../dashboard/KpiCard';
 
@@ -17,10 +17,10 @@ export default function InteractiveHeroVisual() {
 function DashboardContent() {
   // Realistic stats to show value proposition
   const stats = {
-    total: 167,
-    compliant: 142,
     atRisk: 18,
-    nonCompliant: 7
+    nonCompliant: 7,
+    activeContracts: 42,
+    expiringContracts: 3
   };
 
   return (
@@ -66,83 +66,106 @@ function DashboardContent() {
           {/* STATS ROW */}
           <div className="grid grid-cols-4 gap-4">
             <KpiCard 
-              label="At Risk" 
+              label="Compliance Risk" 
               value={stats.atRisk} 
-              change={`${Math.round((stats.atRisk/stats.total)*100)}%`}
+              change=""
               subtext="expiring within 30 days"
               percentageColor="#f59e0b"
-              bgTint="#ffffff"
+              bgTint="rgba(245, 158, 11, 0.03)"
               borderColor="rgba(245, 158, 11, 0.2)"
-              icon={TrendingDown}
+              icon={Shield}
               trend="neutral"
             />
             <KpiCard 
               label="Non-Compliant" 
               value={stats.nonCompliant} 
-              change={`${Math.round((stats.nonCompliant/stats.total)*100)}%`}
-              subtext="of total vendors"
+              change=""
+              subtext="expired policies"
               percentageColor="#ef4444"
-              bgTint="#ffffff"
+              bgTint="rgba(239, 68, 68, 0.03)"
               borderColor="rgba(239, 68, 68, 0.2)"
-              icon={TrendingDown}
+              icon={AlertTriangle}
               trend="neutral"
             />
             <KpiCard 
-              label="Compliant" 
-              value={stats.compliant} 
-              change={`${Math.round((stats.compliant/stats.total)*100)}%`}
-              subtext="of total vendors"
-              percentageColor="#10b981"
-              bgTint="#ffffff"
-              borderColor="rgba(16, 185, 129, 0.2)"
+              label="Active Contracts" 
+              value={stats.activeContracts} 
+              change=""
+              subtext="managed agreements"
+              percentageColor="#3A4F6A"
+              bgTint="rgba(58, 79, 106, 0.03)"
+              borderColor="rgba(58, 79, 106, 0.2)"
               trend="neutral"
+              icon={FileText}
             />
             <KpiCard 
-              label="Total Vendors" 
-              value={stats.total} 
-              change="+12%"
-              subtext="active vendors"
-              trend="up" 
-              percentageColor="#10b981"
+              label="Upcoming Milestones" 
+              value={stats.expiringContracts} 
+              change=""
+              subtext="contract renewals due"
+              trend="neutral" 
+              percentageColor="#f59e0b"
               bgTint="#ffffff"
               borderColor="#e7e5e4"
+              icon={Calendar}
             />
           </div>
 
           {/* TABLE ROW */}
           <div className="bg-white border border-[#e7e5e4] rounded-xl overflow-hidden shadow-sm">
             <div className="px-6 py-4 border-b border-[#f5f5f4] flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                 <h3 className="font-bold text-slate-900 text-base">Recent Vendors</h3>
-                 <span className="text-xs px-2 py-0.5 bg-[#f5f5f4] rounded-full text-slate-600 font-medium">Live</span>
+              <div className="flex items-center gap-4">
+                 <h3 className="font-bold text-slate-900 text-base">Attention Items</h3>
+                 
+                 {/* Tabs simulation */}
+                 <div className="flex bg-[#f5f5f4] p-1 rounded-lg">
+                    <div className="px-3 py-1.5 text-xs font-medium rounded-md bg-white text-slate-900 shadow-sm">
+                      Insurance
+                    </div>
+                    <div className="px-3 py-1.5 text-xs font-medium rounded-md text-slate-500">
+                      Contracts
+                    </div>
+                 </div>
               </div>
               <Filter className="w-4 h-4 text-slate-400" />
             </div>
             
             <div className="divide-y divide-[#f5f5f4]">
+               {/* Header Row */}
+               <div className="grid grid-cols-12 px-6 py-3 bg-[#fafaf9] text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <div className="col-span-4">Vendor / Item</div>
+                  <div className="col-span-3">Status</div>
+                  <div className="col-span-3">Deadline</div>
+                  <div className="col-span-2 text-right">Action</div>
+               </div>
+
                <VendorRow 
                  name="SkyHigh Construction" 
                  type="GL Insurance" 
                  status="Expired" 
-                 date="2 days ago"
+                 date="2 days overdue"
+                 action="Send Reminder"
                />
                <VendorRow 
                  name="Valley Logistics" 
                  type="Workers Comp" 
                  status="At Risk" 
                  date="Expires tomorrow"
+                 action="Send Reminder"
                />
                <VendorRow 
                  name="TechPro Solutions" 
                  type="Service Agreement" 
-                 status="Active" 
+                 status="Expiring" 
                  date="Milestone due soon"
+                 action="View Details"
                />
                <VendorRow 
                  name="Metro Maintenance" 
                  type="W-9 Form" 
                  status="Missing" 
                  date="Action needed"
+                 action="Request"
                />
             </div>
           </div>
@@ -163,32 +186,35 @@ function NavItem({ icon: Icon, label, active = false }: any) {
   );
 }
 
-function VendorRow({ name, type, status, date }: any) {
+function VendorRow({ name, type, status, date, action }: any) {
   let statusColor = "bg-[#f5f5f4] text-slate-600";
   if (status === "Verified" || status === "Active") statusColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
-  if (status === "Expired") statusColor = "bg-red-50 text-red-700 border-red-100";
-  if (status === "At Risk") statusColor = "bg-orange-50 text-orange-700 border-orange-100";
-  if (status === "Missing") statusColor = "bg-[#f5f5f4] text-slate-600 border-[#e7e5e4]";
+  if (status === "Expired" || status === "Missing") statusColor = "bg-red-50 text-red-700 border-red-100";
+  if (status === "At Risk" || status === "Expiring") statusColor = "bg-orange-50 text-orange-700 border-orange-100";
 
   return (
-    <div className="px-6 py-6 flex items-center justify-between group hover:bg-[#fafaf9] transition-colors duration-200 relative overflow-hidden">
-       <div className="flex items-center gap-4 relative z-10">
-         <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-colors duration-300 flex-shrink-0 ${status === "Verified" || status === "Active" ? "bg-emerald-100 text-emerald-600" : "bg-[#f5f5f4] text-slate-500"}`}>
-           {status === "Verified" || status === "Active" ? <CheckCircle2 className="w-5 h-5" /> : name.charAt(0)}
-         </div>
-         <div className="min-w-0">
-           <div className="font-semibold text-slate-900 text-sm truncate">{name}</div>
-           <div className="text-xs text-slate-500 truncate">{type}</div>
+    <div className="px-6 py-4 grid grid-cols-12 items-center group hover:bg-[#fafaf9] transition-colors duration-200">
+       <div className="col-span-4 pr-4">
+         <div className="font-semibold text-slate-900 text-sm truncate">{name}</div>
+         <div className="text-xs text-slate-500 truncate">{type}</div>
+       </div>
+
+       <div className="col-span-3">
+         <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusColor} w-fit`}>
+           {(status === "At Risk" || status === "Expiring") && <Clock className="w-3 h-3 mr-1" />}
+           {(status === "Expired" || status === "Missing") && <AlertCircle className="w-3 h-3 mr-1" />}
+           {status}
          </div>
        </div>
 
-       <div className="relative z-10 text-right flex-shrink-0 ml-2">
-         <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusColor} transition-colors duration-300`}>
-           {status === "At Risk" && <Clock className="w-3 h-3 mr-1" />}
-           {status === "Expired" && <AlertCircle className="w-3 h-3 mr-1" />}
-           {status}
-         </div>
-         <div className="text-xs text-slate-400 mt-1 font-medium block">{date}</div>
+       <div className="col-span-3">
+         <div className="text-sm text-slate-700 font-medium">{date}</div>
+       </div>
+
+       <div className="col-span-2 text-right">
+         <button className="text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200 hover:shadow-sm transition-all whitespace-nowrap">
+            {action}
+         </button>
        </div>
     </div>
   );

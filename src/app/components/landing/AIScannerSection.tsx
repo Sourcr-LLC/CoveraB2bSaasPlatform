@@ -1,4 +1,4 @@
-import { CheckCircle2, ShieldCheck, BrainCircuit, ScanLine } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, BrainCircuit, ScanLine, FileText } from 'lucide-react';
 
 export default function AIScannerSection() {
   return (
@@ -80,26 +80,27 @@ export default function AIScannerSection() {
                   <div className="space-y-3">
                     <div className="w-20 h-3 bg-slate-200 rounded" />
                     <div className="w-full h-24 bg-slate-50 border border-slate-200 rounded p-3 space-y-2">
-                       {/* Insurer Boxes */}
-                       <div className="flex gap-2 items-center">
-                         <div className="w-4 h-4 bg-slate-200 rounded" />
-                         <div className="w-full h-3 bg-slate-200 rounded" />
+                       {/* Contract Terms Box */}
+                       <div className="flex gap-2 items-center mb-1">
+                         <div className="w-16 h-3 bg-slate-300 rounded" />
                        </div>
-                       <div className="flex gap-2 items-center">
-                         <div className="w-4 h-4 bg-slate-200 rounded" />
-                         <div className="w-full h-3 bg-slate-200 rounded" />
+                       <div className="space-y-1.5">
+                         <div className="w-full h-2 bg-slate-200 rounded" />
+                         <div className="w-full h-2 bg-slate-200 rounded" />
+                         <div className="w-2/3 h-2 bg-slate-200 rounded" />
                        </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Coverages Grid */}
+                {/* Mixed Content Grid */}
                 <div className="space-y-4">
-                  <div className="w-full h-6 bg-slate-800/10 rounded flex items-center px-2">
+                  <div className="w-full h-6 bg-slate-800/10 rounded flex items-center px-2 justify-between">
                     <div className="w-32 h-2 bg-slate-400 rounded" />
+                    <div className="w-16 h-2 bg-slate-300 rounded" />
                   </div>
                   
-                  {/* Row 1: General Liability */}
+                  {/* Row 1: General Liability (Insurance) */}
                   <div className="grid grid-cols-12 gap-2 items-center">
                     <div className="col-span-1 w-4 h-4 border border-slate-300 rounded" />
                     <div className="col-span-4 h-3 bg-slate-200 rounded" />
@@ -107,20 +108,18 @@ export default function AIScannerSection() {
                     <div className="col-span-3 h-3 bg-slate-300 rounded relative group-highlight-target-1" />
                   </div>
                   
-                  {/* Row 2: Auto */}
+                  {/* Row 2: Payment Terms (Contract) */}
                   <div className="grid grid-cols-12 gap-2 items-center">
-                    <div className="col-span-1 w-4 h-4 border border-slate-300 rounded" />
+                    <div className="col-span-1 w-4 h-4 border border-slate-300 rounded bg-slate-100" />
                     <div className="col-span-4 h-3 bg-slate-200 rounded" />
-                    <div className="col-span-4 h-3 bg-slate-200 rounded" />
-                    <div className="col-span-3 h-3 bg-slate-300 rounded relative group-highlight-target-2" />
+                    <div className="col-span-7 h-3 bg-blue-100/50 rounded border border-blue-100 relative group-highlight-target-2" />
                   </div>
 
-                  {/* Row 3: Umbrella */}
+                  {/* Row 3: SLA / Milestones (Contract) */}
                   <div className="grid grid-cols-12 gap-2 items-center">
                     <div className="col-span-1 w-4 h-4 border border-slate-300 rounded" />
-                    <div className="col-span-4 h-3 bg-slate-200 rounded" />
-                    <div className="col-span-4 h-3 bg-slate-200 rounded" />
-                    <div className="col-span-3 h-3 bg-slate-300 rounded relative group-highlight-target-3" />
+                    <div className="col-span-3 h-3 bg-slate-200 rounded" />
+                    <div className="col-span-8 h-3 bg-slate-200 rounded" />
                   </div>
                 </div>
               </div>
@@ -153,10 +152,10 @@ export default function AIScannerSection() {
               <div
                 className="absolute bottom-16 left-8 bg-blue-50 border border-blue-200 px-3 py-2 rounded-lg shadow-lg z-30 flex items-center gap-2 animate-in fade-in slide-in-from-left-4 duration-1000 delay-1000 fill-mode-both"
               >
-                <ScanLine className="w-4 h-4 text-blue-600" />
+                <FileText className="w-4 h-4 text-blue-600" />
                 <div>
-                  <div className="text-[10px] text-blue-600 font-bold uppercase">Policy Exp</div>
-                  <div className="text-sm font-bold text-blue-800">12/31/2025</div>
+                  <div className="text-[10px] text-blue-600 font-bold uppercase">Payment Terms</div>
+                  <div className="text-sm font-bold text-blue-800">Net 30</div>
                 </div>
               </div>
 

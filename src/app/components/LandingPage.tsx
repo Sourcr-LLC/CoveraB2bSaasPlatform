@@ -102,7 +102,7 @@ export default function LandingPage() {
             <div className="text-center max-w-4xl mx-auto mb-16">
             
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-              Vendor Contracts & Insurance Compliance <br className="hidden md:block" />
+              Vendor Contracts & Insurance <br className="hidden md:block" />
               <span className="text-[#3A4F6A]">Without Spreadsheets</span>
             </h1>
             

@@ -798,8 +798,7 @@ export default function Settings() {
           </button>
         </div>
 
-        {/* Demo Mode Toggle - Hidden for now */}
-        {false && (
+        {/* Demo Mode Toggle */}
         <div
           className="rounded-xl border p-8 mb-6"
           style={{
@@ -836,7 +835,6 @@ export default function Settings() {
             {demoEnabled ? 'Disable Demo Mode' : 'Enable Demo Mode'}
           </button>
         </div>
-        )}
 
         {/* Stripe Test Mode Toggle - Hidden for now */}
         {false && (

@@ -28,11 +28,10 @@ export const KpiCard: React.FC<KpiCardProps> = ({
 }) => {
   return (
     <div
-      className={`rounded-xl border p-4 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between h-[130px] ${isAtRisk ? 'border-l-2' : ''}`}
+      className={`rounded-xl border p-4 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between h-[130px]`}
       style={{
         backgroundColor: bgTint,
         borderColor: borderColor,
-        borderLeftColor: isAtRisk ? '#f59e0b' : borderColor, // Explicitly set left border color if at risk
         backdropFilter: 'blur(12px)',
         boxShadow: 'var(--shadow-card, var(--shadow-md))'
       }}
