@@ -28,7 +28,7 @@ export default function AIScannerSection() {
             <p 
               className="text-lg text-slate-600 mb-10 leading-relaxed"
             >
-              Our AI is trained specifically on ACORD 25 forms, Service Agreements, and complex legal documents. It instantly extracts limits, contract milestones, and endorsements—flagging gaps before they become liabilities.
+              Our AI is trained specifically on ACORD 25 forms, Service Agreements, and complex legal documents. It instantly extracts limits, contract milestones, and endorsements, flagging gaps before they become liabilities.
             </p>
 
             <div className="space-y-6">
