@@ -24,6 +24,22 @@
 [build.processing.images]
   compress = true
 
+# ========================================
+# DOMAIN REDIRECT: getcovera.co → covera.co
+# ========================================
+# Redirect old domain to new domain (preserves SEO)
+[[redirects]]
+  from = "https://getcovera.co/*"
+  to = "https://covera.co/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://getcovera.co/*"
+  to = "https://covera.co/:splat"
+  status = 301
+  force = true
+
 # Ensure sitemap.xml is served with correct headers
 [[headers]]
   for = "/sitemap.xml"
