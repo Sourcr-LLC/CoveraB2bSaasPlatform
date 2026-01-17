@@ -70,6 +70,7 @@ export default function AddVendor() {
       }
       
       await vendorApi.create({ ...formData, status });
+      window.dispatchEvent(new Event('vendorUpdated'));
       navigate('/vendors');
     } catch (err: any) {
       console.error('Failed to create vendor:', err);

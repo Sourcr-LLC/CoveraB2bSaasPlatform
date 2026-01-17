@@ -16,8 +16,8 @@ const PLAN_DETAILS: Record<string, { monthlyPrice: number; yearlyPrice: number; 
     name: 'Free',
     features: [
       'Track up to 15 vendors',
-      'Basic compliance tracking',
-      'COI uploads'
+      'Basic insurance & contract tracking',
+      'COI & contract uploads'
     ]
   },
   essentials: {
@@ -26,10 +26,10 @@ const PLAN_DETAILS: Record<string, { monthlyPrice: number; yearlyPrice: number; 
     name: 'Essentials',
     features: [
       'Track up to 50 vendors',
-      'Unlimited compliance tracking',
+      'Unlimited insurance & contract tracking',
       'Real-time expiry monitoring',
       'Automated alerts & notifications',
-      'Certificate of Insurance (COI) management',
+      'COI & Service Agreement management',
       'Standard email support',
     ]
   },
@@ -39,10 +39,10 @@ const PLAN_DETAILS: Record<string, { monthlyPrice: number; yearlyPrice: number; 
     name: 'Core',
     features: [
       'Track up to 150 vendors',
-      'Unlimited compliance tracking',
+      'Unlimited insurance & contract tracking',
       'Real-time expiry monitoring',
       'Automated alerts & notifications',
-      'Certificate of Insurance (COI) management',
+      'COI & Service Agreement management',
       'Activity logs & audit trails',
       'PDF, CSV & Excel exports',
       'Priority email support',
@@ -55,7 +55,7 @@ const PLAN_DETAILS: Record<string, { monthlyPrice: number; yearlyPrice: number; 
     features: [
       'Unlimited vendors',
       'Multiple locations / entities',
-      'Custom compliance rules',
+      'Custom insurance & contract rules',
       'Internal escalations',
       'Dedicated onboarding',
       'Priority support',
@@ -608,7 +608,7 @@ export default function Billing() {
                 {[
                   'Unlimited vendors',
                   'Multiple locations / entities',
-                  'Custom compliance rules',
+                  'Custom insurance & contract rules',
                   'Internal escalations',
                   'Dedicated onboarding',
                   'Priority support',

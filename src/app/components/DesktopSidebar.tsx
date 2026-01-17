@@ -13,8 +13,10 @@ import {
   Loader2,
   Lock
 } from 'lucide-react';
-import { authApi } from '../lib/api';
-import { useState } from 'react';
+import { authApi, vendorApi } from '../lib/api';
+import { useState, useEffect } from 'react';
+import { useSubscription } from '../hooks/useSubscription';
+import { isDemoMode, demoVendors } from '../lib/demoData';
 
 interface DesktopSidebarProps {
   organizationName: string;
@@ -27,6 +29,25 @@ export default function DesktopSidebar({ organizationName, userEmail, userInitia
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [vendorCount, setVendorCount] = useState<number>(0);
+  const { getMaxVendors, loading: subscriptionLoading } = useSubscription();
+
+  useEffect(() => {
+    const loadVendorCount = async () => {
+      try {
+        const { vendors } = isDemoMode() ? { vendors: demoVendors } : await vendorApi.getAll();
+        setVendorCount(vendors?.length || 0);
+      } catch (error) {
+        console.error('Failed to load vendor count:', error);
+      }
+    };
+    
+    loadVendorCount();
+    
+    // Listen for vendor updates
+    window.addEventListener('vendorUpdated', loadVendorCount);
+    return () => window.removeEventListener('vendorUpdated', loadVendorCount);
+  }, []);
 
   const handleSignOut = async () => {
     setIsLoggingOut(true);
@@ -165,6 +186,30 @@ export default function DesktopSidebar({ organizationName, userEmail, userInitia
             <span>Sign out</span>
           </button>
         </div>
+
+        {/* Vendor Tracking */}
+        {!subscriptionLoading && (
+          <div className="px-6 py-4 border-t" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+            <div className="flex items-center justify-between mb-2 text-xs">
+              <span className="font-medium text-white/80">Vendor Tracking</span>
+              <span className="text-white/60">{vendorCount} / {getMaxVendors() >= 999999 ? '∞' : getMaxVendors()}</span>
+            </div>
+            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div 
+                className="h-full rounded-full transition-all duration-500"
+                style={{ 
+                  width: `${Math.min((vendorCount / (getMaxVendors() || 1)) * 100, 100)}%`,
+                  backgroundColor: vendorCount >= getMaxVendors() ? '#f87171' : '#4ade80' // Using tailwind colors for red-400 and green-400 directly since vars might not work in style prop properly with opacity sometimes
+                }}
+              />
+            </div>
+            {vendorCount >= getMaxVendors() && getMaxVendors() < 999999 && (
+               <Link to="/billing" className="block mt-2 text-xs text-amber-300 hover:text-amber-200 text-center">
+                 Limit reached. Upgrade plan
+               </Link>
+            )}
+          </div>
+        )}
 
         {/* Org info */}
         <div className="border-t px-6 py-5" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>

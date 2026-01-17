@@ -272,7 +272,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </h1>
                 
                 <p className="text-lg mb-8" style={{ color: 'var(--foreground-muted)' }}>
-                  Covera is a premium vendor compliance and insurance tracking platform. Upgrade to Core to unlock full access to all features.
+                  Covera is a premium vendor compliance, insurance, and contract tracking platform. Upgrade to Core to unlock full access to all features.
                 </p>
 
                 <button
@@ -302,7 +302,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 {[
                   { icon: LayoutDashboard, title: 'Real-time Dashboard', description: 'Monitor compliance status at a glance' },
                   { icon: Users, title: 'Vendor Management', description: 'Track all your vendors in one place' },
-                  { icon: Shield, title: 'Insurance Tracking', description: 'Never miss a COI expiration' },
+                  { icon: Shield, title: 'Insurance & Contracts', description: 'Never miss a COI or agreement expiration' },
                   { icon: BarChart3, title: 'Reports & Exports', description: 'Generate audit-ready documentation' },
                 ].map((feature, index) => {
                   const Icon = feature.icon;

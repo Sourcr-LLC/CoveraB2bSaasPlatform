@@ -116,10 +116,10 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
       vendors: 50,
       features: [
         'Track up to 50 vendors',
-        'Unlimited compliance tracking',
+        'Unlimited insurance & contract tracking',
         'Real-time expiry monitoring',
         'Automated alerts & notifications',
-        'Certificate of Insurance (COI) management',
+        'COI & Service Agreement management',
         'Standard email support',
       ]
     },
@@ -130,10 +130,10 @@ export default function PaywallModal({ isOpen, onClose, feature = 'this feature'
       vendors: 150,
       features: [
         'Track up to 150 vendors',
-        'Unlimited compliance tracking',
+        'Unlimited insurance & contract tracking',
         'Real-time expiry monitoring',
         'Automated alerts & notifications',
-        'Certificate of Insurance (COI) management',
+        'COI & Service Agreement management',
         'Activity logs & audit trails',
         'PDF, CSV & Excel exports',
         'Priority email support',

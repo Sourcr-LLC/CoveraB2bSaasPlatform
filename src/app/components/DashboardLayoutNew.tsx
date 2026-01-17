@@ -195,7 +195,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   </h1>
                   
                   <p className="text-lg mb-8" style={{ color: 'var(--foreground-muted)' }}>
-                    Covera is a premium vendor compliance and insurance tracking platform. Upgrade to Core to unlock full access to all features.
+                    Covera is a premium vendor compliance, insurance, and contract tracking platform. Upgrade to Core to unlock full access to all features.
                   </p>
 
                   <button

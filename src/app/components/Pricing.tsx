@@ -179,9 +179,9 @@ export default function Pricing() {
               <div className="space-y-4 pt-8 border-t border-slate-100">
                 {[
                   'Up to 50 vendors',
-                  'COI uploads & storage',
+                  'COI & contract uploads',
                   'Automated reminders',
-                  'Compliance dashboard',
+                  'Insurance & contract tracking',
                   'High-risk & non-compliant tracking',
                   'Standard email support'
                 ].map((feature, index) => (
@@ -238,9 +238,9 @@ export default function Pricing() {
               <div className="space-y-4 pt-8 border-t border-slate-100">
                 {[
                   'Up to 150 vendors',
-                  'COI uploads & storage',
+                  'COI & contract uploads',
                   'Automated reminders',
-                  'Compliance dashboard',
+                  'Insurance & contract tracking',
                   'High-risk & non-compliant tracking',
                   'Audit-ready exports (PDF / CSV)',
                   'Team access',
@@ -297,7 +297,7 @@ export default function Pricing() {
                 {[
                   'Unlimited vendors',
                   'Multiple locations / entities',
-                  'Custom compliance rules',
+                  'Custom insurance & contract rules',
                   'Internal escalations',
                   'Dedicated onboarding',
                   'Priority support',
