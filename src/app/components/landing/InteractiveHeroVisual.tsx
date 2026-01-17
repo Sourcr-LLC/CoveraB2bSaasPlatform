@@ -1,6 +1,6 @@
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle
+  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3
 } from 'lucide-react';
 import { KpiCard } from '../dashboard/KpiCard';
 
@@ -40,6 +40,7 @@ function DashboardContent() {
           <NavItem icon={FileText} label="Contracts" />
           <NavItem icon={Shield} label="Insurance" />
           <NavItem icon={FileCheck} label="Compliance" />
+          <NavItem icon={BarChart3} label="Reports" />
         </div>
         <div className="mt-auto p-4 border-t border-white/10">
            <div className="flex items-center gap-3">
