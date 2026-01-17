@@ -28,7 +28,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           // React core libraries
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'react-vendor': ['react', 'react-dom', 'react-router'],
           
           // Radix UI components (grouped by functionality)
           'ui-radix': [
