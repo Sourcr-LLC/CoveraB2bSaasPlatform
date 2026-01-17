@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-slate-200 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
           <div className="col-span-2">
             <Link to="/" className="flex items-center mb-6" aria-label="Covera Home">
               <svg className="w-32 h-7" viewBox="0 0 3000 630" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,25 +29,42 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-slate-900 mb-4">Product</h3>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/features-coi-tracking" className="hover:text-[var(--primary)]">Features</Link></li>
-              <li><Link to="/pricing" className="hover:text-[var(--primary)]">Pricing</Link></li>
+              <li><Link to="/features-coi-tracking" className="hover:text-[#3A4F6A]">Features</Link></li>
+              <li><Link to="/pricing" className="hover:text-[#3A4F6A]">Pricing</Link></li>
+              <li><Link to="/login" className="hover:text-[#3A4F6A]">Log In</Link></li>
+              <li><Link to="/login" className="hover:text-[#3A4F6A]">Start Trial</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold text-slate-900 mb-4">Resources</h3>
+            <h3 className="font-semibold text-slate-900 mb-4">Industries</h3>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/blog" className="hover:text-[var(--primary)]">Blog</Link></li>
-              <li><Link to="/solutions-property-management" className="hover:text-[var(--primary)]">Property Management</Link></li>
-              <li><Link to="/solutions-construction" className="hover:text-[var(--primary)]">Construction</Link></li>
+              <li><Link to="/solutions-property-management" className="hover:text-[#3A4F6A]">Property Management</Link></li>
+              <li><Link to="/solutions-construction" className="hover:text-[#3A4F6A]">Construction</Link></li>
+              <li><Link to="/industries-healthcare" className="hover:text-[#3A4F6A]">Healthcare</Link></li>
+              <li><Link to="/industries-logistics" className="hover:text-[#3A4F6A]">Logistics</Link></li>
+              <li><Link to="/industries-franchise" className="hover:text-[#3A4F6A]">Franchises</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="h-[2.5rem] hidden md:block" aria-hidden="true" />
+            <ul className="space-y-2 text-sm text-slate-600">
+              <li><Link to="/industries-retail" className="hover:text-[#3A4F6A]">Retail</Link></li>
+              <li><Link to="/industries-government" className="hover:text-[#3A4F6A]">Government</Link></li>
+              <li><Link to="/industries-education" className="hover:text-[#3A4F6A]">Education</Link></li>
+              <li><Link to="/industries-facilities" className="hover:text-[#3A4F6A]">Facilities</Link></li>
+              <li><Link to="/industries-hospitality" className="hover:text-[#3A4F6A]">Hospitality</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-slate-900 mb-4">Company</h3>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/about-us" className="hover:text-[var(--primary)]">About</Link></li>
-              <li><Link to="/contact" className="hover:text-[var(--primary)]">Contact</Link></li>
+              <li><Link to="/about-us" className="hover:text-[#3A4F6A]">About</Link></li>
+              <li><Link to="/blog" className="hover:text-[#3A4F6A]">Blog</Link></li>
+              <li><Link to="/contact" className="hover:text-[#3A4F6A]">Contact</Link></li>
+              <li><Link to="/security" className="hover:text-[#3A4F6A]">Security</Link></li>
             </ul>
           </div>
         </div>

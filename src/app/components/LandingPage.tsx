@@ -69,7 +69,7 @@ export default function LandingPage() {
   const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
+    <div className="relative bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
       <SEO {...SEO_CONFIGS.landing} />
       
       {/* Background Ambience */}
