@@ -251,7 +251,7 @@ export default function ContractDetail() {
                 type="text"
                 value={editedContract?.vendorName}
                 onChange={(e) => setEditedContract({ ...editedContract!, vendorName: e.target.value })}
-                className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 w-full"
+                className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-[var(--primary)] w-full"
               />
             ) : (
               contract.vendorName
@@ -263,7 +263,7 @@ export default function ContractDetail() {
                 type="text"
                 value={editedContract?.contractType}
                 onChange={(e) => setEditedContract({ ...editedContract!, contractType: e.target.value })}
-                className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-[var(--primary)]"
                 placeholder="Contract Type"
               />
             ) : (
@@ -290,7 +290,7 @@ export default function ContractDetail() {
               </button>
               <button
                 onClick={handleSave}
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2"
+                className="px-4 py-2 rounded-lg bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] flex items-center gap-2"
               >
                 <Save className="w-4 h-4" />
                 Save Changes
@@ -315,7 +315,7 @@ export default function ContractDetail() {
             onClick={() => setActiveTab('overview')}
             className={`pb-4 text-sm font-medium border-b-2 transition-colors ${
               activeTab === 'overview'
-                ? 'border-blue-600 text-blue-600'
+                ? 'border-[var(--primary)] text-[var(--primary)]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -325,7 +325,7 @@ export default function ContractDetail() {
             onClick={() => setActiveTab('milestones')}
             className={`pb-4 text-sm font-medium border-b-2 transition-colors ${
               activeTab === 'milestones'
-                ? 'border-blue-600 text-blue-600'
+                ? 'border-[var(--primary)] text-[var(--primary)]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -335,7 +335,7 @@ export default function ContractDetail() {
             onClick={() => setActiveTab('slas')}
             className={`pb-4 text-sm font-medium border-b-2 transition-colors ${
               activeTab === 'slas'
-                ? 'border-blue-600 text-blue-600'
+                ? 'border-[var(--primary)] text-[var(--primary)]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -359,7 +359,7 @@ export default function ContractDetail() {
                         type="text"
                         value={editedContract?.projectName || ''}
                         onChange={(e) => setEditedContract({ ...editedContract!, projectName: e.target.value })}
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)]"
                         placeholder="e.g. Website Redesign"
                       />
                     </div>
@@ -369,7 +369,7 @@ export default function ContractDetail() {
                         value={editedContract?.description || ''}
                         onChange={(e) => setEditedContract({ ...editedContract!, description: e.target.value })}
                         rows={3}
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)]"
                         placeholder="Project description..."
                       />
                     </div>
@@ -379,7 +379,7 @@ export default function ContractDetail() {
                         value={editedContract?.scopeOfWork || ''}
                         onChange={(e) => setEditedContract({ ...editedContract!, scopeOfWork: e.target.value })}
                         rows={6}
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)]"
                         placeholder="Detailed scope of work..."
                       />
                     </div>
@@ -478,7 +478,7 @@ export default function ContractDetail() {
               {isEditing && (
                 <button
                   onClick={addMilestone}
-                  className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center gap-1"
+                  className="px-3 py-1.5 text-sm bg-[var(--primary)]/10 text-[var(--primary)] rounded-lg hover:bg-[var(--primary)]/20 flex items-center gap-1"
                 >
                   <Plus className="w-4 h-4" />
                   Add Milestone
@@ -569,7 +569,7 @@ export default function ContractDetail() {
               {isEditing && (
                 <button
                   onClick={addSLA}
-                  className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center gap-1"
+                  className="px-3 py-1.5 text-sm bg-[var(--primary)]/10 text-[var(--primary)] rounded-lg hover:bg-[var(--primary)]/20 flex items-center gap-1"
                 >
                   <Plus className="w-4 h-4" />
                   Add SLA

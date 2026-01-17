@@ -95,7 +95,7 @@ export default function ContactSalesModal({ isOpen, onClose }: ContactSalesModal
                 backgroundColor: 'rgba(58, 79, 106, 0.1)'
               }}
             >
-              <Mail className="w-6 h-6" style={{ color: '#3A4F6A' }} />
+              <Mail className="w-6 h-6" style={{ color: 'var(--primary)' }} />
             </div>
             <div>
               <h2 className="text-xl" style={{ color: 'var(--foreground)', fontWeight: 600 }}>

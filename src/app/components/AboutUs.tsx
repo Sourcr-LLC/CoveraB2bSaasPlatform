@@ -10,7 +10,7 @@ export default function AboutUs() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
+    <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
       <SEO
         title="About Covera | Vendor Compliance Without the Chaos"
         description="Covera helps businesses stay compliant with vendor contracts without spreadsheets, manual follow ups, or compliance chaos."
@@ -32,8 +32,8 @@ export default function AboutUs() {
 
       {/* Background Ambience */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-[#3A4F6A]/5 blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/3 blur-[100px]" />
+        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-[var(--primary)]/5 blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[var(--primary)]/3 blur-[100px]" />
       </div>
 
       <LandingNav />
@@ -55,7 +55,7 @@ export default function AboutUs() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] shadow-xl shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 flex items-center justify-center gap-2"
               >
                 Start free trial
                 <ArrowRight className="w-4 h-4" />
@@ -82,7 +82,7 @@ export default function AboutUs() {
               Our platform automatically tracks Certificates of Insurance, flags risk in real time, and keeps teams audit ready with confidence.
             </p>
             <div className="mt-8 p-8 rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <p className="text-xl font-semibold text-[#3A4F6A]">
+              <p className="text-xl font-semibold text-[var(--primary)]">
                 Covera is operations first, not insurance first.
               </p>
               <p className="mt-3 text-base leading-relaxed text-slate-500">
@@ -100,7 +100,7 @@ export default function AboutUs() {
             <h2 className="mb-6 text-3xl md:text-5xl font-semibold text-[#1a1a1a]">
               Why We Exist
             </h2>
-            <p className="text-2xl mb-6 font-medium text-[#3A4F6A]">
+            <p className="text-2xl mb-6 font-medium text-[var(--primary)]">
               Vendor insurance compliance is broken.
             </p>
             <p className="text-lg leading-relaxed mb-4 text-slate-600">
@@ -109,7 +109,7 @@ export default function AboutUs() {
             <p className="text-lg leading-relaxed mb-4 text-slate-600">
               Covera exists to remove that friction entirely.
             </p>
-            <p className="text-xl font-medium text-[#3A4F6A]">
+            <p className="text-xl font-medium text-[var(--primary)]">
               We believe compliance should be simple, transparent, and built into daily operations—not a last minute scramble during audits or incidents.
             </p>
           </div>
@@ -130,7 +130,7 @@ export default function AboutUs() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
-              <TrendingUp className="w-8 h-8 mb-4 text-[#3A4F6A]" />
+              <TrendingUp className="w-8 h-8 mb-4 text-[var(--primary)]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Track COI status in real time</h3>
               <p className="text-slate-500 leading-relaxed">
                 Monitor all vendor Certificate of Insurance statuses automatically across your entire organization.
@@ -138,7 +138,7 @@ export default function AboutUs() {
             </div>
 
             <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
-              <Zap className="w-8 h-8 mb-4 text-[#3A4F6A]" />
+              <Zap className="w-8 h-8 mb-4 text-[var(--primary)]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Automated vendor reminders</h3>
               <p className="text-slate-500 leading-relaxed">
                 Automatically remind vendors before coverage expires, eliminating manual follow-up emails.
@@ -146,7 +146,7 @@ export default function AboutUs() {
             </div>
 
             <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
-              <CheckCircle className="w-8 h-8 mb-4 text-[#3A4F6A]" />
+              <CheckCircle className="w-8 h-8 mb-4 text-[var(--primary)]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Clear compliance visibility</h3>
               <p className="text-slate-500 leading-relaxed">
                 See compliant, at-risk, and non-compliant vendors without interpretation or guesswork.
@@ -154,7 +154,7 @@ export default function AboutUs() {
             </div>
 
             <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
-              <Shield className="w-8 h-8 mb-4 text-[#3A4F6A]" />
+              <Shield className="w-8 h-8 mb-4 text-[var(--primary)]" />
               <h3 className="mb-2 text-xl font-semibold text-slate-900">Instant audit-ready reports</h3>
               <p className="text-slate-500 leading-relaxed">
                 Generate comprehensive compliance reports instantly for audits, reviews, or stakeholder updates.

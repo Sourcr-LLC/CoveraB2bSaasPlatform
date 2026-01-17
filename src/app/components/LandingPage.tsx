@@ -69,7 +69,7 @@ export default function LandingPage() {
   const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
+    <div className="min-h-screen relative overflow-x-hidden bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
       <SEO {...SEO_CONFIGS.landing} />
       
       {/* Background Ambience */}
@@ -103,7 +103,7 @@ export default function LandingPage() {
             
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               Vendor Contracts & Compliance <br className="hidden md:block" />
-              <span className="text-[#3A4F6A]">Without Spreadsheets</span>
+              <span className="text-[var(--primary)]">Without Spreadsheets</span>
             </h1>
             
             <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -113,7 +113,7 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-colors shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-colors shadow-xl shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 flex items-center justify-center gap-2"
               >
                 Start Free Trial
                 <ArrowRight className="w-4 h-4" />
@@ -129,7 +129,7 @@ export default function LandingPage() {
 
           {/* Hero Visual */}
           <div className="relative mx-auto max-w-6xl mt-16">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl opacity-40 blur-lg" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[var(--primary)]/20 rounded-3xl opacity-40 blur-lg" />
             <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-auto shadow-2xl shadow-slate-200 border border-slate-200/60 ring-1 ring-slate-900/5 bg-white" aria-hidden="true">
               <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
                 <InteractiveHeroVisual />
@@ -172,12 +172,12 @@ export default function LandingPage() {
       <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
                <MessageSquare className="w-3 h-3" />
                Testimonials
             </div>
             <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
-              Loved by <span className="text-[#3A4F6A]">Operations Teams</span>
+              Loved by <span className="text-[var(--primary)]">Operations Teams</span>
             </h2>
           </div>
           <Suspense fallback={<SectionLoader />}>
@@ -188,7 +188,7 @@ export default function LandingPage() {
 
       {/* CTA */}
       <section className="py-16 md:py-24 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#3A4F6A]" />
+        <div className="absolute inset-0 bg-[var(--primary)]" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -201,7 +201,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
               to="/login"
-              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[#3A4F6A] hover:bg-slate-50 transition-all shadow-xl flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[var(--primary)] hover:bg-slate-50 transition-all shadow-xl flex items-center justify-center gap-2"
             >
               Start Free Trial
               <ArrowRight className="w-4 h-4" />

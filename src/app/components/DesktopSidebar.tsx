@@ -87,7 +87,7 @@ export default function DesktopSidebar({ organizationName, userEmail, userInitia
       <aside 
         className="hidden lg:flex w-64 border-r flex-col fixed left-0 top-0 h-screen"
         style={{ 
-          backgroundColor: '#3A4F6A',
+          backgroundColor: 'var(--primary)',
           borderColor: 'rgba(255, 255, 255, 0.1)'
         }}
       >

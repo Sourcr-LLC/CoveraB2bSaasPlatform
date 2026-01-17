@@ -71,7 +71,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
+    <div className="min-h-screen bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
       <SEO 
         title="Contact Covera | Vendor Compliance Support"
         description="Get in touch with the Covera team for sales, support, or general inquiries about our vendor compliance platform."
@@ -100,7 +100,7 @@ export default function Contact() {
                 <p className="text-slate-500 mb-6 leading-relaxed">
                   Interested in learning how Covera can help your organization? Our sales team is ready to answer your questions.
                 </p>
-                <div className="flex items-center gap-3 text-[#3A4F6A] font-medium">
+                <div className="flex items-center gap-3 text-[var(--primary)] font-medium">
                   <Mail className="w-5 h-5" />
                   <a href="mailto:sales@covera.co" className="hover:underline">sales@covera.co</a>
                 </div>
@@ -111,7 +111,7 @@ export default function Contact() {
                 <p className="text-slate-500 mb-6 leading-relaxed">
                   Already a customer? Our support team is available to assist you with any technical issues or account questions.
                 </p>
-                <div className="flex items-center gap-3 text-[#3A4F6A] font-medium">
+                <div className="flex items-center gap-3 text-[var(--primary)] font-medium">
                   <MessageSquare className="w-5 h-5" />
                   <a href="mailto:support@covera.co" className="hover:underline">support@covera.co</a>
                 </div>
@@ -119,7 +119,7 @@ export default function Contact() {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl shadow-[#3A4F6A]/5">
+            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl shadow-[var(--primary)]/5">
               <h3 className="text-xl font-bold text-[#1a1a1a] mb-6">Send us a message</h3>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-6">
@@ -131,7 +131,7 @@ export default function Contact() {
                       value={formData.firstName}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
                       placeholder="Jane" 
                     />
                   </div>
@@ -143,7 +143,7 @@ export default function Contact() {
                       value={formData.lastName}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
                       placeholder="Doe" 
                     />
                   </div>
@@ -157,7 +157,7 @@ export default function Contact() {
                     value={formData.company}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
                     placeholder="Acme Corp" 
                   />
                 </div>
@@ -170,7 +170,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
                     placeholder="jane@company.com" 
                   />
                 </div>
@@ -182,7 +182,7 @@ export default function Contact() {
                     rows={4} 
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3A4F6A] focus:ring-1 focus:ring-[#3A4F6A] outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
                     placeholder="How can we help?" 
                   />
                 </div>
@@ -190,7 +190,7 @@ export default function Contact() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full py-4 rounded-xl bg-[#3A4F6A] text-white font-medium hover:bg-[#2c3e53] shadow-lg shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-xl bg-[var(--primary)] text-white font-medium hover:bg-[var(--primary-hover)] shadow-lg shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>

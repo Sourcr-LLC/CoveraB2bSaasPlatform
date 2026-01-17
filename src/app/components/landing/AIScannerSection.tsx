@@ -15,7 +15,7 @@ export default function AIScannerSection() {
           
           {/* Text Content */}
           <div className="lg:w-1/2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
               <BrainCircuit className="w-3 h-3" />
               Intelligent Parsing
             </div>

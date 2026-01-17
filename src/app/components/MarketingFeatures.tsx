@@ -40,12 +40,12 @@ export default function MarketingFeatures() {
         >
           <div className="flex items-center justify-between mb-12">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
                 <Sparkles className="w-3 h-3" />
                 Simple Workflow
               </div>
               <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
-                From Upload to Compliance<br className="hidden md:block"/> <span className="text-[#3A4F6A]">in Seconds.</span>
+                From Upload to Compliance<br className="hidden md:block"/> <span className="text-[var(--primary)]">in Seconds.</span>
               </h2>
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function MarketingFeatures() {
                   </div>
                   
                   <div className="absolute bottom-6 right-6">
-                     <button className="bg-[#3A4F6A] text-white text-xs px-3 py-1.5 rounded-lg shadow-lg shadow-blue-900/20 hover:scale-105 transition-transform cursor-default flex items-center gap-1">
+                     <button className="bg-[var(--primary)] text-white text-xs px-3 py-1.5 rounded-lg shadow-lg shadow-[var(--primary)]/20 hover:scale-105 transition-transform cursor-default flex items-center gap-1">
                        <Mail className="w-3 h-3" /> Sent
                      </button>
                   </div>
@@ -145,24 +145,24 @@ export default function MarketingFeatures() {
         >
           <div className="flex items-center justify-between mb-12">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
                 <Zap className="w-3 h-3" />
                 Features
               </div>
               <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
-                Everything You Need to<br className="hidden md:block"/> <span className="text-[#3A4F6A]">Protect Your Business</span>
+                Everything You Need to<br className="hidden md:block"/> <span className="text-[var(--primary)]">Protect Your Business</span>
               </h2>
             </div>
           </div>
 
           <div className="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
             {/* Large Blue Card */}
-            <div className="md:col-span-2 md:row-span-2 bg-[#3A4F6A] rounded-3xl p-8 text-white relative overflow-hidden group">
+            <div className="md:col-span-2 md:row-span-2 bg-[var(--primary)] rounded-3xl p-8 text-white relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
               <div className="relative z-10 h-full flex flex-col">
                  <div className="flex-1 flex items-center justify-center p-8">
                     <div className="w-full max-w-sm aspect-square bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 transform group-hover:scale-105 transition-transform duration-500">
-                      <div className="bg-[#2c3e53] rounded-xl p-4 mb-4 shadow-inner flex justify-between items-center">
+                      <div className="bg-white/20 rounded-xl p-4 mb-4 shadow-inner flex justify-between items-center">
                         <span className="text-sm font-medium text-white/80">Compliance Status</span>
                         <div className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.5)]" />
                       </div>
@@ -187,7 +187,7 @@ export default function MarketingFeatures() {
                     </div>
                  </div>
                  <div>
-                   <h3 className="text-2xl font-bold mb-2">Comprehensive Tracking</h3>
+                   <h3 className="text-2xl font-bold mb-2 text-white">Comprehensive Tracking</h3>
                    <p className="text-white/70">Track Service Agreements, SLAs, Deliverables, GL, Auto, and Workers Comp in one unified dashboard.</p>
                  </div>
               </div>
@@ -199,7 +199,7 @@ export default function MarketingFeatures() {
                <div className="relative z-10 h-full flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                      <div className="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm border border-stone-100">Audit Log</div>
-                     <div className="bg-[#3A4F6A] text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
+                     <div className="bg-[var(--primary)] text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
                        <Sparkles className="w-3 h-3" /> Auto-Logged
                      </div>
                   </div>
@@ -212,7 +212,7 @@ export default function MarketingFeatures() {
 
             {/* Small Card 1 */}
             <div className="bg-stone-50 rounded-3xl p-6 border border-stone-100 hover:shadow-lg transition-shadow">
-               <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-stone-100 flex items-center justify-center mb-4 text-[#3A4F6A]">
+               <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-stone-100 flex items-center justify-center mb-4 text-[var(--primary)]">
                   <ScanLine className="w-5 h-5" />
                </div>
                <h3 className="font-bold text-[#1a1a1a] mb-1">OCR & Contract AI</h3>
@@ -225,7 +225,7 @@ export default function MarketingFeatures() {
                  Risk High
                </div>
                <div className="mt-8">
-                  <div className="w-16 h-16 rounded-full bg-[#3A4F6A] mb-4 opacity-10 blur-xl absolute" />
+                  <div className="w-16 h-16 rounded-full bg-[var(--primary)] mb-4 opacity-10 blur-xl absolute" />
                   <h3 className="font-bold text-[#1a1a1a] mb-1 relative z-10">Risk Scoring</h3>
                   <p className="text-xs text-stone-500 relative z-10">Identify non-compliant vendors before they step on site</p>
                </div>

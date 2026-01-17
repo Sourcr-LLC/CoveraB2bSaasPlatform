@@ -29,25 +29,25 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-slate-900 mb-4">Product</h3>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/features-coi-tracking" className="hover:text-[#3A4F6A]">Features</Link></li>
-              <li><Link to="/pricing" className="hover:text-[#3A4F6A]">Pricing</Link></li>
+              <li><Link to="/features-coi-tracking" className="hover:text-[var(--primary)]">Features</Link></li>
+              <li><Link to="/pricing" className="hover:text-[var(--primary)]">Pricing</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-slate-900 mb-4">Resources</h3>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/blog" className="hover:text-[#3A4F6A]">Blog</Link></li>
-              <li><Link to="/solutions-property-management" className="hover:text-[#3A4F6A]">Property Management</Link></li>
-              <li><Link to="/solutions-construction" className="hover:text-[#3A4F6A]">Construction</Link></li>
+              <li><Link to="/blog" className="hover:text-[var(--primary)]">Blog</Link></li>
+              <li><Link to="/solutions-property-management" className="hover:text-[var(--primary)]">Property Management</Link></li>
+              <li><Link to="/solutions-construction" className="hover:text-[var(--primary)]">Construction</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-slate-900 mb-4">Company</h3>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/about-us" className="hover:text-[#3A4F6A]">About</Link></li>
-              <li><Link to="/contact" className="hover:text-[#3A4F6A]">Contact</Link></li>
+              <li><Link to="/about-us" className="hover:text-[var(--primary)]">About</Link></li>
+              <li><Link to="/contact" className="hover:text-[var(--primary)]">Contact</Link></li>
             </ul>
           </div>
         </div>

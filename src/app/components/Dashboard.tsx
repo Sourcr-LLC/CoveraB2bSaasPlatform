@@ -419,9 +419,9 @@ export default function Dashboard() {
         change: undefined,
         trend: 'neutral',
         subtitle: 'managed agreements',
-        percentageColor: '#3A4F6A',
-        bgTint: 'rgba(58, 79, 106, 0.03)',
-        borderColor: 'rgba(58, 79, 106, 0.2)',
+        percentageColor: 'var(--primary)',
+        bgTint: 'rgba(37, 99, 235, 0.03)',
+        borderColor: 'rgba(37, 99, 235, 0.2)',
         icon: FileText
       },
       {
@@ -451,7 +451,7 @@ export default function Dashboard() {
   return (
     <div className="p-4 md:p-8 lg:p-12 min-h-screen" style={{ 
       backgroundColor: 'var(--background)',
-      backgroundImage: 'radial-gradient(at 0% 0%, rgba(58, 79, 106, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(58, 79, 106, 0.03) 0px, transparent 50%)' 
+      backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
     }}>
       {/* Header */}
       <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-3">

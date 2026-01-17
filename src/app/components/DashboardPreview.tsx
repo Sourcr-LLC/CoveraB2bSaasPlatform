@@ -170,7 +170,7 @@ export default function DashboardPreview() {
                         <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[9px]" style={{ color: '#78716c' }}>{row.days}</div>
                       </div>
                       <div className="col-span-2">
-                        <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[10px] font-medium underline hover:no-underline cursor-default" style={{ color: '#3A4F6A' }}>Send reminder</div>
+                        <div className="text-[5px] sm:text-[7px] md:text-[8px] lg:text-[10px] font-medium underline hover:no-underline cursor-default" style={{ color: 'var(--primary)' }}>Send reminder</div>
                       </div>
                     </div>
                   ))}
@@ -197,7 +197,7 @@ export default function DashboardPreview() {
                       </div>
                     ))}
                   </div>
-                  <div className="w-full mt-1 sm:mt-1.5 md:mt-2 lg:mt-3 text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-center py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded hover:bg-gray-50 transition-colors cursor-default" style={{ color: '#3A4F6A' }}>
+                  <div className="w-full mt-1 sm:mt-1.5 md:mt-2 lg:mt-3 text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-center py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded hover:bg-gray-50 transition-colors cursor-default" style={{ color: 'var(--primary)' }}>
                     View all expirations →
                   </div>
                 </div>
@@ -206,7 +206,7 @@ export default function DashboardPreview() {
                 <div className="rounded-lg bg-white border p-1 sm:p-1.5 md:p-2 lg:p-2.5" style={{ borderColor: '#e7e5e4' }}>
                   <h3 className="text-[7px] sm:text-[9px] md:text-[10px] lg:text-xs font-semibold mb-1 sm:mb-1.5 md:mb-1.5 lg:mb-2" style={{ color: '#1c1917' }}>Quick actions</h3>
                   <div className="space-y-0.5 sm:space-y-1 md:space-y-1 lg:space-y-1.5">
-                    <div className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-white transition-all hover:opacity-90 text-center cursor-default" style={{ backgroundColor: '#3A4F6A' }}>
+                    <div className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium text-white transition-all hover:opacity-90 text-center cursor-default" style={{ backgroundColor: 'var(--primary)' }}>
                       Invite vendor via link
                     </div>
                     <div className="w-full px-1 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 md:py-1 lg:py-1.5 rounded text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-medium bg-white border transition-all hover:bg-gray-50 text-center cursor-default" style={{ color: '#1c1917', borderColor: '#e7e5e4' }}>
