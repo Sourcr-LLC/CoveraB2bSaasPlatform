@@ -10,7 +10,7 @@ export default function IndustriesHospitality() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <SEO
         title="Hospitality Vendor Compliance Software | Hotel & Restaurant Contractor Management - Covera"
         description="Vendor compliance and insurance tracking for hotels, restaurants, and hospitality groups. Manage contractor COIs across all properties, track facility maintenance vendors, and ensure guest safety."

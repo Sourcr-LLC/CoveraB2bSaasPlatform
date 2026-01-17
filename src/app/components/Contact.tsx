@@ -71,135 +71,137 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
       <SEO 
         title="Contact Covera | Vendor Compliance Support"
         description="Get in touch with the Covera team for sales, support, or general inquiries about our vendor compliance platform."
       />
       <LandingNav />
 
-      <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative border-b border-slate-200">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-            Get in touch
-          </h1>
-          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-            We're here to help you automate your vendor compliance.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            
-            {/* Contact Info */}
-            <div className="space-y-12">
-              <div>
-                <h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Contact Sales</h2>
-                <p className="text-slate-500 mb-6 leading-relaxed">
-                  Interested in learning how Covera can help your organization? Our sales team is ready to answer your questions.
-                </p>
-                <div className="flex items-center gap-3 text-[var(--primary)] font-medium">
-                  <Mail className="w-5 h-5" />
-                  <a href="mailto:sales@covera.co" className="hover:underline">sales@covera.co</a>
-                </div>
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Customer Support</h2>
-                <p className="text-slate-500 mb-6 leading-relaxed">
-                  Already a customer? Our support team is available to assist you with any technical issues or account questions.
-                </p>
-                <div className="flex items-center gap-3 text-[var(--primary)] font-medium">
-                  <MessageSquare className="w-5 h-5" />
-                  <a href="mailto:support@covera.co" className="hover:underline">support@covera.co</a>
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Form */}
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl shadow-[var(--primary)]/5">
-              <h3 className="text-xl font-bold text-[#1a1a1a] mb-6">Send us a message</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="firstName" className="text-sm font-medium text-slate-700">First Name</label>
-                    <input 
-                      type="text" 
-                      id="firstName" 
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
-                      placeholder="Jane" 
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="lastName" className="text-sm font-medium text-slate-700">Last Name</label>
-                    <input 
-                      type="text" 
-                      id="lastName" 
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
-                      placeholder="Doe" 
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="company" className="text-sm font-medium text-slate-700">Company Name</label>
-                  <input 
-                    type="text" 
-                    id="company" 
-                    value={formData.company}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
-                    placeholder="Acme Corp" 
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-slate-700">Work Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
-                    placeholder="jane@company.com" 
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium text-slate-700">Message</label>
-                  <textarea 
-                    id="message" 
-                    rows={4} 
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
-                    placeholder="How can we help?" 
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                  className="w-full py-4 rounded-xl bg-[var(--primary)] text-white font-medium hover:bg-[var(--primary-hover)] shadow-lg shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </button>
-              </form>
-            </div>
-
+      <main className="flex-1">
+        <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative border-b border-slate-200">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Get in touch
+            </h1>
+            <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+              We're here to help you automate your vendor compliance.
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section className="py-24 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-start">
+              
+              {/* Contact Info */}
+              <div className="space-y-12">
+                <div>
+                  <h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Contact Sales</h2>
+                  <p className="text-slate-500 mb-6 leading-relaxed">
+                    Interested in learning how Covera can help your organization? Our sales team is ready to answer your questions.
+                  </p>
+                  <div className="flex items-center gap-3 text-[var(--primary)] font-medium">
+                    <Mail className="w-5 h-5" />
+                    <a href="mailto:sales@covera.co" className="hover:underline">sales@covera.co</a>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Customer Support</h2>
+                  <p className="text-slate-500 mb-6 leading-relaxed">
+                    Already a customer? Our support team is available to assist you with any technical issues or account questions.
+                  </p>
+                  <div className="flex items-center gap-3 text-[var(--primary)] font-medium">
+                    <MessageSquare className="w-5 h-5" />
+                    <a href="mailto:support@covera.co" className="hover:underline">support@covera.co</a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Form */}
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl shadow-[var(--primary)]/5">
+                <h3 className="text-xl font-bold text-[#1a1a1a] mb-6">Send us a message</h3>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="firstName" className="text-sm font-medium text-slate-700">First Name</label>
+                      <input 
+                        type="text" 
+                        id="firstName" 
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
+                        placeholder="Jane" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="lastName" className="text-sm font-medium text-slate-700">Last Name</label>
+                      <input 
+                        type="text" 
+                        id="lastName" 
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
+                        placeholder="Doe" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="company" className="text-sm font-medium text-slate-700">Company Name</label>
+                    <input 
+                      type="text" 
+                      id="company" 
+                      value={formData.company}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
+                      placeholder="Acme Corp" 
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-sm font-medium text-slate-700">Work Email</label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
+                      placeholder="jane@company.com" 
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium text-slate-700">Message</label>
+                    <textarea 
+                      id="message" 
+                      rows={4} 
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none" 
+                      placeholder="How can we help?" 
+                    />
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full py-4 rounded-xl bg-[var(--primary)] text-white font-medium hover:bg-[var(--primary-hover)] shadow-lg shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      </main>
 
       <Footer />
     </div>

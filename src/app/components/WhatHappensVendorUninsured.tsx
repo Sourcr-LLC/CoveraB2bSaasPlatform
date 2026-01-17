@@ -4,7 +4,7 @@ import LandingNav from './LandingNav';
 
 export default function WhatHappensVendorUninsured() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <LandingNav />
       
       {/* Hero Section */}

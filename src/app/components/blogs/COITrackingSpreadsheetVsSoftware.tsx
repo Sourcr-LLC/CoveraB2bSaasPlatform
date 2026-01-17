@@ -5,7 +5,7 @@ import BlogFooter from '../BlogFooter';
 
 export default function COITrackingSpreadsheetVsSoftware() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       <LandingNav />
       
       <article className="pt-32 pb-20 px-6">

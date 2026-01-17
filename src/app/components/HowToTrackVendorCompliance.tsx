@@ -7,7 +7,7 @@ import MarketingFeatures from './MarketingFeatures';
 
 export default function HowToTrackVendorCompliance() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <LandingNav />
       
       {/* Hero Section */}

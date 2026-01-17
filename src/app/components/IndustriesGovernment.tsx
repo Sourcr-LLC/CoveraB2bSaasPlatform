@@ -10,7 +10,7 @@ export default function IndustriesGovernment() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <SEO
         title="Government Vendor Compliance Software | Public Sector Contract Management - Covera"
         description="Vendor compliance and insurance tracking for government agencies, municipalities, and public sector organizations. Track contractor COIs, verify vendor compliance, and ensure regulatory adherence."

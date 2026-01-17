@@ -6,7 +6,7 @@ import SEO, { SEO_CONFIGS } from '../SEO';
 
 export default function VendorServiceAgreementsVsSows() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <SEO {...SEO_CONFIGS.blogVendorServiceAgreementsVsSows} />
       <LandingNav />
       

@@ -127,11 +127,10 @@ export default function App() {
   }
 
   return (
-    <div className="overflow-x-hidden">
-      <BrowserRouter>
-        <Routes>
-          <Route 
-            path="/" 
+    <BrowserRouter>
+      <Routes>
+        <Route 
+          path="/" 
             element={
               <Suspense fallback={<PremiumLoader fullScreen />}>
                 {isAuthenticated ? <Navigate to="/dashboard" replace /> : <LandingPage />}
@@ -475,6 +474,5 @@ export default function App() {
         <ScrollToTop />
         <GoogleAnalytics />
       </BrowserRouter>
-    </div>
   );
 }

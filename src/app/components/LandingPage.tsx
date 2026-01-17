@@ -69,7 +69,7 @@ export default function LandingPage() {
   const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
 
   return (
-    <div className="relative bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
+    <div className="relative min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white overflow-x-hidden">
       <SEO {...SEO_CONFIGS.landing} />
       
       {/* Background Ambience */}
@@ -82,10 +82,6 @@ export default function LandingPage() {
                maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)'
              }} 
         />
-        
-        {/* Subtle glowing orbs removed for performance */}
-        {/* <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-blue-100/50 blur-[100px] opacity-40" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#3A4F6A]/10 blur-[80px] opacity-30" /> */}
       </div>
 
       <Suspense fallback={null}>
@@ -96,7 +92,7 @@ export default function LandingPage() {
       <LandingNav />
 
       {/* Hero Section */}
-      <main>
+      <main className="flex-1">
         <section className="pt-32 pb-16 md:pt-48 md:pb-32 px-4 relative">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-4xl mx-auto mb-16">
@@ -130,7 +126,7 @@ export default function LandingPage() {
           {/* Hero Visual */}
           <div className="relative mx-auto max-w-6xl mt-16">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[var(--primary)]/20 rounded-3xl opacity-40 blur-lg" />
-            <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-auto shadow-2xl shadow-slate-200 border border-slate-200/60 ring-1 ring-slate-900/5 bg-white" aria-hidden="true">
+            <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-[700px] shadow-2xl shadow-slate-200 border border-slate-200/60 ring-1 ring-slate-900/5 bg-white" aria-hidden="true">
               <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
                 <InteractiveHeroVisual />
               </div>

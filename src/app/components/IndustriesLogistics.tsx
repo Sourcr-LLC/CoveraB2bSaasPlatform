@@ -10,7 +10,7 @@ export default function IndustriesLogistics() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <SEO
         title="Logistics & Warehousing Vendor Compliance Software | Fleet COI Tracking - Covera"
         description="Monitor driver, carrier, and warehouse vendor insurance in real time across logistics operations. Track commercial auto insurance, cargo insurance, and contractor compliance for transportation and warehousing companies."

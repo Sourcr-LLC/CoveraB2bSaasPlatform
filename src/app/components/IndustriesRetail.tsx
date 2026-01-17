@@ -10,7 +10,7 @@ export default function IndustriesRetail() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <SEO
         title="Retail Vendor Compliance Software | Multi-Location Store Contractor Management - Covera"
         description="Vendor compliance and insurance tracking for retail chains and multi-location stores. Manage contractor COIs across all locations, track store maintenance vendors, and ensure brand consistency."

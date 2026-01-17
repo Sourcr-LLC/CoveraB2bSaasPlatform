@@ -12,7 +12,7 @@ export default function SubscriptionSuccess() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'var(--background)' }}>
+    <div className="flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'var(--background)', minHeight: '100vh' }}>
       <SEO 
         title="Subscription Confirmed | Covera" 
         description="Your subscription has been successfully confirmed. Welcome to Covera." 
