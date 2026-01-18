@@ -530,7 +530,7 @@ export default function Dashboard() {
          </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
         {/* High-risk Vendors Table */}
         <div className="lg:col-span-7">
           <div
@@ -770,7 +770,7 @@ export default function Dashboard() {
         {/* Activity Feed */}
         <div className="lg:col-span-5">
           <div
-            className="rounded-xl border overflow-hidden h-full min-h-[400px]"
+            className="rounded-xl border overflow-hidden"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
