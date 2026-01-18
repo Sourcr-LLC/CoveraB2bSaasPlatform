@@ -2,7 +2,17 @@ import {
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
   CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3
 } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { KpiCard } from '../dashboard/KpiCard';
+
+const chartData = [
+  { name: 'Jan', value: 82 },
+  { name: 'Feb', value: 85 },
+  { name: 'Mar', value: 84 },
+  { name: 'Apr', value: 89 },
+  { name: 'May', value: 94 },
+  { name: 'Jun', value: 97 },
+];
 
 export default function InteractiveHeroVisual() {
   return (
@@ -112,6 +122,53 @@ function DashboardContent() {
             />
           </div>
 
+          {/* CHARTS ROW */}
+          <div className="grid grid-cols-3 gap-4 h-[280px]">
+             {/* Main Chart */}
+             <div className="col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
+                <div className="flex justify-between items-center mb-6">
+                   <div>
+                     <h3 className="font-bold text-slate-900">Compliance Trends</h3>
+                     <p className="text-xs text-slate-500 mt-1">6-month compliance rate history</p>
+                   </div>
+                   <div className="text-emerald-600 font-bold text-sm bg-emerald-50 px-2 py-1 rounded-lg">+12.5%</div>
+                </div>
+                <div className="flex-1 w-full min-h-0">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData}>
+                      <defs>
+                        <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#94a3b8'}} dy={10} />
+                      <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#94a3b8'}} domain={[60, 100]} />
+                      <Tooltip 
+                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                        itemStyle={{ color: '#10b981', fontWeight: 600 }}
+                      />
+                      <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+             </div>
+
+             {/* Secondary Widget (Risk Distribution) */}
+             <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
+                <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
+                <div className="flex-1 flex items-center justify-center relative">
+                   <div className="w-full space-y-5">
+                      <RiskBar label="Low Risk" count={142} color="bg-emerald-500" width="76%" />
+                      <RiskBar label="Medium Risk" count={24} color="bg-yellow-500" width="15%" />
+                      <RiskBar label="High Risk" count={18} color="bg-red-500" width="9%" />
+                      <RiskBar label="Critical" count={3} color="bg-red-700" width="4%" />
+                   </div>
+                </div>
+             </div>
+          </div>
+
           {/* TABLE ROW */}
           <div className="bg-white border border-[#e7e5e4] rounded-xl overflow-hidden shadow-sm">
             <div className="px-6 py-4 border-b border-[#f5f5f4] flex items-center justify-between">
@@ -219,4 +276,18 @@ function VendorRow({ name, type, status, date, action }: any) {
        </div>
     </div>
   );
+}
+
+function RiskBar({ label, count, color, width }: any) {
+  return (
+    <div>
+      <div className="flex justify-between text-xs font-medium mb-1.5">
+        <span className="text-slate-600">{label}</span>
+        <span className="text-slate-900">{count}</span>
+      </div>
+      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full ${color}`} style={{ width }} />
+      </div>
+    </div>
+  )
 }

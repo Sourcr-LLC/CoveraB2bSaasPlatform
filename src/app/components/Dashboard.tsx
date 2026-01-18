@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import PaywallModal from './PaywallModal';
 import ContactSalesModal from './ContactSalesModal';
 import { toast } from 'sonner';
@@ -38,7 +39,7 @@ function calculateVendorStatus(insuranceExpiry: string | undefined): string {
 // Helper function to calculate contract status client-side
 function calculateContractStatus(endDate: string | undefined): string {
   if (!endDate || endDate === 'Invalid Date' || endDate.trim() === '') {
-    return 'active'; // Assume active if no end date? Or maybe 'active' is default.
+    return 'active'; 
   }
 
   const end = new Date(endDate);
@@ -51,7 +52,7 @@ function calculateContractStatus(endDate: string | undefined): string {
 
   if (daysUntilExpiry < 0) {
     return 'expired';
-  } else if (daysUntilExpiry <= 60) { // Contracts often have longer lead times
+  } else if (daysUntilExpiry <= 60) { 
     return 'expiring';
   } else {
     return 'active';
@@ -90,7 +91,6 @@ export default function Dashboard() {
               ? Math.ceil((expiryDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
               : -999;
 
-            // Generate alert message
             let message = '';
             if (v.status === 'non-compliant') {
               if (daysUntilExpiry < -1) {
@@ -213,7 +213,6 @@ export default function Dashboard() {
             ? Math.ceil((expiryDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
             : -999;
 
-          // Generate alert message
           let message = '';
           if (v.status === 'non-compliant') {
             if (daysUntilExpiry < -1) {
@@ -247,8 +246,6 @@ export default function Dashboard() {
           };
         });
 
-      // Simple alerts for contracts (assuming we had real data)
-      // For now just using vendors
       setAlerts(vendorAlerts);
     } catch (error) {
       console.error('Failed to load vendors:', error);
@@ -257,7 +254,6 @@ export default function Dashboard() {
   };
 
   const handleSendReminder = async (vendorId: string, vendorName: string) => {
-    // Check if user has premium access
     if (!isPremium) {
       setIsPaywallOpen(true);
       return;
@@ -270,34 +266,25 @@ export default function Dashboard() {
       console.log('✅ Reminder sent successfully:', result);
       toast.success(`Reminder sent to ${vendorName}!`);
       
-      // Reload data to update activity log
       await loadData();
     } catch (error: any) {
       console.error('❌ Failed to send reminder:', error);
-      console.error('Error details:', {
-        message: error.message,
-        stack: error.stack,
-        vendorId
-      });
       toast.error(error.message || 'Failed to send reminder. Please check console for details.');
     } finally {
       setSendingReminderId(null);
     }
   };
 
-  // Calculate stats from real data - memoized
   const stats = useMemo(() => ({
     total: vendors.length,
     compliant: vendors.filter(v => v.status === 'compliant').length,
     atRisk: vendors.filter(v => v.status === 'at-risk').length,
     nonCompliant: vendors.filter(v => v.status === 'non-compliant').length,
-    // Contract stats
     activeContracts: contracts.filter(c => c.status === 'active').length,
     expiringContracts: contracts.filter(c => c.status === 'expiring').length,
     expiredContracts: contracts.filter(c => c.status === 'expired').length
   }), [vendors, contracts]);
 
-  // Helper function to format status label
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
       'compliant': 'Compliant',
@@ -310,7 +297,6 @@ export default function Dashboard() {
     return labels[status] || status;
   };
 
-  // Helper function to calculate days until expiry
   const calculateDaysLeft = (dateString: string | undefined) => {
     if (!dateString || dateString === 'Invalid Date') {
       return null;
@@ -323,7 +309,6 @@ export default function Dashboard() {
     return Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   };
 
-  // Get high risk vendors (at-risk + non-compliant) - memoized
   const highRiskVendors = useMemo(() => vendors
     .filter(v => v.status === 'at-risk' || v.status === 'non-compliant')
     .slice(0, 5)
@@ -339,7 +324,6 @@ export default function Dashboard() {
       };
     }), [vendors]);
 
-  // Get high risk contracts - memoized
   const highRiskContracts = useMemo(() => contracts
     .filter(c => c.status === 'expiring' || c.status === 'expired')
     .slice(0, 5)
@@ -347,7 +331,7 @@ export default function Dashboard() {
       const daysLeft = calculateDaysLeft(c.endDate);
       return {
         ...c,
-        name: c.contractName, // Map for table consistency
+        name: c.contractName,
         vendorName: c.vendorName,
         statusLabel: getStatusLabel(c.status),
         expiryDate: c.endDate ? new Date(c.endDate).toLocaleDateString() : 'No date',
@@ -355,40 +339,7 @@ export default function Dashboard() {
       };
     }), [contracts]);
 
-  // Calculate upcoming expirations - memoized
-  const expirations = useMemo(() => {
-    const now = new Date();
-    const allItems = [
-      ...vendors.map(v => ({ date: v.insuranceExpiry, type: 'insurance' })),
-      ...contracts.map(c => ({ date: c.endDate, type: 'contract' }))
-    ];
-
-    return {
-      sevenDays: allItems.filter(item => {
-        if (!item.date) return false;
-        const expiry = new Date(item.date);
-        const days = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return days > 0 && days <= 7;
-      }).length,
-      fourteenDays: allItems.filter(item => {
-        if (!item.date) return false;
-        const expiry = new Date(item.date);
-        const days = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return days > 7 && days <= 14;
-      }).length,
-      thirtyDays: allItems.filter(item => {
-        if (!item.date) return false;
-        const expiry = new Date(item.date);
-        const days = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return days > 14 && days <= 30;
-      }).length
-    };
-  }, [vendors, contracts]);
-
   const kpiCards = useMemo(() => {
-    // Helper for small totals
-    const showDeltas = stats.total >= 5;
-
     return [
       {
         label: 'Compliance Risk',
@@ -438,11 +389,52 @@ export default function Dashboard() {
     ];
   }, [stats]);
 
-  const upcomingExpirations = [
-    { count: expirations.sevenDays, label: '7 days', color: 'var(--status-non-compliant)' },
-    { count: expirations.fourteenDays, label: '14 days', color: 'var(--status-at-risk)' },
-    { count: expirations.thirtyDays, label: '30 days', color: 'var(--status-at-risk)' },
-  ];
+  // Calculate Risk Distribution - memoized
+  const riskDistribution = useMemo(() => {
+    const total = vendors.length || 1; 
+    const counts = {
+      low: vendors.filter(v => v.status === 'compliant').length,
+      medium: vendors.filter(v => v.status === 'at-risk').length,
+      high: vendors.filter(v => v.status === 'non-compliant').length,
+    };
+
+    return [
+      { label: 'Low Risk', count: counts.low, color: 'bg-emerald-500', width: `${(counts.low / total) * 100}%` },
+      { label: 'Medium Risk', count: counts.medium, color: 'bg-yellow-500', width: `${(counts.medium / total) * 100}%` },
+      { label: 'High Risk', count: counts.high, color: 'bg-red-500', width: `${(counts.high / total) * 100}%` },
+    ].filter(item => item.count > 0 || item.label === 'Low Risk');
+  }, [vendors]);
+
+  // Calculate Compliance Trends based on insurance expiry dates
+  const complianceTrendData = useMemo(() => {
+    if (vendors.length === 0) return [];
+
+    const months = [];
+    const today = new Date();
+    
+    // Generate last 6 months
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      months.push(date);
+    }
+
+    return months.map(date => {
+      const monthName = date.toLocaleString('default', { month: 'short' });
+      
+      const compliantCount = vendors.filter(v => {
+        if (!v.insuranceExpiry || v.insuranceExpiry === 'Invalid Date') return false;
+        const expiry = new Date(v.insuranceExpiry);
+        return expiry > date; 
+      }).length;
+
+      const rate = Math.round((compliantCount / vendors.length) * 100);
+
+      return {
+        name: monthName,
+        value: rate
+      };
+    });
+  }, [vendors]);
 
   if (isPaywallOpen) {
     return <PaywallModal isOpen={isPaywallOpen} onClose={() => setIsPaywallOpen(false)} />;
@@ -482,6 +474,60 @@ export default function Dashboard() {
             icon={card.icon}
           />
         ))}
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 h-auto lg:h-[320px]">
+         {/* Main Chart */}
+         <div className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+               <div>
+                 <h3 className="font-bold text-slate-900">Compliance Trends</h3>
+                 <p className="text-xs text-slate-500 mt-1">6-month compliance rate history</p>
+               </div>
+            </div>
+            <div className="flex-1 w-full min-h-[200px] lg:min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={complianceTrendData}>
+                  <defs>
+                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#94a3b8'}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#94a3b8'}} domain={[0, 100]} />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    itemStyle={{ color: '#10b981', fontWeight: 600 }}
+                  />
+                  <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+         </div>
+
+         {/* Secondary Widget (Risk Distribution) */}
+         <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
+            <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
+            <div className="flex-1 flex items-center justify-center relative min-h-[200px] lg:min-h-0">
+               <div className="w-full space-y-5">
+                  {riskDistribution.map((item, index) => (
+                    <RiskBar 
+                      key={index}
+                      label={item.label} 
+                      count={item.count} 
+                      color={item.color} 
+                      width={item.width} 
+                    />
+                  ))}
+                  {riskDistribution.length === 0 && (
+                     <div className="text-center text-sm text-slate-400">No data available</div>
+                  )}
+               </div>
+            </div>
+         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
@@ -657,243 +703,139 @@ export default function Dashboard() {
                       <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
                       <span>Expires {item.expiryDate}</span>
                     </div>
-                    <div className="text-right flex-shrink-0">
-                      <div className="text-[10px] uppercase tracking-wide mb-0.5" style={{ color: 'var(--foreground-subtle)' }}>
-                        Days remaining
-                      </div>
-                      <div 
-                        className="text-xl font-semibold tracking-tight"
-                        style={{ 
-                          color: item.daysLeft === null 
-                            ? 'var(--foreground-muted)' 
-                            : item.daysLeft < 0 
-                            ? 'var(--status-non-compliant)' 
-                            : item.daysLeft <= 7
-                            ? 'var(--status-non-compliant)'
-                            : 'var(--status-at-risk)'
-                        }}
-                      >
-                        {item.daysLeft === null ? 'N/A' : item.daysLeft < 0 ? Math.abs(item.daysLeft) : item.daysLeft}
-                      </div>
+                    
+                    <div className="text-xs font-medium" style={{ 
+                      color: item.daysLeft !== null && item.daysLeft < 0 ? 'var(--status-non-compliant)' : 
+                             item.daysLeft !== null && item.daysLeft <= 30 ? 'var(--status-at-risk)' : 'var(--foreground-subtle)'
+                    }}>
+                      {item.daysLeft === null 
+                        ? 'No date' 
+                        : item.daysLeft < 0 
+                        ? `${Math.abs(item.daysLeft)} days overdue` 
+                        : `${item.daysLeft} days left`}
                     </div>
                   </div>
 
-                  {/* Row 3: Actions */}
-                  <div className="flex items-center justify-between gap-2">
-                     <span
-                          className="inline-flex items-center justify-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium border"
-                          style={{
-                            backgroundColor: item.status === 'at-risk' || item.status === 'expiring'
-                              ? 'var(--status-at-risk-bg)' 
-                              : 'var(--status-non-compliant-bg)',
-                            color: item.status === 'at-risk' || item.status === 'expiring'
-                              ? 'var(--status-at-risk)'
-                              : 'var(--status-non-compliant)',
-                            borderColor: item.status === 'at-risk' || item.status === 'expiring'
-                              ? 'var(--status-at-risk-border)' 
-                              : 'var(--status-non-compliant-border)'
-                          }}
-                        >
-                        {item.statusLabel}
-                     </span>
+                  {/* Row 3: Status Badge & Action Button */}
+                  <div className="flex items-center justify-between gap-3 mt-3">
+                    <span
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border"
+                      style={{
+                        backgroundColor: item.status === 'at-risk' || item.status === 'expiring'
+                          ? 'var(--status-at-risk-bg)' 
+                          : 'var(--status-non-compliant-bg)',
+                        color: item.status === 'at-risk' || item.status === 'expiring'
+                          ? 'var(--status-at-risk)'
+                          : 'var(--status-non-compliant)',
+                        borderColor: item.status === 'at-risk' || item.status === 'expiring'
+                          ? 'var(--status-at-risk-border)' 
+                          : 'var(--status-non-compliant-border)'
+                      }}
+                    >
+                      {item.status === 'at-risk' || item.status === 'expiring' ? (
+                        <Clock className="w-3 h-3" />
+                      ) : (
+                        <AlertCircle className="w-3 h-3" />
+                      )}
+                      {item.statusLabel}
+                    </span>
+
                     <button 
-                      className="text-xs px-3 py-1.5 rounded-lg border transition-all whitespace-nowrap flex-shrink-0"
+                      className="text-xs px-3 py-1.5 rounded-lg border transition-all hover:bg-white hover:shadow-sm"
                       style={{ 
                         borderColor: 'var(--border)',
-                        color: 'var(--foreground)',
-                        backgroundColor: 'var(--card)'
+                        color: 'var(--foreground)'
                       }}
                       onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
                       disabled={activeTab === 'insurance' && sendingReminderId === item.id}
                     >
-                      {activeTab === 'insurance' 
-                        ? (sendingReminderId === item.id ? 'Sending...' : 'Send reminder')
-                        : 'View Details'
-                      }
+                       {activeTab === 'insurance' 
+                          ? (sendingReminderId === item.id ? 'Sending...' : 'Remind')
+                          : 'Details'
+                        }
                     </button>
                   </div>
                 </div>
               ))}
+              {(activeTab === 'insurance' ? highRiskVendors : highRiskContracts).length === 0 && (
+                 <div className="p-8 text-center text-[var(--foreground-muted)]">
+                   <CheckCircle2 className="w-8 h-8 mx-auto mb-2 opacity-20" />
+                   <p className="text-sm">No high-risk items found</p>
+                 </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right Column - Upcoming Deadlines & Quick Actions */}
-        <div className="lg:col-span-5 space-y-6 md:space-y-8">
-          {/* Upcoming Deadlines */}
+        {/* Activity Feed */}
+        <div className="lg:col-span-5">
           <div
-            className="rounded-xl border p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
+            className="rounded-xl border overflow-hidden h-full min-h-[400px]"
             style={{
               backgroundColor: 'var(--card)',
               borderColor: 'var(--border)',
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <h3 className="text-xl font-semibold tracking-tight mb-6">Upcoming Deadlines</h3>
-            <div className="space-y-4">
-              {upcomingExpirations.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-2.5 h-2.5 rounded-full shadow-sm"
-                      style={{ backgroundColor: item.color }}
-                    />
-                    <span className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
-                      Within {item.label}
-                    </span>
-                  </div>
-                  <div className="text-xl font-semibold tracking-tight" style={{ color: 'var(--foreground)' }}>
-                    {item.count}
-                  </div>
-                </div>
-              ))}
+            <div className="px-6 md:px-8 py-6 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
+               <div>
+                <h3 className="text-lg font-semibold tracking-tight mb-1">Recent Activity</h3>
+                <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                  Latest updates across your portfolio
+                </p>
+              </div>
+              <button className="p-2 hover:bg-[var(--panel)] rounded-full transition-colors" style={{ color: 'var(--foreground-subtle)' }}>
+                <RefreshCw className="w-4 h-4" />
+              </button>
             </div>
-            
-            <div className="mt-8 pt-6 border-t flex gap-3" style={{ borderColor: 'var(--border-subtle)' }}>
-              <Link to="/insurance" className="flex-1">
-                <button 
-                  className="w-full py-3 rounded-lg text-sm font-medium transition-all flex items-center justify-center hover:bg-opacity-80 border"
-                  style={{ 
-                    borderColor: 'var(--border)',
-                    color: 'var(--foreground)'
-                  }}
-                >
-                  Insurance View
-                </button>
-              </Link>
-              <Link to="/contracts" className="flex-1">
-                <button 
-                  className="w-full py-3 rounded-lg text-sm font-medium transition-all flex items-center justify-center hover:bg-opacity-80 border"
-                  style={{ 
-                    borderColor: 'var(--border)',
-                    color: 'var(--foreground)'
-                  }}
-                >
-                  Contracts View
-                </button>
-              </Link>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div
-            className="rounded-xl border p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
-            style={{
-              backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
-            }}
-          >
-            <h3 className="text-xl font-semibold tracking-tight mb-6">Quick actions</h3>
-            <div className="space-y-4">
-              {isPremium ? (
-                <>
-                  <Link to="/add-vendor">
-                    <button 
-                      className="w-full py-3.5 rounded-lg text-sm font-medium transition-all flex items-center justify-center px-4 hover:-translate-y-0.5 hover:shadow-md"
-                      style={{ 
-                        backgroundColor: 'var(--primary)',
-                        color: 'var(--primary-foreground)',
-                        boxShadow: '0 4px 6px -1px rgba(58, 79, 106, 0.2)'
-                      }}
-                    >
-                      Add new vendor
-                    </button>
-                  </Link>
-                  <Link to="/insurance">
-                    <button 
-                      className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 hover:bg-slate-50"
-                      style={{ 
-                        borderColor: 'var(--border)',
-                        color: 'var(--foreground)'
-                      }}
-                    >
-                      Upload COI
-                    </button>
-                  </Link>
-                  <Link to="/reports">
-                    <button 
-                      className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 hover:bg-slate-50"
-                      style={{ 
-                        borderColor: 'var(--border)',
-                        color: 'var(--foreground)'
-                      }}
-                    >
-                      Export compliance report
-                    </button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <button 
-                    className="w-full py-3.5 rounded-lg text-sm font-medium transition-all flex items-center justify-center px-4 grayscale opacity-70 cursor-not-allowed"
-                    style={{ 
-                      backgroundColor: 'var(--primary)',
-                      color: 'var(--primary-foreground)'
-                    }}
-                    onClick={() => setIsPaywallOpen(true)}
-                  >
-                    Add new vendor
-                    <Lock className="w-3.5 h-3.5 ml-2 opacity-70" />
-                  </button>
-                  <button 
-                    className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 opacity-60 cursor-not-allowed"
-                    style={{ 
-                      borderColor: 'var(--border)',
-                      color: 'var(--foreground)'
-                    }}
-                    onClick={() => setIsPaywallOpen(true)}
-                  >
-                    Upload COI
-                    <Lock className="w-3.5 h-3.5 ml-2 opacity-70" />
-                  </button>
-                  <button 
-                    className="w-full py-3.5 rounded-lg border text-sm font-medium transition-all flex items-center justify-center px-4 opacity-60 cursor-not-allowed"
-                    style={{ 
-                      borderColor: 'var(--border)',
-                      color: 'var(--foreground)'
-                    }}
-                    onClick={() => setIsPaywallOpen(true)}
-                  >
-                    Export compliance report
-                    <Lock className="w-3.5 h-3.5 ml-2 opacity-70" />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Activity Summary */}
-          <div
-            className="rounded-xl border p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
-            style={{
-              backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
-            }}
-          >
-            <h4 className="text-lg font-semibold tracking-tight mb-6">Recent alerts</h4>
-            <div className="space-y-4">
-              {alerts.slice(0, 3).map((alert, index) => (
-                <div key={index} className="flex items-start gap-3 text-sm p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--status-at-risk)' }} />
-                  <span style={{ color: 'var(--foreground-muted)', lineHeight: 1.5 }}>
-                    {alert.message}
-                  </span>
-                </div>
-              ))}
-              {alerts.length === 0 && (
-                <div className="flex items-center gap-3 text-sm p-3 rounded-lg bg-green-50/50 border border-green-100">
-                  <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--status-compliant)' }} />
-                  <span style={{ color: 'var(--foreground-muted)' }}>
-                    No active alerts. All systems operational.
-                  </span>
-                </div>
-              )}
+            <div className="p-0">
+               {/* Activity Items would go here - using static for now as placeholder for dynamic */}
+               <div className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
+                  {/* We can map alerts here if we want, or create a separate activity log */}
+                  {alerts.slice(0, 5).map((alert, i) => (
+                    <div key={i} className="p-4 md:px-8 hover:bg-[var(--panel)] transition-colors flex gap-4">
+                       <div className="mt-1">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                             alert.type === 'expired' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'
+                          }`}>
+                             {alert.type === 'expired' ? <AlertCircle className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
+                          </div>
+                       </div>
+                       <div>
+                          <p className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+                             {alert.message}
+                          </p>
+                          <p className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
+                             {alert.category} • {alert.vendorName}
+                          </p>
+                       </div>
+                    </div>
+                  ))}
+                  {alerts.length === 0 && (
+                     <div className="p-8 text-center text-[var(--foreground-muted)]">
+                        <Bell className="w-8 h-8 mx-auto mb-2 opacity-20" />
+                        <p>No recent activity</p>
+                     </div>
+                  )}
+               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function RiskBar({ label, count, color, width }: any) {
+  return (
+    <div>
+      <div className="flex justify-between text-xs font-medium mb-1.5">
+        <span className="text-slate-600">{label}</span>
+        <span className="text-slate-900">{count}</span>
+      </div>
+      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full ${color}`} style={{ width }} />
+      </div>
+    </div>
+  )
 }
