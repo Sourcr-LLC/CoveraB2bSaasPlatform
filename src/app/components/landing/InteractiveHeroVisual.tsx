@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
   CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3
@@ -15,6 +16,8 @@ export default function InteractiveHeroVisual() {
 }
 
 function DashboardContent() {
+  const [activeTab, setActiveTab] = useState<'insurance' | 'contracts'>('insurance');
+
   // Realistic stats to show value proposition
   const stats = {
     atRisk: 18,
@@ -22,6 +25,26 @@ function DashboardContent() {
     activeContracts: 42,
     expiringContracts: 3
   };
+
+  const insuranceItems = [
+    { name: "SkyHigh Construction", type: "GL Insurance", status: "Expired", date: "2 days overdue", action: "Send Reminder" },
+    { name: "Valley Logistics", type: "Workers Comp", status: "At Risk", date: "Expires tomorrow", action: "Send Reminder" },
+    { name: "Apex Maintenance", type: "Auto Liability", status: "Missing", date: "Required immediately", action: "Request COI" },
+    { name: "BlueWater Cleaning", type: "Professional Liability", status: "Active", date: "Renewed yesterday", action: "View COI" },
+    { name: "Swift Security", type: "Cyber Insurance", status: "At Risk", date: "Expires in 5 days", action: "Send Reminder" },
+    { name: "Urban Electric", type: "Excess Liability", status: "Active", date: "Valid until Jun 2025", action: "View COI" },
+  ];
+
+  const contractItems = [
+    { name: "TechPro Solutions", type: "Service Agreement", status: "Expiring", date: "Milestone due soon", action: "View Details" },
+    { name: "Modern Supplies Inc", type: "Vendor Agreement", status: "Active", date: "Valid until Dec 2024", action: "View Details" },
+    { name: "Global Systems", type: "SaaS Agreement", status: "At Risk", date: "Renewal negotiation", action: "Review Terms" },
+    { name: "Office Partners", type: "Supply Contract", status: "Expired", date: "Ended last week", action: "Archive" },
+    { name: "QuickShip Delivery", type: "Logistics MSA", status: "Active", date: "Auto-renews in 30 days", action: "View Details" },
+    { name: "SecurityFirst", type: "DPA", status: "Missing", date: "Signature pending", action: "Resend" },
+  ];
+
+  const currentItems = activeTab === 'insurance' ? insuranceItems : contractItems;
 
   return (
     <div className="flex h-[700px] bg-[#fafaf9] min-w-[1024px]">
@@ -62,10 +85,10 @@ function DashboardContent() {
         </div>
 
         {/* CONTENT */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 flex flex-col p-6 space-y-6 overflow-hidden">
           
           {/* STATS ROW */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-4 gap-4 flex-shrink-0">
             <KpiCard 
               label="Compliance Risk" 
               value={stats.atRisk} 
@@ -113,34 +136,35 @@ function DashboardContent() {
           </div>
 
           {/* COMBINED ROW: Risk & Table */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[280px]">
+          <div className="flex-1 min-h-0">
              
-             {/* Risk Distribution */}
-             <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
-                <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
-                <div className="flex-1 flex items-center justify-center relative">
-                   <div className="w-full space-y-5">
-                      <RiskBar label="Low Risk" count={142} color="bg-emerald-500" width="76%" />
-                      <RiskBar label="Medium Risk" count={24} color="bg-yellow-500" width="15%" />
-                      <RiskBar label="High Risk" count={18} color="bg-red-500" width="9%" />
-                      <RiskBar label="Critical" count={3} color="bg-red-700" width="4%" />
-                   </div>
-                </div>
-             </div>
-
              {/* Attention Items Table */}
-             <div className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl overflow-hidden shadow-sm flex flex-col">
+             <div className="h-full bg-white border border-[#e7e5e4] rounded-xl overflow-hidden shadow-sm flex flex-col">
                 <div className="px-6 py-4 border-b border-[#f5f5f4] flex items-center justify-between flex-shrink-0">
                   <div className="flex items-center gap-4">
                      <h3 className="font-bold text-slate-900 text-base">Attention Items</h3>
                      {/* Tabs simulation */}
                      <div className="flex bg-[#f5f5f4] p-1 rounded-lg">
-                        <div className="px-3 py-1.5 text-xs font-medium rounded-md bg-white text-slate-900 shadow-sm">
+                        <button 
+                          onClick={() => setActiveTab('insurance')}
+                          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                            activeTab === 'insurance' 
+                              ? 'bg-white text-slate-900 shadow-sm' 
+                              : 'text-slate-500 hover:text-slate-700'
+                          }`}
+                        >
                           Insurance
-                        </div>
-                        <div className="px-3 py-1.5 text-xs font-medium rounded-md text-slate-500">
+                        </button>
+                        <button 
+                          onClick={() => setActiveTab('contracts')}
+                          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                            activeTab === 'contracts' 
+                              ? 'bg-white text-slate-900 shadow-sm' 
+                              : 'text-slate-500 hover:text-slate-700'
+                          }`}
+                        >
                           Contracts
-                        </div>
+                        </button>
                      </div>
                   </div>
                   <Filter className="w-4 h-4 text-slate-400" />
@@ -155,27 +179,16 @@ function DashboardContent() {
                       <div className="col-span-2 text-right">Action</div>
                    </div>
 
-                   <VendorRow 
-                     name="SkyHigh Construction" 
-                     type="GL Insurance" 
-                     status="Expired" 
-                     date="2 days overdue"
-                     action="Send Reminder"
-                   />
-                   <VendorRow 
-                     name="Valley Logistics" 
-                     type="Workers Comp" 
-                     status="At Risk" 
-                     date="Expires tomorrow"
-                     action="Send Reminder"
-                   />
-                   <VendorRow 
-                     name="TechPro Solutions" 
-                     type="Service Agreement" 
-                     status="Expiring" 
-                     date="Milestone due soon"
-                     action="View Details"
-                   />
+                   {currentItems.map((item, index) => (
+                     <VendorRow 
+                       key={index}
+                       name={item.name}
+                       type={item.type}
+                       status={item.status}
+                       date={item.date}
+                       action={item.action}
+                     />
+                   ))}
                 </div>
              </div>
           </div>
@@ -228,18 +241,4 @@ function VendorRow({ name, type, status, date, action }: any) {
        </div>
     </div>
   );
-}
-
-function RiskBar({ label, count, color, width }: any) {
-  return (
-    <div>
-      <div className="flex justify-between text-xs font-medium mb-1.5">
-        <span className="text-slate-600">{label}</span>
-        <span className="text-slate-900">{count}</span>
-      </div>
-      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-        <div className={`h-full rounded-full ${color}`} style={{ width }} />
-      </div>
-    </div>
-  )
 }
