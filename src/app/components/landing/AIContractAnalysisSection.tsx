@@ -8,7 +8,9 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
-  ArrowRight
+  ArrowRight,
+  BrainCircuit,
+  ScanLine
 } from 'lucide-react';
 
 export default function AIContractAnalysisSection() {
@@ -21,29 +23,29 @@ export default function AIContractAnalysisSection() {
           <div className="lg:w-1/2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3A4F6A]/10 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-6">
               <Sparkles className="w-3 h-3" />
-              New Feature
+              Intelligent Analysis
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] leading-[1.1] mb-6 font-display">
-              Contract risk analysis <br/>
-              <span className="text-[#3A4F6A]">without the hourly rate.</span>
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight mb-6">
+              It reads the fine print <br/>
+              <span className="text-[#3A4F6A]">so you don't have to.</span>
             </h2>
             
             <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-              Don't let hidden clauses become expensive problems. Our AI scans every contract for common risks, missing insurance requirements, and unfavorable terms giving you a preliminary health check before you call legal.
+              Our AI is trained specifically on ACORD 25 forms, Service Agreements, and legal documents. It instantly extracts limits, dates, and obligations while flagging risks before they become liabilities.
             </p>
 
             <div className="space-y-8">
               {[
                 { 
-                  icon: FileSearch, 
-                  title: "Plain-English Summaries", 
-                  desc: "Understand exactly what you're signing. We break down vendor vs. buyer responsibilities instantly." 
+                  icon: ScanLine, 
+                  title: "Instant Data Extraction", 
+                  desc: "Upload PDFs and get structured data in seconds. We extract limits, expiration dates, and payment terms automatically." 
                 },
                 { 
                   icon: AlertTriangle, 
                   title: "Automated Risk Flags", 
-                  desc: "Spot auto-renewals, weak indemnification, and missing insurance clauses in seconds." 
+                  desc: "Spot auto-renewals, weak indemnification, and missing insurance clauses before you sign." 
                 },
                 { 
                   icon: ShieldCheck, 
@@ -71,97 +73,117 @@ export default function AIContractAnalysisSection() {
 
           {/* Right Visual - Interactive Analysis Card */}
           <div className="lg:w-1/2 w-full flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[500px]">
-              
-              {/* Shadow Stack Effect */}
-              <div className="absolute top-4 -right-4 w-full h-full bg-slate-200/50 rounded-3xl transform rotate-3" />
-              
-              {/* Main Card */}
-              <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden relative z-10">
+             {/* The Visual Masterpiece */}
+            <div 
+              className="relative w-full max-w-md mx-auto aspect-[3/4] bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden transform transition-transform duration-500 hover:scale-[1.02]"
+            >
+              {/* Document Header (Simulating ACORD 25) */}
+              <div className="p-8 space-y-6 opacity-80 select-none pointer-events-none">
+                <div className="flex justify-between items-start border-b-2 border-slate-800 pb-4">
+                  <div className="w-24 h-8 bg-slate-800/10 rounded" />
+                  <div className="space-y-2 text-right">
+                    <div className="w-32 h-4 bg-slate-200 rounded ml-auto" />
+                    <div className="w-24 h-3 bg-slate-100 rounded ml-auto" />
+                  </div>
+                </div>
                 
-                {/* Header */}
-                <div className="p-6 pb-4 border-b border-slate-50 flex items-start justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-[#3A4F6A]/5 rounded-xl flex items-center justify-center text-[#3A4F6A]">
-                      <FileText className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-[#1a1a1a]">Master Service Agreement.pdf</div>
-                      <div className="text-xs text-slate-400 mt-0.5">Analyzed just now</div>
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <div className="w-20 h-3 bg-slate-200 rounded" />
+                    <div className="w-full h-24 bg-slate-50 border border-slate-200 rounded p-3 space-y-2">
+                      <div className="w-3/4 h-3 bg-slate-200 rounded" />
+                      <div className="w-1/2 h-3 bg-slate-200 rounded" />
+                      <div className="w-2/3 h-3 bg-slate-200 rounded" />
                     </div>
                   </div>
-                  <div className="px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm">
-                    <AlertTriangle className="w-3.5 h-3.5" /> Medium Risk
+                  <div className="space-y-3">
+                    <div className="w-20 h-3 bg-slate-200 rounded" />
+                    <div className="w-full h-24 bg-slate-50 border border-slate-200 rounded p-3 space-y-2">
+                       {/* Contract Terms Box */}
+                       <div className="flex gap-2 items-center mb-1">
+                         <div className="w-16 h-3 bg-slate-300 rounded" />
+                       </div>
+                       <div className="space-y-1.5">
+                         <div className="w-full h-2 bg-slate-200 rounded" />
+                         <div className="w-full h-2 bg-slate-200 rounded" />
+                         <div className="w-2/3 h-2 bg-slate-200 rounded" />
+                       </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Body */}
-                <div className="p-6 space-y-6">
+                {/* Mixed Content Grid */}
+                <div className="space-y-4">
+                  <div className="w-full h-6 bg-slate-800/10 rounded flex items-center px-2 justify-between">
+                    <div className="w-32 h-2 bg-slate-400 rounded" />
+                    <div className="w-16 h-2 bg-slate-300 rounded" />
+                  </div>
                   
-                  {/* Findings */}
-                  <div>
-                    <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-4">Key Findings</h4>
-                    <div className="space-y-3">
-                      
-                      {/* Critical */}
-                      <div className="p-4 bg-red-50/80 rounded-xl border border-red-100 flex gap-3.5">
-                        <div className="bg-white p-1.5 rounded-lg border border-red-100 h-fit shadow-sm">
-                          <XCircle className="w-4 h-4 text-red-500" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-red-900">Auto-renewal clause detected</div>
-                          <div className="text-xs text-red-700/90 mt-1 leading-relaxed">
-                            Contract renews automatically for 12 months unless cancelled 90 days prior.
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Warning */}
-                      <div className="p-4 bg-amber-50/80 rounded-xl border border-amber-100 flex gap-3.5">
-                        <div className="bg-white p-1.5 rounded-lg border border-amber-100 h-fit shadow-sm">
-                          <AlertTriangle className="w-4 h-4 text-amber-500" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-amber-900">Indemnification favors vendor</div>
-                          <div className="text-xs text-amber-700/90 mt-1 leading-relaxed">
-                            Language limits vendor liability to 50% of contract value.
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Good */}
-                      <div className="p-4 bg-emerald-50/80 rounded-xl border border-emerald-100 flex gap-3.5">
-                        <div className="bg-white p-1.5 rounded-lg border border-emerald-100 h-fit shadow-sm">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-emerald-900">Payment terms standard</div>
-                          <div className="text-xs text-emerald-700/90 mt-1 leading-relaxed">
-                            Net 30 terms match your company policy.
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
+                  {/* Row 1: General Liability (Insurance) */}
+                  <div className="grid grid-cols-12 gap-2 items-center">
+                    <div className="col-span-1 w-4 h-4 border border-slate-300 rounded" />
+                    <div className="col-span-4 h-3 bg-slate-200 rounded" />
+                    <div className="col-span-4 h-3 bg-slate-200 rounded" />
+                    <div className="col-span-3 h-3 bg-slate-300 rounded relative group-highlight-target-1" />
+                  </div>
+                  
+                  {/* Row 2: Payment Terms (Contract) */}
+                  <div className="grid grid-cols-12 gap-2 items-center">
+                    <div className="col-span-1 w-4 h-4 border border-slate-300 rounded bg-slate-100" />
+                    <div className="col-span-4 h-3 bg-slate-200 rounded" />
+                    <div className="col-span-7 h-3 bg-blue-100/50 rounded border border-blue-100 relative group-highlight-target-2" />
                   </div>
 
-                  {/* Recommendation */}
-                  <div className="bg-slate-50 rounded-xl p-5 border border-slate-100">
-                    <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Recommended Action</h4>
-                    <p className="text-sm text-slate-600 font-medium leading-relaxed">
-                      Consider legal review before execution. Negotiate removal of auto-renewal clause.
-                    </p>
+                  {/* Row 3: SLA / Milestones (Contract) */}
+                  <div className="grid grid-cols-12 gap-2 items-center">
+                    <div className="col-span-1 w-4 h-4 border border-slate-300 rounded" />
+                    <div className="col-span-3 h-3 bg-slate-200 rounded" />
+                    <div className="col-span-8 h-3 bg-slate-200 rounded" />
                   </div>
-
                 </div>
-
-                {/* Footer Button */}
-                <button className="w-full bg-[#3A4F6A] hover:bg-[#2c3e53] text-white py-4 font-semibold text-sm transition-colors flex items-center justify-center gap-2">
-                  View Full Analysis Report
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-
               </div>
+
+              {/* Scanning Laser */}
+              <div 
+                className="absolute left-0 right-0 h-1 bg-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.6)] z-20 animate-scan-down"
+              />
+              
+              {/* Scan Overlay Gradient */}
+              <div
+                className="absolute left-0 right-0 h-32 bg-gradient-to-b from-blue-500/20 to-transparent z-10 pointer-events-none animate-scan-down"
+                style={{ animationDelay: '0.1s' }} // Slight delay for trailing effect
+              />
+
+              {/* Extracted Data Cards Popups - Now Static/Permanent for performance */}
+              
+              {/* Card 1: GL Limit */}
+              <div
+                className="absolute top-[45%] right-4 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg shadow-lg z-30 flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-1000 delay-500 fill-mode-both"
+              >
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <div>
+                  <div className="text-[10px] text-emerald-600 font-bold uppercase">General Liability</div>
+                  <div className="text-sm font-bold text-emerald-800">$2,000,000</div>
+                </div>
+              </div>
+
+              {/* Card 2: Expiration */}
+              <div
+                className="absolute bottom-16 left-8 bg-blue-50 border border-blue-200 px-3 py-2 rounded-lg shadow-lg z-30 flex items-center gap-2 animate-in fade-in slide-in-from-left-4 duration-1000 delay-1000 fill-mode-both"
+              >
+                <FileText className="w-4 h-4 text-blue-600" />
+                <div>
+                  <div className="text-[10px] text-blue-600 font-bold uppercase">Payment Terms</div>
+                  <div className="text-sm font-bold text-blue-800">Net 30</div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Decorative "Scanning" Grid behind document - Simplified */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 opacity-30">
+               <div className="absolute inset-0 border border-dashed border-blue-200 rounded-full" />
+               <div className="absolute inset-[10%] border border-dashed border-slate-200 rounded-full" />
             </div>
           </div>
 

@@ -12,7 +12,6 @@ const ContactSalesModal = lazy(() => import('./ContactSalesModal'));
 const TestimonialCarousel = lazy(() => import('./TestimonialCarousel'));
 const ComparisonSection = lazy(() => import('./landing/ComparisonSection'));
 const MarketingFeatures = lazy(() => import('./MarketingFeatures'));
-const AIScannerSection = lazy(() => import('./landing/AIScannerSection'));
 const AIContractAnalysisSection = lazy(() => import('./landing/AIContractAnalysisSection'));
 
 // Simple loading fallback for sections
@@ -163,11 +162,6 @@ export default function LandingPage() {
       {/* AI Contract Analysis Section */}
       <Suspense fallback={<SectionLoader />}>
         <AIContractAnalysisSection />
-      </Suspense>
-
-      {/* AI Deep Dive */}
-      <Suspense fallback={<SectionLoader />}>
-        <AIScannerSection />
       </Suspense>
 
       {/* Testimonials */}
