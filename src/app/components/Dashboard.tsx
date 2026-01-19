@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import PaywallModal from './PaywallModal';
@@ -446,7 +446,7 @@ export default function Dashboard() {
       backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
     }}>
       {/* Header */}
-      <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+      <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="mb-2 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
             Dashboard
@@ -454,6 +454,15 @@ export default function Dashboard() {
           <p className="text-sm md:text-base" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
             Real-time overview of your vendor compliance status
           </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => navigate('/add-vendor')} 
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#3A4F6A] text-white hover:bg-[#2c3e53] shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Add Vendor
+          </button>
         </div>
       </div>
 

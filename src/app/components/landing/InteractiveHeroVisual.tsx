@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3
+  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3, Plus
 } from 'lucide-react';
 import { KpiCard } from '../dashboard/KpiCard';
 
@@ -79,6 +79,11 @@ function DashboardContent() {
         <div className="h-16 border-b border-[#e7e5e4] flex items-center justify-between px-8">
           <h1 className="text-xl font-bold text-slate-900">Dashboard</h1>
           <div className="flex items-center gap-4">
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-[#3A4F6A] text-white text-xs font-medium rounded-md hover:bg-[#2c3e53] transition-colors">
+              <Plus className="w-3.5 h-3.5" />
+              Add Vendor
+            </button>
+            <div className="w-px h-6 bg-slate-200 mx-2" />
             <Search className="w-5 h-5 text-slate-400" />
             <Bell className="w-5 h-5 text-slate-400" />
           </div>
