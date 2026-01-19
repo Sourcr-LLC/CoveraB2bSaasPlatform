@@ -24,6 +24,7 @@ interface Contract {
   documentSize?: string;
   documentUrl?: string;
   documentPath?: string;
+  riskScore?: 'low' | 'medium' | 'high';
 }
 
 // Contract API
@@ -113,7 +114,8 @@ export default function ContractManagement() {
           documentName: dc.documentName,
           documentType: dc.documentType,
           documentSize: dc.documentSize,
-          documentUrl: dc.documentUrl
+          documentUrl: dc.documentUrl,
+          riskScore: 'medium' as const // Default mock risk score
         }));
         setContracts(mappedDemoContracts);
         setFilteredContracts(mappedDemoContracts);
@@ -496,6 +498,9 @@ export default function ContractManagement() {
                   <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Auto-Renewal
                   </th>
+                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
+                    Risk Score
+                  </th>
                   <th className="text-right px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
                     Actions
                   </th>
@@ -571,6 +576,18 @@ export default function ContractManagement() {
                         <span style={{ color: 'var(--foreground-muted)' }}>
                           {contract.autoRenewal ? 'Yes' : 'No'}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {contract.riskScore && (
+                          <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${
+                            contract.riskScore === 'high' ? 'bg-red-50 text-red-700 border-red-200' :
+                            contract.riskScore === 'medium' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                            'bg-green-50 text-green-700 border-green-200'
+                          }`}>
+                            {contract.riskScore.charAt(0).toUpperCase() + contract.riskScore.slice(1)}
+                          </div>
+                        )}
+                        {!contract.riskScore && <span className="text-xs text-gray-400">N/A</span>}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center justify-end gap-2">

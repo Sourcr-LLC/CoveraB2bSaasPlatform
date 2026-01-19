@@ -56,7 +56,7 @@ export async function extractContractDataFromDocument(fileBuffer: ArrayBuffer, f
     }
     
     // Use GPT-4o to analyze the extracted text
-    extractionPrompt = `You are extracting information from a CONTRACT document. Below is the TEXT extracted from the PDF. You MUST only extract information that is clearly present in this text. DO NOT make up, guess, or infer any information.
+    extractionPrompt = `You are an expert legal AI assistant. Your job is to extract data AND perform a risk analysis on a CONTRACT document. Below is the TEXT extracted from the PDF.
 
 CRITICAL RULES:
 1. ONLY extract data that you can clearly see in the text
@@ -80,7 +80,16 @@ Return a JSON object with this EXACT structure:
       "role": "Role (e.g., Client, Vendor, Service Provider, etc.)"
     }
   ],
-  "description": "Brief summary of contract purpose/scope in 1-2 sentences, or null if unclear"
+  "description": "Brief summary of contract purpose/scope in 1-2 sentences, or null if unclear",
+  "riskScore": "low" | "medium" | "high" (Overall risk assessment based on findings below),
+  "riskFindings": [
+    {
+      "severity": "critical" | "warning" | "info",
+      "title": "Short title of the risk (e.g., 'Auto-renewal clause')",
+      "description": "Explanation of why this is a risk and what the specific terms are."
+    }
+  ],
+  "recommendations": "String containing specific actionable advice for the user (e.g., 'Negotiate removal of auto-renewal', 'Clarify indemnification cap')"
 }
 
 IMPORTANT FOR DATES:
@@ -103,15 +112,17 @@ IMPORTANT FOR AUTO-RENEWAL:
 - Look for keywords: "auto-renew", "automatic renewal", "evergreen", "shall renew automatically"
 - If found, return true. Otherwise false.
 
-IMPORTANT FOR PARTIES:
-- Usually found at the beginning under "PARTIES", "BETWEEN", "THIS AGREEMENT IS MADE BETWEEN"
-- Extract company/individual names and their roles
+IMPORTANT FOR RISK ANALYSIS:
+- "high": Missing critical clauses (e.g., termination, insurance), unlimited liability, unfavorable auto-renewal with long notice periods.
+- "medium": Ambiguous terms, one-sided indemnification, auto-renewal with standard notice.
+- "low": Standard terms, clear termination, balanced indemnification.
+- Look for: Auto-renewal, Exclusivity, Non-compete, Unlimited Liability, Missing Insurance Requirements, Termination Fees, Governing Law (if weird).
 
 PDF TEXT CONTENT:
 ${pdfText}
 
 Return ONLY valid JSON. If the document is not a valid contract or data cannot be extracted, return:
-{"contractType": null, "startDate": null, "endDate": null, "value": null, "autoRenewal": false, "parties": [], "description": null}`;
+{"contractType": null, "startDate": null, "endDate": null, "value": null, "autoRenewal": false, "parties": [], "description": null, "riskScore": "low", "riskFindings": [], "recommendations": null}`;
 
     requestBody = {
       model: "gpt-4o",
@@ -134,7 +145,7 @@ Return ONLY valid JSON. If the document is not a valid contract or data cannot b
     const base64Image = btoa(String.fromCharCode(...new Uint8Array(fileBuffer)));
     const mimeType = fileType === 'image/png' ? 'image/png' : 'image/jpeg';
     
-    extractionPrompt = `You are extracting information from a CONTRACT document image. You MUST only extract information that is clearly visible and readable in the image. DO NOT make up, guess, or infer any information.
+    extractionPrompt = `You are an expert legal AI assistant. Your job is to extract data AND perform a risk analysis on a CONTRACT document image. You MUST only extract information that is clearly visible and readable in the image. DO NOT make up, guess, or infer any information.
 
 CRITICAL RULES:
 1. ONLY extract data that you can clearly see in the image
@@ -158,7 +169,16 @@ Return a JSON object with this EXACT structure:
       "role": "Role (e.g., Client, Vendor, Service Provider, etc.)"
     }
   ],
-  "description": "Brief summary of contract purpose/scope in 1-2 sentences, or null if unclear"
+  "description": "Brief summary of contract purpose/scope in 1-2 sentences, or null if unclear",
+  "riskScore": "low" | "medium" | "high" (Overall risk assessment based on findings below),
+  "riskFindings": [
+    {
+      "severity": "critical" | "warning" | "info",
+      "title": "Short title of the risk (e.g., 'Auto-renewal clause')",
+      "description": "Explanation of why this is a risk and what the specific terms are."
+    }
+  ],
+  "recommendations": "String containing specific actionable advice for the user (e.g., 'Negotiate removal of auto-renewal', 'Clarify indemnification cap')"
 }
 
 IMPORTANT FOR DATES:
@@ -181,8 +201,14 @@ IMPORTANT FOR AUTO-RENEWAL:
 - Look for keywords: "auto-renew", "automatic renewal", "evergreen", "shall renew automatically"
 - If found, return true. Otherwise false.
 
+IMPORTANT FOR RISK ANALYSIS:
+- "high": Missing critical clauses (e.g., termination, insurance), unlimited liability, unfavorable auto-renewal with long notice periods.
+- "medium": Ambiguous terms, one-sided indemnification, auto-renewal with standard notice.
+- "low": Standard terms, clear termination, balanced indemnification.
+- Look for: Auto-renewal, Exclusivity, Non-compete, Unlimited Liability, Missing Insurance Requirements, Termination Fees, Governing Law (if weird).
+
 Return ONLY valid JSON. If the image is not a valid contract or data cannot be extracted, return:
-{"contractType": null, "startDate": null, "endDate": null, "value": null, "autoRenewal": false, "parties": [], "description": null}`;
+{"contractType": null, "startDate": null, "endDate": null, "value": null, "autoRenewal": false, "parties": [], "description": null, "riskScore": "low", "riskFindings": [], "recommendations": null}`;
 
     requestBody = {
       model: "gpt-4o",

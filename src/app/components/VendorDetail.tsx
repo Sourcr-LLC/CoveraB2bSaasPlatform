@@ -1,7 +1,8 @@
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Mail, Phone, MapPin, CheckCircle2, AlertCircle, Clock, Upload, FileText, ExternalLink, Send, Copy, X, FileUp, Eye, Trash2, AlertTriangle } from 'lucide-react';
-import { vendorApi } from '../lib/api';
+import { vendorApi, supabase } from '../lib/api';
+import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
 import { isDemoMode, demoVendors } from '../lib/demoData';
 
@@ -48,6 +49,7 @@ function calculateVendorStatus(insuranceExpiry: string | undefined): string {
 
 export default function VendorDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [vendor, setVendor] = useState<any>(null);
   const [activities, setActivities] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,6 +62,39 @@ export default function VendorDetail() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [viewingDocument, setViewingDocument] = useState<any | null>(null);
   const [isDeletingDocument, setIsDeletingDocument] = useState<string | null>(null);
+
+  const handleDeleteVendor = async () => {
+    if (!vendor || !window.confirm(`Are you sure you want to delete ${vendor.name}? This will remove all associated documents and history. This action cannot be undone.`)) return;
+
+    try {
+      if (isDemoMode()) {
+        toast.success('Vendor deleted (Demo Mode)');
+        navigate('/vendors');
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/vendors/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to delete vendor');
+
+      toast.success('Vendor deleted successfully');
+      navigate('/vendors');
+    } catch (error) {
+      console.error('Error deleting vendor:', error);
+      toast.error('Failed to delete vendor');
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -508,6 +543,13 @@ export default function VendorDetail() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+          <button
+            className="flex-1 sm:flex-none px-4 py-3 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-all text-sm inline-flex items-center justify-center gap-2"
+            onClick={handleDeleteVendor}
+          >
+            <Trash2 className="w-4 h-4" />
+            <span className="sm:hidden">Delete</span>
+          </button>
           <button
             className="flex-1 sm:flex-none px-6 py-3 rounded-lg border transition-all text-sm inline-flex items-center justify-center gap-2"
             style={{ 

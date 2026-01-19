@@ -2732,6 +2732,38 @@ app.put("/make-server-be7827e3/contracts/:id", async (c) => {
   }
 });
 
+// Delete contract
+app.delete("/make-server-be7827e3/contracts/:id", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    const contractId = c.req.param('id');
+    const contract = await kv.get(`contract:${user.id}:${contractId}`);
+    
+    if (!contract) {
+      return c.json({ error: 'Contract not found' }, 404);
+    }
+
+    // Delete the contract
+    await kv.del(`contract:${user.id}:${contractId}`);
+    
+    // Ideally we should also delete the document from storage if it exists, but for now we keep it simple
+    // or log it.
+    if (contract.documentPath) {
+      console.log(`Note: Contract deleted. Document at ${contract.documentPath} remains in storage (cleanup optional).`);
+    }
+
+    return c.json({ success: true });
+  } catch (error) {
+    console.error('Delete contract error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
 // Upload contract document with file
 app.post("/make-server-be7827e3/contracts/upload", async (c) => {
   try {
@@ -2915,6 +2947,86 @@ app.post("/make-server-be7827e3/contracts/:id/upload-document", async (c) => {
     return c.json(updatedContract);
   } catch (error) {
     console.error('Upload document to contract error:', error);
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+// Update contract document (PUT) - Triggers AI Analysis
+app.put("/make-server-be7827e3/contracts/:id/document", async (c) => {
+  try {
+    const { user, error } = await verifyUser(c.req.header('Authorization'));
+    
+    if (error || !user) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+
+    const contractId = c.req.param('id');
+    const documentData = await c.req.json();
+    
+    const contract = await kv.get(`contract:${user.id}:${contractId}`);
+    
+    if (!contract) {
+      return c.json({ error: 'Contract not found' }, 404);
+    }
+
+    console.log(`📄 Updating document for contract ${contractId} and triggering analysis`);
+
+    // Update contract with document info first
+    let updatedContract = {
+      ...contract,
+      ...documentData,
+      updatedAt: new Date().toISOString(),
+    };
+
+    // If we have a document path, trigger AI analysis
+    if (documentData.documentPath) {
+      try {
+        console.log(`🤖 Triggering AI analysis for document: ${documentData.documentPath}`);
+        
+        // Download file from Supabase Storage
+        const bucketName = 'make-92f9f116-vendor-documents'; // Standardize bucket name if possible, or extract from path
+        // Note: ContractManagement uploads to 'make-be7827e3-contracts'
+        // But the previous code used 'make-92f9f116-vendor-documents' for some uploads.
+        // ContractManagement.tsx line 230: .from('make-be7827e3-contracts')
+        
+        // We need to use the CORRECT bucket.
+        const bucket = 'make-be7827e3-contracts';
+        
+        const { data: fileData, error: downloadError } = await supabase.storage
+          .from(bucket)
+          .download(documentData.documentPath);
+
+        if (downloadError) {
+          console.error('Failed to download document for analysis:', downloadError);
+        } else if (fileData) {
+          const fileBuffer = await fileData.arrayBuffer();
+          const fileType = documentData.documentType === 'PDF' ? 'application/pdf' : 'image/jpeg'; // Guess type if not provided
+          
+          const extractedData = await extractContractDataFromDocument(fileBuffer, fileType);
+          console.log('✅ Analysis complete:', JSON.stringify(extractedData, null, 2));
+          
+          // Merge extracted data into contract
+          updatedContract = {
+            ...updatedContract,
+            ...extractedData, // Auto-fill fields like startDate, value, etc.
+            analysisDate: new Date().toISOString(),
+            // Ensure risk fields are properly set
+            riskScore: extractedData.riskScore || 'low',
+            riskFindings: extractedData.riskFindings || [],
+            recommendations: extractedData.recommendations || null
+          };
+        }
+      } catch (analysisError) {
+        console.error('AI Analysis failed:', analysisError);
+        // Continue with update even if analysis fails
+      }
+    }
+
+    await kv.set(`contract:${user.id}:${contractId}`, updatedContract);
+
+    return c.json(updatedContract);
+  } catch (error) {
+    console.error('Update contract document error:', error);
     return c.json({ error: 'Internal server error' }, 500);
   }
 });

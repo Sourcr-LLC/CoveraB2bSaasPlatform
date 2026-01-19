@@ -29,6 +29,12 @@ interface SLA {
   status: 'compliant' | 'breached' | 'warning';
 }
 
+interface RiskFinding {
+  severity: 'critical' | 'warning' | 'info';
+  title: string;
+  description: string;
+}
+
 interface Contract {
   id: string;
   vendorName: string;
@@ -46,6 +52,11 @@ interface Contract {
   milestones?: Milestone[];
   deliverables?: Deliverable[];
   slas?: SLA[];
+  // AI Analysis fields
+  riskScore?: 'low' | 'medium' | 'high';
+  analysisDate?: string;
+  riskFindings?: RiskFinding[];
+  recommendations?: string;
 }
 
 export default function ContractDetail() {
@@ -53,7 +64,7 @@ export default function ContractDetail() {
   const navigate = useNavigate();
   const [contract, setContract] = useState<Contract | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'milestones' | 'slas'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'milestones' | 'slas' | 'analysis'>('overview');
   
   // Edit states
   const [isEditing, setIsEditing] = useState(false);
@@ -91,7 +102,9 @@ export default function ContractDetail() {
             slas: [
               { id: '1', metric: 'Uptime', target: '99.9%', actual: '99.95%', status: 'compliant' },
               { id: '2', metric: 'Response Time', target: '< 4 hours', actual: '2 hours', status: 'compliant' }
-            ]
+            ],
+            riskScore: 'medium',
+            analysisDate: new Date().toISOString()
           };
           setContract(mappedContract);
           setEditedContract(mappedContract);
@@ -165,6 +178,39 @@ export default function ContractDetail() {
     } catch (error) {
       console.error('Error updating contract:', error);
       toast.error('Failed to update contract');
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!contract || !window.confirm('Are you sure you want to delete this contract? This action cannot be undone.')) return;
+
+    try {
+      if (isDemoMode()) {
+        toast.success('Contract deleted (Demo Mode)');
+        navigate('/contracts');
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/contracts/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to delete contract');
+
+      toast.success('Contract deleted successfully');
+      navigate('/contracts');
+    } catch (error) {
+      console.error('Error deleting contract:', error);
+      toast.error('Failed to delete contract');
     }
   };
 
@@ -297,13 +343,22 @@ export default function ContractDetail() {
               </button>
             </>
           ) : (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-            >
-              <Edit2 className="w-4 h-4" />
-              Edit Contract
-            </button>
+            <>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Delete
+              </button>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+              >
+                <Edit2 className="w-4 h-4" />
+                Edit Contract
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -340,6 +395,17 @@ export default function ContractDetail() {
             }`}
           >
             Service Level Agreements (SLAs)
+          </button>
+          <button
+            onClick={() => setActiveTab('analysis')}
+            className={`pb-4 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
+              activeTab === 'analysis'
+                ? 'border-[var(--primary)] text-[var(--primary)]'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <AlertTriangle className="w-4 h-4" />
+            Risk Analysis
           </button>
         </div>
       </div>
@@ -672,6 +738,93 @@ export default function ContractDetail() {
             </div>
           </div>
         )}
+        {activeTab === 'analysis' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-gray-200 bg-slate-50 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-gray-500" />
+                    Contract Risk Overview
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1">
+                    This analysis highlights common risk patterns found in vendor contracts. It does not replace legal advice.
+                  </p>
+                </div>
+                {contract.riskScore && (
+                  <div className={`px-4 py-2 rounded-full border text-sm font-bold flex items-center gap-2 ${
+                    contract.riskScore === 'high' ? 'bg-red-50 text-red-700 border-red-200' :
+                    contract.riskScore === 'medium' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                    'bg-green-50 text-green-700 border-green-200'
+                  }`}>
+                    <AlertTriangle className="w-4 h-4" />
+                    Risk Score: {contract.riskScore.charAt(0).toUpperCase() + contract.riskScore.slice(1)}
+                  </div>
+                )}
+              </div>
+              
+              <div className="p-6 space-y-8">
+                <div>
+                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Key Findings</h3>
+                  <div className="grid gap-4">
+                    {contract.riskFindings && contract.riskFindings.length > 0 ? (
+                      contract.riskFindings.map((finding, idx) => (
+                        <div key={idx} className={`flex gap-4 p-4 rounded-xl border ${
+                          finding.severity === 'critical' ? 'bg-red-50 border-red-100' :
+                          finding.severity === 'warning' ? 'bg-amber-50 border-amber-100' :
+                          'bg-blue-50 border-blue-100'
+                        }`}>
+                          <div className={`p-2 bg-white rounded-lg border h-fit shadow-sm ${
+                            finding.severity === 'critical' ? 'border-red-100' :
+                            finding.severity === 'warning' ? 'border-amber-100' :
+                            'border-blue-100'
+                          }`}>
+                            {finding.severity === 'critical' ? <X className="w-5 h-5 text-red-600" /> :
+                             finding.severity === 'warning' ? <AlertTriangle className="w-5 h-5 text-amber-600" /> :
+                             <CheckCircle2 className="w-5 h-5 text-blue-600" />}
+                          </div>
+                          <div>
+                            <h4 className={`font-bold mb-1 ${
+                              finding.severity === 'critical' ? 'text-red-900' :
+                              finding.severity === 'warning' ? 'text-amber-900' :
+                              'text-blue-900'
+                            }`}>{finding.title}</h4>
+                            <p className={`text-sm ${
+                              finding.severity === 'critical' ? 'text-red-800' :
+                              finding.severity === 'warning' ? 'text-amber-800' :
+                              'text-blue-800'
+                            }`}>{finding.description}</p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-8 text-center text-gray-500 bg-gray-50 rounded-xl border border-gray-100">
+                        No specific risks identified or analysis pending.
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Recommended Action</h3>
+                  <p className="text-gray-900 font-medium">
+                    {contract.recommendations || "Review standard terms. No specific high-priority actions recommended based on automated analysis."}
+                  </p>
+                </div>
+                
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                  <div className="text-xs text-gray-400 italic">
+                    Analysis generated on {contract.analysisDate ? new Date(contract.analysisDate).toLocaleDateString() : 'Unknown date'}
+                  </div>
+                  <button className="text-sm text-[var(--primary)] font-medium hover:underline">
+                    Download Full Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
