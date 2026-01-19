@@ -125,7 +125,7 @@ function DashboardContent() {
               label="Compliance Risk" 
               value={stats.atRisk} 
               change=""
-              subtext="⚠ Acting now prevents coverage gaps"
+              subtext="Acting now prevents coverage gaps"
               percentageColor="#f59e0b"
               bgTint="rgba(245, 158, 11, 0.03)"
               borderColor="rgba(245, 158, 11, 0.2)"
@@ -136,7 +136,7 @@ function DashboardContent() {
               label="Non-Compliant" 
               value={stats.nonCompliant} 
               change=""
-              subtext="⚠ Resolve to eliminate liability exposure"
+              subtext="Resolve to eliminate liability exposure"
               percentageColor="#ef4444"
               bgTint="rgba(239, 68, 68, 0.03)"
               borderColor="rgba(239, 68, 68, 0.2)"
@@ -147,7 +147,7 @@ function DashboardContent() {
               label="Active Contracts" 
               value={stats.activeContracts} 
               change=""
-              subtext="➕ Track contracts to avoid disputes"
+              subtext="Track contracts to avoid disputes"
               percentageColor="#3A4F6A"
               bgTint="rgba(58, 79, 106, 0.03)"
               borderColor="rgba(58, 79, 106, 0.2)"

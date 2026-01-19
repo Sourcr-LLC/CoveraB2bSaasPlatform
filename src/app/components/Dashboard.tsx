@@ -350,8 +350,8 @@ export default function Dashboard() {
         change: undefined,
         trend: 'neutral',
         subtitle: stats.atRisk > 0 
-          ? '⚠ Acting now prevents coverage gaps' 
-          : '✔ You’re protected from last-minute issues',
+          ? 'Acting now prevents coverage gaps' 
+          : 'You’re protected from last-minute issues',
         percentageColor: stats.atRisk > 0 ? '#f59e0b' : '#059669',
         bgTint: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.03)' : 'var(--card)',
         borderColor: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.2)' : 'var(--border)',
@@ -364,8 +364,8 @@ export default function Dashboard() {
         change: undefined,
         trend: 'neutral',
         subtitle: stats.nonCompliant > 0 
-          ? '⚠ Resolve to eliminate liability exposure' 
-          : '✔ No gaps in coverage detected',
+          ? 'Resolve to eliminate liability exposure' 
+          : 'No gaps in coverage detected',
         percentageColor: stats.nonCompliant > 0 ? '#ef4444' : '#059669',
         bgTint: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.03)' : 'var(--card)',
         borderColor: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.2)' : 'var(--border)',
@@ -376,7 +376,7 @@ export default function Dashboard() {
         value: stats.activeContracts.toString(),
         change: undefined,
         trend: 'neutral',
-        subtitle: '➕ Track contracts to avoid disputes',
+        subtitle: 'Track contracts to avoid disputes',
         percentageColor: 'var(--primary)',
         bgTint: 'rgba(37, 99, 235, 0.03)',
         borderColor: 'rgba(37, 99, 235, 0.2)',
@@ -389,7 +389,7 @@ export default function Dashboard() {
         trend: 'neutral',
         subtitle: stats.expiringContracts > 0 
           ? 'Renewals requiring your review' 
-          : '✔ No renewals or obligations due soon',
+          : 'No renewals or obligations due soon',
         percentageColor: stats.expiringContracts > 0 ? '#f59e0b' : 'var(--foreground-muted)',
         bgTint: 'var(--glass-bg)',
         borderColor: 'var(--glass-border)',
