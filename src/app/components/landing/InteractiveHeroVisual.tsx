@@ -85,7 +85,7 @@ function DashboardContent() {
         </div>
 
         {/* CONTENT */}
-        <div className="flex-1 flex flex-col p-6 space-y-6 overflow-hidden">
+        <div className="flex-1 flex flex-col p-6 space-y-4 overflow-hidden">
           
           {/* STATS ROW */}
           <div className="grid grid-cols-4 gap-4 flex-shrink-0">
@@ -170,16 +170,16 @@ function DashboardContent() {
                   <Filter className="w-4 h-4 text-slate-400" />
                 </div>
                 
-                <div className="flex-1 overflow-auto divide-y divide-[#f5f5f4]">
+                <div className="flex-1 overflow-hidden divide-y divide-[#f5f5f4]">
                    {/* Header Row */}
-                   <div className="grid grid-cols-12 px-6 py-3 bg-[#fafaf9] text-xs font-semibold text-slate-500 uppercase tracking-wider sticky top-0">
+                   <div className="grid grid-cols-12 px-6 py-3 bg-[#fafaf9] text-xs font-semibold text-slate-500 uppercase tracking-wider">
                       <div className="col-span-4">Vendor / Item</div>
                       <div className="col-span-3">Status</div>
                       <div className="col-span-3">Deadline</div>
                       <div className="col-span-2 text-right">Action</div>
                    </div>
 
-                   {currentItems.map((item, index) => (
+                   {currentItems.slice(0, 5).map((item, index) => (
                      <VendorRow 
                        key={index}
                        name={item.name}
@@ -216,7 +216,7 @@ function VendorRow({ name, type, status, date, action }: any) {
   if (status === "At Risk" || status === "Expiring") statusColor = "bg-orange-50 text-orange-700 border-orange-100";
 
   return (
-    <div className="px-6 py-4 grid grid-cols-12 items-center group hover:bg-[#fafaf9] transition-colors duration-200">
+    <div className="px-6 py-3 grid grid-cols-12 items-center group hover:bg-[#fafaf9] transition-colors duration-200">
        <div className="col-span-4 pr-4">
          <div className="font-semibold text-slate-900 text-sm truncate">{name}</div>
          <div className="text-xs text-slate-500 truncate">{type}</div>
