@@ -39,6 +39,9 @@ const Sitemap = lazy(() => import('./components/Sitemap'));
 const HowToTrackVendorCompliance = lazy(() => import('./components/HowToTrackVendorCompliance'));
 const WhatHappensVendorUninsured = lazy(() => import('./components/WhatHappensVendorUninsured'));
 const BlogList = lazy(() => import('./components/BlogList'));
+const HiddenContractRisks = lazy(() => import('./components/blogs/HiddenContractRisks'));
+const AIContractReview = lazy(() => import('./components/blogs/AIContractReview'));
+const IndemnificationGuide = lazy(() => import('./components/blogs/IndemnificationGuide'));
 const WhatIsCertificateOfInsurance = lazy(() => import('./components/blogs/WhatIsCertificateOfInsurance'));
 const TrackVendorInsuranceExpiration = lazy(() => import('./components/blogs/TrackVendorInsuranceExpiration'));
 const VendorComplianceChecklist = lazy(() => import('./components/blogs/VendorComplianceChecklist'));
@@ -386,6 +389,21 @@ export default function App() {
           <Route path="/blog" element={
             <Suspense fallback={<PremiumLoader fullScreen />}>
               <BlogList />
+            </Suspense>
+          } />
+          <Route path="/blog/hidden-contract-risks-general-counsel" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <HiddenContractRisks />
+            </Suspense>
+          } />
+          <Route path="/blog/ai-contract-review-new-standard" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <AIContractReview />
+            </Suspense>
+          } />
+          <Route path="/blog/plain-english-guide-vendor-indemnification" element={
+            <Suspense fallback={<PremiumLoader fullScreen />}>
+              <IndemnificationGuide />
             </Suspense>
           } />
           <Route path="/blog/what-is-certificate-of-insurance" element={

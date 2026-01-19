@@ -381,6 +381,54 @@ export const SEO_CONFIGS = {
   },
 
   // Blog SEO Configs
+  blogHiddenContractRisks: {
+    title: '5 Hidden Contract Risks Your General Counsel Wants You to Spot',
+    description: 'Before you send that MSA to legal, check for these 5 common pitfalls that delay deals and increase liability. Learn to spot unlimited liability caps and sneaky auto-renewals.',
+    keywords: 'contract risks, msa pitfalls, contract review checklist, vendor contract risks, indemnification, liability caps, auto-renewal clauses',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "5 Hidden Contract Risks Your General Counsel Wants You to Spot",
+      "datePublished": "2026-01-19",
+      "author": {
+        "@type": "Organization",
+        "name": "Covera"
+      }
+    }
+  },
+
+  blogAIContractReview: {
+    title: 'Why AI Contract Review is the New Standard for Vendor Compliance',
+    description: 'Manual contract review is slow and error-prone. Discover how AI is transforming vendor risk management by catching what humans miss, from missing insurance limits to payment term anomalies.',
+    keywords: 'ai contract review, automated contract analysis, legal tech, vendor compliance ai, contract scanning software',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Why AI Contract Review is the New Standard for Vendor Compliance",
+      "datePublished": "2026-01-19",
+      "author": {
+        "@type": "Organization",
+        "name": "Covera"
+      }
+    }
+  },
+
+  blogIndemnificationGuide: {
+    title: 'The "Plain English" Guide to Vendor Indemnification Clauses',
+    description: 'Indemnification is the most negotiated and least understood part of any contract. We break it down into simple terms so you know what you\'re signing.',
+    keywords: 'indemnification clause explained, vendor indemnification, hold harmless agreement, contract negotiation, mutual indemnification',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "The Plain English Guide to Vendor Indemnification Clauses",
+      "datePublished": "2026-01-19",
+      "author": {
+        "@type": "Organization",
+        "name": "Covera"
+      }
+    }
+  },
+
   blogWhatIsCOI: {
     title: 'What Is a Certificate of Insurance (COI)? Complete Guide 2026',
     description: 'Learn everything about Certificates of Insurance (COI). Understand COI requirements, Additional Insured status, coverage limits, and how to verify vendor insurance certificates.',

@@ -6,13 +6,40 @@ import SEO, { SEO_CONFIGS } from './SEO';
 
 const blogPosts = [
   {
+    slug: 'hidden-contract-risks-general-counsel',
+    title: '5 Hidden Contract Risks Your General Counsel Wants You to Spot',
+    excerpt: 'Before you send that MSA to legal, check for these 5 common pitfalls that delay deals and increase liability.',
+    category: 'Risk Management',
+    readTime: '6 min read',
+    date: 'January 19, 2026',
+    featured: true
+  },
+  {
+    slug: 'ai-contract-review-new-standard',
+    title: 'Why AI Contract Review is the New Standard for Vendor Compliance',
+    excerpt: 'Manual contract review is slow and error-prone. Discover how AI is transforming vendor risk management by catching what humans miss.',
+    category: 'Technology',
+    readTime: '5 min read',
+    date: 'January 19, 2026',
+    featured: true
+  },
+  {
+    slug: 'plain-english-guide-vendor-indemnification',
+    title: 'The "Plain English" Guide to Vendor Indemnification Clauses',
+    excerpt: 'Indemnification is the most negotiated and least understood part of any contract. We break it down into simple terms.',
+    category: 'Legal Basics',
+    readTime: '7 min read',
+    date: 'January 19, 2026',
+    featured: true
+  },
+  {
     slug: 'vendor-service-agreements-vs-sows',
     title: 'Vendor Service Agreements vs. SOWs: What\'s the Difference?',
     excerpt: 'Confused by MSAs vs SOWs? Learn the key differences and when to use each for better vendor contract management.',
     category: 'Contracts',
     readTime: '5 min read',
     date: 'January 16, 2026',
-    featured: true
+    featured: false
   },
   {
     slug: 'tracking-vendor-deliverables-slas',
@@ -21,7 +48,7 @@ const blogPosts = [
     category: 'Performance',
     readTime: '7 min read',
     date: 'January 16, 2026',
-    featured: true
+    featured: false
   },
   {
     slug: 'vendor-contract-renewal-best-practices',
@@ -30,7 +57,7 @@ const blogPosts = [
     category: 'Renewals',
     readTime: '4 min read',
     date: 'January 16, 2026',
-    featured: true
+    featured: false
   },
   {
     slug: 'what-is-certificate-of-insurance',
