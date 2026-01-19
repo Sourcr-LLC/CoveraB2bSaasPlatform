@@ -88,6 +88,33 @@ function DashboardContent() {
             <Bell className="w-5 h-5 text-slate-400" />
           </div>
         </div>
+        
+        {/* Action Banner */}
+        <div className="px-6 pt-6 -mb-2">
+          <div className="p-3 rounded-lg bg-red-50 border border-red-100 flex items-center justify-between shadow-sm">
+             <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+                  <AlertTriangle className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-red-900">
+                    7 vendors are non-compliant
+                  </p>
+                  <p className="text-xs text-red-700">
+                    Resolve this now to reduce exposure and maintain audit readiness.
+                  </p>
+                </div>
+             </div>
+             <button 
+               onClick={() => {
+                  document.getElementById('attention-items-visual')?.scrollIntoView({ behavior: 'smooth' });
+               }}
+               className="text-xs font-semibold bg-white text-red-700 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition-colors"
+             >
+               Resolve issue →
+             </button>
+          </div>
+        </div>
 
         {/* CONTENT */}
         <div className="flex-1 flex flex-col p-6 space-y-4 overflow-hidden">
@@ -98,7 +125,7 @@ function DashboardContent() {
               label="Compliance Risk" 
               value={stats.atRisk} 
               change=""
-              subtext="expiring within 30 days"
+              subtext="⚠ Acting now prevents coverage gaps"
               percentageColor="#f59e0b"
               bgTint="rgba(245, 158, 11, 0.03)"
               borderColor="rgba(245, 158, 11, 0.2)"
@@ -109,7 +136,7 @@ function DashboardContent() {
               label="Non-Compliant" 
               value={stats.nonCompliant} 
               change=""
-              subtext="expired policies"
+              subtext="⚠ Resolve to eliminate liability exposure"
               percentageColor="#ef4444"
               bgTint="rgba(239, 68, 68, 0.03)"
               borderColor="rgba(239, 68, 68, 0.2)"
@@ -120,7 +147,7 @@ function DashboardContent() {
               label="Active Contracts" 
               value={stats.activeContracts} 
               change=""
-              subtext="managed agreements"
+              subtext="➕ Track contracts to avoid disputes"
               percentageColor="#3A4F6A"
               bgTint="rgba(58, 79, 106, 0.03)"
               borderColor="rgba(58, 79, 106, 0.2)"
@@ -131,7 +158,7 @@ function DashboardContent() {
               label="Upcoming Milestones" 
               value={stats.expiringContracts} 
               change=""
-              subtext="contract renewals due"
+              subtext="Renewals requiring your review"
               trend="neutral" 
               percentageColor="#f59e0b"
               bgTint="#ffffff"
@@ -144,33 +171,36 @@ function DashboardContent() {
           <div className="flex-1 min-h-0">
              
              {/* Attention Items Table */}
-             <div className="h-full bg-white border border-[#e7e5e4] rounded-xl overflow-hidden shadow-sm flex flex-col">
+             <div id="attention-items-visual" className="h-full bg-white border border-[#e7e5e4] rounded-xl overflow-hidden shadow-sm flex flex-col">
                 <div className="px-6 py-4 border-b border-[#f5f5f4] flex items-center justify-between flex-shrink-0">
-                  <div className="flex items-center gap-4">
-                     <h3 className="font-bold text-slate-900 text-base">Attention Items</h3>
-                     {/* Tabs simulation */}
-                     <div className="flex bg-[#f5f5f4] p-1 rounded-lg">
-                        <button 
-                          onClick={() => setActiveTab('insurance')}
-                          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                            activeTab === 'insurance' 
-                              ? 'bg-white text-slate-900 shadow-sm' 
-                              : 'text-slate-500 hover:text-slate-700'
-                          }`}
-                        >
-                          Insurance
-                        </button>
-                        <button 
-                          onClick={() => setActiveTab('contracts')}
-                          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                            activeTab === 'contracts' 
-                              ? 'bg-white text-slate-900 shadow-sm' 
-                              : 'text-slate-500 hover:text-slate-700'
-                          }`}
-                        >
-                          Contracts
-                        </button>
-                     </div>
+                  <div>
+                    <div className="flex items-center gap-4 mb-1">
+                       <h3 className="font-bold text-slate-900 text-base">Attention Items</h3>
+                       {/* Tabs simulation */}
+                       <div className="flex bg-[#f5f5f4] p-1 rounded-lg scale-90 origin-left">
+                          <button 
+                            onClick={() => setActiveTab('insurance')}
+                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                              activeTab === 'insurance' 
+                                ? 'bg-white text-slate-900 shadow-sm' 
+                                : 'text-slate-500 hover:text-slate-700'
+                            }`}
+                          >
+                            Insurance
+                          </button>
+                          <button 
+                            onClick={() => setActiveTab('contracts')}
+                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                              activeTab === 'contracts' 
+                                ? 'bg-white text-slate-900 shadow-sm' 
+                                : 'text-slate-500 hover:text-slate-700'
+                            }`}
+                          >
+                            Contracts
+                          </button>
+                       </div>
+                    </div>
+                    <p className="text-xs text-slate-500">Items that could expose your organization to risk if left unresolved</p>
                   </div>
                   <Filter className="w-4 h-4 text-slate-400" />
                 </div>
@@ -243,6 +273,9 @@ function VendorRow({ name, type, status, date, action }: any) {
          <button className="text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200 hover:shadow-sm transition-all whitespace-nowrap">
             {action}
          </button>
+         <div className="text-[10px] text-slate-400 mt-1.5 font-medium scale-90 origin-right">
+            Automated follow-up logged
+         </div>
        </div>
     </div>
   );

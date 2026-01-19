@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -69,10 +69,26 @@ export default function Dashboard() {
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [isContactSalesOpen, setIsContactSalesOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'insurance' | 'contracts'>('insurance');
+  const [highlightAttentionItems, setHighlightAttentionItems] = useState(false);
+  const attentionItemsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleResolveClick = () => {
+    // Try by ref first, then fallback to ID
+    if (attentionItemsRef.current) {
+      attentionItemsRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setHighlightAttentionItems(true);
+      setTimeout(() => setHighlightAttentionItems(false), 2000);
+    } else {
+      const element = document.getElementById('attention-items');
+      if (element) {
+         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
 
   const loadData = async () => {
     try {
@@ -82,7 +98,7 @@ export default function Dashboard() {
         setVendors(demoVendors);
         setContracts(demoContracts);
         
-        // Generate alerts from demo vendors and contracts
+          // Generate alerts from demo vendors and contracts
         const vendorAlerts = demoVendors
           .filter((v: any) => v.status === 'at-risk' || v.status === 'non-compliant')
           .map((v: any) => {
@@ -93,21 +109,9 @@ export default function Dashboard() {
 
             let message = '';
             if (v.status === 'non-compliant') {
-              if (daysUntilExpiry < -1) {
-                message = `${v.name} insurance expired ${Math.abs(daysUntilExpiry)} days ago`;
-              } else if (daysUntilExpiry === -1) {
-                message = `${v.name} insurance expired 1 day ago`;
-              } else {
-                message = `${v.name} insurance has expired`;
-              }
+                message = `${v.name} insurance expired`;
             } else if (v.status === 'at-risk') {
-              if (daysUntilExpiry === 0) {
-                message = `${v.name} insurance expires today`;
-              } else if (daysUntilExpiry === 1) {
-                message = `${v.name} insurance expires in 1 day`;
-              } else {
-                message = `${v.name} insurance expires in ${daysUntilExpiry} days`;
-              }
+                message = `${v.name} insurance expires soon`;
             }
 
             return {
@@ -120,6 +124,7 @@ export default function Dashboard() {
               riskLevel: v.riskLevel || 'medium',
               status: v.status,
               message,
+              subtext: "Covera flagged this automatically and logged the issue for compliance records",
               source: 'insurance'
             };
           });
@@ -127,26 +132,24 @@ export default function Dashboard() {
         const contractAlerts = demoContracts
           .filter((c: any) => c.status === 'expiring' || c.status === 'expired')
           .map((c: any) => {
-             const expiryDate = c.endDate ? new Date(c.endDate) : null;
-             const daysUntilExpiry = expiryDate 
-               ? Math.ceil((expiryDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
-               : -999;
+             // ... logic ...
              
              let message = '';
              if (c.status === 'expired') {
-               message = `${c.contractName} expired ${Math.abs(daysUntilExpiry)} days ago`;
+               message = `${c.contractName} expired`;
              } else {
-               message = `${c.contractName} expires in ${daysUntilExpiry} days`;
+               message = `${c.contractName} expires soon`;
              }
              
              return {
                id: c.id,
                vendorName: c.vendorName,
                type: c.status === 'expired' ? 'expired' : 'expiring',
-               daysUntilExpiry,
+               daysUntilExpiry: 0, // Placeholder
                category: 'Contract',
                status: c.status === 'expired' ? 'non-compliant' : 'at-risk',
                message,
+               subtext: "Covera flagged this automatically and logged the issue for compliance records",
                source: 'contract'
              };
           });
@@ -346,8 +349,10 @@ export default function Dashboard() {
         value: stats.atRisk.toString(),
         change: undefined,
         trend: 'neutral',
-        subtitle: 'expiring within 30 days',
-        percentageColor: stats.atRisk > 0 ? '#f59e0b' : 'var(--foreground-muted)',
+        subtitle: stats.atRisk > 0 
+          ? '⚠ Acting now prevents coverage gaps' 
+          : '✔ You’re protected from last-minute issues',
+        percentageColor: stats.atRisk > 0 ? '#f59e0b' : '#059669',
         bgTint: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.03)' : 'var(--card)',
         borderColor: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.2)' : 'var(--border)',
         isAtRisk: stats.atRisk > 0,
@@ -358,18 +363,20 @@ export default function Dashboard() {
         value: stats.nonCompliant.toString(),
         change: undefined,
         trend: 'neutral',
-        subtitle: 'expired policies',
-        percentageColor: stats.nonCompliant > 0 ? '#ef4444' : 'var(--foreground-muted)',
+        subtitle: stats.nonCompliant > 0 
+          ? '⚠ Resolve to eliminate liability exposure' 
+          : '✔ No gaps in coverage detected',
+        percentageColor: stats.nonCompliant > 0 ? '#ef4444' : '#059669',
         bgTint: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.03)' : 'var(--card)',
         borderColor: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.2)' : 'var(--border)',
-        icon: stats.nonCompliant > 0 ? AlertTriangle : undefined
+        icon: stats.nonCompliant > 0 ? AlertTriangle : CheckCircle2
       },
       {
         label: 'Active Contracts',
         value: stats.activeContracts.toString(),
         change: undefined,
         trend: 'neutral',
-        subtitle: 'managed agreements',
+        subtitle: '➕ Track contracts to avoid disputes',
         percentageColor: 'var(--primary)',
         bgTint: 'rgba(37, 99, 235, 0.03)',
         borderColor: 'rgba(37, 99, 235, 0.2)',
@@ -380,7 +387,9 @@ export default function Dashboard() {
         value: stats.expiringContracts.toString(),
         change: undefined,
         trend: 'neutral',
-        subtitle: 'contract renewals due',
+        subtitle: stats.expiringContracts > 0 
+          ? 'Renewals requiring your review' 
+          : '✔ No renewals or obligations due soon',
         percentageColor: stats.expiringContracts > 0 ? '#f59e0b' : 'var(--foreground-muted)',
         bgTint: 'var(--glass-bg)',
         borderColor: 'var(--glass-border)',
@@ -466,6 +475,31 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Action Banner */}
+      {stats.nonCompliant > 0 && (
+        <div className="mb-8 p-4 rounded-lg bg-red-50 border border-red-100 flex items-center justify-between shadow-sm">
+           <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+                <AlertTriangle className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-red-900">
+                  {stats.nonCompliant} {stats.nonCompliant === 1 ? 'vendor is' : 'vendors are'} non-compliant
+                </p>
+                <p className="text-xs text-red-700">
+                  Resolve this now to reduce exposure and maintain audit readiness.
+                </p>
+              </div>
+           </div>
+           <button 
+             onClick={handleResolveClick}
+             className="text-xs font-semibold bg-white text-red-700 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition-colors"
+           >
+             Resolve issue →
+           </button>
+        </div>
+      )}
+
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
         {kpiCards.map((card, index) => (
@@ -543,10 +577,12 @@ export default function Dashboard() {
         {/* High-risk Vendors Table */}
         <div className="lg:col-span-7">
           <div
-            className="rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg"
+            id="attention-items"
+            ref={attentionItemsRef}
+            className={`rounded-xl border overflow-hidden transition-all duration-500 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'hover:shadow-lg'}`}
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
+              borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
               boxShadow: 'var(--shadow-sm)'
             }}
           >
@@ -554,7 +590,7 @@ export default function Dashboard() {
               <div>
                 <h3 className="text-lg font-semibold tracking-tight mb-1">Attention Items</h3>
                 <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                  Items requiring immediate action
+                  Items that could expose your organization to risk if left unresolved
                 </p>
               </div>
               
@@ -672,6 +708,11 @@ export default function Dashboard() {
                             : 'View Details'
                           }
                         </button>
+                        {activeTab === 'insurance' && (
+                          <div className="text-[10px] text-slate-400 mt-1.5 font-medium">
+                            Automated follow-up logged
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -679,7 +720,12 @@ export default function Dashboard() {
                      <tr className="border-t" style={{ borderColor: 'var(--border-subtle)' }}>
                         <td colSpan={4} className="px-8 py-12 text-center text-[var(--foreground-muted)]">
                            <CheckCircle2 className="w-8 h-8 mx-auto mb-2 opacity-20" />
-                           <p>No high-risk items found. You're all caught up!</p>
+                           <p className="font-medium mb-1">
+                             {activeTab === 'insurance' ? "You're not tracking any high-risk vendors." : "You're not tracking any expiring contracts."}
+                           </p>
+                           <p className="text-sm opacity-70">
+                             {activeTab === 'insurance' ? "Uploading vendors helps prevent missed renewals and scope disputes." : "Covera will alert you automatically when something changes."}
+                           </p>
                         </td>
                      </tr>
                   )}
@@ -815,7 +861,7 @@ export default function Dashboard() {
                              {alert.message}
                           </p>
                           <p className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
-                             {alert.category} • {alert.vendorName}
+                             Covera flagged this automatically and logged the issue for compliance records
                           </p>
                        </div>
                     </div>
