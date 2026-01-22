@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3, Plus, MoreHorizontal } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3, Plus, MoreHorizontal, CheckSquare, Square, Download, Check, ListChecks } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
 import PaywallModal from './PaywallModal';
@@ -87,6 +87,7 @@ export default function Dashboard() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [highlightAttentionItems, setHighlightAttentionItems] = useState(false);
   const attentionItemsRef = useRef<HTMLDivElement>(null);
+  const [selectedVendorIds, setSelectedVendorIds] = useState<Set<string>>(new Set());
 
   const [isAutomatedRemindersEnabled, setIsAutomatedRemindersEnabled] = useState(false);
 
@@ -94,15 +95,86 @@ export default function Dashboard() {
     loadData();
   }, []);
 
-  const handleFilterClick = (filterType: string, tab: 'insurance' | 'contracts', e?: React.MouseEvent) => {
-    e?.stopPropagation();
+  const handleFilterClick = (filterType: string, tab: 'insurance' | 'contracts', e?: React.MouseEvent | any) => {
+    e?.stopPropagation?.();
     if (activeFilter === filterType) {
       setActiveFilter(null);
     } else {
       setActiveFilter(filterType);
       setActiveTab(tab);
     }
+    setSelectedVendorIds(new Set()); // Clear selection on filter change
   };
+
+  const handleSelectAll = () => {
+    if (selectedVendorIds.size === filteredVendors.length && filteredVendors.length > 0) {
+      setSelectedVendorIds(new Set());
+    } else {
+      setSelectedVendorIds(new Set(filteredVendors.map(v => v.id)));
+    }
+  };
+
+  const handleSelectVendor = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newSelected = new Set(selectedVendorIds);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedVendorIds(newSelected);
+  };
+
+  const handleBulkReminders = async () => {
+    if (!isPremium) {
+      setIsPaywallOpen(true);
+      return;
+    }
+    if (selectedVendorIds.size === 0) return;
+    
+    const count = selectedVendorIds.size;
+    toast.message(`Sending reminders to ${count} vendors...`);
+    
+    try {
+      const promises = Array.from(selectedVendorIds).map(id => vendorApi.sendReminder(id));
+      await Promise.allSettled(promises);
+      toast.success(`Successfully sent ${count} reminders`);
+      setSelectedVendorIds(new Set());
+      
+      // Refresh data to update activity feed
+      loadData();
+    } catch (error) {
+      console.error("Bulk reminder error:", error);
+      toast.error("Some reminders failed to send");
+    }
+  };
+
+  const handleExport = () => {
+    const dataToExport = filteredVendors.filter(v => selectedVendorIds.has(v.id));
+    if (dataToExport.length === 0) return;
+    
+    const csvContent = "data:text/csv;charset=utf-8," 
+        + "Name,Status,Expiry Date,Days Left\n"
+        + dataToExport.map(v => `"${v.name}","${v.status}","${v.expiryDate}",${v.daysLeft}`).join("\n");
+        
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "vendors_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Export started");
+  };
+
+  const onboardingProgress = useMemo(() => {
+    let completedSteps = 1; // Step 1: Account Created (Done)
+    if (vendors.length > 0) completedSteps++; // Step 2: Add Vendor
+    if (contracts.length > 0) completedSteps++; // Step 3: Add Contract
+    
+    const totalSteps = 3;
+    return Math.round((completedSteps / totalSteps) * 100);
+  }, [vendors, contracts]);
 
   const handleAutomateReminders = async () => {
     setIsAutomatedRemindersEnabled(true);
@@ -452,9 +524,9 @@ export default function Dashboard() {
     };
 
     return [
-      { name: 'Compliant', value: counts.low, color: '#10b981' }, 
-      { name: 'At Risk', value: counts.medium, color: '#f59e0b' }, 
-      { name: 'Non-Compliant', value: counts.high, color: '#ef4444' }, 
+      { name: 'Compliant', value: counts.low, color: '#10b981', filterKey: 'compliant' }, 
+      { name: 'At Risk', value: counts.medium, color: '#f59e0b', filterKey: 'risk' }, 
+      { name: 'Non-Compliant', value: counts.high, color: '#ef4444', filterKey: 'non-compliant' }, 
     ].filter(item => item.value > 0);
   }, [vendors]);
 
@@ -585,7 +657,7 @@ export default function Dashboard() {
       {/* Charts Row */}
       <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 h-auto lg:h-[320px]">
          {/* Main Chart */}
-         <div onClick={(e) => e.stopPropagation()} className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
+         <div onClick={(e) => e.stopPropagation()} className="lg:col-span-2 bg-white/70 backdrop-blur-md border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
             <div className="flex justify-between items-center mb-6">
                <div>
                  <h3 className="font-bold text-slate-900">Compliance Trends</h3>
@@ -615,7 +687,7 @@ export default function Dashboard() {
          </div>
 
          {/* Secondary Widget (Risk Distribution Donut) */}
-         <div onClick={(e) => e.stopPropagation()} className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
+         <div onClick={(e) => e.stopPropagation()} className="bg-white/70 backdrop-blur-md border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
             <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
             <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0 min-w-0">
                {riskDistribution.length > 0 ? (
@@ -630,9 +702,11 @@ export default function Dashboard() {
                            paddingAngle={4}
                            dataKey="value"
                            stroke="none"
+                           onClick={(data) => handleFilterClick(data.filterKey, 'insurance')}
+                           className="cursor-pointer focus:outline-none"
                          >
                            {riskDistribution.map((entry, index) => (
-                             <Cell key={`cell-${index}`} fill={entry.color} />
+                             <Cell key={`cell-${index}`} fill={entry.color} className="hover:opacity-80 transition-opacity" />
                            ))}
                            <Label
                              value={stats.total}
@@ -677,12 +751,45 @@ export default function Dashboard() {
             id="attention-items"
             ref={attentionItemsRef}
             onClick={(e) => e.stopPropagation()}
-            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white flex flex-col h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
+            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white/70 backdrop-blur-md flex flex-col h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
             style={{
               borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
             }}
           >
-            <div className="flex-none px-6 py-5 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
+            <div className="flex-none px-6 py-4 border-b flex justify-between items-center relative" style={{ borderColor: 'var(--border-subtle)' }}>
+              {selectedVendorIds.size > 0 && activeTab === 'insurance' ? (
+                <div className="absolute inset-0 bg-blue-50/90 backdrop-blur-sm z-20 flex items-center justify-between px-6">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      {selectedVendorIds.size}
+                    </span>
+                    <span className="text-sm font-medium text-blue-900">selected</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                     <button
+                       onClick={handleBulkReminders}
+                       className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-200 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
+                     >
+                       <Send className="w-3.5 h-3.5" />
+                       Send Reminders
+                     </button>
+                     <button
+                       onClick={handleExport}
+                       className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-200 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
+                     >
+                       <Download className="w-3.5 h-3.5" />
+                       Export
+                     </button>
+                     <button
+                       onClick={() => setSelectedVendorIds(new Set())}
+                       className="p-1.5 text-blue-400 hover:text-blue-700 hover:bg-blue-100 rounded-md transition-colors ml-1"
+                     >
+                       <XCircle className="w-4 h-4" />
+                     </button>
+                  </div>
+                </div>
+              ) : null}
+
               <div>
                 <h3 className="text-lg font-bold tracking-tight text-slate-900 mb-0.5">Attention Items</h3>
                 <p className="text-xs text-slate-500">
@@ -720,7 +827,21 @@ export default function Dashboard() {
               <table className="w-full">
                 <thead className="sticky top-0 bg-white z-10 shadow-sm">
                   <tr className="bg-slate-50/50 border-b border-slate-100">
-                    <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
+                    {activeTab === 'insurance' && (
+                      <th className="w-10 px-6 py-4">
+                        <button 
+                          onClick={handleSelectAll}
+                          className="text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
+                        >
+                           {selectedVendorIds.size === filteredVendors.length && filteredVendors.length > 0 ? (
+                             <CheckSquare className="w-4 h-4 text-blue-600" />
+                           ) : (
+                             <Square className="w-4 h-4" />
+                           )}
+                        </button>
+                      </th>
+                    )}
+                    <th className={`${activeTab === 'insurance' ? 'pl-0 pr-6' : 'px-6'} py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500`}>
                       {activeTab === 'insurance' ? 'Vendor' : 'Contract Name'}
                     </th>
                     <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
@@ -737,10 +858,24 @@ export default function Dashboard() {
                 <tbody className="divide-y divide-slate-100">
                   {(activeTab === 'insurance' ? filteredVendors : filteredContracts).map((item, index) => (
                     <tr 
-                      key={index}
-                      className="transition-colors hover:bg-slate-50/50 group"
+                      key={item.id || index}
+                      className={`group hover:bg-slate-50/80 transition-colors ${selectedVendorIds.has(item.id) ? 'bg-blue-50/40' : ''}`}
                     >
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {activeTab === 'insurance' && (
+                        <td className="w-10 px-6 py-4">
+                           <button 
+                             onClick={(e) => handleSelectVendor(item.id, e)}
+                             className="text-slate-400 hover:text-blue-600 transition-colors focus:outline-none"
+                           >
+                              {selectedVendorIds.has(item.id) ? (
+                                <CheckSquare className="w-4 h-4 text-blue-600" />
+                              ) : (
+                                <Square className="w-4 h-4 group-hover:text-slate-500" />
+                              )}
+                           </button>
+                        </td>
+                      )}
+                      <td className={`${activeTab === 'insurance' ? 'pl-0 pr-6' : 'px-6'} py-4 whitespace-nowrap`}>
                         <div className="flex items-center gap-3">
                           <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shadow-sm ${getAvatarColor(activeTab === 'insurance' ? item.name : item.vendorName)}`}>
                             {getInitials(activeTab === 'insurance' ? item.name : item.vendorName)}
@@ -893,7 +1028,7 @@ export default function Dashboard() {
         {/* Activity Feed - Right Column */}
         <div className="w-full lg:col-span-1 lg:h-full flex flex-col gap-6 lg:min-h-0">
           <div
-            className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col min-h-0"
+            className="rounded-xl border bg-white/70 backdrop-blur-md shadow-sm overflow-hidden flex-1 flex flex-col min-h-0"
             style={{ borderColor: 'var(--border)' }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -940,33 +1075,83 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Tips Card - Fixed height */}
-          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-xl bg-[#2e3e52] p-6 text-white shadow-md relative overflow-hidden group">
+          {/* Tips Card or Onboarding */}
+          {onboardingProgress < 100 ? (
+            <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-xl bg-white border border-slate-200 p-6 shadow-sm relative overflow-hidden group">
+               <div className="flex justify-between items-start mb-4">
+                 <div>
+                   <h4 className="font-bold text-slate-900 mb-1">Account Setup</h4>
+                   <p className="text-xs text-slate-500">Complete these steps to get full value.</p>
+                 </div>
+                 <div className="bg-blue-50 text-blue-700 font-bold text-xs px-2 py-1 rounded-full">
+                   {onboardingProgress}%
+                 </div>
+               </div>
+               
+               <div className="space-y-3">
+                 <div className="flex items-center gap-3 text-sm">
+                   <div className="flex-none w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                     <Check className="w-3 h-3" />
+                   </div>
+                   <span className="text-slate-600 line-through">Create account</span>
+                 </div>
+                 
+                 <div className={`flex items-center gap-3 text-sm ${vendors.length > 0 ? 'opacity-50' : ''}`}>
+                   <div className={`flex-none w-5 h-5 rounded-full flex items-center justify-center ${vendors.length > 0 ? 'bg-green-100 text-green-600' : 'bg-slate-100 text-slate-400'}`}>
+                     {vendors.length > 0 ? <Check className="w-3 h-3" /> : <div className="w-2 h-2 rounded-full bg-slate-300" />}
+                   </div>
+                   <span className={vendors.length > 0 ? 'text-slate-600 line-through' : 'text-slate-900 font-medium'}>
+                     Add your first vendor
+                   </span>
+                 </div>
+
+                 <div className={`flex items-center gap-3 text-sm ${contracts.length > 0 ? 'opacity-50' : ''}`}>
+                   <div className={`flex-none w-5 h-5 rounded-full flex items-center justify-center ${contracts.length > 0 ? 'bg-green-100 text-green-600' : 'bg-slate-100 text-slate-400'}`}>
+                     {contracts.length > 0 ? <Check className="w-3 h-3" /> : <div className="w-2 h-2 rounded-full bg-slate-300" />}
+                   </div>
+                   <span className={contracts.length > 0 ? 'text-slate-600 line-through' : 'text-slate-900 font-medium'}>
+                     Add a contract
+                   </span>
+                 </div>
+               </div>
+               
+               {(vendors.length === 0 || contracts.length === 0) && (
+                 <button 
+                   onClick={() => navigate(vendors.length === 0 ? '/add-vendor' : '/add-contract')}
+                   className="mt-5 w-full py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
+                 >
+                   Continue Setup <ArrowUpRight className="w-3 h-3" />
+                 </button>
+               )}
+            </div>
+          ) : (
+          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-md border border-blue-100 p-6 shadow-sm relative overflow-hidden group">
             {/* Background blobs to match design */}
-            <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700"></div>
-            <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700 delay-100"></div>
+            <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-blue-100/30 group-hover:scale-105 transition-transform duration-700"></div>
+            <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-indigo-100/30 group-hover:scale-105 transition-transform duration-700 delay-100"></div>
             
             <div className="relative z-10">
-              <h4 className="font-semibold text-base mb-3 flex items-center gap-2.5 text-slate-100">
-                 <Shield className="w-5 h-5 text-slate-300" /> 
+              <h4 className="font-semibold text-base mb-3 flex items-center gap-2.5 text-slate-800">
+                 <Shield className="w-5 h-5 text-blue-600" /> 
                  Pro Tip
               </h4>
-              <p className="text-sm text-slate-300 leading-relaxed mb-5 font-normal">
+              <p className="text-sm text-slate-600 leading-relaxed mb-5 font-normal">
                  Vendors with expiring insurance are 3x more likely to lapse if not reminded 30 days prior.
               </p>
               <button 
                 onClick={handleAutomateReminders}
                 disabled={isAutomatedRemindersEnabled}
-                className={`text-sm font-medium w-full py-2.5 rounded-lg transition-all duration-200 ${
+                className={`text-sm font-medium w-full py-2.5 rounded-lg transition-all duration-200 border ${
                   isAutomatedRemindersEnabled 
-                    ? 'bg-emerald-500/20 text-emerald-300 cursor-default' 
-                    : 'bg-white/10 hover:bg-white/15 text-white'
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-100 cursor-default' 
+                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 shadow-sm'
                 }`}
               >
                 {isAutomatedRemindersEnabled ? 'Reminders Active' : 'Automate Reminders'}
               </button>
             </div>
           </div>
+          )}
         </div>
       </div>
     </div>
