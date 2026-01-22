@@ -292,6 +292,66 @@ export const demoVendors: DemoVendor[] = [
     documents: [
       { name: 'COI_Metro_Expired.pdf', type: 'PDF', size: '1.6 MB', uploaded: addDays(-375), path: 'demo-doc-12' }
     ]
+  },
+  {
+    id: 'demo-13',
+    name: 'Apex Roofing Solutions',
+    email: 'contact@apexroofing.com',
+    phone: '(555) 999-8888',
+    category: 'Construction',
+    insuranceExpiry: addMonths(11),
+    status: 'compliant',
+    policyNumber: 'POL-2024-9988',
+    coverageAmount: '$2,000,000',
+    lastUpdated: addDays(-5),
+    site: 'Roof Repair Project',
+    address: '789 High Point Dr, Summit, CO 80000',
+    insurancePolicies: [
+      { type: 'General Liability', carrier: 'Travelers', coverageLimit: 2000000, expiryDate: addMonths(11), status: 'compliant' }
+    ],
+    documents: [
+      { name: 'COI_Apex_2025.pdf', type: 'PDF', size: '1.2 MB', uploaded: addDays(-5), path: 'demo-doc-13' }
+    ]
+  },
+  {
+    id: 'demo-14',
+    name: 'Modern Office Interiors',
+    email: 'design@modernoffice.com',
+    phone: '(555) 777-6666',
+    category: 'Facilities',
+    insuranceExpiry: addMonths(9),
+    status: 'compliant',
+    policyNumber: 'POL-2024-7766',
+    coverageAmount: '$1,000,000',
+    lastUpdated: addDays(-15),
+    site: 'Lobby Redesign',
+    address: '456 Design Ave, Creative City, CA 90000',
+    insurancePolicies: [
+      { type: 'General Liability', carrier: 'Chubb', coverageLimit: 1000000, expiryDate: addMonths(9), status: 'compliant' }
+    ],
+    documents: [
+      { name: 'COI_ModernOffice.pdf', type: 'PDF', size: '0.9 MB', uploaded: addDays(-15), path: 'demo-doc-14' }
+    ]
+  },
+  {
+    id: 'demo-15',
+    name: 'CyberShield Systems',
+    email: 'secure@cybershield.com',
+    phone: '(555) 444-3333',
+    category: 'Technology',
+    insuranceExpiry: addMonths(14),
+    status: 'compliant',
+    policyNumber: 'POL-2024-4433',
+    coverageAmount: '$5,000,000',
+    lastUpdated: addDays(-2),
+    site: 'Security Audit',
+    address: '101 Cyber Way, Tech Hub, TX 75000',
+    insurancePolicies: [
+      { type: 'Cyber Liability', carrier: 'Beazley', coverageLimit: 5000000, expiryDate: addMonths(14), status: 'compliant' }
+    ],
+    documents: [
+      { name: 'COI_CyberShield.pdf', type: 'PDF', size: '1.8 MB', uploaded: addDays(-2), path: 'demo-doc-15' }
+    ]
   }
 ];
 
@@ -408,6 +468,54 @@ export const demoContracts: DemoContract[] = [
     status: 'active',
     autoRenew: false,
     propertyName: 'Interior Renovation'
+  },
+  {
+    id: 'contract-9',
+    vendorId: 'demo-13',
+    vendorName: 'Apex Roofing Solutions',
+    contractName: 'Roof Maintenance Agreement',
+    startDate: addMonths(-2),
+    endDate: addMonths(10),
+    value: '$65,000',
+    status: 'active',
+    autoRenew: true,
+    propertyName: 'Roof Repair Project',
+    documentName: 'Contract_Apex_Roofing.pdf',
+    documentType: 'PDF',
+    documentSize: '1.5 MB',
+    documentUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1000'
+  },
+  {
+    id: 'contract-10',
+    vendorId: 'demo-14',
+    vendorName: 'Modern Office Interiors',
+    contractName: 'Lobby Refurbishment',
+    startDate: addMonths(-1),
+    endDate: addMonths(2),
+    value: '$42,000',
+    status: 'active',
+    autoRenew: false,
+    propertyName: 'Lobby Redesign',
+    documentName: 'Design_Proposal_Modern.pdf',
+    documentType: 'PDF',
+    documentSize: '2.8 MB',
+    documentUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1000'
+  },
+  {
+    id: 'contract-11',
+    vendorId: 'demo-15',
+    vendorName: 'CyberShield Systems',
+    contractName: 'Annual Security Audit',
+    startDate: addMonths(-1),
+    endDate: addMonths(11),
+    value: '$150,000',
+    status: 'active',
+    autoRenew: true,
+    propertyName: 'Security Audit',
+    documentName: 'SLA_CyberShield.pdf',
+    documentType: 'PDF',
+    documentSize: '1.9 MB',
+    documentUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1000'
   }
 ];
 

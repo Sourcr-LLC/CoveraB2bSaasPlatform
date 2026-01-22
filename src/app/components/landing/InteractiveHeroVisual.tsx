@@ -1,9 +1,25 @@
 import { useState } from 'react';
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3, Plus
+  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3, Plus,
+  Send, ArrowUpRight, RefreshCw
 } from 'lucide-react';
 import { KpiCard } from '../dashboard/KpiCard';
+
+// Helper to generate consistent colors for avatars based on name
+function getAvatarColor(name: string) {
+  // Neutral colors to reduce visual pollution (using slate/gray scales with consistent dark text)
+  return 'bg-slate-100 text-slate-700 border border-slate-200';
+}
+
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .substring(0, 2)
+    .toUpperCase();
+}
 
 export default function InteractiveHeroVisual() {
   return (
@@ -253,14 +269,23 @@ function VendorRow({ name, type, status, date, action }: any) {
   return (
     <div className="px-6 py-3 grid grid-cols-12 items-center group hover:bg-[#fafaf9] transition-colors duration-200">
        <div className="col-span-4 pr-4">
-         <div className="font-semibold text-slate-900 text-sm truncate">{name}</div>
-         <div className="text-xs text-slate-500 truncate">{type}</div>
+         <div className="flex items-center gap-3">
+            {/* Added Avatar to match Dashboard.tsx */}
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm ${getAvatarColor(name)}`}>
+              {getInitials(name)}
+            </div>
+            <div className="overflow-hidden">
+               <div className="font-semibold text-slate-900 text-sm truncate">{name}</div>
+               <div className="text-xs text-slate-500 truncate">{type}</div>
+            </div>
+         </div>
        </div>
 
        <div className="col-span-3">
-         <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusColor} w-fit`}>
-           {(status === "At Risk" || status === "Expiring") && <Clock className="w-3 h-3 mr-1" />}
-           {(status === "Expired" || status === "Missing") && <AlertCircle className="w-3 h-3 mr-1" />}
+         <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusColor} w-fit`}>
+           {(status === "At Risk" || status === "Expiring") && <Clock className="w-3 h-3" />}
+           {(status === "Expired" || status === "Missing") && <AlertCircle className="w-3 h-3" />}
+           {(status === "Verified" || status === "Active") && <CheckCircle2 className="w-3 h-3" />}
            {status}
          </div>
        </div>
@@ -270,12 +295,22 @@ function VendorRow({ name, type, status, date, action }: any) {
        </div>
 
        <div className="col-span-2 text-right">
-         <button className="text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200 hover:shadow-sm transition-all whitespace-nowrap">
-            {action}
+         {/* Updated to Ghost Button style to match Dashboard.tsx */}
+         <button className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all opacity-70 group-hover:opacity-100 bg-transparent border-0 shadow-none">
+            {action === "Send Reminder" ? (
+              <>
+                <Send className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Send</span>
+              </>
+            ) : action === "View Details" || action === "View COI" ? (
+               <>
+                 <span className="hidden sm:inline">View</span>
+                 <ArrowUpRight className="w-3.5 h-3.5" />
+               </>
+            ) : (
+               <span>{action}</span>
+            )}
          </button>
-         <div className="text-[10px] text-slate-400 mt-1.5 font-medium scale-90 origin-right">
-            Automated follow-up logged
-         </div>
        </div>
     </div>
   );

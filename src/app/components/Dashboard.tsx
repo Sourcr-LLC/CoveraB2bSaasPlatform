@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3, Plus } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3, Plus, MoreHorizontal } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
 import PaywallModal from './PaywallModal';
 import ContactSalesModal from './ContactSalesModal';
 import { toast } from 'sonner';
@@ -14,25 +14,24 @@ import { KpiCard } from './dashboard/KpiCard';
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
   if (!insuranceExpiry || insuranceExpiry === 'Invalid Date' || insuranceExpiry.trim() === '') {
-    return 'non-compliant'; // No insurance or invalid date = non-compliant
+    return 'non-compliant';
   }
   
   const expiryDate = new Date(insuranceExpiry);
   
-  // Check if date is valid
   if (isNaN(expiryDate.getTime())) {
-    return 'non-compliant'; // Invalid date = non-compliant
+    return 'non-compliant';
   }
   
   const today = new Date();
   const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   
   if (daysUntilExpiry < 0) {
-    return 'non-compliant'; // Expired
+    return 'non-compliant';
   } else if (daysUntilExpiry <= 30) {
-    return 'at-risk'; // Expiring within 30 days
+    return 'at-risk';
   } else {
-    return 'compliant'; // Valid and not expiring soon
+    return 'compliant';
   }
 }
 
@@ -59,6 +58,22 @@ function calculateContractStatus(endDate: string | undefined): string {
   }
 }
 
+// Helper to generate consistent colors for avatars based on name
+function getAvatarColor(name: string) {
+  // Neutral colors to reduce visual pollution (using slate/gray scales with consistent dark text)
+  // Instead of random colors, we'll return a consistent neutral style
+  return 'bg-slate-100 text-slate-700 border border-slate-200';
+}
+
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .substring(0, 2)
+    .toUpperCase();
+}
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const { isPremium } = useSubscription();
@@ -69,36 +84,42 @@ export default function Dashboard() {
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [isContactSalesOpen, setIsContactSalesOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'insurance' | 'contracts'>('insurance');
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [highlightAttentionItems, setHighlightAttentionItems] = useState(false);
   const attentionItemsRef = useRef<HTMLDivElement>(null);
+
+  const [isAutomatedRemindersEnabled, setIsAutomatedRemindersEnabled] = useState(false);
 
   useEffect(() => {
     loadData();
   }, []);
 
-  const handleResolveClick = () => {
-    // Try by ref first, then fallback to ID
-    if (attentionItemsRef.current) {
-      attentionItemsRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setHighlightAttentionItems(true);
-      setTimeout(() => setHighlightAttentionItems(false), 2000);
+  const handleFilterClick = (filterType: string, tab: 'insurance' | 'contracts') => {
+    if (activeFilter === filterType) {
+      setActiveFilter(null);
     } else {
-      const element = document.getElementById('attention-items');
-      if (element) {
-         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      setActiveFilter(filterType);
+      setActiveTab(tab);
+      setTimeout(() => {
+        if (attentionItemsRef.current) {
+          attentionItemsRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
     }
+  };
+
+  const handleAutomateReminders = () => {
+    setIsAutomatedRemindersEnabled(true);
+    toast.success('Automatic reminders enabled! Vendors will be notified 30 days before expiry.');
   };
 
   const loadData = async () => {
     try {
-      // Check if demo mode is enabled
       if (isDemoMode()) {
         console.log('📊 Demo mode enabled - using mock data');
         setVendors(demoVendors);
         setContracts(demoContracts);
         
-          // Generate alerts from demo vendors and contracts
         const vendorAlerts = demoVendors
           .filter((v: any) => v.status === 'at-risk' || v.status === 'non-compliant')
           .map((v: any) => {
@@ -132,8 +153,6 @@ export default function Dashboard() {
         const contractAlerts = demoContracts
           .filter((c: any) => c.status === 'expiring' || c.status === 'expired')
           .map((c: any) => {
-             // ... logic ...
-             
              let message = '';
              if (c.status === 'expired') {
                message = `${c.contractName} expired`;
@@ -145,7 +164,7 @@ export default function Dashboard() {
                id: c.id,
                vendorName: c.vendorName,
                type: c.status === 'expired' ? 'expired' : 'expiring',
-               daysUntilExpiry: 0, // Placeholder
+               daysUntilExpiry: 0, 
                category: 'Contract',
                status: c.status === 'expired' ? 'non-compliant' : 'at-risk',
                message,
@@ -166,7 +185,6 @@ export default function Dashboard() {
         return;
       }
 
-      // Fetch vendors from API
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/vendors`,
         {
@@ -183,31 +201,26 @@ export default function Dashboard() {
       const data = await response.json();
       const vendorData = data.vendors || [];
       
-      // Fetch contracts from API
       let contractData = [];
       try {
         const contractResponse = await contractApi.getAll();
         contractData = contractResponse.contracts || [];
       } catch (err) {
-        console.warn('Failed to fetch contracts, might not be implemented yet:', err);
+        console.warn('Failed to fetch contracts:', err);
       }
       
-      // Calculate contract status
       const contractsWithStatus = contractData.map((contract: any) => ({
         ...contract,
         status: contract.status || calculateContractStatus(contract.endDate)
       }));
       setContracts(contractsWithStatus);
 
-      console.log('🔍 RAW vendors from API:', vendorData);
-      // Recalculate status for each vendor to ensure accuracy
       const vendorsWithUpdatedStatus = vendorData.map((vendor: any) => ({
         ...vendor,
         status: calculateVendorStatus(vendor.insuranceExpiry)
       }));
       setVendors(vendorsWithUpdatedStatus);
 
-      // Generate alerts from vendors
       const vendorAlerts = vendorsWithUpdatedStatus
         .filter((v: any) => v.status === 'at-risk' || v.status === 'non-compliant')
         .map((v: any) => {
@@ -264,15 +277,11 @@ export default function Dashboard() {
 
     setSendingReminderId(vendorId);
     try {
-      console.log('📧 Sending reminder to vendor:', vendorId);
       const result = await vendorApi.sendReminder(vendorId);
-      console.log('✅ Reminder sent successfully:', result);
       toast.success(`Reminder sent to ${vendorName}!`);
-      
       await loadData();
     } catch (error: any) {
-      console.error('❌ Failed to send reminder:', error);
-      toast.error(error.message || 'Failed to send reminder. Please check console for details.');
+      toast.error(error.message || 'Failed to send reminder.');
     } finally {
       setSendingReminderId(null);
     }
@@ -312,39 +321,61 @@ export default function Dashboard() {
     return Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   };
 
-  const highRiskVendors = useMemo(() => vendors
-    .filter(v => v.status === 'at-risk' || v.status === 'non-compliant')
-    .slice(0, 5)
-    .map(v => {
-      const daysLeft = calculateDaysLeft(v.insuranceExpiry);
-      return {
-        ...v,
-        statusLabel: getStatusLabel(v.status),
-        expiryDate: v.insuranceExpiry && v.insuranceExpiry !== 'Invalid Date' 
-          ? new Date(v.insuranceExpiry).toLocaleDateString() 
-          : 'No date',
-        daysLeft: daysLeft
-      };
-    }), [vendors]);
+  const filteredVendors = useMemo(() => {
+    let data = vendors;
+    
+    if (activeFilter === 'non-compliant') {
+      data = data.filter(v => v.status === 'non-compliant');
+    } else if (activeFilter === 'risk') {
+      data = data.filter(v => v.status === 'at-risk');
+    } else {
+      // Default view: Show top 5 problematic first, then others if space
+      data = data
+        .sort((a, b) => {
+          const statusOrder = { 'non-compliant': 0, 'at-risk': 1, 'compliant': 2 };
+          return (statusOrder[a.status as keyof typeof statusOrder] || 2) - (statusOrder[b.status as keyof typeof statusOrder] || 2);
+        })
+        .slice(0, 6);
+    }
+    
+    return data.map(v => ({
+      ...v,
+      statusLabel: getStatusLabel(v.status),
+      expiryDate: v.insuranceExpiry && v.insuranceExpiry !== 'Invalid Date' ? new Date(v.insuranceExpiry).toLocaleDateString() : 'No date',
+      daysLeft: calculateDaysLeft(v.insuranceExpiry)
+    }));
+  }, [vendors, activeFilter]);
 
-  const highRiskContracts = useMemo(() => contracts
-    .filter(c => c.status === 'expiring' || c.status === 'expired')
-    .slice(0, 5)
-    .map(c => {
-      const daysLeft = calculateDaysLeft(c.endDate);
-      return {
-        ...c,
-        name: c.contractName,
-        vendorName: c.vendorName,
-        statusLabel: getStatusLabel(c.status),
-        expiryDate: c.endDate ? new Date(c.endDate).toLocaleDateString() : 'No date',
-        daysLeft: daysLeft
-      };
-    }), [contracts]);
+  const filteredContracts = useMemo(() => {
+    let data = contracts;
+
+    if (activeFilter === 'active-contracts') {
+      data = data.filter(c => c.status === 'active');
+    } else if (activeFilter === 'upcoming') {
+      data = data.filter(c => c.status === 'expiring' || c.status === 'expired');
+    } else {
+      data = data
+        .sort((a, b) => {
+          const statusOrder = { 'expired': 0, 'expiring': 1, 'active': 2 };
+          return (statusOrder[a.status as keyof typeof statusOrder] || 2) - (statusOrder[b.status as keyof typeof statusOrder] || 2);
+        })
+        .slice(0, 6);
+    }
+
+    return data.map(c => ({
+      ...c,
+      name: c.contractName,
+      vendorName: c.vendorName,
+      statusLabel: getStatusLabel(c.status),
+      expiryDate: c.endDate ? new Date(c.endDate).toLocaleDateString() : 'No date',
+      daysLeft: calculateDaysLeft(c.endDate)
+    }));
+  }, [contracts, activeFilter]);
 
   const kpiCards = useMemo(() => {
     return [
       {
+        id: 'risk',
         label: 'Compliance Risk',
         value: stats.atRisk.toString(),
         change: undefined,
@@ -356,9 +387,11 @@ export default function Dashboard() {
         bgTint: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.03)' : 'var(--card)',
         borderColor: stats.atRisk > 0 ? 'rgba(245, 158, 11, 0.2)' : 'var(--border)',
         isAtRisk: stats.atRisk > 0,
-        icon: Shield
+        icon: Shield,
+        targetTab: 'insurance' as const
       },
       {
+        id: 'non-compliant',
         label: 'Non-Compliant',
         value: stats.nonCompliant.toString(),
         change: undefined,
@@ -369,9 +402,11 @@ export default function Dashboard() {
         percentageColor: stats.nonCompliant > 0 ? '#ef4444' : '#059669',
         bgTint: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.03)' : 'var(--card)',
         borderColor: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.2)' : 'var(--border)',
-        icon: stats.nonCompliant > 0 ? AlertTriangle : CheckCircle2
+        icon: stats.nonCompliant > 0 ? AlertTriangle : CheckCircle2,
+        targetTab: 'insurance' as const
       },
       {
+        id: 'active-contracts',
         label: 'Active Contracts',
         value: stats.activeContracts.toString(),
         change: undefined,
@@ -380,9 +415,11 @@ export default function Dashboard() {
         percentageColor: 'var(--primary)',
         bgTint: 'rgba(37, 99, 235, 0.03)',
         borderColor: 'rgba(37, 99, 235, 0.2)',
-        icon: FileText
+        icon: FileText,
+        targetTab: 'contracts' as const
       },
       {
+        id: 'upcoming',
         label: 'Upcoming Milestones',
         value: stats.expiringContracts.toString(),
         change: undefined,
@@ -393,14 +430,13 @@ export default function Dashboard() {
         percentageColor: stats.expiringContracts > 0 ? '#f59e0b' : 'var(--foreground-muted)',
         bgTint: 'var(--glass-bg)',
         borderColor: 'var(--glass-border)',
-        icon: Calendar
+        icon: Calendar,
+        targetTab: 'contracts' as const
       },
     ];
   }, [stats]);
 
-  // Calculate Risk Distribution - memoized
   const riskDistribution = useMemo(() => {
-    const total = vendors.length || 1; 
     const counts = {
       low: vendors.filter(v => v.status === 'compliant').length,
       medium: vendors.filter(v => v.status === 'at-risk').length,
@@ -408,52 +444,45 @@ export default function Dashboard() {
     };
 
     return [
-      { label: 'Low Risk', count: counts.low, color: 'bg-emerald-500', width: `${(counts.low / total) * 100}%` },
-      { label: 'Medium Risk', count: counts.medium, color: 'bg-yellow-500', width: `${(counts.medium / total) * 100}%` },
-      { label: 'High Risk', count: counts.high, color: 'bg-red-500', width: `${(counts.high / total) * 100}%` },
-    ].filter(item => item.count > 0 || item.label === 'Low Risk');
+      { name: 'Compliant', value: counts.low, color: '#10b981' }, 
+      { name: 'At Risk', value: counts.medium, color: '#f59e0b' }, 
+      { name: 'Non-Compliant', value: counts.high, color: '#ef4444' }, 
+    ].filter(item => item.value > 0);
   }, [vendors]);
 
-  // Calculate Compliance Trends based on insurance expiry dates
   const complianceTrendData = useMemo(() => {
     if (vendors.length === 0) return [];
-
     const months = [];
     const today = new Date();
-    
-    // Generate last 6 months
     for (let i = 5; i >= 0; i--) {
       const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
       months.push(date);
     }
-
     return months.map((date, index) => {
       const monthName = date.toLocaleString('default', { month: 'short' });
       const isCurrentMonth = index === months.length - 1;
-      
       let compliantCount = 0;
-
       if (isCurrentMonth) {
-        // For current month, use the actual calculated status to ensure it matches KPIs
         compliantCount = vendors.filter(v => v.status === 'compliant').length;
       } else {
-        // For past months, check against the date
         compliantCount = vendors.filter(v => {
           if (!v.insuranceExpiry || v.insuranceExpiry === 'Invalid Date') return false;
           const expiry = new Date(v.insuranceExpiry);
-          // A vendor is compliant in a past month if their insurance hadn't expired yet
           return expiry > date; 
         }).length;
       }
-
       const rate = vendors.length > 0 ? Math.round((compliantCount / vendors.length) * 100) : 100;
-
-      return {
-        name: monthName,
-        value: rate
-      };
+      return { name: monthName, value: rate };
     });
   }, [vendors]);
+
+  const trendColor = useMemo(() => {
+    if (complianceTrendData.length === 0) return '#10b981';
+    const lastValue = complianceTrendData[complianceTrendData.length - 1]?.value || 0;
+    if (lastValue < 80) return '#ef4444';
+    if (lastValue < 90) return '#f59e0b';
+    return '#10b981';
+  }, [complianceTrendData]);
 
   if (isPaywallOpen) {
     return <PaywallModal isOpen={isPaywallOpen} onClose={() => setIsPaywallOpen(false)} />;
@@ -502,7 +531,7 @@ export default function Dashboard() {
               </div>
            </div>
            <button 
-             onClick={handleResolveClick}
+             onClick={() => handleFilterClick('non-compliant', 'insurance')}
              className="text-xs font-semibold bg-white text-red-700 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition-colors"
            >
              Resolve issue →
@@ -513,19 +542,28 @@ export default function Dashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
         {kpiCards.map((card, index) => (
-          <KpiCard
+          <button
             key={index}
-            label={card.label}
-            value={card.value}
-            change={card.change}
-            trend={card.trend as 'up' | 'down' | 'neutral'}
-            percentageColor={card.percentageColor}
-            bgTint={card.bgTint}
-            borderColor={card.borderColor}
-            subtext={card.subtitle}
-            isAtRisk={card.isAtRisk}
-            icon={card.icon}
-          />
+            onClick={() => handleFilterClick(card.id, card.targetTab)}
+            className={`text-left transition-all duration-300 rounded-xl relative ${
+              activeFilter === card.id 
+                ? 'ring-2 ring-primary ring-offset-2 scale-[1.02]' 
+                : 'hover:-translate-y-1'
+            }`}
+          >
+            <KpiCard
+              label={card.label}
+              value={card.value}
+              change={card.change}
+              trend={card.trend as 'up' | 'down' | 'neutral'}
+              percentageColor={card.percentageColor}
+              bgTint={card.bgTint}
+              borderColor={card.borderColor}
+              subtext={card.subtitle}
+              isAtRisk={card.isAtRisk}
+              icon={card.icon}
+            />
+          </button>
         ))}
       </div>
 
@@ -543,9 +581,9 @@ export default function Dashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={complianceTrendData}>
                   <defs>
-                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                    <linearGradient id="colorCompliance" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={trendColor} stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor={trendColor} stopOpacity={0}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
@@ -553,65 +591,97 @@ export default function Dashboard() {
                   <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#94a3b8'}} domain={[0, 100]} />
                   <Tooltip 
                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    itemStyle={{ color: '#10b981', fontWeight: 600 }}
+                    itemStyle={{ color: trendColor, fontWeight: 600 }}
                   />
-                  <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
+                  <Area type="monotone" dataKey="value" stroke={trendColor} strokeWidth={3} fillOpacity={1} fill="url(#colorCompliance)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
          </div>
 
-         {/* Secondary Widget (Risk Distribution) */}
+         {/* Secondary Widget (Risk Distribution Donut) */}
          <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
             <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
-            <div className="flex-1 flex items-center justify-center relative min-h-[200px] lg:min-h-0">
-               <div className="w-full space-y-5">
-                  {riskDistribution.map((item, index) => (
-                    <RiskBar 
-                      key={index}
-                      label={item.label} 
-                      count={item.count} 
-                      color={item.color} 
-                      width={item.width} 
-                    />
-                  ))}
-                  {riskDistribution.length === 0 && (
-                     <div className="text-center text-sm text-slate-400">No data available</div>
-                  )}
-               </div>
+            <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0">
+               {riskDistribution.length > 0 ? (
+                 <div className="flex items-center w-full h-full gap-4">
+                   <div className="flex-1 h-full min-h-[160px]">
+                     <ResponsiveContainer width="100%" height="100%">
+                       <PieChart>
+                         <Pie
+                           data={riskDistribution}
+                           innerRadius={60}
+                           outerRadius={75}
+                           paddingAngle={4}
+                           dataKey="value"
+                           stroke="none"
+                         >
+                           {riskDistribution.map((entry, index) => (
+                             <Cell key={`cell-${index}`} fill={entry.color} />
+                           ))}
+                           <Label
+                             value={stats.total}
+                             position="center"
+                             className="text-2xl font-bold fill-slate-900"
+                             dy={-10}
+                           />
+                           <Label
+                             value="Vendors"
+                             position="center"
+                             className="text-xs fill-slate-500 font-medium"
+                             dy={15}
+                           />
+                         </Pie>
+                       </PieChart>
+                     </ResponsiveContainer>
+                   </div>
+                   <div className="flex flex-col justify-center space-y-3 min-w-[120px]">
+                     {riskDistribution.map((item, index) => (
+                       <div key={index} className="flex items-center justify-between text-sm">
+                         <div className="flex items-center gap-2">
+                           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
+                           <span className="text-slate-600 text-xs font-medium">{item.name}</span>
+                         </div>
+                         <span className="font-bold text-slate-900 text-xs">{item.value}</span>
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+               ) : (
+                  <div className="text-center text-sm text-slate-400">No data available</div>
+               )}
             </div>
          </div>
       </div>
 
+      {/* Bottom Section: Table and Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
         {/* High-risk Vendors Table */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-8">
           <div
             id="attention-items"
             ref={attentionItemsRef}
-            className={`rounded-xl border overflow-hidden transition-all duration-500 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'hover:shadow-lg'}`}
+            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
             style={{
-              backgroundColor: 'var(--card)',
               borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <div className="px-6 md:px-8 py-6 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
+            <div className="px-6 py-5 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
               <div>
-                <h3 className="text-lg font-semibold tracking-tight mb-1">Attention Items</h3>
-                <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                  Items that could expose your organization to risk if left unresolved
+                <h3 className="text-lg font-bold tracking-tight text-slate-900 mb-0.5">Attention Items</h3>
+                <p className="text-xs text-slate-500">
+                  Items requiring your immediate review
                 </p>
               </div>
               
               {/* Tabs */}
-              <div className="flex bg-[var(--panel)] p-1 rounded-lg">
+              <div className="flex bg-slate-100 p-1 rounded-lg">
                 <button
                   onClick={() => setActiveTab('insurance')}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                     activeTab === 'insurance' 
-                      ? 'bg-white text-[var(--foreground)] shadow-sm' 
-                      : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
+                      ? 'bg-white text-slate-900 shadow-sm' 
+                      : 'text-slate-500 hover:text-slate-900'
                   }`}
                 >
                   Insurance
@@ -620,8 +690,8 @@ export default function Dashboard() {
                   onClick={() => setActiveTab('contracts')}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                     activeTab === 'contracts' 
-                      ? 'bg-white text-[var(--foreground)] shadow-sm' 
-                      : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
+                      ? 'bg-white text-slate-900 shadow-sm' 
+                      : 'text-slate-500 hover:text-slate-900'
                   }`}
                 >
                   Contracts
@@ -633,57 +703,58 @@ export default function Dashboard() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr style={{ backgroundColor: 'var(--panel)' }}>
-                    <th className="px-8 py-5 text-left text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
+                  <tr className="bg-slate-50/50 border-b border-slate-100">
+                    <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
                       {activeTab === 'insurance' ? 'Vendor' : 'Contract Name'}
                     </th>
-                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
                       Status
                     </th>
-                    <th className="px-6 py-5 text-left text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
                       Deadline
                     </th>
-                    <th className="px-6 py-5 text-right text-xs uppercase tracking-wider font-semibold whitespace-nowrap" style={{ color: 'var(--foreground-subtle)' }}>
+                    <th className="px-6 py-4 text-right text-[11px] uppercase tracking-wider font-semibold text-slate-500">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody>
-                  {(activeTab === 'insurance' ? highRiskVendors : highRiskContracts).map((item, index) => (
+                <tbody className="divide-y divide-slate-100">
+                  {(activeTab === 'insurance' ? filteredVendors : filteredContracts).map((item, index) => (
                     <tr 
                       key={index}
-                      className="border-t transition-colors hover:bg-slate-50/50"
-                      style={{ borderColor: 'var(--border-subtle)' }}
+                      className="transition-colors hover:bg-slate-50/50 group"
                     >
-                      <td className="px-8 py-6 whitespace-nowrap">
-                        <div>
-                          <div className="text-sm font-semibold mb-0.5" style={{ color: 'var(--foreground)' }}>
-                            {activeTab === 'insurance' ? item.name : item.contractName}
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shadow-sm ${getAvatarColor(activeTab === 'insurance' ? item.name : item.vendorName)}`}>
+                            {getInitials(activeTab === 'insurance' ? item.name : item.vendorName)}
                           </div>
-                          <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>
-                            {activeTab === 'insurance' 
-                              ? (item.missing > 0 ? `${item.missing} missing document${item.missing > 1 ? 's' : ''}` : item.category)
-                              : item.vendorName
-                            }
+                          <div>
+                            <div className="text-sm font-semibold text-slate-900 mb-0.5">
+                              {activeTab === 'insurance' ? item.name : item.contractName}
+                            </div>
+                            <div className="text-xs text-slate-500">
+                              {activeTab === 'insurance' 
+                                ? item.category
+                                : item.vendorName
+                              }
+                            </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-6 whitespace-nowrap">
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span
-                          className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border"
-                          style={{
-                            backgroundColor: item.status === 'at-risk' || item.status === 'expiring'
-                              ? 'var(--status-at-risk-bg)' 
-                              : 'var(--status-non-compliant-bg)',
-                            color: item.status === 'at-risk' || item.status === 'expiring'
-                              ? 'var(--status-at-risk)'
-                              : 'var(--status-non-compliant)',
-                            borderColor: item.status === 'at-risk' || item.status === 'expiring'
-                              ? 'var(--status-at-risk-border)' 
-                              : 'var(--status-non-compliant-border)'
-                          }}
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
+                            item.status === 'compliant' || item.status === 'active'
+                              ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
+                              : item.status === 'at-risk' || item.status === 'expiring'
+                              ? 'bg-amber-50 text-amber-700 border-amber-100'
+                              : 'bg-rose-50 text-rose-700 border-rose-100'
+                          }`}
                         >
-                          {item.status === 'at-risk' || item.status === 'expiring' ? (
+                          {item.status === 'compliant' || item.status === 'active' ? (
+                            <CheckCircle2 className="w-3 h-3" />
+                          ) : item.status === 'at-risk' || item.status === 'expiring' ? (
                             <Clock className="w-3 h-3" />
                           ) : (
                             <AlertCircle className="w-3 h-3" />
@@ -691,50 +762,62 @@ export default function Dashboard() {
                           {item.statusLabel}
                         </span>
                       </td>
-                      <td className="px-6 py-6 whitespace-nowrap">
-                        <div className="text-sm" style={{ color: 'var(--foreground)' }}>
-                          {item.expiryDate}
-                        </div>
-                        <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>
-                          {item.daysLeft === null 
-                            ? 'No date' 
-                            : item.daysLeft < 0 
-                            ? `${Math.abs(item.daysLeft)} days overdue` 
-                            : `${item.daysLeft} days left`}
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-slate-700">
+                            {item.expiryDate}
+                          </span>
+                          <span className={`text-[10px] ${
+                             item.daysLeft !== null && item.daysLeft < 0 ? 'text-rose-500' : 
+                             item.daysLeft !== null && item.daysLeft <= 30 ? 'text-amber-500' : 
+                             'text-slate-400'
+                          }`}>
+                            {item.daysLeft === null 
+                              ? '' 
+                              : item.daysLeft < 0 
+                              ? `${Math.abs(item.daysLeft)} days overdue` 
+                              : `${item.daysLeft} days left`}
+                          </span>
                         </div>
                       </td>
-                      <td className="px-6 py-6 text-right whitespace-nowrap">
+                      <td className="px-6 py-4 text-right whitespace-nowrap">
                         <button 
-                          className="text-sm px-4 py-2 rounded-lg border transition-all hover:bg-white hover:shadow-sm"
-                          style={{ 
-                            borderColor: 'var(--border)',
-                            color: 'var(--foreground)'
-                          }}
+                          className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all opacity-70 group-hover:opacity-100"
                           onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
                           disabled={activeTab === 'insurance' && sendingReminderId === item.id}
                         >
                           {activeTab === 'insurance' 
-                            ? (sendingReminderId === item.id ? 'Sending...' : 'Send reminder')
-                            : 'View Details'
+                            ? (sendingReminderId === item.id ? (
+                                <>
+                                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                  <span>Sending...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Send className="w-3.5 h-3.5" />
+                                  <span>Send reminder</span>
+                                </>
+                              ))
+                            : (
+                              <>
+                                <span>View Details</span>
+                                <ArrowUpRight className="w-3.5 h-3.5" />
+                              </>
+                            )
                           }
                         </button>
-                        {activeTab === 'insurance' && (
-                          <div className="text-[10px] text-slate-400 mt-1.5 font-medium">
-                            Automated follow-up logged
-                          </div>
-                        )}
                       </td>
                     </tr>
                   ))}
-                  {(activeTab === 'insurance' ? highRiskVendors : highRiskContracts).length === 0 && (
-                     <tr className="border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-                        <td colSpan={4} className="px-8 py-12 text-center text-[var(--foreground-muted)]">
-                           <CheckCircle2 className="w-8 h-8 mx-auto mb-2 opacity-20" />
-                           <p className="font-medium mb-1">
-                             {activeTab === 'insurance' ? "You're not tracking any high-risk vendors." : "You're not tracking any expiring contracts."}
+                  {(activeTab === 'insurance' ? filteredVendors : filteredContracts).length === 0 && (
+                     <tr>
+                        <td colSpan={4} className="px-8 py-12 text-center text-slate-400">
+                           <CheckCircle2 className="w-8 h-8 mx-auto mb-3 opacity-20" />
+                           <p className="font-medium text-slate-600 mb-1">
+                             All clear!
                            </p>
-                           <p className="text-sm opacity-70">
-                             {activeTab === 'insurance' ? "Uploading vendors helps prevent missed renewals and scope disputes." : "Covera will alert you automatically when something changes."}
+                           <p className="text-xs">
+                             {activeTab === 'insurance' ? "No vendors match the current filter." : "No contracts match the current filter."}
                            </p>
                         </td>
                      </tr>
@@ -744,163 +827,128 @@ export default function Dashboard() {
             </div>
 
             {/* Mobile Card View */}
-            <div className="md:hidden divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
-              {(activeTab === 'insurance' ? highRiskVendors : highRiskContracts).map((item, index) => (
-                <div 
-                  key={index}
-                  className="p-4"
-                >
-                  {/* Row 1: Name & Type */}
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold truncate" style={{ color: 'var(--foreground)' }}>
-                        {activeTab === 'insurance' ? item.name : item.contractName}
-                      </div>
-                      <div className="text-xs text-[var(--foreground-muted)]">
-                         {activeTab === 'insurance' ? item.vendorType : item.vendorName}
-                      </div>
+            <div className="md:hidden divide-y divide-slate-100">
+              {(activeTab === 'insurance' ? filteredVendors : filteredContracts).map((item, index) => (
+                <div key={index} className="p-4 bg-white">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                       <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shadow-sm ${getAvatarColor(activeTab === 'insurance' ? item.name : item.vendorName)}`}>
+                          {getInitials(activeTab === 'insurance' ? item.name : item.vendorName)}
+                       </div>
+                       <div>
+                          <div className="text-sm font-semibold text-slate-900">
+                            {activeTab === 'insurance' ? item.name : item.contractName}
+                          </div>
+                          <div className="text-xs text-slate-500">
+                             {activeTab === 'insurance' ? item.vendorType : item.vendorName}
+                          </div>
+                       </div>
                     </div>
-                  </div>
-
-                  {/* Row 2: Expiry Date & Days Remaining */}
-                  <div className="flex items-center justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--foreground-subtle)' }}>
-                      <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
-                      <span>Expires {item.expiryDate}</span>
-                    </div>
-                    
-                    <div className="text-xs font-medium" style={{ 
-                      color: item.daysLeft !== null && item.daysLeft < 0 ? 'var(--status-non-compliant)' : 
-                             item.daysLeft !== null && item.daysLeft <= 30 ? 'var(--status-at-risk)' : 'var(--foreground-subtle)'
-                    }}>
-                      {item.daysLeft === null 
-                        ? 'No date' 
-                        : item.daysLeft < 0 
-                        ? `${Math.abs(item.daysLeft)} days overdue` 
-                        : `${item.daysLeft} days left`}
-                    </div>
-                  </div>
-
-                  {/* Row 3: Status Badge & Action Button */}
-                  <div className="flex items-center justify-between gap-3 mt-3">
                     <span
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border"
-                      style={{
-                        backgroundColor: item.status === 'at-risk' || item.status === 'expiring'
-                          ? 'var(--status-at-risk-bg)' 
-                          : 'var(--status-non-compliant-bg)',
-                        color: item.status === 'at-risk' || item.status === 'expiring'
-                          ? 'var(--status-at-risk)'
-                          : 'var(--status-non-compliant)',
-                        borderColor: item.status === 'at-risk' || item.status === 'expiring'
-                          ? 'var(--status-at-risk-border)' 
-                          : 'var(--status-non-compliant-border)'
-                      }}
+                      className={`inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide border ${
+                        item.status === 'compliant' || item.status === 'active'
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
+                          : item.status === 'at-risk' || item.status === 'expiring'
+                          ? 'bg-amber-50 text-amber-700 border-amber-100'
+                          : 'bg-rose-50 text-rose-700 border-rose-100'
+                      }`}
                     >
-                      {item.status === 'at-risk' || item.status === 'expiring' ? (
-                        <Clock className="w-3 h-3" />
-                      ) : (
-                        <AlertCircle className="w-3 h-3" />
-                      )}
                       {item.statusLabel}
                     </span>
+                  </div>
 
-                    <button 
-                      className="text-xs px-3 py-1.5 rounded-lg border transition-all hover:bg-white hover:shadow-sm"
-                      style={{ 
-                        borderColor: 'var(--border)',
-                        color: 'var(--foreground)'
-                      }}
-                      onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
-                      disabled={activeTab === 'insurance' && sendingReminderId === item.id}
-                    >
-                       {activeTab === 'insurance' 
-                          ? (sendingReminderId === item.id ? 'Sending...' : 'Remind')
-                          : 'Details'
-                        }
-                    </button>
+                  <div className="flex items-center justify-between mt-4 pl-12">
+                     <div className="text-xs text-slate-500">
+                        Expires <span className="font-medium text-slate-700">{item.expiryDate}</span>
+                     </div>
+                     <button 
+                        className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                        onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
+                     >
+                        {activeTab === 'insurance' ? 'Send reminder' : 'View Details'} &rarr;
+                     </button>
                   </div>
                 </div>
               ))}
-              {(activeTab === 'insurance' ? highRiskVendors : highRiskContracts).length === 0 && (
-                 <div className="p-8 text-center text-[var(--foreground-muted)]">
-                   <CheckCircle2 className="w-8 h-8 mx-auto mb-2 opacity-20" />
-                   <p className="text-sm">No high-risk items found</p>
-                 </div>
-              )}
             </div>
           </div>
         </div>
 
-        {/* Activity Feed */}
-        <div className="lg:col-span-5">
+        {/* Activity Feed - Right Column */}
+        <div className="lg:col-span-4 space-y-6">
           <div
-            className="rounded-xl border overflow-hidden"
-            style={{
-              backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
-            }}
+            className="rounded-xl border bg-white shadow-sm overflow-hidden"
+            style={{ borderColor: 'var(--border)' }}
           >
-            <div className="px-6 md:px-8 py-6 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
-               <div>
-                <h3 className="text-lg font-semibold tracking-tight mb-1">Recent Activity</h3>
-                <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                  Latest updates across your portfolio
-                </p>
-              </div>
-              <button className="p-2 hover:bg-[var(--panel)] rounded-full transition-colors" style={{ color: 'var(--foreground-subtle)' }}>
-                <RefreshCw className="w-4 h-4" />
-              </button>
+            <div className="px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
+               <h3 className="font-bold text-slate-900 text-sm">Recent Activity</h3>
+               <button className="text-slate-400 hover:text-slate-600 transition-colors">
+                 <MoreHorizontal className="w-4 h-4" />
+               </button>
             </div>
-            <div className="p-0">
-               {/* Activity Items would go here - using static for now as placeholder for dynamic */}
-               <div className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
-                  {/* We can map alerts here if we want, or create a separate activity log */}
-                  {alerts.slice(0, 5).map((alert, i) => (
-                    <div key={i} className="p-4 md:px-8 hover:bg-[var(--panel)] transition-colors flex gap-4">
-                       <div className="mt-1">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                             alert.type === 'expired' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'
-                          }`}>
-                             {alert.type === 'expired' ? <AlertCircle className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
-                          </div>
+            <div className="divide-y divide-slate-50">
+               {alerts.slice(0, 5).map((alert, i) => (
+                 <div key={i} className="p-4 hover:bg-slate-50 transition-colors group cursor-default">
+                    <div className="flex gap-3">
+                       <div className={`mt-0.5 w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          alert.type === 'expired' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600'
+                       }`}>
+                          {alert.type === 'expired' ? <AlertCircle className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" /> }
                        </div>
                        <div>
-                          <p className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+                          <p className="text-sm font-medium text-slate-800 leading-snug mb-0.5">
                              {alert.message}
                           </p>
-                          <p className="text-xs mt-1" style={{ color: 'var(--foreground-subtle)' }}>
-                             Covera flagged this automatically and logged the issue for compliance records
+                          <p className="text-[11px] text-slate-500 leading-tight">
+                             {alert.subtext}
                           </p>
                        </div>
                     </div>
-                  ))}
-                  {alerts.length === 0 && (
-                     <div className="p-8 text-center text-[var(--foreground-muted)]">
-                        <Bell className="w-8 h-8 mx-auto mb-2 opacity-20" />
-                        <p>No recent activity</p>
-                     </div>
-                  )}
-               </div>
+                 </div>
+               ))}
+               {alerts.length === 0 && (
+                  <div className="p-8 text-center text-slate-400">
+                     <Bell className="w-8 h-8 mx-auto mb-2 opacity-20" />
+                     <p className="text-sm">No recent activity</p>
+                  </div>
+               )}
+            </div>
+            <div className="bg-slate-50 p-3 border-t border-slate-100 text-center">
+               <button className="text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                  View all activity
+               </button>
+            </div>
+          </div>
+
+          {/* Tips Card */}
+          <div className="rounded-xl bg-[#2e3e52] p-6 text-white shadow-md relative overflow-hidden group">
+            {/* Background blobs to match design */}
+            <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700"></div>
+            <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700 delay-100"></div>
+            
+            <div className="relative z-10">
+              <h4 className="font-semibold text-base mb-3 flex items-center gap-2.5 text-slate-100">
+                 <Shield className="w-5 h-5 text-slate-300" /> 
+                 Pro Tip
+              </h4>
+              <p className="text-sm text-slate-300 leading-relaxed mb-5 font-normal">
+                 Vendors with expiring insurance are 3x more likely to lapse if not reminded 30 days prior.
+              </p>
+              <button 
+                onClick={handleAutomateReminders}
+                disabled={isAutomatedRemindersEnabled}
+                className={`text-sm font-medium w-full py-2.5 rounded-lg transition-all duration-200 ${
+                  isAutomatedRemindersEnabled 
+                    ? 'bg-emerald-500/20 text-emerald-300 cursor-default' 
+                    : 'bg-white/10 hover:bg-white/15 text-white'
+                }`}
+              >
+                {isAutomatedRemindersEnabled ? 'Reminders Active' : 'Automate Reminders'}
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
-
-function RiskBar({ label, count, color, width }: any) {
-  return (
-    <div>
-      <div className="flex justify-between text-xs font-medium mb-1.5">
-        <span className="text-slate-600">{label}</span>
-        <span className="text-slate-900">{count}</span>
-      </div>
-      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-        <div className={`h-full rounded-full ${color}`} style={{ width }} />
-      </div>
-    </div>
-  )
 }
