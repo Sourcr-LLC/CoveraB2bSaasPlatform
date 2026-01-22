@@ -677,7 +677,7 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Section: Table and Activity Feed */}
-      <div className="flex-1 2xl:min-h-0 flex flex-col lg:flex-row gap-6 md:gap-8 items-start 2xl:h-full">
+      <div className="flex-1 2xl:min-h-0 flex flex-col lg:flex-row gap-6 md:gap-8 2xl:h-full">
         {/* High-risk Vendors Table */}
         <div className="w-full lg:flex-[2] 2xl:h-full lg:min-w-0">
           <div
@@ -909,7 +909,7 @@ export default function Dashboard() {
                </button>
             </div>
             <div className="flex-1 divide-y divide-slate-50 overflow-y-auto">
-               {alerts.slice(0, 5).map((alert, i) => (
+               {alerts.slice(0, 3).map((alert, i) => (
                  <div key={i} className="p-4 hover:bg-slate-50 transition-colors group cursor-default">
                     <div className="flex gap-3">
                        <div className={`mt-0.5 w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -936,7 +936,10 @@ export default function Dashboard() {
                )}
             </div>
             <div className="flex-none bg-slate-50 p-3 border-t border-slate-100 text-center">
-               <button className="text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors">
+               <button 
+                 onClick={() => navigate('/alerts')}
+                 className="text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors"
+               >
                   View all activity
                </button>
             </div>
