@@ -204,23 +204,13 @@ export default function Dashboard() {
            setIsAutomatedRemindersEnabled(true);
          }
       } catch (e) {
-         console.error("Failed to load profile", e);
+         console.warn("Failed to load profile (non-critical):", e);
       }
 
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/vendors`,
-        {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch vendors');
-      }
-
-      const data = await response.json();
+      const data = await vendorApi.getAll().catch(e => {
+        console.warn('Failed to fetch vendors:', e);
+        return { vendors: [] };
+      });
       const vendorData = data.vendors || [];
       
       let contractData = [];

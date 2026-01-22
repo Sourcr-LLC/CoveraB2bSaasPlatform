@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { projectId } from '../../../utils/supabase/info';
 import { supabase } from '../lib/api';
+import { isDemoMode } from '../lib/demoData';
 
 export function useSubscription() {
   const [subscription, setSubscription] = useState<any>(null);
@@ -12,6 +13,15 @@ export function useSubscription() {
 
   const fetchSubscription = async () => {
     try {
+      if (isDemoMode()) {
+        setSubscription({
+          plan: 'enterprise',
+          subscriptionStatus: 'active'
+        });
+        setLoading(false);
+        return;
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
       
@@ -80,10 +90,14 @@ export function useSubscription() {
         });
         setSubscription(data);
       } else {
-        console.error('❌ Subscription API error:', response.status, response.statusText);
+        console.warn('⚠️ Subscription API warning:', response.status, response.statusText);
+        // Default to free plan on error
+        setSubscription({ plan: 'free', subscriptionStatus: 'active' });
       }
     } catch (error) {
-      console.error('❌ Error fetching subscription:', error);
+      console.warn('⚠️ Error fetching subscription (network/server issue):', error);
+      // Default to free plan on network error to keep app working
+      setSubscription({ plan: 'free', subscriptionStatus: 'active' });
     } finally {
       setLoading(false);
     }
