@@ -94,7 +94,8 @@ export default function Dashboard() {
     loadData();
   }, []);
 
-  const handleFilterClick = (filterType: string, tab: 'insurance' | 'contracts') => {
+  const handleFilterClick = (filterType: string, tab: 'insurance' | 'contracts', e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (activeFilter === filterType) {
       setActiveFilter(null);
     } else {
@@ -501,12 +502,19 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col p-4 md:p-8 lg:p-8 min-h-screen pb-20" style={{ 
-      backgroundColor: 'var(--background)',
-      backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
-    }}>
+    <div 
+      onClick={() => activeFilter && setActiveFilter(null)}
+      className="flex flex-col p-4 md:p-8 lg:p-8 min-h-screen pb-20" 
+      style={{ 
+        backgroundColor: 'var(--background)',
+        backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
+      }}
+    >
       {/* Header */}
-      <div className="flex-none mb-6 md:mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="flex-none mb-6 md:mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+      >
         <div>
           <h1 className="mb-2 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
             Dashboard
@@ -528,7 +536,7 @@ export default function Dashboard() {
 
       {/* Action Banner */}
       {stats.nonCompliant > 0 && (
-        <div className="flex-none mb-6 p-4 rounded-lg bg-red-50 border border-red-100 flex items-center justify-between shadow-sm">
+        <div onClick={(e) => e.stopPropagation()} className="flex-none mb-6 p-4 rounded-lg bg-red-50 border border-red-100 flex items-center justify-between shadow-sm">
            <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
                 <AlertTriangle className="w-4 h-4" />
@@ -543,7 +551,7 @@ export default function Dashboard() {
               </div>
            </div>
            <button 
-             onClick={() => handleFilterClick('non-compliant', 'insurance')}
+             onClick={(e) => handleFilterClick('non-compliant', 'insurance', e)}
              className="text-xs font-semibold bg-white text-red-700 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition-colors"
            >
              Resolve issue →
@@ -556,7 +564,7 @@ export default function Dashboard() {
         {kpiCards.map((card, index) => (
           <button
             key={index}
-            onClick={() => handleFilterClick(card.id, card.targetTab)}
+            onClick={(e) => handleFilterClick(card.id, card.targetTab, e)}
             className={`text-left transition-all duration-300 rounded-xl relative ${
               activeFilter === card.id 
                 ? 'ring-2 ring-primary ring-offset-2 scale-[1.02]' 
@@ -582,7 +590,7 @@ export default function Dashboard() {
       {/* Charts Row */}
       <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 h-auto lg:h-[320px]">
          {/* Main Chart */}
-         <div className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
+         <div onClick={(e) => e.stopPropagation()} className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
             <div className="flex justify-between items-center mb-6">
                <div>
                  <h3 className="font-bold text-slate-900">Compliance Trends</h3>
@@ -612,7 +620,7 @@ export default function Dashboard() {
          </div>
 
          {/* Secondary Widget (Risk Distribution Donut) */}
-         <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
+         <div onClick={(e) => e.stopPropagation()} className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
             <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
             <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0">
                {riskDistribution.length > 0 ? (
@@ -669,10 +677,11 @@ export default function Dashboard() {
       {/* Bottom Section: Table and Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 lg:h-[600px]">
         {/* High-risk Vendors Table */}
-        <div className="w-full lg:col-span-2 lg:h-full lg:min-w-0 h-[600px]">
+        <div className="w-full lg:col-span-2 lg:h-full lg:min-h-0">
           <div
             id="attention-items"
             ref={attentionItemsRef}
+            onClick={(e) => e.stopPropagation()}
             className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white flex flex-col h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
             style={{
               borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
@@ -712,7 +721,7 @@ export default function Dashboard() {
             </div>
             
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto flex-1 h-full">
+            <div className="hidden md:block overflow-x-auto overflow-y-auto flex-1 min-h-0">
               <table className="w-full">
                 <thead className="sticky top-0 bg-white z-10 shadow-sm">
                   <tr className="bg-slate-50/50 border-b border-slate-100">
@@ -887,10 +896,11 @@ export default function Dashboard() {
         </div>
 
         {/* Activity Feed - Right Column */}
-        <div className="w-full lg:col-span-1 lg:h-full flex flex-col gap-6 lg:min-w-0 h-[600px]">
+        <div className="w-full lg:col-span-1 lg:h-full flex flex-col gap-6 lg:min-h-0">
           <div
             className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col min-h-0"
             style={{ borderColor: 'var(--border)' }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex-none px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
                <h3 className="font-bold text-slate-900 text-sm">Recent Activity</h3>
@@ -899,7 +909,7 @@ export default function Dashboard() {
                </button>
             </div>
             <div className="flex-1 divide-y divide-slate-50 overflow-y-auto">
-               {alerts.slice(0, 3).map((alert, i) => (
+               {alerts.map((alert, i) => (
                  <div key={i} className="p-4 hover:bg-slate-50 transition-colors group cursor-default">
                     <div className="flex gap-3">
                        <div className={`mt-0.5 w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -936,7 +946,7 @@ export default function Dashboard() {
           </div>
 
           {/* Tips Card - Fixed height */}
-          <div className="flex-none rounded-xl bg-[#2e3e52] p-6 text-white shadow-md relative overflow-hidden group">
+          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-xl bg-[#2e3e52] p-6 text-white shadow-md relative overflow-hidden group">
             {/* Background blobs to match design */}
             <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700"></div>
             <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700 delay-100"></div>
