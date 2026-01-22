@@ -5,7 +5,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import PaywallModal from './PaywallModal';
 import ContactSalesModal from './ContactSalesModal';
 import { toast } from 'sonner';
-import { supabase, vendorApi, contractApi } from '../lib/api';
+import { supabase, vendorApi, contractApi, authApi } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { useSubscription } from '../hooks/useSubscription';
 import { isDemoMode, demoVendors, demoContracts, getDemoStats } from '../lib/demoData';
@@ -108,15 +108,28 @@ export default function Dashboard() {
     }
   };
 
-  const handleAutomateReminders = () => {
+  const handleAutomateReminders = async () => {
     setIsAutomatedRemindersEnabled(true);
     toast.success('Automatic reminders enabled! Vendors will be notified 30 days before expiry.');
+    
+    if (isDemoMode()) {
+      localStorage.setItem('covera_demo_automated_reminders', 'true');
+    } else {
+       try {
+         await authApi.updateProfile({ automatedReminders: true });
+       } catch (e) {
+         console.error("Failed to save preference", e);
+       }
+    }
   };
 
   const loadData = async () => {
     try {
       if (isDemoMode()) {
         console.log('📊 Demo mode enabled - using mock data');
+        if (localStorage.getItem('covera_demo_automated_reminders') === 'true') {
+           setIsAutomatedRemindersEnabled(true);
+        }
         setVendors(demoVendors);
         setContracts(demoContracts);
         
@@ -183,6 +196,15 @@ export default function Dashboard() {
       if (!accessToken) {
         console.error('No access token available');
         return;
+      }
+
+      try {
+         const profile = await authApi.getProfile();
+         if (profile && profile.automatedReminders) {
+           setIsAutomatedRemindersEnabled(true);
+         }
+      } catch (e) {
+         console.error("Failed to load profile", e);
       }
 
       const response = await fetch(
