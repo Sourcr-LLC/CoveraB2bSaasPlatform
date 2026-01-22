@@ -489,12 +489,12 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-4 md:p-8 xl:p-12 min-h-screen" style={{ 
+    <div className="flex flex-col p-4 md:p-8 lg:p-8 lg:h-screen lg:overflow-hidden min-h-screen" style={{ 
       backgroundColor: 'var(--background)',
       backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
     }}>
       {/* Header */}
-      <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div className="flex-none mb-6 md:mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="mb-2 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
             Dashboard
@@ -516,7 +516,7 @@ export default function Dashboard() {
 
       {/* Action Banner */}
       {stats.nonCompliant > 0 && (
-        <div className="mb-8 p-4 rounded-lg bg-red-50 border border-red-100 flex items-center justify-between shadow-sm">
+        <div className="flex-none mb-6 p-4 rounded-lg bg-red-50 border border-red-100 flex items-center justify-between shadow-sm">
            <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
                 <AlertTriangle className="w-4 h-4" />
@@ -540,7 +540,7 @@ export default function Dashboard() {
       )}
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+      <div className="flex-none grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
         {kpiCards.map((card, index) => (
           <button
             key={index}
@@ -568,9 +568,9 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 h-auto xl:h-[320px]">
+      <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 h-auto lg:h-[280px]">
          {/* Main Chart */}
-         <div className="xl:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
+         <div className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0">
             <div className="flex justify-between items-center mb-6">
                <div>
                  <h3 className="font-bold text-slate-900">Compliance Trends</h3>
@@ -600,9 +600,9 @@ export default function Dashboard() {
          </div>
 
          {/* Secondary Widget (Risk Distribution Donut) */}
-         <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
+         <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0">
             <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
-            <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] xl:min-h-0">
+            <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0">
                {riskDistribution.length > 0 ? (
                  <div className="flex items-center w-full h-full gap-4">
                    <div className="flex-1 h-full min-h-[160px]">
@@ -655,18 +655,18 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Section: Table and Activity Feed */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8 items-start">
+      <div className="flex-1 lg:min-h-0 flex flex-col lg:flex-row gap-6 md:gap-8 items-start lg:h-full">
         {/* High-risk Vendors Table */}
-        <div className="xl:col-span-8">
+        <div className="w-full lg:flex-[2] lg:h-full lg:min-w-0">
           <div
             id="attention-items"
             ref={attentionItemsRef}
-            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
+            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white flex flex-col lg:h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
             style={{
               borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
             }}
           >
-            <div className="px-6 py-5 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
+            <div className="flex-none px-6 py-5 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
               <div>
                 <h3 className="text-lg font-bold tracking-tight text-slate-900 mb-0.5">Attention Items</h3>
                 <p className="text-xs text-slate-500">
@@ -700,9 +700,9 @@ export default function Dashboard() {
             </div>
             
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto flex-1 lg:overflow-y-auto">
               <table className="w-full">
-                <thead>
+                <thead className="sticky top-0 bg-white z-10 shadow-sm">
                   <tr className="bg-slate-50/50 border-b border-slate-100">
                     <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
                       {activeTab === 'insurance' ? 'Vendor' : 'Contract Name'}
@@ -875,18 +875,18 @@ export default function Dashboard() {
         </div>
 
         {/* Activity Feed - Right Column */}
-        <div className="xl:col-span-4 space-y-6">
+        <div className="w-full lg:flex-1 space-y-6 lg:h-full lg:flex lg:flex-col lg:min-w-0">
           <div
-            className="rounded-xl border bg-white shadow-sm overflow-hidden"
+            className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col lg:min-h-0"
             style={{ borderColor: 'var(--border)' }}
           >
-            <div className="px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
+            <div className="flex-none px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
                <h3 className="font-bold text-slate-900 text-sm">Recent Activity</h3>
                <button className="text-slate-400 hover:text-slate-600 transition-colors">
                  <MoreHorizontal className="w-4 h-4" />
                </button>
             </div>
-            <div className="divide-y divide-slate-50">
+            <div className="flex-1 divide-y divide-slate-50 overflow-y-auto">
                {alerts.slice(0, 5).map((alert, i) => (
                  <div key={i} className="p-4 hover:bg-slate-50 transition-colors group cursor-default">
                     <div className="flex gap-3">
@@ -913,15 +913,15 @@ export default function Dashboard() {
                   </div>
                )}
             </div>
-            <div className="bg-slate-50 p-3 border-t border-slate-100 text-center">
+            <div className="flex-none bg-slate-50 p-3 border-t border-slate-100 text-center">
                <button className="text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors">
                   View all activity
                </button>
             </div>
           </div>
 
-          {/* Tips Card */}
-          <div className="rounded-xl bg-[#2e3e52] p-6 text-white shadow-md relative overflow-hidden group">
+          {/* Tips Card - Fixed height */}
+          <div className="flex-none rounded-xl bg-[#2e3e52] p-6 text-white shadow-md relative overflow-hidden group">
             {/* Background blobs to match design */}
             <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700"></div>
             <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white opacity-[0.03] group-hover:scale-105 transition-transform duration-700 delay-100"></div>
