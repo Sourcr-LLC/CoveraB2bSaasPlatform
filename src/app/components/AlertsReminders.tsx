@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Bell, Send, AlertTriangle, Clock, TrendingUp, Filter, Search, Calendar, Mail, Settings as SettingsIcon, CheckCircle2 } from 'lucide-react';
+import { Bell, Send, AlertTriangle, Clock, TrendingUp, Filter, Search, Calendar, Mail, Settings as SettingsIcon, CheckCircle2, Shield, FileText } from 'lucide-react';
 import { Link } from 'react-router';
-import { supabase } from '../lib/api';
+import { supabase, contractApi } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
-import { isDemoMode, demoVendors } from '../lib/demoData';
+import { isDemoMode, demoVendors, demoContracts } from '../lib/demoData';
 
 // Helper function to calculate days until expiry
 function calculateDaysUntilExpiry(insuranceExpiry: string | undefined): number | null {
@@ -19,6 +19,53 @@ function calculateDaysUntilExpiry(insuranceExpiry: string | undefined): number |
   
   const today = new Date();
   return Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+}
+
+// Helper function to calculate vendor status client-side (matching Dashboard logic)
+function calculateVendorStatus(insuranceExpiry: string | undefined): string {
+  if (!insuranceExpiry || insuranceExpiry === 'Invalid Date' || insuranceExpiry.trim() === '') {
+    return 'non-compliant';
+  }
+  
+  const expiryDate = new Date(insuranceExpiry);
+  
+  if (isNaN(expiryDate.getTime())) {
+    return 'non-compliant';
+  }
+  
+  const today = new Date();
+  const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  
+  if (daysUntilExpiry < 0) {
+    return 'non-compliant';
+  } else if (daysUntilExpiry <= 30) {
+    return 'at-risk';
+  } else {
+    return 'compliant';
+  }
+}
+
+// Helper function to calculate contract status client-side
+function calculateContractStatus(endDate: string | undefined): string {
+  if (!endDate || endDate === 'Invalid Date' || endDate.trim() === '') {
+    return 'active'; 
+  }
+
+  const end = new Date(endDate);
+  if (isNaN(end.getTime())) {
+    return 'active';
+  }
+
+  const today = new Date();
+  const daysUntilExpiry = Math.ceil((end.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (daysUntilExpiry < 0) {
+    return 'expired';
+  } else if (daysUntilExpiry <= 60) { 
+    return 'expiring';
+  } else {
+    return 'active';
+  }
 }
 
 // Helper function to get time ago
@@ -38,6 +85,7 @@ function getTimeAgo(timestamp: string): string {
 
 export default function AlertsReminders() {
   const [vendors, setVendors] = useState<any[]>([]);
+  const [contracts, setContracts] = useState<any[]>([]);
   const [sentReminders, setSentReminders] = useState<any[]>([]);
 
   useEffect(() => {
@@ -50,6 +98,7 @@ export default function AlertsReminders() {
       if (isDemoMode()) {
         console.log('📊 Demo mode enabled - using mock data for Alerts');
         setVendors(demoVendors);
+        setContracts(demoContracts);
         
         // Mock sent reminders
         const demoReminders = [
@@ -105,6 +154,14 @@ export default function AlertsReminders() {
       const vendorData = vendorsData.vendors || [];
       setVendors(vendorData);
 
+      // Fetch contracts
+      try {
+        const contractResponse = await contractApi.getAll();
+        setContracts(contractResponse.contracts || []);
+      } catch (err) {
+        console.warn('Failed to fetch contracts:', err);
+      }
+
       // Fetch sent reminders from API
       const remindersResponse = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/reminders`,
@@ -130,6 +187,48 @@ export default function AlertsReminders() {
   const vendorsExpiringSoon = vendorsWithExpiry.filter(v => {
     const days = calculateDaysUntilExpiry(v.insuranceExpiry);
     return days !== null && days >= 0 && days <= 30;
+  });
+
+  // Generate Active Compliance Alerts (matching Dashboard)
+  const activeAlerts = [
+    ...vendors.map(v => ({...v, status: calculateVendorStatus(v.insuranceExpiry)}))
+      .filter(v => v.status === 'at-risk' || v.status === 'non-compliant')
+      .map(v => {
+        const days = calculateDaysUntilExpiry(v.insuranceExpiry);
+        let message = '';
+        if (v.status === 'non-compliant') {
+           message = days && days < 0 ? `Insurance expired ${Math.abs(days)} days ago` : 'Insurance has expired';
+        } else {
+           message = days === 0 ? 'Insurance expires today' : `Insurance expires in ${days} days`;
+        }
+        return {
+          id: v.id,
+          title: v.name,
+          message,
+          type: v.status === 'non-compliant' ? 'expired' : 'expiring',
+          date: v.insuranceExpiry,
+          category: 'Insurance',
+          icon: Shield,
+          isContract: false
+        };
+      }),
+    ...contracts.map(c => ({...c, status: c.status || calculateContractStatus(c.endDate)}))
+      .filter(c => c.status === 'expiring' || c.status === 'expired')
+      .map(c => ({
+        id: c.id,
+        title: c.contractName,
+        message: c.status === 'expired' ? 'Contract has expired' : 'Contract expires soon',
+        type: c.status === 'expired' ? 'expired' : 'expiring',
+        date: c.endDate,
+        category: 'Contract',
+        icon: FileText,
+        isContract: true
+      }))
+  ].sort((a, b) => {
+    // Sort by urgency: expired first, then expiring soon
+    if (a.type === 'expired' && b.type !== 'expired') return -1;
+    if (a.type !== 'expired' && b.type === 'expired') return 1;
+    return 0;
   });
 
   // Generate upcoming reminders from real vendor data (vendors expiring in next 30 days)
@@ -390,7 +489,74 @@ export default function AlertsReminders() {
         </div>
 
         {/* Right: Vendor Compliance Summary */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 space-y-6">
+          
+          {/* Active Alerts Section */}
+          <div 
+            className="rounded-xl border overflow-hidden"
+            style={{
+              backgroundColor: 'var(--card)',
+              borderColor: 'var(--border)',
+              boxShadow: 'var(--shadow-sm)'
+            }}
+          >
+             <div className="px-8 py-6 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
+               <div>
+                 <h3 className="text-lg font-bold text-slate-900">Active Alerts</h3>
+                 <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>
+                   Compliance issues requiring attention
+                 </p>
+               </div>
+               {activeAlerts.length > 0 && (
+                 <span className="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-full">
+                   {activeAlerts.length} Issues
+                 </span>
+               )}
+             </div>
+             <div className="p-0">
+               {activeAlerts.length > 0 ? (
+                 <div className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
+                   {activeAlerts.map((alert, index) => (
+                     <div key={index} className="p-6 flex items-start gap-4 hover:bg-slate-50 transition-colors">
+                       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                         alert.type === 'expired' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'
+                       }`}>
+                         <alert.icon className="w-5 h-5" />
+                       </div>
+                       <div className="flex-1 min-w-0">
+                         <div className="flex justify-between items-start mb-1">
+                           <h4 className="text-sm font-semibold text-slate-900 truncate pr-4">{alert.title}</h4>
+                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${
+                             alert.type === 'expired' 
+                               ? 'bg-red-50 text-red-700 border border-red-200' 
+                               : 'bg-amber-50 text-amber-700 border border-amber-200'
+                           }`}>
+                             {alert.type === 'expired' ? 'Action Required' : 'Attention'}
+                           </span>
+                         </div>
+                         <p className="text-sm text-slate-600 mb-1">{alert.message}</p>
+                         <div className="flex items-center gap-4 text-xs text-slate-500">
+                           <span className="flex items-center gap-1">
+                             <Calendar className="w-3.5 h-3.5" />
+                             {alert.date ? new Date(alert.date).toLocaleDateString() : 'N/A'}
+                           </span>
+                           <span className="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 uppercase text-[10px] tracking-wide font-medium">
+                             {alert.category}
+                           </span>
+                         </div>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               ) : (
+                 <div className="p-8 text-center">
+                   <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-emerald-500" />
+                   <p className="text-sm text-slate-600">No active compliance alerts.</p>
+                 </div>
+               )}
+             </div>
+          </div>
+
           <div 
             className="rounded-xl border overflow-hidden"
             style={{
@@ -400,9 +566,9 @@ export default function AlertsReminders() {
             }}
           >
             <div className="px-8 py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-              <h3 className="text-lg">Recent reminders</h3>
+              <h3 className="text-lg">Notification History</h3>
               <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>
-                Delivery status and engagement tracking
+                Recent automated emails and communications
               </p>
             </div>
 
