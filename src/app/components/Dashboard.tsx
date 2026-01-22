@@ -511,7 +511,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col p-4 md:p-8 lg:p-8 2xl:h-screen 2xl:overflow-hidden min-h-screen" style={{ 
+    <div className="flex flex-col p-4 md:p-8 lg:p-8 min-h-screen pb-20" style={{ 
       backgroundColor: 'var(--background)',
       backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
     }}>
@@ -590,9 +590,9 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Row */}
-      <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 h-auto lg:h-[280px]">
+      <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 h-auto lg:h-[320px]">
          {/* Main Chart */}
-         <div className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0">
+         <div className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
             <div className="flex justify-between items-center mb-6">
                <div>
                  <h3 className="font-bold text-slate-900">Compliance Trends</h3>
@@ -622,7 +622,7 @@ export default function Dashboard() {
          </div>
 
          {/* Secondary Widget (Risk Distribution Donut) */}
-         <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0">
+         <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
             <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
             <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0">
                {riskDistribution.length > 0 ? (
@@ -677,13 +677,13 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Section: Table and Activity Feed */}
-      <div className="flex-1 2xl:min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 2xl:h-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 lg:h-[600px]">
         {/* High-risk Vendors Table */}
-        <div className="w-full lg:col-span-2 2xl:h-full lg:min-w-0">
+        <div className="w-full lg:col-span-2 lg:h-full lg:min-w-0 h-[600px]">
           <div
             id="attention-items"
             ref={attentionItemsRef}
-            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white flex flex-col 2xl:h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
+            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white flex flex-col h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
             style={{
               borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
             }}
@@ -722,7 +722,7 @@ export default function Dashboard() {
             </div>
             
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto flex-1 2xl:overflow-y-auto">
+            <div className="hidden md:block overflow-x-auto flex-1 h-full">
               <table className="w-full">
                 <thead className="sticky top-0 bg-white z-10 shadow-sm">
                   <tr className="bg-slate-50/50 border-b border-slate-100">
@@ -897,9 +897,9 @@ export default function Dashboard() {
         </div>
 
         {/* Activity Feed - Right Column */}
-        <div className="w-full lg:col-span-1 space-y-6 2xl:h-full flex flex-col lg:min-w-0">
+        <div className="w-full lg:col-span-1 lg:h-full flex flex-col gap-6 lg:min-w-0 h-[600px]">
           <div
-            className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col 2xl:min-h-0"
+            className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col min-h-0"
             style={{ borderColor: 'var(--border)' }}
           >
             <div className="flex-none px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
