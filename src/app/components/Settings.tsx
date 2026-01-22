@@ -8,10 +8,12 @@ import PaywallModal from './PaywallModal';
 import { useWalkthrough } from '../hooks/useWalkthrough';
 import { useNavigate } from 'react-router';
 import { isDemoMode, enableDemoMode, disableDemoMode } from '../lib/demoData';
+import { useSubscription } from '../hooks/useSubscription';
 
 export default function Settings() {
   const [loading, setLoading] = useState(false);
-  const [subscription, setSubscription] = useState<any>(null);
+  // Replaced local subscription state with hook that handles demo mode properly
+  const { subscription, refresh: refreshSubscription } = useSubscription();
   const [profile, setProfile] = useState<any>(null);
   const [editingOrg, setEditingOrg] = useState(false);
   const [tempOrgName, setTempOrgName] = useState('');
@@ -28,7 +30,7 @@ export default function Settings() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchSubscriptionStatus();
+    // fetchSubscriptionStatus(); // Handled by useSubscription hook now
     fetchProfile();
     fetchCustomDomain();
     setDemoEnabled(isDemoMode());
@@ -295,43 +297,13 @@ export default function Settings() {
     }
   };
 
-  const fetchSubscriptionStatus = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const accessToken = session?.access_token;
-      
-      if (!accessToken) {
-        console.error('No access token available');
-        return;
-      }
-      
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-be7827e3/stripe/subscription-status`,
-        {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setSubscription(data);
-      } else {
-        console.error('Error fetching subscription: Response not OK', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching subscription:', error);
-    }
-  };
-
   const handleUpgrade = () => {
     setIsPaywallOpen(true);
   };
 
   const handlePaymentSuccess = () => {
     setIsPaywallOpen(false);
-    fetchSubscriptionStatus();
+    refreshSubscription();
     toast.success('Welcome to Covera Core! Your subscription is now active.');
     resetWalkthrough();
   };
