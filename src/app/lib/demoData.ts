@@ -428,7 +428,7 @@ export const enableDemoMode = () => {
   // Add demo parameter to URL without reloading
   const url = new URL(window.location.href);
   url.searchParams.set('demo', 'true');
-  window.history.replaceState({}, '', url);
+  window.history.replaceState({}, '', url.toString());
 };
 
 export const disableDemoMode = () => {
@@ -436,7 +436,7 @@ export const disableDemoMode = () => {
   // Remove demo parameter from URL
   const url = new URL(window.location.href);
   url.searchParams.delete('demo');
-  window.history.replaceState({}, '', url);
+  window.history.replaceState({}, '', url.toString());
 };
 
 // Get demo stats
