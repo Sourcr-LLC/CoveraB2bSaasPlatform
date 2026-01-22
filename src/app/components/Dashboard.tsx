@@ -592,7 +592,7 @@ export default function Dashboard() {
                  <p className="text-xs text-slate-500 mt-1">6-month compliance rate history</p>
                </div>
             </div>
-            <div className="flex-1 w-full min-h-[200px]">
+            <div className="flex-1 w-full min-h-[200px] min-w-0">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={complianceTrendData}>
                   <defs>
@@ -617,10 +617,10 @@ export default function Dashboard() {
          {/* Secondary Widget (Risk Distribution Donut) */}
          <div onClick={(e) => e.stopPropagation()} className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
             <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
-            <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0">
+            <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0 min-w-0">
                {riskDistribution.length > 0 ? (
                  <div className="flex items-center w-full h-full gap-4">
-                   <div className="flex-1 h-full min-h-[160px]">
+                   <div className="flex-1 h-full min-h-[160px] min-w-0">
                      <ResponsiveContainer width="100%" height="100%">
                        <PieChart>
                          <Pie

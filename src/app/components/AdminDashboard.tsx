@@ -31,6 +31,7 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   
   // Action states
   const [userToDelete, setUserToDelete] = useState<string | null>(null);
@@ -42,6 +43,7 @@ export default function AdminDashboard() {
 
     // Subscribe to real-time updates from server with proper connection handling
     let channel: any = null;
+    let presenceChannel: any = null;
     
     // Delay subscription to ensure Supabase is fully initialized
     const setupRealtimeSubscription = async () => {
@@ -49,6 +51,7 @@ export default function AdminDashboard() {
         // Wait for auth to be ready
         await supabase.auth.getSession();
         
+        // Channel for data updates (broadcasts)
         channel = supabase
           .channel('admin-dashboard', {
             config: {
@@ -64,16 +67,20 @@ export default function AdminDashboard() {
               checkAdminAndLoad();
             }
           )
-          .subscribe((status) => {
-            if (status === 'SUBSCRIBED') {
-              console.log('Successfully subscribed to admin-dashboard channel');
-            } else if (status === 'CHANNEL_ERROR') {
-              console.error('Failed to subscribe to admin-dashboard channel');
-            }
-          });
+          .subscribe();
+
+        // Channel for tracking online users (presence)
+        presenceChannel = supabase
+          .channel('online-users')
+          .on('presence', { event: 'sync' }, () => {
+            const newState = presenceChannel.presenceState();
+            const onlineIds = new Set(Object.keys(newState));
+            setOnlineUsers(onlineIds);
+          })
+          .subscribe();
+
       } catch (error) {
         console.error('Failed to setup realtime subscription:', error);
-        // Non-critical error - app can still function without realtime updates
       }
     };
 
@@ -82,9 +89,8 @@ export default function AdminDashboard() {
 
     return () => {
       clearTimeout(timeoutId);
-      if (channel) {
-        supabase.removeChannel(channel);
-      }
+      if (channel) supabase.removeChannel(channel);
+      if (presenceChannel) supabase.removeChannel(presenceChannel);
     };
   }, []);
 
@@ -215,7 +221,23 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Online Now</CardTitle>
+            <div className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{onlineUsers.size}</div>
+            <p className="text-xs text-muted-foreground">
+              Active users currently
+            </p>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -294,7 +316,15 @@ export default function AdminDashboard() {
                   <TableRow key={`${user.id || 'no-id'}-${user.email || 'no-email'}-${index}`}>
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-medium">{user.name || 'N/A'}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{user.name || 'N/A'}</span>
+                          {onlineUsers.has(user.id) && (
+                            <div className="relative flex h-2 w-2" title="Online now">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </div>
+                          )}
+                        </div>
                         <span className="text-xs text-muted-foreground flex items-center gap-1">
                           <Mail className="w-3 h-3" /> {user.email}
                         </span>
@@ -345,7 +375,15 @@ export default function AdminDashboard() {
               <div key={`${user.id || 'mobile'}-${index}`} className="p-4 border rounded-lg bg-white shadow-sm space-y-3">
                 <div className="flex justify-between items-start">
                   <div>
-                    <div className="font-medium text-gray-900">{user.name || 'N/A'}</div>
+                    <div className="flex items-center gap-2">
+                      <div className="font-medium text-gray-900">{user.name || 'N/A'}</div>
+                      {onlineUsers.has(user.id) && (
+                        <div className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </div>
+                      )}
+                    </div>
                     <div className="text-xs text-muted-foreground break-all">{user.email}</div>
                   </div>
                   {getSubscriptionBadge(user.subscriptionStatus)}

@@ -38,6 +38,47 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     });
   }, [location.pathname, shouldShowWalkthrough, walkthroughChecking]);
 
+  // Presence Tracking for Online Status
+  useEffect(() => {
+    let channel: any = null;
+
+    const trackPresence = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) return;
+
+        // Create a unique channel for presence tracking
+        channel = supabase.channel('online-users', {
+          config: {
+            presence: {
+              key: session.user.id,
+            },
+          },
+        });
+
+        channel.subscribe(async (status: string) => {
+          if (status === 'SUBSCRIBED') {
+            await channel.track({
+              online_at: new Date().toISOString(),
+              user_id: session.user.id,
+              email: session.user.email,
+            });
+          }
+        });
+      } catch (err) {
+        console.error('Error tracking presence:', err);
+      }
+    };
+
+    trackPresence();
+
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
+  }, []);
+
   const loadProfile = useCallback(async () => {
     try {
       // First verify we have a valid session
