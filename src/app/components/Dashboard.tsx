@@ -427,16 +427,26 @@ export default function Dashboard() {
       months.push(date);
     }
 
-    return months.map(date => {
+    return months.map((date, index) => {
       const monthName = date.toLocaleString('default', { month: 'short' });
+      const isCurrentMonth = index === months.length - 1;
       
-      const compliantCount = vendors.filter(v => {
-        if (!v.insuranceExpiry || v.insuranceExpiry === 'Invalid Date') return false;
-        const expiry = new Date(v.insuranceExpiry);
-        return expiry > date; 
-      }).length;
+      let compliantCount = 0;
 
-      const rate = Math.round((compliantCount / vendors.length) * 100);
+      if (isCurrentMonth) {
+        // For current month, use the actual calculated status to ensure it matches KPIs
+        compliantCount = vendors.filter(v => v.status === 'compliant').length;
+      } else {
+        // For past months, check against the date
+        compliantCount = vendors.filter(v => {
+          if (!v.insuranceExpiry || v.insuranceExpiry === 'Invalid Date') return false;
+          const expiry = new Date(v.insuranceExpiry);
+          // A vendor is compliant in a past month if their insurance hadn't expired yet
+          return expiry > date; 
+        }).length;
+      }
+
+      const rate = vendors.length > 0 ? Math.round((compliantCount / vendors.length) * 100) : 100;
 
       return {
         name: monthName,
@@ -529,7 +539,7 @@ export default function Dashboard() {
                  <p className="text-xs text-slate-500 mt-1">6-month compliance rate history</p>
                </div>
             </div>
-            <div className="flex-1 w-full min-h-[200px] lg:min-h-0">
+            <div className="flex-1 w-full min-h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={complianceTrendData}>
                   <defs>

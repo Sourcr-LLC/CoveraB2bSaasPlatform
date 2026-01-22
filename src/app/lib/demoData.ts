@@ -159,7 +159,7 @@ export const demoVendors: DemoVendor[] = [
     email: 'dispatch@rapiddelivery.com',
     phone: '(555) 567-8901',
     category: 'Logistics',
-    insuranceExpiry: addDays(-5),
+    insuranceExpiry: addMonths(-2),
     status: 'non-compliant',
     policyNumber: 'POL-2023-9045',
     coverageAmount: '$5,000,000',
@@ -167,7 +167,7 @@ export const demoVendors: DemoVendor[] = [
     site: 'Distribution Center',
     address: '999 Transit Rd, Logistics Bay, NJ 07000',
     insurancePolicies: [
-      { type: 'Auto Liability', carrier: 'Progressive', coverageLimit: 5000000, expiryDate: addDays(-5), status: 'non-compliant' }
+      { type: 'Auto Liability', carrier: 'Progressive', coverageLimit: 5000000, expiryDate: addMonths(-2), status: 'non-compliant' }
     ],
     documents: [
       { name: 'COI_Rapid_Expired.pdf', type: 'PDF', size: '1.3 MB', uploaded: addDays(-370), path: 'demo-doc-6' }
@@ -179,7 +179,7 @@ export const demoVendors: DemoVendor[] = [
     email: 'service@elitehvac.com',
     phone: '(555) 678-9012',
     category: 'Facilities',
-    insuranceExpiry: addDays(-12),
+    insuranceExpiry: addMonths(-3),
     status: 'non-compliant',
     policyNumber: 'POL-2023-7712',
     coverageAmount: '$1,000,000',
@@ -187,7 +187,7 @@ export const demoVendors: DemoVendor[] = [
     site: 'East Wing',
     address: '777 Cool St, Airflow, AZ 85000',
     insurancePolicies: [
-      { type: 'General Liability', carrier: 'Farmers', coverageLimit: 1000000, expiryDate: addDays(-12), status: 'non-compliant' }
+      { type: 'General Liability', carrier: 'Farmers', coverageLimit: 1000000, expiryDate: addMonths(-3), status: 'non-compliant' }
     ],
     documents: [
       { name: 'COI_Elite_Old.pdf', type: 'PDF', size: '1.0 MB', uploaded: addDays(-380), path: 'demo-doc-7' }
@@ -279,7 +279,7 @@ export const demoVendors: DemoVendor[] = [
     email: 'info@metroelectrical.com',
     phone: '(555) 234-5679',
     category: 'Construction',
-    insuranceExpiry: addDays(-8),
+    insuranceExpiry: addDays(-15),
     status: 'non-compliant',
     policyNumber: 'POL-2023-3376',
     coverageAmount: '$3,000,000',
@@ -287,7 +287,7 @@ export const demoVendors: DemoVendor[] = [
     site: 'North Expansion',
     address: '444 Voltage Rd, Spark City, OH 44000',
     insurancePolicies: [
-      { type: 'General Liability', carrier: 'Zurich', coverageLimit: 3000000, expiryDate: addDays(-8), status: 'non-compliant' }
+      { type: 'General Liability', carrier: 'Zurich', coverageLimit: 3000000, expiryDate: addDays(-15), status: 'non-compliant' }
     ],
     documents: [
       { name: 'COI_Metro_Expired.pdf', type: 'PDF', size: '1.6 MB', uploaded: addDays(-375), path: 'demo-doc-12' }
