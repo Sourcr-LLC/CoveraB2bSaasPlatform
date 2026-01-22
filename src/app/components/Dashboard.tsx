@@ -677,9 +677,9 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Section: Table and Activity Feed */}
-      <div className="flex-1 2xl:min-h-0 flex flex-col lg:flex-row gap-6 md:gap-8 2xl:h-full">
+      <div className="flex-1 2xl:min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 2xl:h-full">
         {/* High-risk Vendors Table */}
-        <div className="w-full lg:flex-[2] 2xl:h-full lg:min-w-0">
+        <div className="w-full lg:col-span-2 2xl:h-full lg:min-w-0">
           <div
             id="attention-items"
             ref={attentionItemsRef}
@@ -897,7 +897,7 @@ export default function Dashboard() {
         </div>
 
         {/* Activity Feed - Right Column */}
-        <div className="w-full lg:flex-1 space-y-6 2xl:h-full lg:flex lg:flex-col lg:min-w-0">
+        <div className="w-full lg:col-span-1 space-y-6 2xl:h-full flex flex-col lg:min-w-0">
           <div
             className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col 2xl:min-h-0"
             style={{ borderColor: 'var(--border)' }}
