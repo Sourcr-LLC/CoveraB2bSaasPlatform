@@ -101,11 +101,6 @@ export default function Dashboard() {
     } else {
       setActiveFilter(filterType);
       setActiveTab(tab);
-      setTimeout(() => {
-        if (attentionItemsRef.current) {
-          attentionItemsRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 100);
     }
   };
 
@@ -567,8 +562,8 @@ export default function Dashboard() {
             onClick={(e) => handleFilterClick(card.id, card.targetTab, e)}
             className={`text-left transition-all duration-300 rounded-xl relative ${
               activeFilter === card.id 
-                ? 'ring-2 ring-primary ring-offset-2 scale-[1.02]' 
-                : 'hover:-translate-y-1'
+                ? 'ring-2 ring-primary ring-offset-2' 
+                : 'hover:opacity-90'
             }`}
           >
             <KpiCard
