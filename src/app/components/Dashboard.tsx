@@ -489,7 +489,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-4 md:p-8 lg:p-12 min-h-screen" style={{ 
+    <div className="p-4 md:p-8 xl:p-12 min-h-screen" style={{ 
       backgroundColor: 'var(--background)',
       backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
     }}>
@@ -540,7 +540,7 @@ export default function Dashboard() {
       )}
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
         {kpiCards.map((card, index) => (
           <button
             key={index}
@@ -568,9 +568,9 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 h-auto lg:h-[320px]">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 h-auto xl:h-[320px]">
          {/* Main Chart */}
-         <div className="lg:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
+         <div className="xl:col-span-2 bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
             <div className="flex justify-between items-center mb-6">
                <div>
                  <h3 className="font-bold text-slate-900">Compliance Trends</h3>
@@ -602,7 +602,7 @@ export default function Dashboard() {
          {/* Secondary Widget (Risk Distribution Donut) */}
          <div className="bg-white border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm">
             <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
-            <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0">
+            <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] xl:min-h-0">
                {riskDistribution.length > 0 ? (
                  <div className="flex items-center w-full h-full gap-4">
                    <div className="flex-1 h-full min-h-[160px]">
@@ -655,9 +655,9 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Section: Table and Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8 items-start">
         {/* High-risk Vendors Table */}
-        <div className="lg:col-span-8">
+        <div className="xl:col-span-8">
           <div
             id="attention-items"
             ref={attentionItemsRef}
@@ -782,7 +782,7 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-4 text-right whitespace-nowrap">
                         <button 
-                          className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all opacity-70 group-hover:opacity-100"
+                          className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all"
                           onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
                           disabled={activeTab === 'insurance' && sendingReminderId === item.id}
                         >
@@ -875,7 +875,7 @@ export default function Dashboard() {
         </div>
 
         {/* Activity Feed - Right Column */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="xl:col-span-4 space-y-6">
           <div
             className="rounded-xl border bg-white shadow-sm overflow-hidden"
             style={{ borderColor: 'var(--border)' }}
