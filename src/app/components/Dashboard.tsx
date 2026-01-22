@@ -489,7 +489,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col p-4 md:p-8 lg:p-8 lg:h-screen lg:overflow-hidden min-h-screen" style={{ 
+    <div className="flex flex-col p-4 md:p-8 lg:p-8 xl:h-screen xl:overflow-hidden min-h-screen" style={{ 
       backgroundColor: 'var(--background)',
       backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
     }}>
@@ -655,13 +655,13 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Section: Table and Activity Feed */}
-      <div className="flex-1 lg:min-h-0 flex flex-col lg:flex-row gap-6 md:gap-8 items-start lg:h-full">
+      <div className="flex-1 xl:min-h-0 flex flex-col lg:flex-row gap-6 md:gap-8 items-start xl:h-full">
         {/* High-risk Vendors Table */}
-        <div className="w-full lg:flex-[2] lg:h-full lg:min-w-0">
+        <div className="w-full lg:flex-[2] xl:h-full lg:min-w-0">
           <div
             id="attention-items"
             ref={attentionItemsRef}
-            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white flex flex-col lg:h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
+            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white flex flex-col xl:h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
             style={{
               borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
             }}
@@ -700,7 +700,7 @@ export default function Dashboard() {
             </div>
             
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto flex-1 lg:overflow-y-auto">
+            <div className="hidden md:block overflow-x-auto flex-1 xl:overflow-y-auto">
               <table className="w-full">
                 <thead className="sticky top-0 bg-white z-10 shadow-sm">
                   <tr className="bg-slate-50/50 border-b border-slate-100">
@@ -875,9 +875,9 @@ export default function Dashboard() {
         </div>
 
         {/* Activity Feed - Right Column */}
-        <div className="w-full lg:flex-1 space-y-6 lg:h-full lg:flex lg:flex-col lg:min-w-0">
+        <div className="w-full lg:flex-1 space-y-6 xl:h-full lg:flex lg:flex-col lg:min-w-0">
           <div
-            className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col lg:min-h-0"
+            className="rounded-xl border bg-white shadow-sm overflow-hidden flex-1 flex flex-col xl:min-h-0"
             style={{ borderColor: 'var(--border)' }}
           >
             <div className="flex-none px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
