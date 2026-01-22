@@ -1118,7 +1118,7 @@ export default function Dashboard() {
                {(vendors.length === 0 || contracts.length === 0) && (
                  <button 
                    onClick={() => navigate(vendors.length === 0 ? '/add-vendor' : '/add-contract')}
-                   className="mt-5 w-full py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
+                   className="mt-5 w-full py-2.5 bg-[#3A4F6A] text-white text-xs font-bold rounded-xl hover:bg-[#2c3e53] transition-colors flex items-center justify-center gap-2 shadow-sm"
                  >
                    Continue Setup <ArrowUpRight className="w-3 h-3" />
                  </button>
