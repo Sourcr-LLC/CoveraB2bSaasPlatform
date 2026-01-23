@@ -511,9 +511,9 @@ export default function Dashboard() {
         subtitle: stats.nonCompliant > 0 
           ? 'Resolve to eliminate liability exposure' 
           : 'No gaps in coverage detected',
-        percentageColor: stats.nonCompliant > 0 ? '#ef4444' : '#059669',
-        bgTint: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.03)' : 'var(--card)',
-        borderColor: stats.nonCompliant > 0 ? 'rgba(239, 68, 68, 0.2)' : 'var(--border)',
+        percentageColor: stats.nonCompliant > 0 ? '#dc2626' : '#059669',
+        bgTint: stats.nonCompliant > 0 ? 'rgba(220, 38, 38, 0.03)' : 'var(--card)',
+        borderColor: stats.nonCompliant > 0 ? 'rgba(220, 38, 38, 0.2)' : 'var(--border)',
         icon: stats.nonCompliant > 0 ? AlertTriangle : CheckCircle2,
         targetTab: 'insurance' as const
       },
@@ -539,7 +539,7 @@ export default function Dashboard() {
         subtitle: stats.expiringContracts > 0 
           ? 'Renewals requiring your review' 
           : 'No renewals or obligations due soon',
-        percentageColor: stats.expiringContracts > 0 ? '#f59e0b' : 'var(--foreground-muted)',
+        percentageColor: stats.expiringContracts > 0 ? '#d97706' : 'var(--foreground-muted)',
         bgTint: 'var(--glass-bg)',
         borderColor: 'var(--glass-border)',
         icon: Calendar,
@@ -556,9 +556,9 @@ export default function Dashboard() {
     };
 
     return [
-      { name: 'Compliant', value: counts.low, color: '#10b981', filterKey: 'compliant' }, 
-      { name: 'At Risk', value: counts.medium, color: '#f59e0b', filterKey: 'risk' }, 
-      { name: 'Non-Compliant', value: counts.high, color: '#ef4444', filterKey: 'non-compliant' }, 
+      { name: 'Compliant', value: counts.low, color: 'rgba(16, 185, 129, 0.6)', filterKey: 'compliant' }, 
+      { name: 'At Risk', value: counts.medium, color: 'rgba(245, 158, 11, 0.6)', filterKey: 'risk' }, 
+      { name: 'Non-Compliant', value: counts.high, color: 'rgba(239, 68, 68, 0.6)', filterKey: 'non-compliant' }, 
     ].filter(item => item.value > 0);
   }, [vendors]);
 

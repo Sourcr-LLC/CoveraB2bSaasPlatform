@@ -143,9 +143,9 @@ function DashboardContent() {
               value={stats.atRisk} 
               change=""
               compact={true}
-              percentageColor="#f59e0b"
-              bgTint="rgba(245, 158, 11, 0.03)"
-              borderColor="rgba(245, 158, 11, 0.2)"
+              percentageColor="#d97706"
+              bgTint="rgba(217, 119, 6, 0.03)"
+              borderColor="rgba(217, 119, 6, 0.2)"
               icon={Shield}
               trend="neutral"
             />
@@ -154,9 +154,9 @@ function DashboardContent() {
               value={stats.nonCompliant} 
               change=""
               compact={true}
-              percentageColor="#ef4444"
-              bgTint="rgba(239, 68, 68, 0.03)"
-              borderColor="rgba(239, 68, 68, 0.2)"
+              percentageColor="#dc2626"
+              bgTint="rgba(220, 38, 38, 0.03)"
+              borderColor="rgba(220, 38, 38, 0.2)"
               icon={AlertTriangle}
               trend="neutral"
             />
@@ -177,7 +177,7 @@ function DashboardContent() {
               change=""
               compact={true}
               trend="neutral" 
-              percentageColor="#f59e0b"
+              percentageColor="#d97706"
               bgTint="#ffffff"
               borderColor="#e7e5e4"
               icon={Calendar}
