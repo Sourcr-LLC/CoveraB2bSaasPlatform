@@ -183,7 +183,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         />
 
         {/* Loading Content */}
-        <main className="lg:ml-64 pb-6">
+        <main className="lg:ml-72 pb-6">
           <div className="flex h-screen items-center justify-center">
             <PremiumLoader fullScreen />
           </div>
@@ -213,7 +213,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           />
 
           {/* Locked Page View */}
-          <main className="lg:ml-64 pb-6">
+          <main className="lg:ml-72 pb-6">
             <div className="min-h-screen p-6 flex items-center justify-center">
               <div className="max-w-md w-full text-center">
                 <div 
@@ -298,7 +298,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       />
 
       {/* Main Content - with left margin on desktop for sidebar */}
-      <main className="lg:ml-64 pb-6">
+      <main className="lg:ml-72 pb-6">
         {children}
         {shouldShowWalkthrough && !walkthroughChecking && (
           <InteractiveWalkthrough

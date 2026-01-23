@@ -389,6 +389,38 @@ export default function Dashboard() {
     return labels[status] || status;
   };
 
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case 'compliant':
+      case 'active':
+        return {
+          bg: 'rgba(16, 185, 129, 0.15)', // emerald-500 @ 15%
+          text: '#10b981', // emerald-500
+          icon: CheckCircle2
+        };
+      case 'at-risk':
+      case 'expiring':
+        return {
+          bg: 'rgba(245, 158, 11, 0.15)', // amber-500 @ 15%
+          text: '#f59e0b', // amber-500
+          icon: Clock
+        };
+      case 'non-compliant':
+      case 'expired':
+        return {
+          bg: 'rgba(239, 68, 68, 0.15)', // red-500 @ 15%
+          text: '#ef4444', // red-500
+          icon: AlertCircle
+        };
+      default:
+        return {
+          bg: 'rgba(107, 114, 128, 0.15)', // gray-500 @ 15%
+          text: '#6b7280', // gray-500
+          icon: AlertCircle
+        };
+    }
+  };
+
   const calculateDaysLeft = (dateString: string | undefined) => {
     if (!dateString || dateString === 'Invalid Date') {
       return null;
@@ -571,7 +603,7 @@ export default function Dashboard() {
   return (
     <div 
       onClick={() => activeFilter && setActiveFilter(null)}
-      className="flex flex-col p-6 md:p-10 lg:p-12 min-h-screen pb-20 selection:bg-blue-100" 
+      className="flex flex-col p-6 md:p-8 lg:p-8 min-h-screen pb-20 selection:bg-blue-100" 
       style={{ 
         backgroundColor: '#F9FAFB', // very light gray-blue
       }}
@@ -579,7 +611,7 @@ export default function Dashboard() {
       {/* Header */}
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex-none mb-8 md:mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+        className="flex-none mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
       >
         <div>
           <h1 className="mb-2 text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
@@ -602,7 +634,7 @@ export default function Dashboard() {
 
       {/* Action Banner */}
       {stats.nonCompliant > 0 && (
-        <div onClick={(e) => e.stopPropagation()} className="flex-none mb-6 p-5 rounded-2xl bg-white border border-red-100 flex items-center justify-between hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+        <div onClick={(e) => e.stopPropagation()} className="flex-none mb-6 p-4 rounded-2xl bg-white border border-red-100 flex items-center justify-between hover:bg-red-50/30 transition-all duration-300 relative overflow-hidden group">
            <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
            <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-transform duration-300">
@@ -627,7 +659,7 @@ export default function Dashboard() {
       )}
 
       {/* KPI Cards */}
-      <div className="flex-none grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      <div className="flex-none grid grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {kpiCards.map((card, index) => (
           <button
             key={index}
@@ -655,10 +687,10 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Row */}
-      <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 h-auto lg:h-[360px]">
+      <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-6 mb-6">
          {/* Main Chart */}
-         <div onClick={(e) => e.stopPropagation()} className="lg:col-span-2 bg-white border border-slate-100 rounded-2xl p-7 flex flex-col hover:shadow-md transition-all duration-300 overflow-hidden z-0 h-[360px] lg:h-full group">
-            <div className="flex justify-between items-center mb-6">
+         <div onClick={(e) => e.stopPropagation()} className="lg:col-span-2 bg-white border border-slate-100 rounded-2xl p-6 flex flex-col transition-all duration-300 overflow-hidden z-0 h-[300px] group">
+            <div className="flex justify-between items-center mb-4">
                <div>
                  <h3 className="font-bold text-slate-900 text-lg">Compliance Trends</h3>
                  <p className="text-sm text-slate-500 mt-1 font-medium">6-month compliance rate history</p>
@@ -666,7 +698,7 @@ export default function Dashboard() {
             </div>
             <div className="flex-1 w-full min-h-[200px] min-w-0">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={complianceTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <AreaChart data={complianceTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
                   <defs>
                     <linearGradient id="colorCompliance" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={trendColor} stopOpacity={0.15}/>
@@ -699,12 +731,12 @@ export default function Dashboard() {
          </div>
 
          {/* Secondary Widget (Risk Distribution Donut) */}
-         <div onClick={(e) => e.stopPropagation()} className="bg-white border border-slate-100 rounded-2xl p-7 flex flex-col hover:shadow-md transition-all duration-300 overflow-hidden z-0 h-[360px] lg:h-full group">
-            <h3 className="font-bold text-slate-900 text-lg mb-4">Risk Distribution</h3>
+         <div onClick={(e) => e.stopPropagation()} className="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col transition-all duration-300 overflow-hidden z-0 h-[300px] group">
+            <h3 className="font-bold text-slate-900 text-lg mb-2">Risk Distribution</h3>
             <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0 min-w-0">
                {riskDistribution.length > 0 ? (
                  <div className="flex flex-col w-full h-full gap-2">
-                   <div className="flex-1 h-full min-h-[160px] min-w-0 -mt-4">
+                   <div className="flex-1 h-full min-h-[160px] min-w-0 -mt-2">
                      <ResponsiveContainer width="100%" height="100%">
                        <PieChart>
                          <Pie
@@ -729,17 +761,17 @@ export default function Dashboard() {
                            <Label
                              value="Vendors"
                              position="center"
-                             className="text-xs fill-slate-400 font-bold uppercase tracking-widest"
+                             className="text-[10px] fill-slate-400 font-bold uppercase tracking-widest"
                              dy={15}
                            />
                          </Pie>
                        </PieChart>
                      </ResponsiveContainer>
                    </div>
-                   <div className="flex justify-center gap-6 pb-2">
+                   <div className="flex justify-center gap-4 pb-0">
                      {riskDistribution.map((item, index) => (
                        <div key={index} className="flex flex-col items-center text-center">
-                         <div className="w-1.5 h-1.5 rounded-full mb-1.5" style={{ backgroundColor: item.color }} />
+                         <div className="w-1.5 h-1.5 rounded-full mb-1" style={{ backgroundColor: item.color }} />
                          <span className="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-0.5">{item.name}</span>
                          <span className="font-bold text-slate-800 text-lg leading-none">{item.value}</span>
                        </div>
@@ -759,19 +791,19 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Section: Table and Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 lg:h-[600px]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-6 items-stretch">
         {/* High-risk Vendors Table */}
-        <div className="w-full lg:col-span-2 lg:h-full lg:min-h-0">
+        <div className="w-full lg:col-span-2 min-w-0">
           <div
             id="attention-items"
             ref={attentionItemsRef}
             onClick={(e) => e.stopPropagation()}
-            className={`rounded-2xl border overflow-hidden transition-all duration-300 bg-white flex flex-col h-full z-0 hover:shadow-md ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'border-slate-100'}`}
+            className={`rounded-2xl border overflow-hidden transition-all duration-300 bg-white flex flex-col z-0 h-full ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'border-slate-100'}`}
             style={{
               borderColor: highlightAttentionItems ? '#fca5a5' : undefined,
             }}
           >
-            <div className="flex-none px-6 py-5 border-b border-slate-100 flex justify-between items-center relative">
+            <div className="flex-none px-6 py-4 border-b border-slate-100 flex justify-between items-center relative">
               {selectedVendorIds.size > 0 && activeTab === 'insurance' ? (
                 <div className="absolute inset-0 bg-white z-20 flex items-center justify-between px-6 border-b border-blue-100">
                   <div className="flex items-center gap-3">
@@ -836,13 +868,13 @@ export default function Dashboard() {
               </div>
             </div>
             
-            {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto overflow-y-auto flex-1 min-h-0">
+              {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
-                <thead className="sticky top-0 bg-white z-10 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+                <thead className="bg-white border-b border-slate-100">
                   <tr className="bg-slate-50/50 border-b border-slate-100">
                     {activeTab === 'insurance' && (
-                      <th className="w-10 px-6 py-4">
+                      <th className="w-10 px-6 py-3">
                         <button 
                           onClick={handleSelectAll}
                           className="text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
@@ -855,28 +887,32 @@ export default function Dashboard() {
                         </button>
                       </th>
                     )}
-                    <th className={`${activeTab === 'insurance' ? 'pl-0 pr-6' : 'px-6'} py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500`}>
+                    <th className={`${activeTab === 'insurance' ? 'pl-0 pr-6' : 'px-6'} py-3 text-left text-xs uppercase tracking-wider font-semibold text-slate-500`}>
                       {activeTab === 'insurance' ? 'Vendor' : 'Contract Name'}
                     </th>
-                    <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
+                    <th className="px-6 py-3 text-left text-xs uppercase tracking-wider font-semibold text-slate-500">
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500">
+                    <th className="px-6 py-3 text-left text-xs uppercase tracking-wider font-semibold text-slate-500">
                       Deadline
                     </th>
-                    <th className="px-6 py-4 text-right text-[11px] uppercase tracking-wider font-semibold text-slate-500">
+                    <th className="px-6 py-3 text-right text-xs uppercase tracking-wider font-semibold text-slate-500">
                       Action
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {(activeTab === 'insurance' ? filteredVendors : filteredContracts).map((item, index) => (
+                  {(activeTab === 'insurance' ? filteredVendors : filteredContracts).map((item, index) => {
+                    const statusStyle = getStatusStyle(item.status);
+                    const StatusIcon = statusStyle.icon;
+                    
+                    return (
                     <tr 
                       key={item.id || index}
                       className={`group hover:bg-slate-50/80 transition-colors ${selectedVendorIds.has(item.id) ? 'bg-blue-50/40' : ''}`}
                     >
                       {activeTab === 'insurance' && (
-                        <td className="w-10 px-6 py-4">
+                        <td className="w-10 px-6 py-3">
                            <button 
                              onClick={(e) => handleSelectVendor(item.id, e)}
                              className="text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
@@ -889,16 +925,16 @@ export default function Dashboard() {
                            </button>
                         </td>
                       )}
-                      <td className={`${activeTab === 'insurance' ? 'pl-0 pr-6' : 'px-6'} py-4 whitespace-nowrap`}>
+                      <td className={`${activeTab === 'insurance' ? 'pl-0 pr-6' : 'px-6'} py-3 whitespace-nowrap`}>
                         <div className="flex items-center gap-3">
-                          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shadow-sm ${getAvatarColor(activeTab === 'insurance' ? item.name : item.vendorName)}`}>
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-sm ${getAvatarColor(activeTab === 'insurance' ? item.name : item.vendorName)}`}>
                             {getInitials(activeTab === 'insurance' ? item.name : item.vendorName)}
                           </div>
                           <div>
                             <div className="text-sm font-semibold text-slate-900 mb-0.5">
                               {activeTab === 'insurance' ? item.name : item.contractName}
                             </div>
-                            <div className="text-xs text-slate-500">
+                            <div className="text-sm text-slate-500">
                               {activeTab === 'insurance' 
                                 ? item.category
                                 : item.vendorName
@@ -907,32 +943,23 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-3 whitespace-nowrap">
                         <span
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
-                            item.status === 'compliant' || item.status === 'active'
-                              ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
-                              : item.status === 'at-risk' || item.status === 'expiring'
-                              ? 'bg-amber-50 text-amber-700 border-amber-100'
-                              : 'bg-rose-50 text-rose-700 border-rose-100'
-                          }`}
+                          className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium w-fit min-w-[90px]"
+                          style={{
+                            backgroundColor: statusStyle.bg,
+                            color: statusStyle.text
+                          }}
                         >
-                          {item.status === 'compliant' || item.status === 'active' ? (
-                            <CheckCircle2 className="w-3 h-3" />
-                          ) : item.status === 'at-risk' || item.status === 'expiring' ? (
-                            <Clock className="w-3 h-3" />
-                          ) : (
-                            <AlertCircle className="w-3 h-3" />
-                          )}
                           {item.statusLabel}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-3 whitespace-nowrap">
                         <div className="flex flex-col">
                           <span className="text-sm font-medium text-slate-700">
                             {item.expiryDate}
                           </span>
-                          <span className={`text-[10px] ${
+                          <span className={`text-sm ${
                              item.daysLeft !== null && item.daysLeft < 0 ? 'text-rose-500' : 
                              item.daysLeft !== null && item.daysLeft <= 30 ? 'text-amber-500' : 
                              'text-slate-400'
@@ -945,7 +972,7 @@ export default function Dashboard() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-right whitespace-nowrap">
+                      <td className="px-6 py-3 text-right whitespace-nowrap">
                         <button 
                           className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all"
                           onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
@@ -973,7 +1000,8 @@ export default function Dashboard() {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                   {(activeTab === 'insurance' ? filteredVendors : filteredContracts).length === 0 && (
                      <tr>
                         <td colSpan={5} className="px-8 py-20 text-center">
@@ -995,7 +1023,10 @@ export default function Dashboard() {
 
             {/* Mobile Card View */}
             <div className="md:hidden divide-y divide-slate-100">
-              {(activeTab === 'insurance' ? filteredVendors : filteredContracts).map((item, index) => (
+              {(activeTab === 'insurance' ? filteredVendors : filteredContracts).map((item, index) => {
+                const statusStyle = getStatusStyle(item.status);
+                
+                return (
                 <div key={index} className="p-4 bg-white">
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
@@ -1012,13 +1043,11 @@ export default function Dashboard() {
                        </div>
                     </div>
                     <span
-                      className={`inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide border ${
-                        item.status === 'compliant' || item.status === 'active'
-                          ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
-                          : item.status === 'at-risk' || item.status === 'expiring'
-                          ? 'bg-amber-50 text-amber-700 border-amber-100'
-                          : 'bg-rose-50 text-rose-700 border-rose-100'
-                      }`}
+                      className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium min-w-[80px]"
+                      style={{
+                        backgroundColor: statusStyle.bg,
+                        color: statusStyle.text
+                      }}
                     >
                       {item.statusLabel}
                     </span>
@@ -1036,38 +1065,36 @@ export default function Dashboard() {
                      </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
 
         {/* Activity Feed - Right Column */}
-        <div className="w-full lg:col-span-1 lg:h-full flex flex-col gap-6 lg:min-h-0">
+        <div className="w-full lg:col-span-1 flex flex-col gap-6 min-w-0 h-full">
           <div
-            className="rounded-2xl border border-slate-100 bg-white hover:shadow-md transition-all duration-300 overflow-hidden flex-1 flex flex-col min-h-0"
+            className="rounded-2xl border border-slate-100 bg-white transition-all duration-300 overflow-hidden flex flex-col flex-1"
             style={{ borderColor: undefined }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-none px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+            <div className="flex-none px-4 py-3 border-b border-slate-100 flex items-center justify-between">
                <h3 className="font-bold text-slate-900 text-base">Recent Activity</h3>
-               <button className="text-slate-400 hover:text-slate-600 transition-colors p-1 hover:bg-slate-50 rounded-lg">
-                 <MoreHorizontal className="w-5 h-5" />
-               </button>
             </div>
-            <div className="flex-1 divide-y divide-slate-50 overflow-y-auto">
-               {alerts.map((alert, i) => (
-                 <div key={i} className="p-4 hover:bg-slate-50 transition-colors group cursor-default">
-                    <div className="flex gap-3">
-                       <div className={`mt-0.5 w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
+            <div className="flex-col divide-y divide-slate-50 flex-1">
+               {alerts.slice(0, 5).map((alert, i) => (
+                 <div key={i} className="p-3 hover:bg-slate-50 transition-colors group cursor-default">
+                    <div className="flex gap-2.5">
+                       <div className={`mt-0.5 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
                           alert.type === 'expired' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600'
                        }`}>
-                          {alert.type === 'expired' ? <AlertCircle className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" /> }
+                          {alert.type === 'expired' ? <AlertCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" /> }
                        </div>
                        <div>
-                          <p className="text-sm font-medium text-slate-800 leading-snug mb-0.5">
+                          <p className="text-sm font-semibold text-slate-800 leading-snug mb-0.5">
                              {alert.message}
                           </p>
-                          <p className="text-[11px] text-slate-500 leading-tight">
+                          <p className="text-xs text-slate-500 leading-tight">
                              {alert.subtext}
                           </p>
                        </div>
@@ -1084,7 +1111,7 @@ export default function Dashboard() {
             <div className="flex-none bg-slate-50 p-3 border-t border-slate-100 text-center">
                <button 
                  onClick={() => navigate('/alerts')}
-                 className="text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors"
+                 className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
                >
                   View all activity
                </button>
@@ -1093,7 +1120,7 @@ export default function Dashboard() {
 
           {/* Tips Card or Onboarding */}
           {onboardingProgress < 100 ? (
-            <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-white border border-slate-100 p-6 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+            <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-white border border-slate-100 p-6 transition-all duration-300 relative overflow-hidden group">
                <div className="flex justify-between items-start mb-4">
                  <div>
                    <h4 className="font-bold text-slate-900 mb-1">Account Setup</h4>
@@ -1141,7 +1168,7 @@ export default function Dashboard() {
                )}
             </div>
           ) : (
-          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-md border border-blue-100 p-6 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-md border border-blue-100 p-6 transition-all duration-300 relative overflow-hidden group">
             {/* Background blobs to match design */}
             <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-blue-100/30 group-hover:scale-105 transition-transform duration-700"></div>
             <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-indigo-100/30 group-hover:scale-105 transition-transform duration-700 delay-100"></div>

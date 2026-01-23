@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, Minus, LucideIcon } from 'lucide-react';
 interface KpiCardProps {
   label: string;
   value: string | number;
-  subtext: string;
+  subtext?: string;
   change?: string;
   trend?: 'up' | 'down' | 'neutral';
   percentageColor?: string;
@@ -12,6 +12,7 @@ interface KpiCardProps {
   borderColor: string;
   icon?: LucideIcon;
   isAtRisk?: boolean;
+  compact?: boolean;
 }
 
 export const KpiCard: React.FC<KpiCardProps> = ({
@@ -24,11 +25,12 @@ export const KpiCard: React.FC<KpiCardProps> = ({
   bgTint,
   borderColor,
   icon: Icon,
-  isAtRisk = false
+  isAtRisk = false,
+  compact = false
 }) => {
   return (
     <div
-      className="bg-white rounded-2xl border border-slate-100 p-5 relative overflow-hidden group transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 h-[160px] flex flex-col justify-between"
+      className={`bg-white rounded-2xl border border-slate-100 relative overflow-hidden group transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 flex flex-col justify-between ${compact ? 'h-auto min-h-[100px] p-4' : 'h-[140px] p-5'}`}
     >
       {/* Background Glow Effect */}
       <div 
@@ -37,7 +39,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({
       />
       
       <div className="flex justify-between items-start z-10">
-        <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500 mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
+        <div className={`${compact ? 'text-[10px]' : 'text-xs'} font-bold uppercase tracking-wide text-slate-500 mt-1 whitespace-nowrap overflow-hidden text-ellipsis`}>
           {label}
         </div>
         
@@ -71,9 +73,11 @@ export const KpiCard: React.FC<KpiCardProps> = ({
           )}
         </div>
         
-        <p className="text-xs font-medium text-slate-500 leading-relaxed max-w-[90%]">
-          {subtext}
-        </p>
+        {subtext && (
+          <p className="text-sm font-medium text-slate-500 leading-relaxed max-w-[90%]">
+            {subtext}
+          </p>
+        )}
       </div>
     </div>
   );

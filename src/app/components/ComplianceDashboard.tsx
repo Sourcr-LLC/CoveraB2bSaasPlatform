@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { CheckCircle2, XCircle, AlertTriangle, TrendingUp, FileText, Download, Mail, Calendar, Clock, AlertCircle, Shield } from 'lucide-react';
+import { CheckCircle2, XCircle, AlertTriangle, TrendingUp, FileText, Download, Shield, Users, ArrowRight, Activity } from 'lucide-react';
 import { supabase } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
@@ -34,6 +34,7 @@ function calculateVendorStatus(insuranceExpiry: string | undefined): string {
 export default function ComplianceDashboard() {
   const navigate = useNavigate();
   const [vendors, setVendors] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadData();
@@ -41,8 +42,10 @@ export default function ComplianceDashboard() {
 
   const loadData = async () => {
     try {
+      setLoading(true);
       if (isDemoMode()) {
         setVendors(demoVendors);
+        setLoading(false);
         return;
       }
 
@@ -51,6 +54,7 @@ export default function ComplianceDashboard() {
       
       if (!accessToken) {
         console.error('No access token available');
+        setLoading(false);
         return;
       }
 
@@ -71,17 +75,17 @@ export default function ComplianceDashboard() {
       const data = await response.json();
       const vendorData = data.vendors || [];
       
-      console.log('🔍 RAW vendors from API:', vendorData);
       // Recalculate status for each vendor to ensure accuracy
       const vendorsWithUpdatedStatus = vendorData.map((vendor: any) => ({
         ...vendor,
         status: calculateVendorStatus(vendor.insuranceExpiry)
       }));
-      console.log('✅ RECALCULATED vendors:', vendorsWithUpdatedStatus);
-      console.log('📊 Status values:', vendorsWithUpdatedStatus.map((v: any) => v.status));
       setVendors(vendorsWithUpdatedStatus);
     } catch (error) {
       console.error('Failed to load compliance data:', error);
+      toast.error('Failed to load compliance data');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,9 +96,6 @@ export default function ComplianceDashboard() {
     nonCompliant: vendors.filter(v => v.status === 'non-compliant').length,
     total: vendors.length
   };
-
-  console.log('📈 FINAL Stats:', stats);
-  console.log('🎯 Overall Compliance:', stats.total > 0 ? ((stats.compliant / stats.total) * 100).toFixed(1) : '0.0');
 
   const overallCompliance = stats.total > 0 
     ? ((stats.compliant / stats.total) * 100).toFixed(1)
@@ -115,14 +116,29 @@ export default function ComplianceDashboard() {
 
   const complianceMetrics = {
     overall: parseFloat(overallCompliance),
-    byCategory: Object.values(categoryMap),
+    byCategory: Object.values(categoryMap).sort((a: any, b: any) => b.total - a.total),
   };
 
   const recentActivity = vendors.slice(0, 5).map((v, i) => {
     // Calculate time since last contact or creation
-    const date = v.lastContact ? new Date(v.lastContact) : new Date(v.createdAt);
+    let dateStr = v.lastContact || v.createdAt;
+    // Fallback to now if no date available to avoid NaN
+    if (!dateStr) dateStr = new Date().toISOString();
+    
+    const date = new Date(dateStr);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
+    
+    // Handle future dates or invalid calculations
+    if (isNaN(diffMs) || diffMs < 0) {
+       return {
+          action: v.status === 'compliant' ? 'COI uploaded' : v.status === 'at-risk' ? 'Reminder sent' : 'Document expired',
+          vendor: v.name,
+          time: 'Just now',
+          status: v.status
+       };
+    }
+
     const diffMins = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -145,21 +161,17 @@ export default function ComplianceDashboard() {
   });
 
   const getCompliancePercentage = (category: any) => {
-    return ((category.compliant / category.total) * 100).toFixed(1);
+    return ((category.compliant / category.total) * 100).toFixed(0);
   };
 
   const handleExportReport = () => {
-    // Basic CSV export functionality
     try {
       if (vendors.length === 0) {
         toast.error("No data available to export");
         return;
       }
 
-      // Define CSV headers
       const headers = ['Name', 'Category', 'Status', 'Contact', 'Insurance Expiry', 'Last Contact'];
-      
-      // Convert vendors data to CSV rows
       const rows = vendors.map(v => [
         v.name || '',
         v.category || '',
@@ -169,16 +181,12 @@ export default function ComplianceDashboard() {
         v.lastContact || ''
       ].map(field => `"${field}"`).join(','));
 
-      // Combine headers and rows
       const csvContent = [headers.join(','), ...rows].join('\n');
-      
-      // Create blob and download link
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.setAttribute('href', url);
       link.setAttribute('download', `compliance_audit_report_${new Date().toISOString().split('T')[0]}.csv`);
-      link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -191,266 +199,215 @@ export default function ComplianceDashboard() {
   };
 
   return (
-    <div className="p-4 md:p-8 lg:p-12">
+    <div className="flex flex-col h-full lg:h-screen lg:overflow-hidden p-6 md:p-8">
       {/* Header */}
-      <div className="mb-8 md:mb-12">
-        <h1 className="mb-3 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>Compliance Dashboard</h1>
-        <p className="text-base" style={{ color: 'var(--foreground-muted)' }}>
-          Organization-wide compliance status and coverage analysis
+      <div className="flex-none mb-6 md:mb-8">
+        <h1 className="mb-2 text-2xl md:text-3xl tracking-tight font-semibold text-slate-900">
+          Compliance Dashboard
+        </h1>
+        <p className="text-sm text-slate-500">
+          Overview of vendor compliance status and risk analysis
         </p>
       </div>
 
-      {/* Overall Compliance Score */}
-      <div 
-        className="rounded-2xl border p-10 mb-8 border-slate-100"
-        style={{
-          backgroundColor: 'var(--card)',
-        }}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <div className="text-sm mb-3" style={{ color: 'var(--foreground-muted)' }}>
-              Overall Compliance Rate
-            </div>
-            <div className="flex items-baseline gap-4 mb-3">
-              <div className="text-6xl tracking-tight" style={{ color: 'var(--status-compliant)' }}>
-                {complianceMetrics.overall}%
-              </div>
-            </div>
-            <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-              {stats.total} total {stats.total === 1 ? 'vendor' : 'vendors'} tracked across all categories
-            </p>
-          </div>
+      {/* Stats Cards - Clean & Settled */}
+      <div className="flex-none grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 md:mb-8">
+        <div 
+          className="rounded-2xl border border-blue-900/10 p-5 flex flex-col justify-between h-32 text-white shadow-md relative overflow-hidden"
+          style={{ backgroundColor: '#3A4F6A' }}
+        >
+          {/* Decorative background circle */}
+          <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10" />
           
-          <div className="flex items-center gap-8">
-            <div className="text-center">
-              <div className="text-3xl tracking-tight mb-2" style={{ color: 'var(--status-compliant)' }}>{stats.compliant}</div>
-              <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Compliant</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl tracking-tight mb-2" style={{ color: 'var(--status-at-risk)' }}>{stats.atRisk}</div>
-              <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>At Risk</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl tracking-tight mb-2" style={{ color: 'var(--status-non-compliant)' }}>{stats.nonCompliant}</div>
-              <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Non-Compliant</div>
-            </div>
+          <div className="flex items-center gap-2 text-sm font-medium text-blue-100/90 relative z-10">
+            <Activity className="w-4 h-4" />
+            Overall Compliance
+          </div>
+          <div className="flex items-baseline gap-2 relative z-10">
+            <span className="text-4xl font-bold tracking-tight">{complianceMetrics.overall}%</span>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col justify-between h-32 shadow-sm">
+          <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
+            <Users className="w-4 h-4" />
+            Total Vendors
+          </div>
+          <div className="text-4xl font-semibold text-slate-900">{stats.total}</div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col justify-between h-32 shadow-sm">
+          <div className="flex items-center gap-2 text-sm font-medium text-amber-600">
+            <AlertTriangle className="w-4 h-4" />
+            At Risk
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-4xl font-semibold text-slate-900">{stats.atRisk}</span>
+            <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-100">
+              Expiring Soon
+            </span>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col justify-between h-32 shadow-sm">
+          <div className="flex items-center gap-2 text-sm font-medium text-red-600">
+            <XCircle className="w-4 h-4" />
+            Action Required
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-4xl font-semibold text-slate-900">{stats.nonCompliant}</span>
+            <span className="text-xs font-semibold px-2 py-1 rounded-full bg-red-50 text-red-700 border border-red-100">
+              Non-Compliant
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Compliance by Category */}
-        <div className="lg:col-span-8">
-          <div 
-            className="rounded-2xl border overflow-hidden border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <div className="px-8 py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-              <h3 className="text-lg">Compliance by insurance category</h3>
-              <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>
-                Detailed breakdown of coverage status across all insurance types
-              </p>
-            </div>
-
-            <div className="p-8 space-y-6">
-              {complianceMetrics.byCategory.map((category, index) => (
-                <div key={index}>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <Shield className="w-5 h-5" style={{ color: 'var(--foreground-subtle)' }} />
-                      <h4 className="text-base">{category.name}</h4>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm">
-                      <span style={{ color: 'var(--foreground-muted)' }}>
-                        {category.total} vendors
-                      </span>
-                      <span style={{ color: 'var(--status-compliant)' }}>
-                        {getCompliancePercentage(category)}% compliant
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="flex h-3 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--panel)' }}>
-                    <div 
-                      className="transition-all"
-                      style={{ 
-                        width: `${(category.compliant / category.total) * 100}%`,
-                        backgroundColor: 'var(--status-compliant)'
-                      }}
-                    />
-                    <div 
-                      className="transition-all"
-                      style={{ 
-                        width: `${(category.atRisk / category.total) * 100}%`,
-                        backgroundColor: 'var(--status-at-risk)'
-                      }}
-                    />
-                    <div 
-                      className="transition-all"
-                      style={{ 
-                        width: `${(category.nonCompliant / category.total) * 100}%`,
-                        backgroundColor: 'var(--status-non-compliant)'
-                      }}
-                    />
-                  </div>
-
-                  {/* Legend */}
-                  <div className="flex items-center gap-6 mt-3 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--status-compliant)' }} />
-                      <span style={{ color: 'var(--foreground-muted)' }}>{category.compliant} Compliant</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--status-at-risk)' }} />
-                      <span style={{ color: 'var(--foreground-muted)' }}>{category.atRisk} At Risk</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--status-non-compliant)' }} />
-                      <span style={{ color: 'var(--foreground-muted)' }}>{category.nonCompliant} Non-Compliant</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* Main Content - Grid Layout for stability */}
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        {/* Left Column: Category Performance Table */}
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-slate-100 bg-[var(--card)] overflow-hidden shadow-sm h-full max-h-[calc(100vh-20rem)] lg:max-h-full">
+          <div className="flex-none px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <h3 className="font-semibold text-slate-900">Category Performance</h3>
+            <button 
+              onClick={handleExportReport}
+              className="text-sm text-slate-500 hover:text-slate-900 flex items-center gap-1.5 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Export
+            </button>
+          </div>
+          
+          <div className="flex-1 overflow-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+            <table className="w-full">
+              <thead className="sticky top-0 bg-slate-50/90 backdrop-blur-sm border-b border-slate-100 z-10 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Vendors</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/3">Compliance Rate</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 bg-white">
+                {complianceMetrics.byCategory.map((category: any, index: number) => {
+                  const percentage = parseInt(getCompliancePercentage(category));
+                  return (
+                    <tr key={index} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                            <Shield className="w-4 h-4" />
+                          </div>
+                          <span className="font-medium text-slate-700">{category.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                        {category.total}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full transition-all duration-500 ease-out ${
+                                percentage >= 90 ? 'bg-emerald-500' :
+                                percentage >= 70 ? 'bg-amber-500' :
+                                'bg-red-500'
+                              }`}
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                          <span className="text-sm font-medium text-slate-700 w-9 text-right">{percentage}%</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right">
+                        {category.nonCompliant > 0 ? (
+                          <span className="inline-flex items-center text-xs font-semibold text-red-700 bg-red-50 px-2.5 py-1 rounded-full border border-red-100">
+                            {category.nonCompliant} Action Required
+                          </span>
+                        ) : category.atRisk > 0 ? (
+                          <span className="inline-flex items-center text-xs font-semibold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100">
+                            {category.atRisk} Review Needed
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                            Compliant
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* Risk Summary */}
-          <div 
-            className="rounded-2xl border p-8 border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <h3 className="text-lg mb-6">Risk summary</h3>
-            
-            <div className="space-y-5">
-              <div 
-                className="p-5 rounded-lg"
-                style={{ backgroundColor: 'var(--status-non-compliant-bg)' }}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <AlertCircle className="w-5 h-5" style={{ color: 'var(--status-non-compliant)' }} />
-                  <span className="text-sm" style={{ color: 'var(--status-non-compliant)' }}>High Risk</span>
-                </div>
-                <div className="text-2xl tracking-tight mb-1" style={{ color: 'var(--foreground)' }}>{stats.nonCompliant}</div>
-                <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
-                  Vendors with expired or missing coverage
-                </div>
-              </div>
-
-              <div 
-                className="p-5 rounded-lg"
-                style={{ backgroundColor: 'var(--status-at-risk-bg)' }}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <Clock className="w-5 h-5" style={{ color: 'var(--status-at-risk)' }} />
-                  <span className="text-sm" style={{ color: 'var(--status-at-risk)' }}>Medium Risk</span>
-                </div>
-                <div className="text-2xl tracking-tight mb-1" style={{ color: 'var(--foreground)' }}>{stats.atRisk}</div>
-                <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
-                  Vendors with coverage expiring soon
-                </div>
-              </div>
-
-              <div 
-                className="p-5 rounded-lg"
-                style={{ backgroundColor: 'var(--status-compliant-bg)' }}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--status-compliant)' }} />
-                  <span className="text-sm" style={{ color: 'var(--status-compliant)' }}>Low Risk</span>
-                </div>
-                <div className="text-2xl tracking-tight mb-1" style={{ color: 'var(--foreground)' }}>{stats.compliant}</div>
-                <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
-                  Vendors with current, valid coverage
-                </div>
-              </div>
+        {/* Right Column: Recent Activity & Actions */}
+        <div className="lg:col-span-4 flex flex-col gap-6 h-full lg:min-h-0">
+          <div className="flex-1 rounded-2xl border border-slate-100 bg-[var(--card)] overflow-hidden flex flex-col min-h-0 shadow-sm max-h-[400px] lg:max-h-none">
+            <div className="flex-none px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="font-semibold text-slate-900">Recent Activity</h3>
+              <button className="text-xs font-medium text-slate-500 hover:text-[#3A4F6A] transition-colors">
+                View All
+              </button>
             </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div 
-            className="rounded-2xl border p-8 border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <h3 className="text-lg mb-6">Recent activity</h3>
             
-            <div className="space-y-4">
-              {recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div 
-                    className="w-2 h-2 rounded-full mt-2"
-                    style={{ 
-                      backgroundColor: 
-                        activity.status === 'compliant' ? 'var(--status-compliant)' :
-                        activity.status === 'at-risk' ? 'var(--status-at-risk)' :
-                        'var(--status-non-compliant)'
-                    }}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>
-                      {activity.action}
-                    </div>
-                    <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>
-                      {activity.vendor}  {activity.time}
+            <div className="flex-1 overflow-auto p-0 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+              <div className="divide-y divide-slate-50 bg-white">
+                {recentActivity.map((activity, index) => (
+                  <div key={index} className="p-4 hover:bg-slate-50/50 transition-colors flex gap-3.5 group">
+                    <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 shadow-sm ${
+                      activity.status === 'compliant' ? 'bg-emerald-500' :
+                      activity.status === 'at-risk' ? 'bg-amber-500' :
+                      'bg-red-500'
+                    }`} />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-slate-900 group-hover:text-[#3A4F6A] transition-colors">
+                        {activity.action}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs text-slate-500 font-medium truncate">
+                          {activity.vendor}
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          • {activity.time}
+                        </span>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+              
+              {recentActivity.length === 0 && (
+                <div className="flex flex-col items-center justify-center h-40 text-center px-4 bg-white">
+                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mb-3">
+                    <Activity className="w-5 h-5 text-slate-300" />
+                  </div>
+                  <p className="text-sm font-medium text-slate-900">No recent activity</p>
+                  <p className="text-xs text-slate-500 mt-1">Updates will appear here</p>
                 </div>
-              ))}
+              )}
             </div>
-
-            <button 
-              className="w-full mt-6 py-2.5 rounded-lg text-sm transition-all"
-              style={{ 
-                backgroundColor: 'var(--panel)',
-                color: 'var(--foreground)'
-              }}
-            >
-              View all activity
-            </button>
           </div>
-
-          {/* Quick Actions */}
-          <div 
-            className="rounded-2xl border p-8 border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <h4 className="mb-5">Compliance actions</h4>
-            <div className="space-y-3">
-              <button 
-                onClick={handleExportReport}
-                className="w-full py-3 rounded-lg text-sm transition-all text-left px-4 flex items-center gap-3 hover:opacity-90 active:scale-[0.99]"
-                style={{ 
-                  backgroundColor: 'var(--primary)',
-                  color: 'var(--primary-foreground)'
-                }}
-              >
-                <FileText className="w-4 h-4" />
-                Export audit report
-              </button>
-              <button 
-                onClick={() => navigate('/insurance')}
-                className="w-full py-3 rounded-lg border text-sm transition-all text-left px-4 flex items-center gap-3 hover:bg-[var(--panel)] active:scale-[0.99]"
-                style={{ 
-                  borderColor: 'var(--border)',
-                  color: 'var(--foreground)'
-                }}
-              >
-                <Shield className="w-4 h-4" />
-                Review requirements
-              </button>
-            </div>
+          
+          <div className="flex-none rounded-2xl border border-slate-100 bg-[var(--card)] p-6 shadow-sm bg-white">
+             <div className="flex items-center gap-4 mb-5">
+               <div className="w-10 h-10 rounded-xl bg-blue-50/50 flex items-center justify-center text-[#3A4F6A]">
+                 <FileText className="w-5 h-5" />
+               </div>
+               <div>
+                 <h4 className="font-semibold text-slate-900">Export Report</h4>
+                 <p className="text-xs text-slate-500 mt-0.5">Download full compliance audit CSV</p>
+               </div>
+             </div>
+             <button 
+               onClick={handleExportReport}
+               className="w-full py-2.5 rounded-xl text-white text-sm font-medium hover:opacity-90 transition-opacity shadow-sm flex items-center justify-center gap-2"
+               style={{ backgroundColor: '#3A4F6A' }}
+             >
+               <Download className="w-4 h-4" />
+               Download CSV
+             </button>
           </div>
         </div>
       </div>

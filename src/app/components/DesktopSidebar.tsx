@@ -106,10 +106,11 @@ export default function DesktopSidebar({ organizationName, userEmail, userInitia
       )}
 
       <aside 
-        className="hidden lg:flex w-64 border-r flex-col fixed left-0 top-0 h-screen"
+        className="hidden lg:flex w-64 flex-col fixed left-4 top-4 rounded-2xl border shadow-2xl z-50"
         style={{ 
           backgroundColor: 'var(--primary)',
-          borderColor: 'rgba(255, 255, 255, 0.1)'
+          borderColor: 'rgba(255, 255, 255, 0.1)',
+          height: 'calc(100vh - 2rem)'
         }}
       >
         {/* Logo */}

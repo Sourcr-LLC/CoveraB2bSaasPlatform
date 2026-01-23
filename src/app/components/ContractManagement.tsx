@@ -264,10 +264,10 @@ export default function ContractManagement() {
   };
 
   return (
-    <div className="p-4 md:p-8 lg:p-12">
+    <div className="flex flex-col h-[calc(100vh-2rem)] p-6 md:p-8 overflow-hidden">
       {/* Header */}
       <div 
-        className="mb-6 md:mb-8"
+        className="flex-none mb-6 md:mb-8"
       >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
@@ -327,7 +327,7 @@ export default function ContractManagement() {
       </div>
 
       {/* Stats */}
-      <div className="mb-6 md:mb-8">
+      <div className="flex-none mb-6 md:mb-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div
             className="rounded-2xl border p-6 border-slate-100"
@@ -388,7 +388,7 @@ export default function ContractManagement() {
       </div>
 
       {/* Filters and Search */}
-      <div className="mb-6 md:mb-8">
+      <div className="flex-none mb-6 md:mb-8">
         <div className="flex flex-col gap-4">
           <div className="relative">
             <Search 
@@ -453,179 +453,146 @@ export default function ContractManagement() {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden md:block">
-        <div 
-          className="rounded-2xl border overflow-hidden border-slate-100"
-          style={{
-            backgroundColor: 'var(--card)',
-          }}
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Other Party (Vendor)
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Property / Association
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Contract Type
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Start Date
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    End Date
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Value
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Status
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Auto-Renewal
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Risk Score
-                  </th>
-                  <th className="text-right px-6 py-4 text-sm whitespace-nowrap" style={{ color: 'var(--foreground-muted)' }}>
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredContracts.map((contract, index) => {
-                  const statusConfig = getStatusConfig(contract.status);
-                  const StatusIcon = statusConfig.icon;
-                  
-                  return (
-                    <tr 
-                      key={contract.id}
-                      style={{ 
-                        borderBottom: index < filteredContracts.length - 1 ? '1px solid var(--border-subtle)' : 'none'
-                      }}
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-3">
-                          <div 
-                            className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ backgroundColor: 'var(--panel)' }}
-                          >
-                            <FileText className="w-5 h-5" style={{ color: 'var(--foreground-muted)' }} />
-                          </div>
-                          <div>
-                            <div style={{ color: 'var(--foreground)' }}>
-                              {contract.vendorName}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2" style={{ color: 'var(--foreground)' }}>
-                          <Building2 className="w-4 h-4 text-slate-400" />
-                          {contract.propertyName}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span style={{ color: 'var(--foreground-muted)' }}>
-                          {contract.contractType}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span style={{ color: 'var(--foreground-muted)' }}>
-                          {new Date(contract.startDate).toLocaleDateString()}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span style={{ color: 'var(--foreground-muted)' }}>
-                          {new Date(contract.endDate).toLocaleDateString()}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span style={{ color: 'var(--foreground)' }}>
-                          {contract.value}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+      <div className="hidden md:flex flex-col flex-1 min-h-0 rounded-2xl border border-slate-100 overflow-hidden bg-[var(--card)]">
+        <div className="flex-1 overflow-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+          <table className="w-full relative">
+            <thead className="sticky top-0 z-10 bg-[var(--card)] border-b border-slate-100">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Other Party (Vendor)
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Property / Association
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Contract Type
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Start Date
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  End Date
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Value
+                </th>
+                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Auto-Renewal
+                </th>
+                <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Risk Score
+                </th>
+                <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredContracts.map((contract, index) => {
+                const statusConfig = getStatusConfig(contract.status);
+                const StatusIcon = statusConfig.icon;
+                
+                return (
+                  <tr 
+                    key={contract.id}
+                    className="group transition-colors hover:bg-slate-50/50"
+                  >
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
                         <div 
-                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm"
-                          style={{
-                            backgroundColor: statusConfig.bg,
-                            color: statusConfig.text,
-                            borderColor: statusConfig.border
-                          }}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-slate-50 text-slate-400 group-hover:bg-white group-hover:shadow-sm transition-all"
                         >
-                          <StatusIcon className="w-3.5 h-3.5" />
-                          {statusConfig.label}
+                          <FileText className="w-5 h-5" />
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span style={{ color: 'var(--foreground-muted)' }}>
-                          {contract.autoRenewal ? 'Yes' : 'No'}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {contract.riskScore && (
-                          <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${
-                            contract.riskScore === 'high' ? 'bg-red-50 text-red-700 border-red-200' :
-                            contract.riskScore === 'medium' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                            'bg-green-50 text-green-700 border-green-200'
-                          }`}>
-                            {contract.riskScore.charAt(0).toUpperCase() + contract.riskScore.slice(1)}
+                        <div>
+                          <div className="font-semibold text-slate-900 text-sm">
+                            {contract.vendorName}
                           </div>
-                        )}
-                        {!contract.riskScore && <span className="text-xs text-gray-400">N/A</span>}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center justify-end gap-2">
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="flex items-center gap-2 text-sm text-slate-700">
+                        <Building2 className="w-4 h-4 text-slate-400" />
+                        {contract.propertyName}
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="text-sm text-slate-500">
+                        {contract.contractType}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="text-sm text-slate-500">
+                        {new Date(contract.startDate).toLocaleDateString()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="text-sm text-slate-500">
+                        {new Date(contract.endDate).toLocaleDateString()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="text-sm font-medium text-slate-900">
+                        {contract.value}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap text-center">
+                      <div 
+                        className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium w-fit min-w-[90px]"
+                        style={{
+                          backgroundColor: statusConfig.bg,
+                          color: statusConfig.text
+                        }}
+                      >
+                        {statusConfig.label}
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="text-sm text-slate-500">
+                        {contract.autoRenewal ? 'Yes' : 'No'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap text-center">
+                      {contract.riskScore && (
+                        <div className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium w-fit min-w-[90px] ${
+                          contract.riskScore === 'high' ? 'bg-red-50 text-red-700' :
+                          contract.riskScore === 'medium' ? 'bg-amber-50 text-amber-700' :
+                          'bg-green-50 text-green-700'
+                        }`}>
+                          {contract.riskScore.charAt(0).toUpperCase() + contract.riskScore.slice(1)}
+                        </div>
+                      )}
+                      {!contract.riskScore && <span className="text-xs text-gray-400">N/A</span>}
+                    </td>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="grid grid-cols-[80px_100px_32px] items-center gap-1 justify-end">
+                        <div className="flex justify-center">
                           <Link
                             to={`/contracts/${contract.id}`}
-                            className="px-3 py-1.5 rounded-lg text-sm transition-colors hover:bg-gray-100 border"
-                            style={{
-                              borderColor: 'var(--border)',
-                              color: 'var(--foreground)'
-                            }}
+                            className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
                           >
                             Manage
                           </Link>
+                        </div>
+                        <div className="flex justify-start pl-4">
                           {contract.documentUrl ? (
-                            <>
-                              <button
-                                onClick={() => setViewingDocument(contract)}
-                                className="px-3 py-1.5 rounded-lg text-sm transition-colors hover:bg-gray-100"
-                                style={{
-                                  backgroundColor: 'var(--panel)',
-                                  color: 'var(--foreground)'
-                                }}
-                                title="View contract document"
-                              >
-                                <Eye className="w-4 h-4 inline mr-1" />
-                                View
-                              </button>
-                              <a
-                                href={contract.documentUrl}
-                                download={contract.documentName}
-                                className="p-1.5 rounded-lg transition-colors hover:bg-gray-100"
-                                style={{
-                                  color: 'var(--foreground-muted)'
-                                }}
-                                title="Download contract document"
-                              >
-                                <Download className="w-4 h-4" />
-                              </a>
-                            </>
+                            <button
+                              onClick={() => setViewingDocument(contract)}
+                              className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                              title="View contract document"
+                            >
+                              <Eye className="w-4 h-4" />
+                              View
+                            </button>
                           ) : (
                             <>
                               <label
                                 htmlFor={`upload-${contract.id}`}
-                                className="px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer inline-flex items-center gap-1"
-                                style={{
-                                  backgroundColor: 'var(--panel)',
-                                  color: 'var(--foreground)'
-                                }}
+                                className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 cursor-pointer transition-colors"
                                 title="Upload contract document"
                               >
                                 {uploadingContractId === contract.id ? (
@@ -653,13 +620,25 @@ export default function ContractManagement() {
                             </>
                           )}
                         </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                        <div className="flex justify-center">
+                          {contract.documentUrl && (
+                            <a
+                              href={contract.documentUrl}
+                              download={contract.documentName}
+                              className="text-slate-400 hover:text-slate-600 transition-colors"
+                              title="Download contract document"
+                            >
+                              <Download className="w-4 h-4" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -697,14 +676,12 @@ export default function ContractManagement() {
                   </div>
                 </div>
                 <div 
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs whitespace-nowrap flex-shrink-0 ml-2"
+                  className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 ml-2 w-fit min-w-[90px]"
                   style={{
                     backgroundColor: statusConfig.bg,
-                    color: statusConfig.text,
-                    borderColor: statusConfig.border
+                    color: statusConfig.text
                   }}
                 >
-                  <StatusIcon className="w-3 h-3" />
                   {statusConfig.label}
                 </div>
               </div>

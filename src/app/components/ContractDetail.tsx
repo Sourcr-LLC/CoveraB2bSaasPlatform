@@ -271,6 +271,44 @@ export default function ContractDetail() {
     setEditedContract({ ...editedContract, slas: newSLAs });
   };
 
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case 'compliant':
+      case 'completed':
+      case 'active':
+      case 'low':
+        return {
+          bg: 'rgba(16, 185, 129, 0.15)', // emerald-500 @ 15%
+          text: '#10b981' // emerald-500
+        };
+      case 'warning':
+      case 'expiring':
+        return {
+          bg: 'rgba(245, 158, 11, 0.15)', // amber-500 @ 15%
+          text: '#f59e0b' // amber-500
+        };
+      case 'breached':
+      case 'overdue':
+      case 'expired':
+      case 'critical':
+      case 'high':
+        return {
+          bg: 'rgba(239, 68, 68, 0.15)', // red-500 @ 15%
+          text: '#ef4444' // red-500
+        };
+      case 'medium':
+        return {
+          bg: 'rgba(245, 158, 11, 0.15)', // amber-500 @ 15%
+          text: '#f59e0b' // amber-500
+        };
+      default:
+        return {
+          bg: 'rgba(107, 114, 128, 0.15)', // gray-500 @ 15%
+          text: '#6b7280' // gray-500
+        };
+    }
+  };
+
   if (isLoading) {
     return <div className="p-12 text-center text-gray-500">Loading contract details...</div>;
   }
@@ -316,9 +354,15 @@ export default function ContractDetail() {
               contract.contractType
             )}
             <span className="mx-2">•</span>
-            {contract.status === 'active' && <span className="text-green-600 font-medium">Active</span>}
-            {contract.status === 'expiring' && <span className="text-amber-600 font-medium">Expiring</span>}
-            {contract.status === 'expired' && <span className="text-red-600 font-medium">Expired</span>}
+            <span 
+              className="px-3 py-1 rounded-full text-xs font-medium"
+              style={{ 
+                backgroundColor: getStatusStyle(contract.status).bg, 
+                color: getStatusStyle(contract.status).text 
+              }}
+            >
+              {contract.status.charAt(0).toUpperCase() + contract.status.slice(1)}
+            </span>
           </div>
         </div>
 
@@ -605,11 +649,13 @@ export default function ContractDetail() {
                             <Calendar className="w-4 h-4" />
                             Due: {new Date(milestone.dueDate).toLocaleDateString()}
                           </span>
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                            milestone.status === 'completed' ? 'bg-green-100 text-green-700' :
-                            milestone.status === 'overdue' ? 'bg-red-100 text-red-700' :
-                            'bg-gray-100 text-gray-700'
-                          }`}>
+                          <span 
+                            className="px-3 py-1 rounded-full text-xs font-medium"
+                            style={{ 
+                              backgroundColor: getStatusStyle(milestone.status).bg, 
+                              color: getStatusStyle(milestone.status).text 
+                            }}
+                          >
                             {milestone.status.charAt(0).toUpperCase() + milestone.status.slice(1)}
                           </span>
                         </div>
@@ -705,11 +751,13 @@ export default function ContractDetail() {
                             <option value="breached">Breached</option>
                           </select>
                         ) : (
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            sla.status === 'compliant' ? 'bg-green-100 text-green-800' :
-                            sla.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
+                          <span 
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+                            style={{ 
+                              backgroundColor: getStatusStyle(sla.status).bg, 
+                              color: getStatusStyle(sla.status).text 
+                            }}
+                          >
                             {sla.status.charAt(0).toUpperCase() + sla.status.slice(1)}
                           </span>
                         )}
@@ -752,11 +800,13 @@ export default function ContractDetail() {
                   </p>
                 </div>
                 {contract.riskScore && (
-                  <div className={`px-4 py-2 rounded-full border text-sm font-bold flex items-center gap-2 ${
-                    contract.riskScore === 'high' ? 'bg-red-50 text-red-700 border-red-200' :
-                    contract.riskScore === 'medium' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                    'bg-green-50 text-green-700 border-green-200'
-                  }`}>
+                  <div 
+                    className="px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
+                    style={{ 
+                      backgroundColor: getStatusStyle(contract.riskScore || 'low').bg, 
+                      color: getStatusStyle(contract.riskScore || 'low').text 
+                    }}
+                  >
                     <AlertTriangle className="w-4 h-4" />
                     Risk Score: {contract.riskScore.charAt(0).toUpperCase() + contract.riskScore.slice(1)}
                   </div>

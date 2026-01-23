@@ -147,10 +147,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="flex h-screen" style={{ backgroundColor: 'var(--background)' }}>
         {/* Sidebar */}
         <aside 
-          className="w-64 border-r flex flex-col"
+          className="hidden lg:flex w-64 flex-col m-4 rounded-2xl border shadow-sm"
           style={{ 
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
+            borderColor: 'var(--border)',
+            height: 'calc(100vh - 2rem)'
           }}
         >
           {/* Logo */}
@@ -344,10 +345,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex h-screen" style={{ backgroundColor: 'var(--background)' }}>
       {/* Desktop Sidebar - Hidden on mobile */}
       <aside 
-        className="hidden lg:flex w-64 border-r flex-col"
+        className="hidden lg:flex w-64 flex-col m-4 rounded-2xl border shadow-sm"
         style={{ 
           backgroundColor: 'var(--card)',
-          borderColor: 'var(--border)'
+          borderColor: 'var(--border)',
+          height: 'calc(100vh - 2rem)'
         }}
       >
         {/* Logo */}

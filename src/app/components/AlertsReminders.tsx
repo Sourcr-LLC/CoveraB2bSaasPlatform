@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Bell, Send, AlertTriangle, Clock, TrendingUp, Filter, Search, Calendar, Mail, Settings as SettingsIcon, CheckCircle2, Shield, FileText } from 'lucide-react';
-import { Link } from 'react-router';
+import { Bell, Send, AlertTriangle, Clock, TrendingUp, Filter, Search, Calendar, Mail, Settings as SettingsIcon, CheckCircle2, Shield, FileText, ChevronRight, X } from 'lucide-react';
 import { supabase, contractApi } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { toast } from 'sonner';
 import { isDemoMode, demoVendors, demoContracts } from '../lib/demoData';
+
+// UI Components
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction, CardFooter } from './ui/card';
+import { Button } from './ui/button';
+import { ScrollArea } from './ui/scroll-area';
+import { Switch } from './ui/switch';
+import { Separator } from './ui/separator';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 // Helper function to calculate days until expiry
 function calculateDaysUntilExpiry(insuranceExpiry: string | undefined): number | null {
@@ -87,6 +94,20 @@ export default function AlertsReminders() {
   const [vendors, setVendors] = useState<any[]>([]);
   const [contracts, setContracts] = useState<any[]>([]);
   const [sentReminders, setSentReminders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Initial State for settings
+  const [settings, setSettings] = useState({
+    schedule: [
+      { id: '30_days', days: 30, enabled: true, label: '30 days before expiration' },
+      { id: '14_days', days: 14, enabled: true, label: '14 days before expiration' },
+      { id: '7_days', days: 7, enabled: true, label: '7 days before expiration' },
+      { id: '1_day', days: 1, enabled: false, label: '1 day before expiration' },
+    ],
+    sendTime: '8:00 AM',
+    timezone: 'EST',
+    escalation: true
+  });
 
   useEffect(() => {
     loadData();
@@ -94,6 +115,7 @@ export default function AlertsReminders() {
 
   const loadData = async () => {
     try {
+      setLoading(true);
       // Check for demo mode
       if (isDemoMode()) {
         console.log('📊 Demo mode enabled - using mock data for Alerts');
@@ -104,27 +126,28 @@ export default function AlertsReminders() {
         const demoReminders = [
           {
             vendorName: 'Rapid Delivery Logistics',
-            message: 'Reminder email sent to vendor',
+            message: 'Reminder email sent to vendor regarding insurance expiry',
             sentAt: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 days ago
             status: 'delivered',
             opened: true
           },
           {
             vendorName: 'Elite HVAC Services',
-            message: 'Reminder email sent to vendor',
+            message: 'Reminder email sent to vendor regarding expired COI',
             sentAt: new Date(Date.now() - 86400000 * 5).toISOString(), // 5 days ago
             status: 'delivered',
             opened: false
           },
           {
             vendorName: 'SafeGuard Security Systems',
-            message: 'Reminder email sent to vendor',
+            message: 'Reminder email sent to vendor regarding contract renewal',
             sentAt: new Date(Date.now() - 86400000 * 12).toISOString(), // 12 days ago
             status: 'delivered',
             opened: true
           }
         ];
         setSentReminders(demoReminders);
+        setLoading(false);
         return;
       }
 
@@ -133,6 +156,7 @@ export default function AlertsReminders() {
       
       if (!accessToken) {
         console.error('No access token available');
+        setLoading(false);
         return;
       }
 
@@ -179,6 +203,8 @@ export default function AlertsReminders() {
     } catch (error) {
       console.error('Failed to load data:', error);
       toast.error('Failed to load data');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -189,7 +215,7 @@ export default function AlertsReminders() {
     return days !== null && days >= 0 && days <= 30;
   });
 
-  // Generate Active Compliance Alerts (matching Dashboard)
+  // Generate Active Compliance Alerts
   const activeAlerts = [
     ...vendors.map(v => ({...v, status: calculateVendorStatus(v.insuranceExpiry)}))
       .filter(v => v.status === 'at-risk' || v.status === 'non-compliant')
@@ -209,7 +235,6 @@ export default function AlertsReminders() {
           date: v.insuranceExpiry,
           category: 'Insurance',
           icon: Shield,
-          isContract: false
         };
       }),
     ...contracts.map(c => ({...c, status: c.status || calculateContractStatus(c.endDate)}))
@@ -222,7 +247,6 @@ export default function AlertsReminders() {
         date: c.endDate,
         category: 'Contract',
         icon: FileText,
-        isContract: true
       }))
   ].sort((a, b) => {
     // Sort by urgency: expired first, then expiring soon
@@ -231,28 +255,17 @@ export default function AlertsReminders() {
     return 0;
   });
 
-  // Generate upcoming reminders from real vendor data (vendors expiring in next 30 days)
+  // Generate upcoming reminders from real vendor data
   const upcomingReminders = vendorsExpiringSoon
     .map(v => {
       const days = calculateDaysUntilExpiry(v.insuranceExpiry);
       if (days === null) return null;
       
-      // Calculate which reminder type this would be
       let reminderType = '';
-      let reminderDays = 0;
-      if (days <= 1 && days >= 0) {
-        reminderType = '1-day reminder';
-        reminderDays = 1;
-      } else if (days <= 7 && days > 1) {
-        reminderType = '7-day reminder';
-        reminderDays = 7;
-      } else if (days <= 14 && days > 7) {
-        reminderType = '14-day reminder';
-        reminderDays = 14;
-      } else if (days <= 30 && days > 14) {
-        reminderType = '30-day reminder';
-        reminderDays = 30;
-      }
+      if (days <= 1 && days >= 0) reminderType = '1-day reminder';
+      else if (days <= 7 && days > 1) reminderType = '7-day reminder';
+      else if (days <= 14 && days > 7) reminderType = '14-day reminder';
+      else if (days <= 30 && days > 14) reminderType = '30-day reminder';
       
       return {
         vendor: v.name,
@@ -265,386 +278,269 @@ export default function AlertsReminders() {
     .sort((a, b) => (a?.daysUntilExpiry || 0) - (b?.daysUntilExpiry || 0))
     .slice(0, 5);
 
-  // Map sent reminders from backend to display format with real-time dates
-  const recentReminders = sentReminders
-    .map(reminder => {
-      // Determine reminder type from message
-      let reminderType = 'Reminder sent';
-      if (reminder.message?.includes('email sent')) {
-        reminderType = 'Email reminder';
-      } else if (reminder.message?.includes('email not configured')) {
-        reminderType = 'Reminder (email not configured)';
-      } else if (reminder.message?.includes('email delivery failed')) {
-        reminderType = 'Reminder (delivery failed)';
-      }
-      
-      return {
-        vendor: reminder.vendorName,
-        type: reminderType,
-        sent: getTimeAgo(reminder.sentAt),
-        status: reminder.status,
-        opened: reminder.opened,
-        sentAt: reminder.sentAt
-      };
-    })
-    .slice(0, 10);
-
-  const reminderSettings = {
-    enabled: true,
-    schedule: [
-      { days: 30, enabled: true, label: '30 days before expiration' },
-      { days: 14, enabled: true, label: '14 days before expiration' },
-      { days: 7, enabled: true, label: '7 days before expiration' },
-      { days: 1, enabled: false, label: '1 day before expiration' },
-    ],
-    sendTime: '8:00 AM',
-    timezone: 'America/New_York (EST)',
-    escalation: true,
-    escalationDays: 7,
+  const toggleSetting = (index: number) => {
+    const newSchedule = [...settings.schedule];
+    newSchedule[index].enabled = !newSchedule[index].enabled;
+    setSettings({...settings, schedule: newSchedule});
   };
 
   return (
-    <div className="p-4 md:p-8 lg:p-12">
+    <div className="flex flex-col h-full lg:h-screen bg-slate-50/50">
       {/* Header */}
-      <div className="mb-8 md:mb-12">
-        <h1 className="mb-3 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>Alerts & Reminders</h1>
-        <p className="text-base" style={{ color: 'var(--foreground-muted)' }}>
+      <div className="flex-none px-6 pt-8 pb-4 md:px-8">
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">
+          Alerts & Reminders
+        </h1>
+        <p className="mt-2 text-sm text-slate-500">
           Automated notification system for vendor compliance and expiring insurance
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Reminder Settings */}
-        <div className="lg:col-span-5">
-          <div 
-            className="rounded-2xl border p-8 mb-6 border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h3 className="text-lg mb-2">Reminder settings</h3>
-                <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                  Configure automated reminder schedule
-                </p>
-              </div>
-              <button 
-                className="px-4 py-2 rounded-lg border text-sm transition-all inline-flex items-center gap-2"
-                style={{ 
-                  borderColor: 'var(--border)',
-                  color: 'var(--foreground)'
-                }}
-              >
-                <SettingsIcon className="w-4 h-4" />
-                Edit
-              </button>
-            </div>
-
-            {/* Reminder Schedule */}
-            <div className="space-y-6 mb-8">
-              <div>
-                <div className="text-sm mb-4" style={{ color: 'var(--foreground-muted)' }}>
-                  Reminder schedule
-                </div>
-                <div className="space-y-3">
-                  {reminderSettings.schedule.map((reminder, index) => (
-                    <div 
-                      key={index}
-                      className="flex items-center justify-between p-4 rounded-lg"
-                      style={{ backgroundColor: 'var(--panel)' }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-10 h-10 rounded-lg flex items-center justify-center"
-                          style={{ 
-                            backgroundColor: reminder.enabled ? 'var(--status-compliant-bg)' : 'var(--background)',
-                            border: `1px solid ${reminder.enabled ? 'var(--status-compliant-border)' : 'var(--border)'}`
-                          }}
-                        >
-                          {reminder.enabled ? (
-                            <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--status-compliant)' }} />
-                          ) : (
-                            <Clock className="w-5 h-5" style={{ color: 'var(--foreground-subtle)' }} />
-                          )}
+      {/* Main Content Area */}
+      <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-6 p-6 md:p-8 pt-0 overflow-hidden">
+        
+        {/* Sidebar: Settings & Upcoming */}
+        <div className="w-full lg:w-96 flex-none flex flex-col gap-6 overflow-hidden">
+          <ScrollArea className="h-full pr-4 -mr-4">
+            <div className="flex flex-col gap-6 pb-6">
+              {/* Reminder Settings Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Reminder settings</CardTitle>
+                  <CardDescription>Configure automated schedule</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="text-xs font-medium uppercase tracking-wider text-slate-500">Schedule</div>
+                    {settings.schedule.map((item, index) => (
+                      <div key={item.id} className="flex items-center justify-between space-x-2">
+                        <div className="flex items-center space-x-3">
+                          <div className={`flex h-8 w-8 items-center justify-center rounded-lg border ${item.enabled ? 'border-emerald-200 bg-emerald-50 text-emerald-600' : 'border-slate-100 bg-slate-50 text-slate-400'}`}>
+                            {item.enabled ? <CheckCircle2 className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
+                          </div>
+                          <label htmlFor={item.id} className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${item.enabled ? 'text-slate-900' : 'text-slate-500'}`}>
+                            {item.label}
+                          </label>
                         </div>
-                        <span className="text-sm" style={{ color: 'var(--foreground)' }}>
-                          {reminder.label}
-                        </span>
-                      </div>
-                      <div 
-                        className="w-11 h-6 rounded-full transition-all cursor-pointer"
-                        style={{ 
-                          backgroundColor: reminder.enabled ? 'var(--status-compliant)' : 'var(--border)'
-                        }}
-                      >
-                        <div 
-                          className="w-5 h-5 bg-white rounded-full transition-all mt-0.5"
-                          style={{ 
-                            marginLeft: reminder.enabled ? '1.25rem' : '0.125rem'
-                          }}
+                        <Switch
+                          id={item.id}
+                          checked={item.enabled}
+                          onCheckedChange={() => toggleSetting(index)}
                         />
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Send Time */}
-              <div className="pt-6 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                    Send time
-                  </span>
-                  <span className="text-sm" style={{ color: 'var(--foreground)' }}>
-                    {reminderSettings.sendTime}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                    Timezone
-                  </span>
-                  <span className="text-sm" style={{ color: 'var(--foreground)' }}>
-                    {reminderSettings.timezone}
-                  </span>
-                </div>
-              </div>
-
-              {/* Escalation */}
-              <div className="pt-6 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>
-                      Internal escalation
-                    </div>
-                    <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>
-                      Alert team after {reminderSettings.escalationDays} days with no response
-                    </div>
+                    ))}
                   </div>
-                  <div 
-                    className="w-11 h-6 rounded-full transition-all cursor-pointer"
-                    style={{ 
-                      backgroundColor: reminderSettings.escalation ? 'var(--status-compliant)' : 'var(--border)'
-                    }}
-                  >
-                    <div 
-                      className="w-5 h-5 bg-white rounded-full transition-all mt-0.5"
-                      style={{ 
-                        marginLeft: reminderSettings.escalation ? '1.25rem' : '0.125rem'
-                      }}
-                    />
+                  
+                  <Separator />
+                  
+                  <div className="space-y-4">
+                     <div className="flex items-center justify-between text-sm">
+                       <span className="text-slate-500">Send time</span>
+                       <span className="font-medium text-slate-900">{settings.sendTime}</span>
+                     </div>
+                     <div className="flex items-center justify-between text-sm">
+                       <span className="text-slate-500">Timezone</span>
+                       <span className="px-2 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-600">
+                         {settings.timezone}
+                       </span>
+                     </div>
                   </div>
-                </div>
-              </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex items-center justify-between">
+                     <div className="space-y-0.5">
+                       <div className="text-sm font-medium text-slate-900">Internal escalation</div>
+                       <div className="text-xs text-slate-500">Alert team after 7 days</div>
+                     </div>
+                     <Switch checked={settings.escalation} onCheckedChange={(checked) => setSettings({...settings, escalation: checked})} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Upcoming Reminders Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Upcoming reminders</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {upcomingReminders.length > 0 ? (
+                    upcomingReminders.map((reminder, index) => (
+                      <div key={index} className="flex flex-col gap-1 rounded-lg border border-slate-100 bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-slate-900">{reminder.vendor}</span>
+                          <span 
+                            className="px-3 py-1 rounded-full text-xs font-medium inline-flex items-center"
+                            style={{ 
+                              backgroundColor: 'var(--status-at-risk-bg)', 
+                              color: 'var(--status-at-risk)' 
+                            }}
+                          >
+                             {reminder.daysUntilExpiry} days
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                          <Clock className="h-3 w-3" />
+                          <span>Scheduled: {reminder.scheduled}</span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-6 text-center">
+                       <div className="mb-2 rounded-full bg-slate-100 p-3">
+                         <CheckCircle2 className="h-6 w-6 text-slate-400" />
+                       </div>
+                       <p className="text-sm font-medium text-slate-900">All caught up</p>
+                       <p className="text-xs text-slate-500">No upcoming reminders</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </div>
-          </div>
-
-          {/* Upcoming Reminders */}
-          <div 
-            className="rounded-2xl border p-8 border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <h3 className="text-lg mb-6">Upcoming reminders</h3>
-            <div className="space-y-4">
-              {upcomingReminders.length > 0 ? (
-                upcomingReminders.map((reminder, index) => (
-                  <div 
-                    key={index}
-                    className="p-4 rounded-lg border"
-                    style={{ borderColor: 'var(--border)' }}
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="text-sm">{reminder.vendor}</h4>
-                      <span 
-                        className="inline-flex items-center justify-center text-center text-xs px-2.5 py-1 rounded-full leading-none"
-                        style={{ 
-                          backgroundColor: 'var(--status-at-risk-bg)',
-                          color: 'var(--status-at-risk)'
-                        }}
-                      >
-                        {reminder.type}
-                      </span>
-                    </div>
-                    <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>
-                      Scheduled: {reminder.scheduled}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-8 text-center">
-                  <CheckCircle2 className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--status-compliant)' }} />
-                  <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                    No upcoming reminders scheduled
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+          </ScrollArea>
         </div>
 
-        {/* Right: Vendor Compliance Summary */}
-        <div className="lg:col-span-7 space-y-6">
+        {/* Right Column: Active Alerts & History */}
+        <div className="flex-1 flex flex-col gap-6 min-h-0 overflow-hidden">
           
-          {/* Active Alerts Section */}
-          <div 
-            className="rounded-2xl border overflow-hidden border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-             <div className="px-8 py-6 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
-               <div>
-                 <h3 className="text-lg font-bold text-slate-900">Active Alerts</h3>
-                 <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>
-                   Compliance issues requiring attention
-                 </p>
+          {/* Active Alerts List */}
+          <Card className="flex-1 flex flex-col min-h-0 overflow-hidden border-slate-200 shadow-sm">
+             <CardHeader className="flex-row items-center justify-between space-y-0 border-b border-slate-100 bg-white py-4">
+               <div className="space-y-1">
+                 <CardTitle>Active Alerts</CardTitle>
+                 <CardDescription>Compliance issues requiring attention</CardDescription>
                </div>
                {activeAlerts.length > 0 && (
-                 <span className="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-full">
+                 <span 
+                   className="px-3 py-1 rounded-full text-xs font-medium"
+                   style={{ 
+                     backgroundColor: 'var(--status-non-compliant-bg)', 
+                     color: 'var(--status-non-compliant)' 
+                   }}
+                 >
                    {activeAlerts.length} Issues
                  </span>
                )}
-             </div>
-             <div className="p-0">
-               {activeAlerts.length > 0 ? (
-                 <div className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
-                   {activeAlerts.map((alert, index) => (
-                     <div key={index} className="p-6 flex items-start gap-4 hover:bg-slate-50 transition-colors">
-                       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                         alert.type === 'expired' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'
-                       }`}>
-                         <alert.icon className="w-5 h-5" />
-                       </div>
-                       <div className="flex-1 min-w-0">
-                         <div className="flex justify-between items-start mb-1">
-                           <h4 className="text-sm font-semibold text-slate-900 truncate pr-4">{alert.title}</h4>
-                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${
+             </CardHeader>
+             
+             <div className="flex-1 min-h-0 bg-white">
+               <ScrollArea className="h-full">
+                 <div className="p-0">
+                   {activeAlerts.length > 0 ? (
+                     <div className="divide-y divide-slate-100">
+                       {activeAlerts.map((alert, index) => (
+                         <div key={index} className="flex items-start gap-4 p-4 hover:bg-slate-50 transition-colors">
+                           <div className={`mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
                              alert.type === 'expired' 
-                               ? 'bg-red-50 text-red-700 border border-red-200' 
-                               : 'bg-amber-50 text-amber-700 border border-amber-200'
+                               ? 'border-red-100 bg-red-50 text-red-600' 
+                               : 'border-amber-100 bg-amber-50 text-amber-600'
                            }`}>
-                             {alert.type === 'expired' ? 'Action Required' : 'Attention'}
-                           </span>
+                             <alert.icon className="h-4 w-4" />
+                           </div>
+                           <div className="flex-1 min-w-0 space-y-1">
+                             <div className="flex items-center justify-between gap-2">
+                               <p className="text-sm font-medium text-slate-900 truncate">{alert.title}</p>
+                               <span 
+                                 className="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap"
+                                 style={{ 
+                                   backgroundColor: alert.type === 'expired' ? 'var(--status-non-compliant-bg)' : 'var(--status-at-risk-bg)', 
+                                   color: alert.type === 'expired' ? 'var(--status-non-compliant)' : 'var(--status-at-risk)' 
+                                 }}
+                               >
+                                 {alert.type === 'expired' ? 'Action Required' : 'Attention'}
+                               </span>
+                             </div>
+                             <p className="text-sm text-slate-500">{alert.message}</p>
+                             <div className="flex items-center gap-3 pt-1 text-xs text-slate-400">
+                               <span className="flex items-center gap-1">
+                                 <Calendar className="h-3 w-3" />
+                                 {alert.date ? new Date(alert.date).toLocaleDateString() : 'N/A'}
+                               </span>
+                               <span>•</span>
+                               <span className="font-medium">{alert.category}</span>
+                             </div>
+                           </div>
                          </div>
-                         <p className="text-sm text-slate-600 mb-1">{alert.message}</p>
-                         <div className="flex items-center gap-4 text-xs text-slate-500">
-                           <span className="flex items-center gap-1">
-                             <Calendar className="w-3.5 h-3.5" />
-                             {alert.date ? new Date(alert.date).toLocaleDateString() : 'N/A'}
-                           </span>
-                           <span className="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 uppercase text-[10px] tracking-wide font-medium">
-                             {alert.category}
-                           </span>
-                         </div>
-                       </div>
+                       ))}
                      </div>
-                   ))}
+                   ) : (
+                     <div className="flex flex-col items-center justify-center py-16 text-center">
+                       <div className="mb-4 rounded-full bg-emerald-50 p-4">
+                         <CheckCircle2 className="h-8 w-8 text-emerald-500" />
+                       </div>
+                       <h3 className="text-lg font-semibold text-slate-900">All Systems Normal</h3>
+                       <p className="text-sm text-slate-500">No active compliance alerts requiring attention.</p>
+                     </div>
+                   )}
                  </div>
-               ) : (
-                 <div className="p-8 text-center">
-                   <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-emerald-500" />
-                   <p className="text-sm text-slate-600">No active compliance alerts.</p>
-                 </div>
-               )}
+               </ScrollArea>
              </div>
-          </div>
+          </Card>
 
-          <div 
-            className="rounded-2xl border overflow-hidden border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <div className="px-8 py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-              <h3 className="text-lg">Notification History</h3>
-              <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>
-                Recent automated emails and communications
-              </p>
-            </div>
-
-            <div className="p-8">
-              {recentReminders.length > 0 ? (
-                <div className="space-y-3">
-                  {recentReminders.map((reminder, index) => (
-                    <div 
-                      key={index}
-                      className="flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 rounded-lg border gap-3"
-                      style={{ borderColor: 'var(--border)' }}
-                    >
-                      <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
-                        <div 
-                          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ 
-                            backgroundColor: reminder.status === 'delivered' 
-                              ? 'var(--status-compliant-bg)' 
-                              : 'var(--status-non-compliant-bg)',
-                            border: `1px solid ${reminder.status === 'delivered' 
-                              ? 'var(--status-compliant-border)' 
-                              : 'var(--status-non-compliant-border)'}`
-                          }}
-                        >
-                          <Mail className="w-5 h-5" style={{ 
-                            color: reminder.status === 'delivered' 
-                              ? 'var(--status-compliant)' 
-                              : 'var(--status-non-compliant)' 
-                          }} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="text-sm mb-1 truncate" style={{ color: 'var(--foreground)' }}>
-                            {reminder.vendor}
+          {/* Notification History */}
+          <Card className="flex-none h-72 flex flex-col overflow-hidden border-slate-200 shadow-sm">
+            <CardHeader className="border-b border-slate-100 bg-white py-4">
+              <CardTitle>Notification History</CardTitle>
+              <CardDescription>Recent automated emails</CardDescription>
+            </CardHeader>
+            <div className="flex-1 min-h-0 bg-white">
+              <ScrollArea className="h-full">
+                <div className="p-0">
+                  {sentReminders.length > 0 ? (
+                    <div className="divide-y divide-slate-100">
+                      {sentReminders.map((reminder, index) => (
+                        <div key={index} className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
+                          <div className="flex items-center gap-4 min-w-0 flex-1">
+                            <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border ${
+                              reminder.status === 'delivered' ? 'border-emerald-100 bg-emerald-50 text-emerald-600' : 'border-red-100 bg-red-50 text-red-500'
+                            }`}>
+                              <Mail className="h-4 w-4" />
+                            </div>
+                            <div className="min-w-0 flex-1 space-y-0.5">
+                              <p className="text-sm font-medium text-slate-900 truncate">{reminder.vendorName}</p>
+                              <div className="flex items-center gap-2 text-xs text-slate-500">
+                                <span className="truncate max-w-[200px]">{reminder.message}</span>
+                                <span>•</span>
+                                <span>{getTimeAgo(reminder.sentAt)}</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex flex-wrap items-center gap-2 text-xs" style={{ color: 'var(--foreground-subtle)' }}>
-                            <span className="truncate">{reminder.type}</span>
-                            <span className="flex-shrink-0">•</span>
-                            <span className="flex-shrink-0">{reminder.sent}</span>
+                          
+                          <div className="flex items-center gap-2 pl-4">
+                             {reminder.opened && (
+                               <span 
+                                 className="hidden sm:inline-flex px-3 py-1 rounded-full text-xs font-medium"
+                                 style={{ 
+                                   backgroundColor: 'rgba(58, 79, 106, 0.08)', 
+                                   color: '#3A4F6A' 
+                                 }}
+                               >
+                                 Opened
+                               </span>
+                             )}
+                             <span 
+                               className="px-3 py-1 rounded-full text-xs font-medium"
+                               style={{ 
+                                 backgroundColor: reminder.status === 'delivered' ? 'var(--status-compliant-bg)' : 'var(--status-non-compliant-bg)', 
+                                 color: reminder.status === 'delivered' ? 'var(--status-compliant)' : 'var(--status-non-compliant)' 
+                               }}
+                             >
+                               {reminder.status === 'delivered' ? 'Sent' : 'Failed'}
+                             </span>
                           </div>
                         </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <span 
-                          className="text-xs px-2.5 md:px-3 py-1.5 rounded-full whitespace-nowrap"
-                          style={{ 
-                            backgroundColor: reminder.status === 'delivered' 
-                              ? 'var(--status-compliant-bg)' 
-                              : 'var(--status-non-compliant-bg)',
-                            color: reminder.status === 'delivered' 
-                              ? 'var(--status-compliant)' 
-                              : 'var(--status-non-compliant)',
-                            border: `1px solid ${reminder.status === 'delivered' 
-                              ? 'var(--status-compliant-border)' 
-                              : 'var(--status-non-compliant-border)'}`
-                          }}
-                        >
-                          {reminder.status === 'delivered' ? 'Delivered' : 'Bounced'}
-                        </span>
-                        {reminder.opened && (
-                          <span 
-                            className="text-xs px-2.5 md:px-3 py-1.5 rounded-full whitespace-nowrap"
-                            style={{ 
-                              backgroundColor: 'var(--panel)',
-                              color: 'var(--foreground-muted)'
-                            }}
-                          >
-                            Opened
-                          </span>
-                        )}
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                      <Mail className="h-8 w-8 text-slate-300 mb-2" />
+                      <p className="text-sm text-slate-500">No recent notifications</p>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="p-8 text-center">
-                  <Mail className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--foreground-muted)' }} />
-                  <p className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-                    No recent reminders sent
-                  </p>
-                </div>
-              )}
+              </ScrollArea>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </div>

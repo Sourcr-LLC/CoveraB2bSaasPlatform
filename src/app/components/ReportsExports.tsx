@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FileText, FileSpreadsheet, Download, Filter } from 'lucide-react';
 import { vendorApi } from '../lib/api';
+import { isDemoMode, demoVendors } from '../lib/demoData';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
@@ -40,7 +41,16 @@ export default function ReportsExports() {
 
   const loadData = async () => {
     try {
-      const { vendors: vendorData } = await vendorApi.getAll();
+      let vendorData = [];
+      
+      if (isDemoMode()) {
+        console.log('📊 Demo mode enabled - using mock data for Reports');
+        vendorData = demoVendors;
+      } else {
+        const response = await vendorApi.getAll();
+        vendorData = response.vendors || [];
+      }
+
       // Recalculate status for each vendor to ensure accuracy
       const vendorsWithUpdatedStatus = (vendorData || []).map(vendor => ({
         ...vendor,
@@ -252,55 +262,35 @@ export default function ReportsExports() {
   const nonCompliantCount = vendors.filter(v => v.status === 'non-compliant').length;
 
   return (
-    <div className="p-4 md:p-8 lg:p-12">
+    <div className="p-6 md:p-8 lg:p-12 h-full overflow-y-auto bg-slate-50/50">
       {/* Header */}
       <div className="mb-8 md:mb-12">
-        <h1 className="mb-3 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>Reports & Exports</h1>
-        <p className="text-base" style={{ color: 'var(--foreground-muted)' }}>
+        <h1 className="mb-3 text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Reports & Exports</h1>
+        <p className="text-base text-slate-500">
           Generate compliance reports and export data for audits and stakeholders
         </p>
       </div>
 
       {/* Statistics Overview */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div 
-          className="p-6 rounded-2xl border border-slate-100"
-          style={{
-            backgroundColor: 'var(--card)',
-          }}
-        >
-          <div className="text-2xl mb-2" style={{ color: 'var(--foreground)' }}>{vendors.length}</div>
-          <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Total Vendors</div>
+        <div className="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <div className="text-3xl font-semibold mb-2 text-slate-900">{vendors.length}</div>
+          <div className="text-sm font-medium text-slate-500">Total Vendors</div>
         </div>
         
-        <div 
-          className="p-6 rounded-2xl border border-slate-100"
-          style={{
-            backgroundColor: 'var(--card)',
-          }}
-        >
-          <div className="text-2xl mb-2" style={{ color: 'var(--status-compliant)' }}>{compliantCount}</div>
-          <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Compliant</div>
+        <div className="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <div className="text-3xl font-semibold mb-2 text-emerald-600">{compliantCount}</div>
+          <div className="text-sm font-medium text-slate-500">Compliant</div>
         </div>
         
-        <div 
-          className="p-6 rounded-2xl border border-slate-100"
-          style={{
-            backgroundColor: 'var(--card)',
-          }}
-        >
-          <div className="text-2xl mb-2" style={{ color: 'var(--status-at-risk)' }}>{atRiskCount}</div>
-          <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>At Risk</div>
+        <div className="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <div className="text-3xl font-semibold mb-2 text-amber-500">{atRiskCount}</div>
+          <div className="text-sm font-medium text-slate-500">At Risk</div>
         </div>
         
-        <div 
-          className="p-6 rounded-2xl border border-slate-100"
-          style={{
-            backgroundColor: 'var(--card)',
-          }}
-        >
-          <div className="text-2xl mb-2" style={{ color: 'var(--status-non-compliant)' }}>{nonCompliantCount}</div>
-          <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Non-Compliant</div>
+        <div className="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <div className="text-3xl font-semibold mb-2 text-red-600">{nonCompliantCount}</div>
+          <div className="text-sm font-medium text-slate-500">Non-Compliant</div>
         </div>
       </div>
 
@@ -309,164 +299,113 @@ export default function ReportsExports() {
         <button 
           onClick={() => quickExport('all', 'csv')}
           disabled={isGenerating}
-          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ 
-            backgroundColor: 'var(--card)',
-          }}
+          className="p-6 rounded-2xl border border-slate-100 bg-white text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed group"
         >
-          <FileSpreadsheet className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
-          <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>Export all vendors</div>
-          <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>CSV format • {vendors.length} records</div>
+          <FileSpreadsheet className="w-6 h-6 mb-4 text-[#3A4F6A]" />
+          <div className="text-sm font-semibold mb-1 text-slate-900">Export all vendors</div>
+          <div className="text-xs text-slate-500 group-hover:text-slate-600">CSV format • {vendors.length} records</div>
         </button>
 
         <button 
           onClick={() => quickExport('compliant', 'pdf')}
           disabled={isGenerating}
-          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ 
-            backgroundColor: 'var(--card)',
-          }}
+          className="p-6 rounded-2xl border border-slate-100 bg-white text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed group"
         >
-          <FileText className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
-          <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>Compliance summary</div>
-          <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>PDF report • Ready to print</div>
+          <FileText className="w-6 h-6 mb-4 text-[#3A4F6A]" />
+          <div className="text-sm font-semibold mb-1 text-slate-900">Compliance summary</div>
+          <div className="text-xs text-slate-500 group-hover:text-slate-600">PDF report • Ready to print</div>
         </button>
 
         <button 
           onClick={() => quickExport('expiring', 'excel')}
           disabled={isGenerating}
-          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ 
-            backgroundColor: 'var(--card)',
-          }}
+          className="p-6 rounded-2xl border border-slate-100 bg-white text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed group"
         >
-          <FileSpreadsheet className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
-          <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>Expiring COIs</div>
-          <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>Excel format • Next 30 days</div>
+          <FileSpreadsheet className="w-6 h-6 mb-4 text-[#3A4F6A]" />
+          <div className="text-sm font-semibold mb-1 text-slate-900">Expiring COIs</div>
+          <div className="text-xs text-slate-500 group-hover:text-slate-600">Excel format • Next 30 days</div>
         </button>
 
         <button 
           onClick={() => quickExport('audit', 'pdf')}
           disabled={isGenerating}
-          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ 
-            backgroundColor: 'var(--card)',
-          }}
+          className="p-6 rounded-2xl border border-slate-100 bg-white text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed group"
         >
-          <FileText className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
-          <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>Audit package</div>
-          <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>Full documentation • PDF</div>
+          <FileText className="w-6 h-6 mb-4 text-[#3A4F6A]" />
+          <div className="text-sm font-semibold mb-1 text-slate-900">Audit package</div>
+          <div className="text-xs text-slate-500 group-hover:text-slate-600">Full documentation • PDF</div>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Left: Custom Report Builder */}
-        <div className="lg:col-span-5">
-          <div 
-            className="rounded-2xl border p-8 border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <h3 className="text-lg mb-6">Custom report builder</h3>
+        <div className="w-full lg:w-[400px] flex-none">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 md:p-8 shadow-sm h-full">
+            <h3 className="text-lg font-semibold mb-6 text-slate-900">Custom report builder</h3>
             
-            <div className="space-y-5">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm mb-2.5">Report type</label>
-                <select 
-                  value={selectedReport}
-                  onChange={(e) => setSelectedReport(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border text-sm transition-all focus:outline-none focus:ring-2"
-                  style={{ 
-                    backgroundColor: 'var(--background)',
-                    borderColor: 'var(--border)',
-                    color: 'var(--foreground)'
-                  }}
-                >
-                  <option value="compliance">Compliance summary</option>
-                  <option value="vendors">Vendor list</option>
-                  <option value="insurance">Insurance tracking</option>
-                  <option value="risk">Risk assessment</option>
-                </select>
+                <label className="block text-sm font-medium mb-2.5 text-slate-700">Report type</label>
+                <div className="relative">
+                  <select 
+                    value={selectedReport}
+                    onChange={(e) => setSelectedReport(e.target.value)}
+                    className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400 bg-white text-slate-900"
+                  >
+                    <option value="compliance">Compliance summary</option>
+                    <option value="vendors">Vendor list</option>
+                    <option value="insurance">Insurance tracking</option>
+                    <option value="risk">Risk assessment</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                    <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
+                      <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                    </svg>
+                  </div>
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm mb-2.5 text-center md:text-left">Date range (optional)</label>
-                <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+                <label className="block text-sm font-medium mb-2.5 text-slate-700">Date range (optional)</label>
+                <div className="flex flex-col gap-3">
                   <input 
                     type="date"
                     value={dateRange.start}
                     onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-                    className="flex-1 px-4 py-3 rounded-lg border text-sm transition-all focus:outline-none focus:ring-2"
-                    style={{ 
-                      backgroundColor: 'var(--background)',
-                      borderColor: 'var(--border)',
-                      color: 'var(--foreground)'
-                    }}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400 bg-white text-slate-900"
                   />
-                  <span className="text-sm text-center md:text-left" style={{ color: 'var(--foreground-muted)' }}>to</span>
                   <input 
                     type="date"
                     value={dateRange.end}
                     onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-                    className="flex-1 px-4 py-3 rounded-lg border text-sm transition-all focus:outline-none focus:ring-2"
-                    style={{ 
-                      backgroundColor: 'var(--background)',
-                      borderColor: 'var(--border)',
-                      color: 'var(--foreground)'
-                    }}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400 bg-white text-slate-900"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm mb-2.5">Format</label>
-                <div className="flex gap-3">
-                  <button 
-                    onClick={() => setSelectedFormat('pdf')}
-                    className="flex-1 py-3 rounded-lg border text-sm transition-all"
-                    style={{ 
-                      backgroundColor: selectedFormat === 'pdf' ? 'var(--primary)' : 'var(--panel)',
-                      borderColor: selectedFormat === 'pdf' ? 'var(--primary)' : 'var(--border)',
-                      color: selectedFormat === 'pdf' ? 'var(--primary-foreground)' : 'var(--foreground)'
-                    }}
-                  >
-                    PDF
-                  </button>
-                  <button 
-                    onClick={() => setSelectedFormat('csv')}
-                    className="flex-1 py-3 rounded-lg border text-sm transition-all"
-                    style={{ 
-                      backgroundColor: selectedFormat === 'csv' ? 'var(--primary)' : 'var(--panel)',
-                      borderColor: selectedFormat === 'csv' ? 'var(--primary)' : 'var(--border)',
-                      color: selectedFormat === 'csv' ? 'var(--primary-foreground)' : 'var(--foreground)'
-                    }}
-                  >
-                    CSV
-                  </button>
-                  <button 
-                    onClick={() => setSelectedFormat('excel')}
-                    className="flex-1 py-3 rounded-lg border text-sm transition-all"
-                    style={{ 
-                      backgroundColor: selectedFormat === 'excel' ? 'var(--primary)' : 'var(--panel)',
-                      borderColor: selectedFormat === 'excel' ? 'var(--primary)' : 'var(--border)',
-                      color: selectedFormat === 'excel' ? 'var(--primary-foreground)' : 'var(--foreground)'
-                    }}
-                  >
-                    Excel
-                  </button>
+                <label className="block text-sm font-medium mb-2.5 text-slate-700">Format</label>
+                <div className="flex gap-2 p-1 bg-slate-100 rounded-xl">
+                  {['pdf', 'csv', 'excel'].map((fmt) => (
+                    <button 
+                      key={fmt}
+                      onClick={() => setSelectedFormat(fmt as any)}
+                      className={`flex-1 py-2 rounded-lg text-xs font-semibold uppercase tracking-wide transition-all ${
+                        selectedFormat === fmt 
+                          ? 'bg-[#3A4F6A] text-white shadow-sm' 
+                          : 'text-slate-500 hover:text-[#3A4F6A] hover:bg-slate-200/50'
+                      }`}
+                    >
+                      {fmt}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               <button 
                 onClick={handleGenerateReport}
                 disabled={isGenerating}
-                className="w-full py-3.5 rounded-lg text-sm transition-all inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ 
-                  backgroundColor: 'var(--primary)',
-                  color: 'var(--primary-foreground)',
-                  boxShadow: 'var(--shadow-sm)'
-                }}
+                className="w-full py-3.5 rounded-xl text-sm font-semibold transition-all inline-flex items-center justify-center gap-2 bg-[#3A4F6A] text-white hover:bg-[#2c3b4f] disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
               >
                 <Download className="w-4 h-4" />
                 {isGenerating ? 'Generating...' : 'Generate custom report'}
@@ -476,62 +415,55 @@ export default function ReportsExports() {
         </div>
 
         {/* Right: Data Preview */}
-        <div className="lg:col-span-7">
-          <div 
-            className="rounded-2xl border overflow-hidden border-slate-100"
-            style={{
-              backgroundColor: 'var(--card)',
-            }}
-          >
-            <div className="px-8 py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-              <h3 className="text-lg">Data preview</h3>
-              <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>
+        <div className="flex-1 min-w-0">
+          <div className="rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm h-full flex flex-col">
+            <div className="px-8 py-6 border-b border-slate-100 flex-none">
+              <h3 className="text-lg font-semibold text-slate-900">Data preview</h3>
+              <p className="text-sm mt-1 text-slate-500">
                 {vendors.length} vendor records ready to export
               </p>
             </div>
 
-            <div className="p-8">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                      <th className="text-left pb-3 pr-4" style={{ color: 'var(--foreground-muted)' }}>Vendor</th>
-                      <th className="text-left pb-3 pr-4" style={{ color: 'var(--foreground-muted)' }}>Type</th>
-                      <th className="text-left pb-3 pr-4" style={{ color: 'var(--foreground-muted)' }}>Status</th>
-                      <th className="text-left pb-3" style={{ color: 'var(--foreground-muted)' }}>Expiry</th>
+            <div className="flex-1 overflow-x-auto p-0">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-slate-500 uppercase bg-slate-50/50">
+                  <tr>
+                    <th className="px-6 py-4 font-semibold">Vendor</th>
+                    <th className="px-6 py-4 font-semibold">Type</th>
+                    <th className="px-6 py-4 font-semibold">Status</th>
+                    <th className="px-6 py-4 font-semibold text-right">Expiry</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {vendors.slice(0, 10).map((vendor) => (
+                    <tr key={vendor.id} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900">{vendor.name}</td>
+                      <td className="px-6 py-4 capitalize text-slate-500">
+                        {vendor.vendorType?.replace('-', ' ')}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span 
+                          className="px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center justify-center min-w-[90px]"
+                          style={{
+                            backgroundColor: `${getStatusColor(vendor.status)}15`,
+                            color: getStatusColor(vendor.status)
+                          }}
+                        >
+                          {getStatusBadge(vendor.status)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right text-slate-500 tabular-nums">
+                        {vendor.insuranceExpiry ? new Date(vendor.insuranceExpiry).toLocaleDateString() : 'N/A'}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {vendors.slice(0, 8).map((vendor) => (
-                      <tr key={vendor.id} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                        <td className="py-3 pr-4" style={{ color: 'var(--foreground)' }}>{vendor.name}</td>
-                        <td className="py-3 pr-4 capitalize" style={{ color: 'var(--foreground-muted)' }}>
-                          {vendor.vendorType.replace('-', ' ')}
-                        </td>
-                        <td className="py-3 pr-4">
-                          <span 
-                            className="px-2 py-1 rounded text-xs"
-                            style={{
-                              backgroundColor: `${getStatusColor(vendor.status)}15`,
-                              color: getStatusColor(vendor.status)
-                            }}
-                          >
-                            {getStatusBadge(vendor.status)}
-                          </span>
-                        </td>
-                        <td className="py-3" style={{ color: 'var(--foreground-muted)' }}>
-                          {vendor.insuranceExpiry ? new Date(vendor.insuranceExpiry).toLocaleDateString() : 'N/A'}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {vendors.length > 8 && (
-                  <div className="mt-4 text-sm text-center" style={{ color: 'var(--foreground-muted)' }}>
-                    + {vendors.length - 8} more records
-                  </div>
-                )}
-              </div>
+                  ))}
+                </tbody>
+              </table>
+              {vendors.length > 10 && (
+                <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/30 text-center text-sm text-slate-500">
+                  + {vendors.length - 10} more records included in export
+                </div>
+              )}
             </div>
           </div>
         </div>

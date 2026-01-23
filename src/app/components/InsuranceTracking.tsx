@@ -61,12 +61,12 @@ export default function InsuranceTracking() {
   const expiredCOIs = vendorsWithExpiry.filter(v => v.daysLeft <= 0);
 
   return (
-    <div className="p-4 md:p-8 lg:p-12">
+    <div className="flex flex-col h-[calc(100vh-2rem)] p-6 md:p-8 overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 md:mb-12 gap-4">
+      <div className="flex-none flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <div>
-          <h1 className="mb-3 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>Insurance Tracking</h1>
-          <p className="text-base" style={{ color: 'var(--foreground-muted)' }}>
+          <h1 className="mb-2 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>Insurance Tracking</h1>
+          <p className="text-sm md:text-base" style={{ color: 'var(--foreground-muted)' }}>
             Monitor certificates of insurance and coverage requirements
           </p>
         </div>
@@ -85,7 +85,7 @@ export default function InsuranceTracking() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+      <div className="flex-none grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
         <div 
           className="rounded-2xl border px-6 py-5 border-slate-100"
           style={{
@@ -129,7 +129,7 @@ export default function InsuranceTracking() {
       </div>
 
       {/* View Mode Toggle */}
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex-none flex items-center gap-3 mb-6">
         <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>View:</span>
         <div className="flex items-center gap-2 border rounded-lg p-1" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--background)' }}>
           {(['timeline', 'missing', 'expired'] as const).map((mode) => (
@@ -152,7 +152,7 @@ export default function InsuranceTracking() {
 
       {/* Timeline View */}
       {viewMode === 'timeline' && (
-        <div className="space-y-8">
+        <div className="flex-1 min-h-0 overflow-y-auto space-y-8 pr-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent pb-4">
           {/* 7 Days */}
           <div>
             <div className="flex items-center gap-3 mb-4">
@@ -364,7 +364,7 @@ export default function InsuranceTracking() {
 
       {/* Missing COIs View */}
       {viewMode === 'missing' && (
-        <div className="space-y-3">
+        <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent pb-4">
           {missingCOIs.length === 0 ? (
             <div className="text-center py-12" style={{ color: 'var(--foreground-muted)' }}>
               All vendors have insurance on file
@@ -409,7 +409,7 @@ export default function InsuranceTracking() {
 
       {/* Expired View */}
       {viewMode === 'expired' && (
-        <div className="space-y-3">
+        <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent pb-4">
           {expiredCOIs.length === 0 ? (
             <div className="text-center py-12" style={{ color: 'var(--foreground-muted)' }}>
               No expired insurance certificates

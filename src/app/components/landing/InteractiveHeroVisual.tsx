@@ -142,7 +142,7 @@ function DashboardContent() {
               label="Compliance Risk" 
               value={stats.atRisk} 
               change=""
-              subtext="Acting now prevents coverage gaps"
+              compact={true}
               percentageColor="#f59e0b"
               bgTint="rgba(245, 158, 11, 0.03)"
               borderColor="rgba(245, 158, 11, 0.2)"
@@ -153,7 +153,7 @@ function DashboardContent() {
               label="Non-Compliant" 
               value={stats.nonCompliant} 
               change=""
-              subtext="Resolve to eliminate liability exposure"
+              compact={true}
               percentageColor="#ef4444"
               bgTint="rgba(239, 68, 68, 0.03)"
               borderColor="rgba(239, 68, 68, 0.2)"
@@ -164,7 +164,7 @@ function DashboardContent() {
               label="Active Contracts" 
               value={stats.activeContracts} 
               change=""
-              subtext="Track contracts to avoid disputes"
+              compact={true}
               percentageColor="#3A4F6A"
               bgTint="rgba(58, 79, 106, 0.03)"
               borderColor="rgba(58, 79, 106, 0.2)"
@@ -175,7 +175,7 @@ function DashboardContent() {
               label="Upcoming Milestones" 
               value={stats.expiringContracts} 
               change=""
-              subtext="Renewals requiring your review"
+              compact={true}
               trend="neutral" 
               percentageColor="#f59e0b"
               bgTint="#ffffff"
@@ -226,7 +226,7 @@ function DashboardContent() {
                    {/* Header Row */}
                    <div className="grid grid-cols-12 px-6 py-3 bg-[#fafaf9] text-xs font-semibold text-slate-500 uppercase tracking-wider">
                       <div className="col-span-4">Vendor / Item</div>
-                      <div className="col-span-3">Status</div>
+                      <div className="col-span-3 text-center">Status</div>
                       <div className="col-span-3">Deadline</div>
                       <div className="col-span-2 text-right">Action</div>
                    </div>
@@ -262,10 +262,15 @@ function NavItem({ icon: Icon, label, active = false }: any) {
 }
 
 function VendorRow({ name, type, status, date, action }: any) {
-  let statusColor = "bg-[#f5f5f4] text-slate-600";
-  if (status === "Verified" || status === "Active") statusColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
-  if (status === "Expired" || status === "Missing") statusColor = "bg-red-50 text-red-700 border-red-100";
-  if (status === "At Risk" || status === "Expiring") statusColor = "bg-orange-50 text-orange-700 border-orange-100";
+  let style = { bg: 'rgba(107, 114, 128, 0.15)', text: '#6b7280' };
+
+  if (status === "Verified" || status === "Active") {
+    style = { bg: 'rgba(16, 185, 129, 0.15)', text: '#10b981' };
+  } else if (status === "Expired" || status === "Missing") {
+    style = { bg: 'rgba(239, 68, 68, 0.15)', text: '#ef4444' };
+  } else if (status === "At Risk" || status === "Expiring") {
+    style = { bg: 'rgba(245, 158, 11, 0.15)', text: '#f59e0b' };
+  }
 
   return (
     <div className="px-6 py-3 grid grid-cols-12 items-center group hover:bg-[#fafaf9] transition-colors duration-200">
@@ -282,11 +287,11 @@ function VendorRow({ name, type, status, date, action }: any) {
          </div>
        </div>
 
-       <div className="col-span-3">
-         <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusColor} w-fit`}>
-           {(status === "At Risk" || status === "Expiring") && <Clock className="w-3 h-3" />}
-           {(status === "Expired" || status === "Missing") && <AlertCircle className="w-3 h-3" />}
-           {(status === "Verified" || status === "Active") && <CheckCircle2 className="w-3 h-3" />}
+       <div className="col-span-3 flex justify-center">
+         <div 
+           className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium w-fit min-w-[90px]"
+           style={{ backgroundColor: style.bg, color: style.text }}
+         >
            {status}
          </div>
        </div>

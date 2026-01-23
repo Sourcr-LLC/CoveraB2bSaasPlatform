@@ -107,9 +107,9 @@ export default function VendorManagement() {
   const isLimitReached = !isLoading && !subscriptionLoading && vendors.length >= maxVendors;
 
   return (
-    <div className="p-4 md:p-8 lg:p-12">
+    <div className="flex flex-col h-[calc(100vh-2rem)] p-6 md:p-8 overflow-hidden">
       {isLimitReached && (
-        <div className="mb-6 p-4 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800 flex items-center justify-between gap-4">
+        <div className="flex-none mb-6 p-4 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <p className="text-sm font-medium">
@@ -123,10 +123,10 @@ export default function VendorManagement() {
       )}
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 md:mb-12 gap-4">
+      <div className="flex-none flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <div>
-          <h1 className="mb-3 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>Vendors</h1>
-          <p className="text-base" style={{ color: 'var(--foreground-muted)' }}>
+          <h1 className="mb-2 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>Vendors</h1>
+          <p className="text-sm md:text-base" style={{ color: 'var(--foreground-muted)' }}>
             Manage and monitor all vendor relationships and compliance status
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function VendorManagement() {
       </div>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+      <div className="flex-none grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
         <div 
           className="rounded-2xl border border-slate-100 px-6 py-5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300"
           style={{
@@ -189,7 +189,7 @@ export default function VendorManagement() {
 
       {/* Filters and Search */}
       <div 
-        className="rounded-2xl border border-slate-100 p-4 md:p-6 mb-6"
+        className="flex-none rounded-2xl border border-slate-100 p-4 md:p-6 mb-6"
         style={{
           backgroundColor: 'var(--card)',
         }}
@@ -259,69 +259,64 @@ export default function VendorManagement() {
         </div>
       </div>
 
-      {/* Desktop Table */}
+      {/* Desktop Table View */}
       <div
-        className="hidden md:block rounded-2xl border border-slate-100 overflow-hidden"
-        style={{
-          backgroundColor: 'var(--card)',
-        }}
+        className="hidden md:flex flex-col flex-1 min-h-0 rounded-2xl border border-slate-100 overflow-hidden bg-[var(--card)]"
       >
-        <table className="w-full">
-          <thead>
-            <tr style={{ backgroundColor: 'var(--panel)' }}>
-              <th className="px-8 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
-                Vendor Name
-              </th>
-              <th className="px-6 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
-                Status
-              </th>
-              <th className="px-6 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
-                Insurance Expiry
-              </th>
-              <th className="px-6 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
-                Site / Project
-              </th>
-              <th className="px-6 py-4 text-left text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
-                Last Contact
-              </th>
-              <th className="px-6 py-4 text-right text-xs uppercase tracking-wider" style={{ color: 'var(--foreground-subtle)' }}>
-                
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredVendors.map((vendor) => {
+        <div className="flex-1 overflow-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+          <table className="w-full relative">
+            <thead className="sticky top-0 z-10 bg-[var(--card)] border-b border-slate-100">
+              <tr>
+                <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Vendor Name
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Insurance Expiry
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Site / Project
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  Last Contact
+                </th>
+                <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                  
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredVendors.map((vendor) => {
               const statusBadge = getStatusBadge(vendor.status);
               const StatusIcon = statusBadge.icon;
               
-              return (
-                <tr 
-                  key={vendor.id}
-                  className="border-t transition-colors hover:bg-opacity-50"
-                  style={{ borderColor: 'var(--border-subtle)' }}
-                >
-                  <td className="px-8 py-6">
-                    <div>
-                      <div className="text-sm mb-1" style={{ color: 'var(--foreground)' }}>
-                        {vendor.name}
-                      </div>
-                      {vendor.missingDocs > 0 && (
-                        <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>
-                          {vendor.missingDocs} missing document{vendor.missingDocs > 1 ? 's' : ''}
+                return (
+                  <tr 
+                    key={vendor.id}
+                    className="group transition-colors hover:bg-slate-50/50"
+                  >
+                    <td className="px-8 py-5">
+                      <div>
+                        <div className="text-sm font-semibold text-slate-900 mb-0.5">
+                          {vendor.name}
                         </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-6">
+                        {vendor.missingDocs > 0 && (
+                          <div className="text-xs text-slate-500">
+                            {vendor.missingDocs} missing document{vendor.missingDocs > 1 ? 's' : ''}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
                     <span
-                      className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
+                      className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium w-fit min-w-[90px]"
                       style={{
                         backgroundColor: statusBadge.bg,
-                        color: statusBadge.color,
-                        border: `1px solid ${statusBadge.border}`
+                        color: statusBadge.color
                       }}
                     >
-                      <StatusIcon className="w-3 h-3" />
                       {statusBadge.label}
                     </span>
                   </td>
@@ -366,6 +361,7 @@ export default function VendorManagement() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Mobile Card View */}
@@ -395,14 +391,12 @@ export default function VendorManagement() {
                   )}
                 </div>
                 <span
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs"
+                  className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium min-w-[80px]"
                   style={{
                     backgroundColor: statusBadge.bg,
-                    color: statusBadge.color,
-                    border: `1px solid ${statusBadge.border}`
+                    color: statusBadge.color
                   }}
                 >
-                  <StatusIcon className="w-3 h-3" />
                   {statusBadge.label}
                 </span>
               </div>

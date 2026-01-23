@@ -596,14 +596,12 @@ export default function VendorDetail() {
               <div>
                 <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Status</div>
                 <div
-                  className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium border whitespace-nowrap"
+                  className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs sm:text-sm font-medium w-fit min-w-[90px]"
                   style={{
                     backgroundColor: vendorStatusBadge.bg,
-                    color: vendorStatusBadge.color,
-                    borderColor: vendorStatusBadge.border
+                    color: vendorStatusBadge.color
                   }}
                 >
-                  <StatusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   {vendorStatusBadge.label}
                 </div>
               </div>
@@ -702,14 +700,12 @@ export default function VendorDetail() {
                         <div className="flex items-center gap-2">
                           {/* Status Badge */}
                           <div
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border"
+                            className="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-medium w-fit min-w-[80px]"
                             style={{
                               backgroundColor: policyStatus.bg,
-                              color: policyStatus.color,
-                              borderColor: policyStatus.border
+                              color: policyStatus.color
                             }}
                           >
-                            <PolicyIcon className="w-3.5 h-3.5" />
                             {policyStatus.label}
                           </div>
 
