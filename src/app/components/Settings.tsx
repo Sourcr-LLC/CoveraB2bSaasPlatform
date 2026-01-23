@@ -539,7 +539,7 @@ export default function Settings() {
                 disabled={savingDomain || domainStatus === 'verified' || !customDomain}
                 className="px-6 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap"
                 style={{
-                  backgroundColor: domainStatus === 'verified' ? '#10b981' : 'var(--primary)',
+                  backgroundColor: domainStatus === 'verified' ? '#059669' : 'var(--primary)',
                   color: 'white',
                   fontWeight: 500,
                   opacity: savingDomain || (domainStatus === 'verified') ? 0.7 : 1,
@@ -561,7 +561,7 @@ export default function Settings() {
               >
                 {domainStatus === 'verified' ? (
                   <div className="flex items-center gap-3">
-                    <CheckCircle2 size={20} style={{ color: '#10b981' }} />
+                    <CheckCircle2 size={20} style={{ color: '#059669' }} />
                     <div>
                       <h4 className="font-semibold mb-1" style={{ color: 'var(--foreground)' }}>Domain Active</h4>
                       <p style={{ color: 'var(--foreground-muted)' }}>Your vendor portal is now accessible at {customDomain}</p>
@@ -654,7 +654,7 @@ export default function Settings() {
                 <span
                   className="inline-flex items-center gap-1.5 text-sm"
                   style={{
-                    color: subscription.subscriptionStatus === 'active' ? '#10b981' : 'var(--foreground-muted)',
+                    color: subscription.subscriptionStatus === 'active' ? '#059669' : 'var(--foreground-muted)',
                     fontWeight: 500,
                   }}
                 >

@@ -30,7 +30,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-white rounded-2xl border border-slate-100 relative overflow-hidden group transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 flex flex-col justify-between ${compact ? 'h-auto min-h-[100px] p-4' : 'h-[140px] p-5'}`}
+      className={`bg-white rounded-2xl border border-slate-100 relative overflow-hidden group transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 flex flex-col justify-between ${compact ? 'h-auto min-h-[100px] p-4' : 'min-h-[140px] p-4 md:p-5'}`}
     >
       {/* Background Glow Effect */}
       <div 
@@ -38,14 +38,14 @@ export const KpiCard: React.FC<KpiCardProps> = ({
         style={{ backgroundColor: percentageColor || '#cbd5e1' }}
       />
       
-      <div className="flex justify-between items-start z-10">
-        <div className={`${compact ? 'text-[10px]' : 'text-xs'} font-bold uppercase tracking-wide text-slate-500 mt-1 whitespace-nowrap overflow-hidden text-ellipsis`}>
+      <div className="flex justify-between items-start z-10 gap-3">
+        <div className={`${compact ? 'text-[10px]' : 'text-[10px] md:text-xs'} font-bold uppercase tracking-wide text-slate-500 mt-1`}>
           {label}
         </div>
         
         {Icon && (
           <div 
-            className="flex items-center justify-center w-8 h-8 rounded-full transition-transform group-hover:scale-110 duration-300"
+            className="flex items-center justify-center w-8 h-8 rounded-full shrink-0 transition-transform group-hover:scale-110 duration-300"
             style={{ 
               backgroundColor: bgTint === 'var(--card)' ? '#f8fafc' : bgTint,
               color: percentageColor || '#64748b'
@@ -56,9 +56,9 @@ export const KpiCard: React.FC<KpiCardProps> = ({
         )}
       </div>
 
-      <div className="z-10 mt-auto">
+      <div className="z-10 mt-auto pt-4">
         <div className="flex items-baseline gap-2 mb-1">
-          <span className="text-3xl font-bold text-slate-900">
+          <span className="text-2xl md:text-3xl font-bold text-slate-900">
             {value}
           </span>
           {change && (
@@ -74,7 +74,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({
         </div>
         
         {subtext && (
-          <p className="text-sm font-medium text-slate-500 leading-relaxed max-w-[90%]">
+          <p className="text-xs md:text-sm font-medium text-slate-500 leading-relaxed">
             {subtext}
           </p>
         )}

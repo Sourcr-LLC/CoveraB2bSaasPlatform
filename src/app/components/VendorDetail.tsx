@@ -711,7 +711,14 @@ export default function VendorDetail() {
 
                           {/* Warning Badge */}
                           {gapWarning && (
-                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 border border-red-200">
+                            <div 
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border"
+                              style={{
+                                backgroundColor: 'var(--status-non-compliant-bg)',
+                                color: 'var(--status-non-compliant)',
+                                borderColor: 'var(--status-non-compliant-border)'
+                              }}
+                            >
                               <AlertTriangle className="w-3 h-3" />
                               <span className="hidden sm:inline">Coverage Gap</span>
                             </div>

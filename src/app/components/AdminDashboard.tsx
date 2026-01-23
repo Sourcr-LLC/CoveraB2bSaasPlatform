@@ -517,13 +517,13 @@ function getSubscriptionBadge(status: string | undefined) {
   
   switch (status) {
     case 'active':
-      return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200">Active</Badge>;
+      return <Badge className="bg-[var(--status-compliant-bg)] text-[var(--status-compliant)] border-[var(--status-compliant-border)] hover:bg-[var(--status-compliant-bg)]">Active</Badge>;
     case 'trialing':
-      return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200">Trial</Badge>;
+      return <Badge className="bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-50">Trial</Badge>;
     case 'canceled':
-      return <Badge variant="destructive" className="bg-red-100 text-red-800 hover:bg-red-100 border-red-200">Cancelled</Badge>;
+      return <Badge variant="destructive" className="bg-[var(--status-non-compliant-bg)] text-[var(--status-non-compliant)] border-[var(--status-non-compliant-border)] hover:bg-[var(--status-non-compliant-bg)]">Cancelled</Badge>;
     case 'past_due':
-      return <Badge variant="outline" className="text-orange-600 border-orange-200 bg-orange-50">Past Due</Badge>;
+      return <Badge variant="outline" className="text-[var(--status-at-risk)] border-[var(--status-at-risk-border)] bg-[var(--status-at-risk-bg)]">Past Due</Badge>;
     case 'inactive':
     case 'free':
       return <Badge variant="secondary" className="bg-gray-100 text-gray-600">Free</Badge>;

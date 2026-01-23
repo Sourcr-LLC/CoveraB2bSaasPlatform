@@ -169,7 +169,7 @@ export default function IndustriesFacilities() {
                         <div className="text-sm mb-1" style={{ fontWeight: 600 }}>CleanPro Janitorial</div>
                         <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>Cleaning services</div>
                       </div>
-                      <div className="px-3 py-1 rounded text-xs" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--status-compliant)', fontWeight: 500 }}>
+                      <div className="px-3 py-1 rounded text-xs" style={{ backgroundColor: 'var(--status-compliant-bg)', color: 'var(--status-compliant)', fontWeight: 500 }}>
                         Compliant
                       </div>
                     </div>
@@ -178,7 +178,7 @@ export default function IndustriesFacilities() {
                         <div className="text-sm mb-1" style={{ fontWeight: 600 }}>Climate Control HVAC</div>
                         <div className="text-xs" style={{ color: 'var(--foreground-muted)' }}>HVAC maintenance</div>
                       </div>
-                      <div className="px-3 py-1 rounded text-xs" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--status-expiring)', fontWeight: 500 }}>
+                      <div className="px-3 py-1 rounded text-xs" style={{ backgroundColor: 'var(--status-at-risk-bg)', color: 'var(--status-at-risk)', fontWeight: 500 }}>
                         Expiring Soon
                       </div>
                     </div>

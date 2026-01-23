@@ -558,11 +558,17 @@ export default function ContractManagement() {
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap text-center">
                       {contract.riskScore && (
-                        <div className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium w-fit min-w-[90px] ${
-                          contract.riskScore === 'high' ? 'bg-red-50 text-red-700' :
-                          contract.riskScore === 'medium' ? 'bg-amber-50 text-amber-700' :
-                          'bg-green-50 text-green-700'
-                        }`}>
+                        <div 
+                          className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium w-fit min-w-[90px]"
+                          style={{
+                            backgroundColor: contract.riskScore === 'high' ? 'var(--status-non-compliant-bg)' : 
+                                           contract.riskScore === 'medium' ? 'var(--status-at-risk-bg)' : 
+                                           'var(--status-compliant-bg)',
+                            color: contract.riskScore === 'high' ? 'var(--status-non-compliant)' : 
+                                   contract.riskScore === 'medium' ? 'var(--status-at-risk)' : 
+                                   'var(--status-compliant)'
+                          }}
+                        >
                           {contract.riskScore.charAt(0).toUpperCase() + contract.riskScore.slice(1)}
                         </div>
                       )}

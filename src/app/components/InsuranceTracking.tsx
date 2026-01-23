@@ -158,7 +158,7 @@ export default function InsuranceTracking() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--status-non-compliant)' }} />
               <h3 className="text-lg">Expiring within 7 days</h3>
-              <span className="text-sm px-3 py-1 rounded-full" style={{ backgroundColor: 'var(--status-non-compliant-bg)', color: 'var(--status-non-compliant)' }}>
+              <span className="text-sm px-3 py-1 rounded-full font-medium" style={{ backgroundColor: 'var(--status-non-compliant-bg)', color: 'var(--status-non-compliant)', border: '1px solid var(--status-non-compliant-border)' }}>
                 Critical
               </span>
             </div>

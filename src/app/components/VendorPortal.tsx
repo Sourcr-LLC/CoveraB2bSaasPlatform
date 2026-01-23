@@ -277,19 +277,34 @@ export default function VendorPortal() {
               <div className="text-xs text-gray-500 mb-2">Overall Status</div>
               <div className="flex items-center gap-2">
                 {vendor.status === 'compliant' && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-green-50 text-green-700 border border-green-200">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border"
+                    style={{
+                        backgroundColor: 'var(--status-compliant-bg)',
+                        color: 'var(--status-compliant)',
+                        borderColor: 'var(--status-compliant-border)'
+                    }}>
                     <CheckCircle2 className="w-4 h-4" />
                     Compliant
                   </span>
                 )}
                 {vendor.status === 'at-risk' && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-yellow-50 text-yellow-700 border border-yellow-200">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border"
+                    style={{
+                        backgroundColor: 'var(--status-at-risk-bg)',
+                        color: 'var(--status-at-risk)',
+                        borderColor: 'var(--status-at-risk-border)'
+                    }}>
                     <Clock className="w-4 h-4" />
                     At Risk
                   </span>
                 )}
                 {vendor.status === 'non-compliant' && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-red-50 text-red-700 border border-red-200">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border"
+                    style={{
+                        backgroundColor: 'var(--status-non-compliant-bg)',
+                        color: 'var(--status-non-compliant)',
+                        borderColor: 'var(--status-non-compliant-border)'
+                    }}>
                     <AlertCircle className="w-4 h-4" />
                     Non Compliant
                   </span>

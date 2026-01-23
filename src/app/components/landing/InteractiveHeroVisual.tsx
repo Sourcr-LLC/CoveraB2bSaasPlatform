@@ -302,7 +302,7 @@ function VendorRow({ name, type, status, date, action }: any) {
 
        <div className="col-span-2 text-right">
          {/* Updated to Ghost Button style to match Dashboard.tsx */}
-         <button className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all opacity-70 group-hover:opacity-100 bg-transparent border-0 shadow-none">
+         <button className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-[#3A4F6A] hover:bg-[#3A4F6A]/10 transition-all opacity-70 group-hover:opacity-100 bg-transparent border-0 shadow-none">
             {action === "Send Reminder" ? (
               <>
                 <Send className="w-3.5 h-3.5" />

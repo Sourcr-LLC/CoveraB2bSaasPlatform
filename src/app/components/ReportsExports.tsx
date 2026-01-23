@@ -65,13 +65,13 @@ export default function ReportsExports() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'compliant':
-        return '#10b981';
+        return '#059669'; // Emerald-600
       case 'at-risk':
-        return '#f59e0b';
+        return '#d97706'; // Amber-600
       case 'non-compliant':
-        return '#ef4444';
+        return '#dc2626'; // Red-600
       default:
-        return '#6b7280';
+        return '#4b5563'; // Slate-600
     }
   };
 
@@ -279,17 +279,17 @@ export default function ReportsExports() {
         </div>
         
         <div className="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
-          <div className="text-3xl font-semibold mb-2 text-emerald-600">{compliantCount}</div>
+          <div className="text-3xl font-semibold mb-2" style={{ color: 'var(--status-compliant)' }}>{compliantCount}</div>
           <div className="text-sm font-medium text-slate-500">Compliant</div>
         </div>
         
         <div className="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
-          <div className="text-3xl font-semibold mb-2 text-amber-500">{atRiskCount}</div>
+          <div className="text-3xl font-semibold mb-2" style={{ color: 'var(--status-at-risk)' }}>{atRiskCount}</div>
           <div className="text-sm font-medium text-slate-500">At Risk</div>
         </div>
         
         <div className="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
-          <div className="text-3xl font-semibold mb-2 text-red-600">{nonCompliantCount}</div>
+          <div className="text-3xl font-semibold mb-2" style={{ color: 'var(--status-non-compliant)' }}>{nonCompliantCount}</div>
           <div className="text-sm font-medium text-slate-500">Non-Compliant</div>
         </div>
       </div>

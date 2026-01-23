@@ -243,7 +243,14 @@ export default function ComplianceDashboard() {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-4xl font-semibold text-slate-900">{stats.atRisk}</span>
-            <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-100">
+            <span 
+              className="text-xs font-semibold px-2 py-1 rounded-full border"
+              style={{
+                backgroundColor: 'var(--status-at-risk-bg)',
+                color: 'var(--status-at-risk)',
+                borderColor: 'var(--status-at-risk-border)'
+              }}
+            >
               Expiring Soon
             </span>
           </div>
@@ -256,7 +263,14 @@ export default function ComplianceDashboard() {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-4xl font-semibold text-slate-900">{stats.nonCompliant}</span>
-            <span className="text-xs font-semibold px-2 py-1 rounded-full bg-red-50 text-red-700 border border-red-100">
+            <span 
+              className="text-xs font-semibold px-2 py-1 rounded-full border"
+              style={{
+                backgroundColor: 'var(--status-non-compliant-bg)',
+                color: 'var(--status-non-compliant)',
+                borderColor: 'var(--status-non-compliant-border)'
+              }}
+            >
               Non-Compliant
             </span>
           </div>
@@ -321,15 +335,36 @@ export default function ComplianceDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
                         {category.nonCompliant > 0 ? (
-                          <span className="inline-flex items-center text-xs font-semibold text-red-700 bg-red-50 px-2.5 py-1 rounded-full border border-red-100">
+                          <span 
+                            className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full border"
+                            style={{
+                              backgroundColor: 'var(--status-non-compliant-bg)',
+                              color: 'var(--status-non-compliant)',
+                              borderColor: 'var(--status-non-compliant-border)'
+                            }}
+                          >
                             {category.nonCompliant} Action Required
                           </span>
                         ) : category.atRisk > 0 ? (
-                          <span className="inline-flex items-center text-xs font-semibold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100">
+                          <span 
+                            className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full border"
+                            style={{
+                              backgroundColor: 'var(--status-at-risk-bg)',
+                              color: 'var(--status-at-risk)',
+                              borderColor: 'var(--status-at-risk-border)'
+                            }}
+                          >
                             {category.atRisk} Review Needed
                           </span>
                         ) : (
-                          <span className="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                          <span 
+                            className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full border"
+                            style={{
+                              backgroundColor: 'var(--status-compliant-bg)',
+                              color: 'var(--status-compliant)',
+                              borderColor: 'var(--status-compliant-border)'
+                            }}
+                          >
                             Compliant
                           </span>
                         )}

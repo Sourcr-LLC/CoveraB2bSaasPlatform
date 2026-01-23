@@ -86,6 +86,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'insurance' | 'contracts'>('insurance');
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [highlightAttentionItems, setHighlightAttentionItems] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const attentionItemsRef = useRef<HTMLDivElement>(null);
   const [selectedVendorIds, setSelectedVendorIds] = useState<Set<string>>(new Set());
 
@@ -395,21 +396,21 @@ export default function Dashboard() {
       case 'active':
         return {
           bg: 'rgba(16, 185, 129, 0.15)', // emerald-500 @ 15%
-          text: '#10b981', // emerald-500
+          text: '#059669', // emerald-600 (Darker for readability)
           icon: CheckCircle2
         };
       case 'at-risk':
       case 'expiring':
         return {
           bg: 'rgba(245, 158, 11, 0.15)', // amber-500 @ 15%
-          text: '#f59e0b', // amber-500
+          text: '#d97706', // amber-600 (Darker for readability)
           icon: Clock
         };
       case 'non-compliant':
       case 'expired':
         return {
           bg: 'rgba(239, 68, 68, 0.15)', // red-500 @ 15%
-          text: '#ef4444', // red-500
+          text: '#dc2626', // red-600 (Darker for readability)
           icon: AlertCircle
         };
       default:
@@ -556,9 +557,9 @@ export default function Dashboard() {
     };
 
     return [
-      { name: 'Compliant', value: counts.low, color: 'rgba(16, 185, 129, 0.6)', filterKey: 'compliant' }, 
-      { name: 'At Risk', value: counts.medium, color: 'rgba(245, 158, 11, 0.6)', filterKey: 'risk' }, 
-      { name: 'Non-Compliant', value: counts.high, color: 'rgba(239, 68, 68, 0.6)', filterKey: 'non-compliant' }, 
+      { name: 'Compliant', value: counts.low, color: 'rgba(16, 185, 129, 0.9)', filterKey: 'compliant' }, 
+      { name: 'At Risk', value: counts.medium, color: 'rgba(245, 158, 11, 0.9)', filterKey: 'risk' }, 
+      { name: 'Non-Compliant', value: counts.high, color: 'rgba(239, 68, 68, 0.9)', filterKey: 'non-compliant' }, 
     ].filter(item => item.value > 0);
   }, [vendors]);
 
@@ -634,13 +635,13 @@ export default function Dashboard() {
 
       {/* Action Banner */}
       {stats.nonCompliant > 0 && (
-        <div onClick={(e) => e.stopPropagation()} className="flex-none mb-6 p-4 rounded-2xl bg-white border border-red-100 flex items-center justify-between hover:bg-red-50/30 transition-all duration-300 relative overflow-hidden group">
+        <div onClick={(e) => e.stopPropagation()} className="flex-none mb-6 p-4 rounded-2xl bg-white border border-red-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-red-50/30 transition-all duration-300 relative overflow-hidden group">
            <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
-           <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-transform duration-300">
+           <div className="flex items-center gap-4 w-full sm:w-auto">
+              <div className="flex-none w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-transform duration-300">
                 <AlertTriangle className="w-5 h-5" />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-slate-900">
                   {stats.nonCompliant} {stats.nonCompliant === 1 ? 'vendor is' : 'vendors are'} non-compliant
                 </p>
@@ -651,7 +652,7 @@ export default function Dashboard() {
            </div>
            <button 
              onClick={(e) => handleFilterClick('non-compliant', 'insurance', e)}
-             className="text-xs font-semibold bg-red-50 text-red-700 px-4 py-2 rounded-xl hover:bg-red-100 transition-colors"
+             className="w-full sm:w-auto text-xs font-semibold bg-red-50 text-red-700 px-4 py-3 sm:py-2 rounded-xl hover:bg-red-100 transition-colors whitespace-nowrap text-center"
            >
              Resolve issue →
            </button>
@@ -747,10 +748,17 @@ export default function Dashboard() {
                            dataKey="value"
                            stroke="none"
                            onClick={(data) => handleFilterClick(data.filterKey, 'insurance')}
+                           onMouseEnter={(_, index) => setActiveIndex(index)}
+                           onMouseLeave={() => setActiveIndex(null)}
                            className="cursor-pointer focus:outline-none"
                          >
                            {riskDistribution.map((entry, index) => (
-                             <Cell key={`cell-${index}`} fill={entry.color} className="hover:opacity-80 transition-opacity" />
+                             <Cell 
+                               key={`cell-${index}`} 
+                               fill={index === activeIndex ? entry.color.replace('0.9', '1') : entry.color} 
+                               className="transition-all duration-300"
+                               style={{ outline: 'none', filter: index === activeIndex ? 'drop-shadow(0 0 8px rgba(0,0,0,0.15))' : 'none' }}
+                             />
                            ))}
                            <Label
                              value={stats.total}
@@ -974,7 +982,7 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-3 text-right whitespace-nowrap">
                         <button 
-                          className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                          className="group/btn relative inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-[#3A4F6A] hover:bg-[#3A4F6A]/10 transition-all"
                           onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
                           disabled={activeTab === 'insurance' && sendingReminderId === item.id}
                         >
@@ -1058,7 +1066,7 @@ export default function Dashboard() {
                         Expires <span className="font-medium text-slate-700">{item.expiryDate}</span>
                      </div>
                      <button 
-                        className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                        className="text-xs font-medium text-[#3A4F6A] hover:text-[#2c3e53] transition-colors"
                         onClick={() => activeTab === 'insurance' ? handleSendReminder(item.id, item.name) : navigate(`/contracts/${item.id}`)}
                      >
                         {activeTab === 'insurance' ? 'Send reminder' : 'View Details'} &rarr;

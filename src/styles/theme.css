@@ -23,15 +23,15 @@
   --brand-blue-hover: #2c3e53;
   
   /* Status colors - calm and restrained */
-  --status-compliant: #10b981;
+  --status-compliant: #059669;
   --status-compliant-bg: #10b98115;
   --status-compliant-border: transparent;
   
-  --status-at-risk: #f59e0b;
+  --status-at-risk: #d97706;
   --status-at-risk-bg: #f59e0b15;
   --status-at-risk-border: transparent;
   
-  --status-non-compliant: #ef4444;
+  --status-non-compliant: #dc2626;
   --status-non-compliant-bg: #ef444415;
   --status-non-compliant-border: transparent;
   

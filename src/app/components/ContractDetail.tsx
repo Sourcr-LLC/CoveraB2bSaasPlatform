@@ -279,13 +279,13 @@ export default function ContractDetail() {
       case 'low':
         return {
           bg: 'rgba(16, 185, 129, 0.15)', // emerald-500 @ 15%
-          text: '#10b981' // emerald-500
+          text: '#059669' // emerald-600
         };
       case 'warning':
       case 'expiring':
         return {
           bg: 'rgba(245, 158, 11, 0.15)', // amber-500 @ 15%
-          text: '#f59e0b' // amber-500
+          text: '#d97706' // amber-600
         };
       case 'breached':
       case 'overdue':
@@ -294,12 +294,12 @@ export default function ContractDetail() {
       case 'high':
         return {
           bg: 'rgba(239, 68, 68, 0.15)', // red-500 @ 15%
-          text: '#ef4444' // red-500
+          text: '#dc2626' // red-600
         };
       case 'medium':
         return {
           bg: 'rgba(245, 158, 11, 0.15)', // amber-500 @ 15%
-          text: '#f59e0b' // amber-500
+          text: '#d97706' // amber-600
         };
       default:
         return {
