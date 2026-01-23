@@ -83,10 +83,9 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
           {getCurrentTestimonials().map((testimonial, idx) => (
             <div 
               key={currentIndex * itemsPerSlide + idx}
-              className="rounded-xl p-6 md:p-8 border flex flex-col transition-opacity duration-300"
+              className="rounded-2xl p-6 md:p-8 border border-slate-100 flex flex-col transition-all duration-300 hover:shadow-md"
               style={{ 
                 backgroundColor: 'var(--card)',
-                borderColor: 'var(--border)',
                 minHeight: '280px'
               }}
             >

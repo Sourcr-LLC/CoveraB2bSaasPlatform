@@ -28,52 +28,52 @@ export const KpiCard: React.FC<KpiCardProps> = ({
 }) => {
   return (
     <div
-      className={`rounded-xl border p-4 relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between h-[130px]`}
-      style={{
-        backgroundColor: bgTint,
-        borderColor: borderColor,
-        backdropFilter: 'blur(12px)',
-        boxShadow: 'var(--shadow-card, var(--shadow-md))'
-      }}
+      className="bg-white rounded-2xl border border-slate-100 p-5 relative overflow-hidden group transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 h-[160px] flex flex-col justify-between"
     >
-      {/* Header: Label + Trend/Icon */}
-      <div className="flex justify-between items-center h-5">
-        <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: 'var(--foreground-muted)', opacity: 0.8, letterSpacing: '0.05em' }}>
+      {/* Background Glow Effect */}
+      <div 
+        className="absolute -right-6 -top-6 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
+        style={{ backgroundColor: percentageColor || '#cbd5e1' }}
+      />
+      
+      <div className="flex justify-between items-start z-10">
+        <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500 mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
           {label}
         </div>
-        {(change || Icon) && (
+        
+        {Icon && (
           <div 
-            className="text-[11px] flex items-center gap-1 px-1.5 h-5 rounded-full bg-opacity-10"
+            className="flex items-center justify-center w-8 h-8 rounded-full transition-transform group-hover:scale-110 duration-300"
             style={{ 
-              color: percentageColor,
-              fontWeight: 700,
-              backgroundColor: percentageColor ? `${percentageColor}15` : 'transparent'
+              backgroundColor: bgTint === 'var(--card)' ? '#f8fafc' : bgTint,
+              color: percentageColor || '#64748b'
             }}
           >
-            {Icon ? (
-              <Icon className="w-3 h-3" />
-            ) : (
-              <>
-                {trend === 'up' && <TrendingUp className="w-3 h-3" />}
-                {trend === 'down' && <TrendingDown className="w-3 h-3" />}
-                {trend === 'neutral' && <Minus className="w-3 h-3" />}
-              </>
-            )}
-            {change && <span>{change}</span>}
+            <Icon className="w-4 h-4" />
           </div>
         )}
       </div>
 
-      {/* Main Value */}
-      <div className="flex items-baseline gap-3">
-        <div className="tracking-tighter" style={{ color: 'var(--foreground)', fontSize: '2rem', fontWeight: 700, lineHeight: 1 }}>
-          {value}
+      <div className="z-10 mt-auto">
+        <div className="flex items-baseline gap-2 mb-1">
+          <span className="text-3xl font-bold text-slate-900">
+            {value}
+          </span>
+          {change && (
+            <div className={`flex items-center text-xs font-bold px-1.5 py-0.5 rounded-md ${
+              trend === 'up' ? 'bg-emerald-50 text-emerald-600' :
+              trend === 'down' ? 'bg-rose-50 text-rose-600' : 'bg-slate-50 text-slate-600'
+            }`}>
+              {trend === 'up' && <TrendingUp className="w-3 h-3 mr-1" />}
+              {trend === 'down' && <TrendingDown className="w-3 h-3 mr-1" />}
+              {change}
+            </div>
+          )}
         </div>
-      </div>
-
-      {/* Subtext */}
-      <div className="text-[11px] font-medium" style={{ color: 'var(--foreground-subtle)' }}>
-        {subtext}
+        
+        <p className="text-xs font-medium text-slate-500 leading-relaxed max-w-[90%]">
+          {subtext}
+        </p>
       </div>
     </div>
   );

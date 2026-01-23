@@ -393,7 +393,7 @@ export default function Billing() {
         {/* Free Plan Notice */}
         {isFreePlan && (
           <div 
-            className="rounded-xl md:rounded-2xl border p-4 md:p-8 mb-6 md:mb-8"
+            className="rounded-2xl border p-4 md:p-8 mb-6 md:mb-8"
             style={{ 
               backgroundColor: 'rgba(59, 130, 246, 0.05)',
               borderColor: 'rgba(59, 130, 246, 0.2)',
@@ -430,7 +430,7 @@ export default function Billing() {
             {/* Cancellation Warning Banner */}
             {subscription?.subscriptionCancelAtPeriodEnd && (
               <div 
-                className="rounded-xl md:rounded-2xl border p-4 md:p-6 mb-6"
+                className="rounded-2xl border p-4 md:p-6 mb-6"
                 style={{ 
                   backgroundColor: 'rgba(239, 68, 68, 0.05)',
                   borderColor: 'rgba(239, 68, 68, 0.2)',
@@ -462,11 +462,9 @@ export default function Billing() {
             )}
 
           <div 
-            className="rounded-xl md:rounded-2xl border p-4 md:p-8 mb-6 md:mb-8"
+            className="rounded-2xl border p-4 md:p-8 mb-6 md:mb-8 border-slate-100"
             style={{ 
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-md)'
             }}
           >
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-6">
@@ -588,11 +586,9 @@ export default function Billing() {
 
         {/* Upgrade Option */}
         <div 
-          className="rounded-xl md:rounded-2xl border p-4 md:p-8 mb-6 md:mb-8"
+          className="rounded-2xl border p-4 md:p-8 mb-6 md:mb-8 border-slate-100"
           style={{ 
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
@@ -657,11 +653,9 @@ export default function Billing() {
 
         {/* Payment Method */}
         <div 
-          className="rounded-xl md:rounded-2xl border p-4 md:p-8 mb-6 md:mb-8"
+          className="rounded-2xl border p-4 md:p-8 mb-6 md:mb-8 border-slate-100"
           style={{ 
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">

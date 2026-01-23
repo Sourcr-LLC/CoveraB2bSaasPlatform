@@ -82,7 +82,7 @@ export default function AboutUs() {
               <p className="text-lg md:text-xl leading-relaxed text-slate-700">
                 Our platform automatically tracks Certificates of Insurance, flags risk in real time, and keeps teams audit ready with confidence.
               </p>
-              <div className="mt-8 p-8 rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <div className="mt-8 p-8 rounded-2xl border border-slate-100 bg-white">
                 <p className="text-xl font-semibold text-[var(--primary)]">
                   Covera is operations first, not insurance first.
                 </p>
@@ -130,7 +130,7 @@ export default function AboutUs() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
+              <div className="p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-lg">
                 <TrendingUp className="w-8 h-8 mb-4 text-[var(--primary)]" />
                 <h3 className="mb-2 text-xl font-semibold text-slate-900">Track COI status in real time</h3>
                 <p className="text-slate-500 leading-relaxed">
@@ -138,7 +138,7 @@ export default function AboutUs() {
                 </p>
               </div>
 
-              <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
+              <div className="p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-lg">
                 <Zap className="w-8 h-8 mb-4 text-[var(--primary)]" />
                 <h3 className="mb-2 text-xl font-semibold text-slate-900">Automated vendor reminders</h3>
                 <p className="text-slate-500 leading-relaxed">
@@ -146,7 +146,7 @@ export default function AboutUs() {
                 </p>
               </div>
 
-              <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
+              <div className="p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-lg">
                 <CheckCircle className="w-8 h-8 mb-4 text-[var(--primary)]" />
                 <h3 className="mb-2 text-xl font-semibold text-slate-900">Clear compliance visibility</h3>
                 <p className="text-slate-500 leading-relaxed">
@@ -154,7 +154,7 @@ export default function AboutUs() {
                 </p>
               </div>
 
-              <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-lg">
+              <div className="p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-lg">
                 <Shield className="w-8 h-8 mb-4 text-[var(--primary)]" />
                 <h3 className="mb-2 text-xl font-semibold text-slate-900">Instant audit-ready reports</h3>
                 <p className="text-slate-500 leading-relaxed">

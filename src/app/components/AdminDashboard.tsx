@@ -372,7 +372,7 @@ export default function AdminDashboard() {
           {/* Mobile List View */}
           <div className="md:hidden space-y-4">
             {filteredUsers.map((user, index) => (
-              <div key={`${user.id || 'mobile'}-${index}`} className="p-4 border rounded-lg bg-white shadow-sm space-y-3">
+              <div key={`${user.id || 'mobile'}-${index}`} className="p-4 border border-slate-100 rounded-2xl bg-white space-y-3">
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="flex items-center gap-2">

@@ -121,11 +121,10 @@ export default function IndustriesGovernment() {
             ].map((item, index) => (
               <div 
                 key={index}
-                className="rounded-xl border p-8"
+                className="rounded-2xl border p-8 hover:shadow-lg transition-all duration-300"
                 style={{
                   backgroundColor: 'var(--card)',
-                  borderColor: 'var(--border)',
-                  boxShadow: 'var(--shadow-sm)'
+                  borderColor: '#f1f5f9'
                 }}
               >
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: 'var(--panel)' }}>
@@ -177,11 +176,10 @@ export default function IndustriesGovernment() {
             ].map((item, index) => (
               <div 
                 key={index}
-                className="rounded-xl border p-8"
+                className="rounded-2xl border p-8 hover:shadow-lg transition-all duration-300"
                 style={{
                   backgroundColor: 'var(--card)',
-                  borderColor: 'var(--border)',
-                  boxShadow: 'var(--shadow-sm)'
+                  borderColor: '#f1f5f9'
                 }}
               >
                 <div className="flex items-start gap-4">

@@ -125,11 +125,9 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
             {/* Login Card */}
             <div 
-              className="rounded-2xl border p-10"
+              className="rounded-2xl border border-slate-100 p-10"
               style={{ 
                 backgroundColor: 'var(--card)',
-                borderColor: 'var(--border)',
-                boxShadow: 'var(--shadow-md)'
               }}
             >
               <form onSubmit={handleSubmit} className="space-y-6">

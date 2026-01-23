@@ -103,20 +103,20 @@ export default function LandingPage() {
             </h1>
             
             <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Detailed vendor contract management for project and service agreements. Track deliverables, milestones, SLAs, and insurance compliance in a single dashboard.
+              Every vendor introduces risk. Covera makes it visible, trackable, and controlled.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-colors shadow-xl shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-colors shadow-md shadow-[var(--primary)]/20 hover:shadow-lg hover:shadow-[var(--primary)]/30 flex items-center justify-center gap-2"
               >
                 Start Free Trial
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <button 
                 onClick={() => setIsDemoModalOpen(true)}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-100 text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
               >
                 Schedule demo
               </button>
@@ -126,7 +126,7 @@ export default function LandingPage() {
           {/* Hero Visual */}
           <div className="relative mx-auto max-w-6xl mt-16">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[var(--primary)]/20 rounded-3xl opacity-40 blur-lg" />
-            <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-[700px] shadow-2xl shadow-slate-200 border border-slate-200/60 ring-1 ring-slate-900/5 bg-white" aria-hidden="true">
+            <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-[700px] border border-slate-100 bg-white shadow-lg shadow-slate-200/40" aria-hidden="true">
               <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
                 <InteractiveHeroVisual />
               </div>
@@ -197,7 +197,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
               to="/login"
-              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[var(--primary)] hover:bg-slate-50 transition-all shadow-xl flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[var(--primary)] hover:bg-slate-50 transition-all shadow-md flex items-center justify-center gap-2"
             >
               Start Free Trial
               <ArrowRight className="w-4 h-4" />

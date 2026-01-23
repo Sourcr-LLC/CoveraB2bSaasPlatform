@@ -415,7 +415,7 @@ export default function ContractDetail() {
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+              <div className="bg-white rounded-2xl border border-slate-100 p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Project Scope</h2>
                 {isEditing ? (
                   <div className="space-y-4">
@@ -470,7 +470,7 @@ export default function ContractDetail() {
             </div>
 
             <div className="space-y-6">
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+              <div className="bg-white rounded-2xl border border-slate-100 p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Key Dates</h2>
                 <div className="space-y-4">
                   <div>
@@ -517,7 +517,7 @@ export default function ContractDetail() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+              <div className="bg-white rounded-2xl border border-slate-100 p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Financials</h2>
                 <div>
                   <div className="text-sm text-gray-500 mb-1">Total Contract Value</div>
@@ -538,7 +538,7 @@ export default function ContractDetail() {
         )}
 
         {activeTab === 'milestones' && (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center">
               <h2 className="text-lg font-semibold text-gray-900">Project Milestones</h2>
               {isEditing && (
@@ -629,7 +629,7 @@ export default function ContractDetail() {
         )}
 
         {activeTab === 'slas' && (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden">
              <div className="p-6 border-b border-gray-200 flex justify-between items-center">
               <h2 className="text-lg font-semibold text-gray-900">Service Level Agreements (SLAs)</h2>
               {isEditing && (

@@ -265,7 +265,7 @@ export default function VendorPortal() {
         </div>
 
         {/* Status Card */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-100 p-6">
           <h2 className="text-base font-semibold mb-4 flex items-center gap-2 text-gray-900">
             <FileCheck className="w-5 h-5 text-gray-500" />
             Compliance Status
@@ -273,7 +273,7 @@ export default function VendorPortal() {
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Overall Status - Compact Badge */}
-            <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+            <div className="bg-gray-50 rounded-xl border border-slate-200 p-4">
               <div className="text-xs text-gray-500 mb-2">Overall Status</div>
               <div className="flex items-center gap-2">
                 {vendor.status === 'compliant' && (
@@ -298,7 +298,7 @@ export default function VendorPortal() {
             </div>
 
             {/* Insurance Expiry */}
-            <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+            <div className="bg-gray-50 rounded-xl border border-slate-200 p-4">
               <div className="text-xs text-gray-500 mb-2">Insurance Expiry</div>
               <div className="text-sm font-semibold text-gray-900">
                 {vendor.insuranceExpiry ? new Date(vendor.insuranceExpiry).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Not on file'}
@@ -306,7 +306,7 @@ export default function VendorPortal() {
             </div>
             
             {/* W9 Status */}
-            <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+            <div className="bg-gray-50 rounded-xl border border-slate-200 p-4">
               <div className="text-xs text-gray-500 mb-2">W9 Status</div>
               <div className="flex items-center gap-2">
                 {vendor.w9Uploaded ? (
@@ -327,7 +327,7 @@ export default function VendorPortal() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Document Upload Section */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div className="bg-white rounded-2xl border border-slate-100 p-6">
             <h2 className="text-base font-semibold mb-5 flex items-center gap-2 text-gray-900">
               <Upload className="w-5 h-5 text-gray-500" />
               Upload Documents
@@ -398,7 +398,7 @@ export default function VendorPortal() {
           </div>
 
           {/* Contact Info Form */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div className="bg-white rounded-2xl border border-slate-100 p-6">
             <h2 className="text-base font-semibold mb-5 flex items-center gap-2 text-gray-900">
               <User className="w-5 h-5 text-gray-500" />
               Vendor Information

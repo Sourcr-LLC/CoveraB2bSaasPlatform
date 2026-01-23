@@ -54,7 +54,7 @@ export default function AIContractAnalysisSection() {
                 }
               ].map((item, idx) => (
                 <div key={idx} className="flex gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center flex-shrink-0 text-[#3A4F6A]">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center flex-shrink-0 text-[#3A4F6A]">
                     <item.icon className="w-6 h-6" />
                   </div>
                   <div>
@@ -75,7 +75,7 @@ export default function AIContractAnalysisSection() {
           <div className="lg:w-1/2 w-full flex justify-center lg:justify-end">
              {/* The Visual Masterpiece */}
             <div 
-              className="relative w-full max-w-md mx-auto aspect-[3/4] bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden transform transition-transform duration-500 hover:scale-[1.02]"
+              className="relative w-full max-w-md mx-auto aspect-[3/4] bg-white rounded-2xl border border-slate-100 overflow-hidden transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
             >
               {/* Document Header (Simulating ACORD 25) */}
               <div className="p-8 space-y-6 opacity-80 select-none pointer-events-none">

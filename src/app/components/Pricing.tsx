@@ -142,7 +142,7 @@ export default function Pricing() {
             <div className="grid lg:grid-cols-3 gap-8 items-start">
               
               {/* Essentials Plan */}
-              <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300">
+              <div className="rounded-2xl border border-slate-100 bg-white p-8 relative transition-all duration-300 hover:shadow-lg">
                 <div className="mb-8">
                   <div className="mb-6">
                     <h3 className="text-2xl font-semibold text-[#1a1a1a]">Essentials</h3>
@@ -197,7 +197,7 @@ export default function Pricing() {
               </div>
 
               {/* Core Plan */}
-              <div className="rounded-3xl border-2 border-[#3A4F6A] bg-white p-8 relative shadow-2xl shadow-[#3A4F6A]/10 lg:-mt-8">
+              <div className="rounded-2xl border-2 border-[#3A4F6A] bg-white p-8 relative transition-all duration-300 hover:shadow-lg lg:-mt-8">
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider bg-[#3A4F6A] text-white uppercase whitespace-nowrap">
                   Most Popular
                 </div>
@@ -258,7 +258,7 @@ export default function Pricing() {
               </div>
 
               {/* Enterprise Plan */}
-              <div className="rounded-3xl border border-slate-200 bg-white p-8 relative hover:border-slate-300">
+              <div className="rounded-2xl border border-slate-100 bg-white p-8 relative transition-all duration-300 hover:shadow-lg">
                 <div className="mb-8">
                   <div className="mb-6">
                     <h3 className="text-2xl font-semibold text-[#1a1a1a]">Enterprise</h3>
@@ -334,7 +334,7 @@ export default function Pricing() {
               {faqs.map((faq, index) => (
                 <div 
                   key={index}
-                  className={`rounded-xl border ${openFaqIndex === index ? 'border-[#3A4F6A] bg-slate-50' : 'border-slate-200 bg-white'}`}
+                  className={`rounded-2xl border ${openFaqIndex === index ? 'border-[#3A4F6A] bg-slate-50' : 'border-slate-100 bg-white'}`}
                 >
                   <button
                     onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}

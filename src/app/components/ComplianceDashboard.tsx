@@ -202,11 +202,9 @@ export default function ComplianceDashboard() {
 
       {/* Overall Compliance Score */}
       <div 
-        className="rounded-xl border p-10 mb-8"
+        className="rounded-2xl border p-10 mb-8 border-slate-100"
         style={{
           backgroundColor: 'var(--card)',
-          borderColor: 'var(--border)',
-          boxShadow: 'var(--shadow-md)'
         }}
       >
         <div className="flex items-center justify-between">
@@ -245,11 +243,9 @@ export default function ComplianceDashboard() {
         {/* Left: Compliance by Category */}
         <div className="lg:col-span-8">
           <div 
-            className="rounded-xl border overflow-hidden"
+            className="rounded-2xl border overflow-hidden border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="px-8 py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
@@ -327,11 +323,9 @@ export default function ComplianceDashboard() {
         <div className="lg:col-span-4 space-y-6">
           {/* Risk Summary */}
           <div 
-            className="rounded-xl border p-8"
+            className="rounded-2xl border p-8 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <h3 className="text-lg mb-6">Risk summary</h3>
@@ -383,11 +377,9 @@ export default function ComplianceDashboard() {
 
           {/* Recent Activity */}
           <div 
-            className="rounded-xl border p-8"
+            className="rounded-2xl border p-8 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <h3 className="text-lg mb-6">Recent activity</h3>
@@ -429,11 +421,9 @@ export default function ComplianceDashboard() {
 
           {/* Quick Actions */}
           <div 
-            className="rounded-xl border p-8"
+            className="rounded-2xl border p-8 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <h4 className="mb-5">Compliance actions</h4>

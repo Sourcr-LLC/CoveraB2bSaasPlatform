@@ -64,7 +64,7 @@ export default function IndustriesLogistics() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
                 style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
               >
                 Start free trial
@@ -72,8 +72,8 @@ export default function IndustriesLogistics() {
               </Link>
               <Link 
                 to="/#demo"
-                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
-                style={{ border: '1px solid var(--border)', color: 'var(--foreground)', fontWeight: 500 }}
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
+                style={{ border: '1px solid #f1f5f9', color: 'var(--foreground)', fontWeight: 500 }}
                 onClick={(e) => {
                   e.preventDefault();
                   setIsDemoModalOpen(true);
@@ -236,7 +236,7 @@ export default function IndustriesLogistics() {
           </p>
           <Link 
             to="/login"
-            className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
+            className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
             style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
           >
             Start free trial

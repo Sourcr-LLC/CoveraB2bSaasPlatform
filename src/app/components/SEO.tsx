@@ -154,8 +154,8 @@ export default function SEO({
 export const SEO_CONFIGS = {
   landing: {
     title: 'Covera - Vendor Contract & Compliance Management Platform',
-    description: 'Detailed vendor contract management for project and service agreements. Track deliverables, milestones, SLAs, and insurance compliance. Trusted by property managers and construction firms.',
-    keywords: 'vendor contract management, SLA tracking, deliverable tracking, milestone monitoring, service agreement management, vendor compliance tracking, COI tracking software',
+    description: 'We don’t manage vendors, we manage the risk they introduce. Track deliverables, milestones, SLAs, and insurance compliance in a single dashboard. Trusted by property managers and construction firms.',
+    keywords: 'vendor risk management, vendor contract management, SLA tracking, deliverable tracking, milestone monitoring, service agreement management, vendor compliance tracking, COI tracking software',
     schema: [
       {
         "@context": "https://schema.org",

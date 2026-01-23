@@ -571,29 +571,28 @@ export default function Dashboard() {
   return (
     <div 
       onClick={() => activeFilter && setActiveFilter(null)}
-      className="flex flex-col p-4 md:p-8 lg:p-8 min-h-screen pb-20" 
+      className="flex flex-col p-6 md:p-10 lg:p-12 min-h-screen pb-20 selection:bg-blue-100" 
       style={{ 
-        backgroundColor: 'var(--background)',
-        backgroundImage: 'radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%)' 
+        backgroundColor: '#F9FAFB', // very light gray-blue
       }}
     >
       {/* Header */}
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex-none mb-6 md:mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+        className="flex-none mb-8 md:mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
       >
         <div>
-          <h1 className="mb-2 text-2xl md:text-3xl tracking-tight" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+          <h1 className="mb-2 text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
             Dashboard
           </h1>
-          <p className="text-sm md:text-base" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-            Real-time overview of your vendor compliance status
+          <p className="text-slate-500 font-medium text-base">
+            Overview of your vendor compliance status
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button 
             onClick={() => navigate('/add-vendor')} 
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#3A4F6A] text-white hover:bg-[#2c3e53] shadow-sm"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#3A4F6A] text-white hover:bg-[#2c3e53] shadow-sm hover:shadow-md hover:-translate-y-0.5"
           >
             <Plus className="w-4 h-4" />
             Add Vendor
@@ -603,23 +602,24 @@ export default function Dashboard() {
 
       {/* Action Banner */}
       {stats.nonCompliant > 0 && (
-        <div onClick={(e) => e.stopPropagation()} className="flex-none mb-6 p-4 rounded-lg bg-red-50 border border-red-100 flex items-center justify-between shadow-sm">
-           <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
-                <AlertTriangle className="w-4 h-4" />
+        <div onClick={(e) => e.stopPropagation()} className="flex-none mb-6 p-5 rounded-2xl bg-white border border-red-100 flex items-center justify-between hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+           <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+           <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-transform duration-300">
+                <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-sm font-bold text-red-900">
+                <p className="text-sm font-bold text-slate-900">
                   {stats.nonCompliant} {stats.nonCompliant === 1 ? 'vendor is' : 'vendors are'} non-compliant
                 </p>
-                <p className="text-xs text-red-700">
+                <p className="text-xs text-slate-500 mt-0.5">
                   Resolve this now to reduce exposure and maintain audit readiness.
                 </p>
               </div>
            </div>
            <button 
              onClick={(e) => handleFilterClick('non-compliant', 'insurance', e)}
-             className="text-xs font-semibold bg-white text-red-700 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition-colors"
+             className="text-xs font-semibold bg-red-50 text-red-700 px-4 py-2 rounded-xl hover:bg-red-100 transition-colors"
            >
              Resolve issue →
            </button>
@@ -627,15 +627,15 @@ export default function Dashboard() {
       )}
 
       {/* KPI Cards */}
-      <div className="flex-none grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+      <div className="flex-none grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         {kpiCards.map((card, index) => (
           <button
             key={index}
             onClick={(e) => handleFilterClick(card.id, card.targetTab, e)}
-            className={`text-left transition-all duration-300 rounded-xl relative ${
+            className={`text-left transition-all duration-300 rounded-2xl relative ${
               activeFilter === card.id 
                 ? 'ring-2 ring-primary ring-offset-2' 
-                : 'hover:opacity-90'
+                : 'hover:opacity-100'
             }`}
           >
             <KpiCard
@@ -655,30 +655,42 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Row */}
-      <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 h-auto lg:h-[320px]">
+      <div className="flex-none grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 h-auto lg:h-[360px]">
          {/* Main Chart */}
-         <div onClick={(e) => e.stopPropagation()} className="lg:col-span-2 bg-white/70 backdrop-blur-md border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
+         <div onClick={(e) => e.stopPropagation()} className="lg:col-span-2 bg-white border border-slate-100 rounded-2xl p-7 flex flex-col hover:shadow-md transition-all duration-300 overflow-hidden z-0 h-[360px] lg:h-full group">
             <div className="flex justify-between items-center mb-6">
                <div>
-                 <h3 className="font-bold text-slate-900">Compliance Trends</h3>
-                 <p className="text-xs text-slate-500 mt-1">6-month compliance rate history</p>
+                 <h3 className="font-bold text-slate-900 text-lg">Compliance Trends</h3>
+                 <p className="text-sm text-slate-500 mt-1 font-medium">6-month compliance rate history</p>
                </div>
             </div>
             <div className="flex-1 w-full min-h-[200px] min-w-0">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={complianceTrendData}>
+                <AreaChart data={complianceTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorCompliance" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={trendColor} stopOpacity={0.3}/>
+                      <stop offset="5%" stopColor={trendColor} stopOpacity={0.15}/>
                       <stop offset="95%" stopColor={trendColor} stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#94a3b8'}} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#94a3b8'}} domain={[0, 100]} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{fontSize: 12, fill: '#94a3b8', fontWeight: 600}} 
+                    dy={10} 
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{fontSize: 12, fill: '#94a3b8', fontWeight: 600}} 
+                    domain={[0, 100]} 
+                  />
                   <Tooltip 
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    itemStyle={{ color: trendColor, fontWeight: 600 }}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                    itemStyle={{ color: trendColor, fontWeight: 700 }}
+                    cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }}
                   />
                   <Area type="monotone" dataKey="value" stroke={trendColor} strokeWidth={3} fillOpacity={1} fill="url(#colorCompliance)" />
                 </AreaChart>
@@ -687,18 +699,18 @@ export default function Dashboard() {
          </div>
 
          {/* Secondary Widget (Risk Distribution Donut) */}
-         <div onClick={(e) => e.stopPropagation()} className="bg-white/70 backdrop-blur-md border border-[#e7e5e4] rounded-xl p-6 flex flex-col shadow-sm overflow-hidden z-0 h-[320px] lg:h-full">
-            <h3 className="font-bold text-slate-900 mb-4">Risk Distribution</h3>
+         <div onClick={(e) => e.stopPropagation()} className="bg-white border border-slate-100 rounded-2xl p-7 flex flex-col hover:shadow-md transition-all duration-300 overflow-hidden z-0 h-[360px] lg:h-full group">
+            <h3 className="font-bold text-slate-900 text-lg mb-4">Risk Distribution</h3>
             <div className="flex-1 flex flex-col items-center justify-center relative min-h-[200px] lg:min-h-0 min-w-0">
                {riskDistribution.length > 0 ? (
-                 <div className="flex items-center w-full h-full gap-4">
-                   <div className="flex-1 h-full min-h-[160px] min-w-0">
+                 <div className="flex flex-col w-full h-full gap-2">
+                   <div className="flex-1 h-full min-h-[160px] min-w-0 -mt-4">
                      <ResponsiveContainer width="100%" height="100%">
                        <PieChart>
                          <Pie
                            data={riskDistribution}
-                           innerRadius={60}
-                           outerRadius={75}
+                           innerRadius={70}
+                           outerRadius={85}
                            paddingAngle={4}
                            dataKey="value"
                            stroke="none"
@@ -711,33 +723,36 @@ export default function Dashboard() {
                            <Label
                              value={stats.total}
                              position="center"
-                             className="text-2xl font-bold fill-slate-900"
+                             className="text-3xl font-bold fill-slate-800 tracking-tighter"
                              dy={-10}
                            />
                            <Label
                              value="Vendors"
                              position="center"
-                             className="text-xs fill-slate-500 font-medium"
+                             className="text-xs fill-slate-400 font-bold uppercase tracking-widest"
                              dy={15}
                            />
                          </Pie>
                        </PieChart>
                      </ResponsiveContainer>
                    </div>
-                   <div className="flex flex-col justify-center space-y-3 min-w-[120px]">
+                   <div className="flex justify-center gap-6 pb-2">
                      {riskDistribution.map((item, index) => (
-                       <div key={index} className="flex items-center justify-between text-sm">
-                         <div className="flex items-center gap-2">
-                           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                           <span className="text-slate-600 text-xs font-medium">{item.name}</span>
-                         </div>
-                         <span className="font-bold text-slate-900 text-xs">{item.value}</span>
+                       <div key={index} className="flex flex-col items-center text-center">
+                         <div className="w-1.5 h-1.5 rounded-full mb-1.5" style={{ backgroundColor: item.color }} />
+                         <span className="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-0.5">{item.name}</span>
+                         <span className="font-bold text-slate-800 text-lg leading-none">{item.value}</span>
                        </div>
                      ))}
                    </div>
                  </div>
                ) : (
-                  <div className="text-center text-sm text-slate-400">No data available</div>
+                  <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-3">
+                    <div className="w-20 h-20 rounded-full border-2 border-slate-100 flex items-center justify-center bg-slate-50/50">
+                        <BarChart3 className="w-8 h-8 opacity-20" />
+                    </div>
+                    <p className="text-sm font-medium">No distribution data</p>
+                  </div>
                )}
             </div>
          </div>
@@ -751,57 +766,56 @@ export default function Dashboard() {
             id="attention-items"
             ref={attentionItemsRef}
             onClick={(e) => e.stopPropagation()}
-            className={`rounded-xl border overflow-hidden transition-all duration-500 bg-white/70 backdrop-blur-md flex flex-col h-full z-0 ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'shadow-sm'}`}
+            className={`rounded-2xl border overflow-hidden transition-all duration-300 bg-white flex flex-col h-full z-0 hover:shadow-md ${highlightAttentionItems ? 'ring-4 ring-red-100 border-red-300 shadow-lg scale-[1.01]' : 'border-slate-100'}`}
             style={{
-              borderColor: highlightAttentionItems ? '#fca5a5' : 'var(--border)',
+              borderColor: highlightAttentionItems ? '#fca5a5' : undefined,
             }}
           >
-            <div className="flex-none px-6 py-4 border-b flex justify-between items-center relative" style={{ borderColor: 'var(--border-subtle)' }}>
+            <div className="flex-none px-6 py-5 border-b border-slate-100 flex justify-between items-center relative">
               {selectedVendorIds.size > 0 && activeTab === 'insurance' ? (
-                <div className="absolute inset-0 bg-blue-50/90 backdrop-blur-sm z-20 flex items-center justify-between px-6">
+                <div className="absolute inset-0 bg-white z-20 flex items-center justify-between px-6 border-b border-blue-100">
                   <div className="flex items-center gap-3">
-                    <span className="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                      {selectedVendorIds.size}
+                    <span className="bg-[#3A4F6A] text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm">
+                      {selectedVendorIds.size} selected
                     </span>
-                    <span className="text-sm font-medium text-blue-900">selected</span>
                   </div>
                   <div className="flex items-center gap-2">
                      <button
                        onClick={handleBulkReminders}
-                       className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-200 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
+                       className="flex items-center gap-2 px-4 py-2 bg-[#3A4F6A] text-white text-xs font-bold rounded-xl hover:bg-[#2c3e53] transition-colors shadow-sm"
                      >
                        <Send className="w-3.5 h-3.5" />
                        Send Reminders
                      </button>
                      <button
                        onClick={handleExport}
-                       className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-200 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
+                       className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50 transition-colors shadow-sm"
                      >
                        <Download className="w-3.5 h-3.5" />
                        Export
                      </button>
                      <button
                        onClick={() => setSelectedVendorIds(new Set())}
-                       className="p-1.5 text-blue-400 hover:text-blue-700 hover:bg-blue-100 rounded-md transition-colors ml-1"
+                       className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors ml-1"
                      >
-                       <XCircle className="w-4 h-4" />
+                       <XCircle className="w-5 h-5" />
                      </button>
                   </div>
                 </div>
               ) : null}
 
               <div>
-                <h3 className="text-lg font-bold tracking-tight text-slate-900 mb-0.5">Attention Items</h3>
-                <p className="text-xs text-slate-500">
+                <h3 className="text-lg font-bold text-slate-900 mb-0.5">Attention Items</h3>
+                <p className="text-xs text-slate-500 font-medium">
                   Items requiring your immediate review
                 </p>
               </div>
               
               {/* Tabs */}
-              <div className="flex bg-slate-100 p-1 rounded-lg">
+              <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-100">
                 <button
                   onClick={() => setActiveTab('insurance')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${
                     activeTab === 'insurance' 
                       ? 'bg-white text-slate-900 shadow-sm' 
                       : 'text-slate-500 hover:text-slate-900'
@@ -811,7 +825,7 @@ export default function Dashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('contracts')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${
                     activeTab === 'contracts' 
                       ? 'bg-white text-slate-900 shadow-sm' 
                       : 'text-slate-500 hover:text-slate-900'
@@ -825,7 +839,7 @@ export default function Dashboard() {
             {/* Desktop Table View */}
             <div className="hidden md:block overflow-x-auto overflow-y-auto flex-1 min-h-0">
               <table className="w-full">
-                <thead className="sticky top-0 bg-white z-10 shadow-sm">
+                <thead className="sticky top-0 bg-white z-10 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
                   <tr className="bg-slate-50/50 border-b border-slate-100">
                     {activeTab === 'insurance' && (
                       <th className="w-10 px-6 py-4">
@@ -834,7 +848,7 @@ export default function Dashboard() {
                           className="text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
                         >
                            {selectedVendorIds.size === filteredVendors.length && filteredVendors.length > 0 ? (
-                             <CheckSquare className="w-4 h-4 text-blue-600" />
+                             <div className="bg-[#3A4F6A] rounded text-white"><CheckSquare className="w-4 h-4" /></div>
                            ) : (
                              <Square className="w-4 h-4" />
                            )}
@@ -865,10 +879,10 @@ export default function Dashboard() {
                         <td className="w-10 px-6 py-4">
                            <button 
                              onClick={(e) => handleSelectVendor(item.id, e)}
-                             className="text-slate-400 hover:text-blue-600 transition-colors focus:outline-none"
+                             className="text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
                            >
                               {selectedVendorIds.has(item.id) ? (
-                                <CheckSquare className="w-4 h-4 text-blue-600" />
+                                <div className="bg-[#3A4F6A] rounded text-white"><CheckSquare className="w-4 h-4" /></div>
                               ) : (
                                 <Square className="w-4 h-4 group-hover:text-slate-500" />
                               )}
@@ -962,13 +976,15 @@ export default function Dashboard() {
                   ))}
                   {(activeTab === 'insurance' ? filteredVendors : filteredContracts).length === 0 && (
                      <tr>
-                        <td colSpan={4} className="px-8 py-12 text-center text-slate-400">
-                           <CheckCircle2 className="w-8 h-8 mx-auto mb-3 opacity-20" />
-                           <p className="font-medium text-slate-600 mb-1">
+                        <td colSpan={5} className="px-8 py-20 text-center">
+                           <div className="w-16 h-16 mx-auto mb-4 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100">
+                             <CheckCircle2 className="w-8 h-8 text-emerald-500/50" />
+                           </div>
+                           <p className="font-bold text-slate-900 mb-1 text-base">
                              All clear!
                            </p>
-                           <p className="text-xs">
-                             {activeTab === 'insurance' ? "No vendors match the current filter." : "No contracts match the current filter."}
+                           <p className="text-sm text-slate-500">
+                             {activeTab === 'insurance' ? "No vendors require your attention right now." : "No contracts require your attention right now."}
                            </p>
                         </td>
                      </tr>
@@ -1028,14 +1044,14 @@ export default function Dashboard() {
         {/* Activity Feed - Right Column */}
         <div className="w-full lg:col-span-1 lg:h-full flex flex-col gap-6 lg:min-h-0">
           <div
-            className="rounded-xl border bg-white/70 backdrop-blur-md shadow-sm overflow-hidden flex-1 flex flex-col min-h-0"
-            style={{ borderColor: 'var(--border)' }}
+            className="rounded-2xl border border-slate-100 bg-white hover:shadow-md transition-all duration-300 overflow-hidden flex-1 flex flex-col min-h-0"
+            style={{ borderColor: undefined }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-none px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
-               <h3 className="font-bold text-slate-900 text-sm">Recent Activity</h3>
-               <button className="text-slate-400 hover:text-slate-600 transition-colors">
-                 <MoreHorizontal className="w-4 h-4" />
+            <div className="flex-none px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+               <h3 className="font-bold text-slate-900 text-base">Recent Activity</h3>
+               <button className="text-slate-400 hover:text-slate-600 transition-colors p-1 hover:bg-slate-50 rounded-lg">
+                 <MoreHorizontal className="w-5 h-5" />
                </button>
             </div>
             <div className="flex-1 divide-y divide-slate-50 overflow-y-auto">
@@ -1077,7 +1093,7 @@ export default function Dashboard() {
 
           {/* Tips Card or Onboarding */}
           {onboardingProgress < 100 ? (
-            <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-xl bg-white border border-slate-200 p-6 shadow-sm relative overflow-hidden group">
+            <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-white border border-slate-100 p-6 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
                <div className="flex justify-between items-start mb-4">
                  <div>
                    <h4 className="font-bold text-slate-900 mb-1">Account Setup</h4>
@@ -1125,7 +1141,7 @@ export default function Dashboard() {
                )}
             </div>
           ) : (
-          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-md border border-blue-100 p-6 shadow-sm relative overflow-hidden group">
+          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-md border border-blue-100 p-6 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
             {/* Background blobs to match design */}
             <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-blue-100/30 group-hover:scale-105 transition-transform duration-700"></div>
             <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-indigo-100/30 group-hover:scale-105 transition-transform duration-700 delay-100"></div>

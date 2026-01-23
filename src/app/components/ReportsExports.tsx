@@ -264,10 +264,9 @@ export default function ReportsExports() {
       {/* Statistics Overview */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div 
-          className="p-6 rounded-xl border"
+          className="p-6 rounded-2xl border border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <div className="text-2xl mb-2" style={{ color: 'var(--foreground)' }}>{vendors.length}</div>
@@ -275,10 +274,9 @@ export default function ReportsExports() {
         </div>
         
         <div 
-          className="p-6 rounded-xl border"
+          className="p-6 rounded-2xl border border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <div className="text-2xl mb-2" style={{ color: 'var(--status-compliant)' }}>{compliantCount}</div>
@@ -286,10 +284,9 @@ export default function ReportsExports() {
         </div>
         
         <div 
-          className="p-6 rounded-xl border"
+          className="p-6 rounded-2xl border border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <div className="text-2xl mb-2" style={{ color: 'var(--status-at-risk)' }}>{atRiskCount}</div>
@@ -297,10 +294,9 @@ export default function ReportsExports() {
         </div>
         
         <div 
-          className="p-6 rounded-xl border"
+          className="p-6 rounded-2xl border border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <div className="text-2xl mb-2" style={{ color: 'var(--status-non-compliant)' }}>{nonCompliantCount}</div>
@@ -313,10 +309,9 @@ export default function ReportsExports() {
         <button 
           onClick={() => quickExport('all', 'csv')}
           disabled={isGenerating}
-          className="p-6 rounded-xl border text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ 
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <FileSpreadsheet className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
@@ -327,10 +322,9 @@ export default function ReportsExports() {
         <button 
           onClick={() => quickExport('compliant', 'pdf')}
           disabled={isGenerating}
-          className="p-6 rounded-xl border text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ 
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <FileText className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
@@ -341,10 +335,9 @@ export default function ReportsExports() {
         <button 
           onClick={() => quickExport('expiring', 'excel')}
           disabled={isGenerating}
-          className="p-6 rounded-xl border text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ 
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <FileSpreadsheet className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
@@ -355,10 +348,9 @@ export default function ReportsExports() {
         <button 
           onClick={() => quickExport('audit', 'pdf')}
           disabled={isGenerating}
-          className="p-6 rounded-xl border text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-6 rounded-2xl border border-slate-100 text-left transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ 
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)'
           }}
         >
           <FileText className="w-6 h-6 mb-4" style={{ color: 'var(--primary)' }} />
@@ -371,11 +363,9 @@ export default function ReportsExports() {
         {/* Left: Custom Report Builder */}
         <div className="lg:col-span-5">
           <div 
-            className="rounded-xl border p-8"
+            className="rounded-2xl border p-8 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <h3 className="text-lg mb-6">Custom report builder</h3>
@@ -488,11 +478,9 @@ export default function ReportsExports() {
         {/* Right: Data Preview */}
         <div className="lg:col-span-7">
           <div 
-            className="rounded-xl border overflow-hidden"
+            className="rounded-2xl border overflow-hidden border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="px-8 py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>

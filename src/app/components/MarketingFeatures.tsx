@@ -53,8 +53,8 @@ export default function MarketingFeatures() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Card 1 */}
             <div className="group">
-              <div className="bg-stone-100 rounded-2xl h-64 mb-6 overflow-hidden relative border border-stone-200 transition-all group-hover:shadow-lg">
-                <div className="absolute inset-x-8 top-8 bottom-0 bg-white rounded-t-xl shadow-lg border border-stone-200 p-4">
+              <div className="bg-white rounded-2xl h-64 mb-6 overflow-hidden relative border border-slate-100 transition-all group-hover:shadow-lg">
+                <div className="absolute inset-x-8 top-8 bottom-0 bg-white rounded-t-xl shadow-lg border border-slate-100 p-4">
                   {/* Mock Upload UI */}
                   <div className="flex flex-col items-center justify-center h-full border-2 border-dashed border-stone-200 rounded-lg bg-stone-50">
                     <Upload className="w-8 h-8 text-stone-400 mb-2" />
@@ -74,9 +74,9 @@ export default function MarketingFeatures() {
 
             {/* Card 2 */}
             <div className="group">
-              <div className="bg-stone-100 rounded-2xl h-64 mb-6 overflow-hidden relative border border-stone-200 transition-all group-hover:shadow-lg">
+              <div className="bg-white rounded-2xl h-64 mb-6 overflow-hidden relative border border-slate-100 transition-all group-hover:shadow-lg">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-48 bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-xl border border-stone-200 transform group-hover:scale-105 transition-transform">
+                  <div className="w-48 bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-xl border border-slate-100 transform group-hover:scale-105 transition-transform">
                     <div className="flex items-center justify-center mb-4">
                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-stone-200 to-stone-300 relative flex items-center justify-center">
                          <Search className="w-6 h-6 text-stone-500" />
@@ -104,8 +104,8 @@ export default function MarketingFeatures() {
 
             {/* Card 3 */}
             <div className="group">
-              <div className="bg-stone-100 rounded-2xl h-64 mb-6 overflow-hidden relative border border-stone-200 transition-all group-hover:shadow-lg flex items-center justify-center p-8">
-                <div className="w-full h-full bg-white rounded-xl shadow-sm border border-stone-200 p-4 space-y-3 relative">
+              <div className="bg-white rounded-2xl h-64 mb-6 overflow-hidden relative border border-slate-100 transition-all group-hover:shadow-lg flex items-center justify-center p-8">
+                <div className="w-full h-full bg-white rounded-xl shadow-sm border border-slate-100 p-4 space-y-3 relative">
                   <div className="flex items-center gap-3 mb-2">
                      <div className="w-8 h-8 rounded-full bg-stone-200" />
                      <div className="flex-1">
@@ -157,7 +157,7 @@ export default function MarketingFeatures() {
 
           <div className="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
             {/* Large Blue Card */}
-            <div className="md:col-span-2 md:row-span-2 bg-[var(--primary)] rounded-3xl p-8 text-white relative overflow-hidden group">
+            <div className="md:col-span-2 md:row-span-2 bg-[var(--primary)] rounded-2xl p-8 text-white relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
               <div className="relative z-10 h-full flex flex-col">
                  <div className="flex-1 flex items-center justify-center p-8">
@@ -194,11 +194,11 @@ export default function MarketingFeatures() {
             </div>
 
             {/* Wide Card */}
-            <div className="md:col-span-2 bg-stone-100 rounded-3xl p-8 relative overflow-hidden group">
+            <div className="md:col-span-2 bg-white border border-slate-100 rounded-2xl p-8 relative overflow-hidden group">
                <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-stone-50/50 pointer-events-none" />
                <div className="relative z-10 h-full flex flex-col justify-between">
                   <div className="flex items-center justify-between">
-                     <div className="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm border border-stone-100">Audit Log</div>
+                     <div className="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm border border-slate-100">Audit Log</div>
                      <div className="bg-[var(--primary)] text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
                        <Sparkles className="w-3 h-3" /> Auto-Logged
                      </div>
@@ -211,8 +211,8 @@ export default function MarketingFeatures() {
             </div>
 
             {/* Small Card 1 */}
-            <div className="bg-stone-50 rounded-3xl p-6 border border-stone-100 hover:shadow-lg transition-shadow">
-               <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-stone-100 flex items-center justify-center mb-4 text-[var(--primary)]">
+            <div className="bg-white rounded-2xl p-6 border border-slate-100 hover:shadow-lg transition-shadow">
+               <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center mb-4 text-[var(--primary)]">
                   <ScanLine className="w-5 h-5" />
                </div>
                <h3 className="font-bold text-[#1a1a1a] mb-1">OCR & Contract AI</h3>
@@ -220,7 +220,7 @@ export default function MarketingFeatures() {
             </div>
 
             {/* Small Card 2 */}
-            <div className="bg-gradient-to-br from-blue-50 to-white rounded-3xl p-6 border border-blue-100 hover:shadow-lg transition-shadow relative overflow-hidden">
+            <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border border-blue-100 hover:shadow-lg transition-shadow relative overflow-hidden">
                <div className="absolute top-4 right-4 bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-lg">
                  Risk High
                </div>

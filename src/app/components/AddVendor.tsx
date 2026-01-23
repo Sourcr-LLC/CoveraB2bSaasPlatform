@@ -129,10 +129,9 @@ export default function AddVendor() {
     <div className="h-full" style={{ backgroundColor: 'var(--background)' }}>
       {/* Header */}
       <div 
-        className="border-b px-4 md:px-12 py-6 md:py-8"
+        className="border-b px-4 md:px-12 py-6 md:py-8 border-slate-100"
         style={{ 
           backgroundColor: 'var(--card)',
-          borderColor: 'var(--border)'
         }}
       >
         <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
@@ -187,11 +186,9 @@ export default function AddVendor() {
           )}
           
           <div 
-            className="rounded-2xl border p-4 md:p-8 mb-6"
+            className="rounded-2xl border p-4 md:p-8 mb-6 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-md)'
             }}
           >
             <h2 className="text-lg md:text-xl mb-4 md:mb-6" style={{ color: 'var(--foreground)' }}>
@@ -370,11 +367,9 @@ export default function AddVendor() {
 
           {/* Insurance Documents Section */}
           <div 
-            className="rounded-2xl border p-4 md:p-8 mb-6"
+            className="rounded-2xl border p-4 md:p-8 mb-6 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-md)'
             }}
           >
             <h2 className="text-lg md:text-xl mb-4 md:mb-6" style={{ color: 'var(--foreground)' }}>

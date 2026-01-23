@@ -120,7 +120,7 @@ export default function Contact() {
               </div>
 
               {/* Contact Form */}
-              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl shadow-[var(--primary)]/5">
+              <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
                 <h3 className="text-xl font-bold text-[#1a1a1a] mb-6">Send us a message</h3>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-2 gap-6">
@@ -191,7 +191,7 @@ export default function Contact() {
                   <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-xl bg-[var(--primary)] text-white font-medium hover:bg-[var(--primary-hover)] shadow-lg shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 rounded-xl bg-[var(--primary)] text-white font-medium hover:bg-[var(--primary-hover)] shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>

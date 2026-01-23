@@ -347,11 +347,9 @@ export default function Settings() {
         {/* Profile Information Card */}
         {profile && (
           <div
-            className="rounded-xl border p-8 mb-6"
+            className="rounded-2xl border border-slate-100 p-8 mb-6"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)',
             }}
           >
             <div className="flex items-start justify-between mb-6">
@@ -623,11 +621,9 @@ export default function Settings() {
 
         {/* Subscription Card */}
         <div
-          className="rounded-xl border p-8 mb-6"
+          className="rounded-2xl border border-slate-100 p-8 mb-6"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div className="flex items-start justify-between mb-6">
@@ -692,11 +688,9 @@ export default function Settings() {
         {/* Core Plan Features */}
         {subscription?.plan === 'free' && (
           <div
-            className="rounded-xl border p-8 mb-6"
+            className="rounded-2xl border border-slate-100 p-8 mb-6"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)',
             }}
           >
             <h3 className="text-lg mb-6" style={{ fontWeight: 600, color: 'var(--foreground)' }}>
@@ -727,11 +721,9 @@ export default function Settings() {
 
         {/* View Platform Walkthrough */}
         <div
-          className="rounded-xl border p-8 mb-6"
+          className="rounded-2xl border p-8 mb-6 border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div className="flex items-start justify-between mb-4">
@@ -772,11 +764,9 @@ export default function Settings() {
 
         {/* Demo Mode Toggle */}
         <div
-          className="rounded-xl border p-8 mb-6"
+          className="rounded-2xl border p-8 mb-6 border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div className="flex items-start justify-between mb-4">
@@ -874,11 +864,9 @@ export default function Settings() {
 
         {/* Support & Help */}
         <div
-          className="rounded-xl border p-8 mt-6"
+          className="rounded-2xl border p-8 mt-6 border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div className="mb-6">
@@ -894,9 +882,8 @@ export default function Settings() {
             {/* Sales Inquiries */}
             <a
               href="mailto:sales@covera.co"
-              className="flex items-start gap-4 p-4 rounded-lg border transition-all hover:shadow-md"
+              className="flex items-start gap-4 p-4 rounded-xl border border-slate-100 transition-all hover:shadow-md"
               style={{
-                borderColor: 'var(--border)',
                 backgroundColor: 'var(--panel)',
               }}
             >
@@ -922,9 +909,8 @@ export default function Settings() {
             {/* Customer Support */}
             <a
               href="mailto:support@covera.co"
-              className="flex items-start gap-4 p-4 rounded-lg border transition-all hover:shadow-md"
+              className="flex items-start gap-4 p-4 rounded-xl border border-slate-100 transition-all hover:shadow-md"
               style={{
-                borderColor: 'var(--border)',
                 backgroundColor: 'var(--panel)',
               }}
             >

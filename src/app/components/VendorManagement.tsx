@@ -109,7 +109,7 @@ export default function VendorManagement() {
   return (
     <div className="p-4 md:p-8 lg:p-12">
       {isLimitReached && (
-        <div className="mb-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 flex items-center justify-between gap-4">
+        <div className="mb-6 p-4 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <p className="text-sm font-medium">
@@ -134,7 +134,7 @@ export default function VendorManagement() {
           <button 
             data-tour="add-vendor-button"
             disabled={isLimitReached}
-            className={`px-6 py-3 rounded-lg transition-all text-sm inline-flex items-center gap-2 w-full md:w-auto justify-center ${isLimitReached ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`px-6 py-3 rounded-xl transition-all text-sm inline-flex items-center gap-2 w-full md:w-auto justify-center ${isLimitReached ? 'opacity-50 cursor-not-allowed' : ''}`}
             style={{ 
               backgroundColor: 'var(--primary)',
               color: 'var(--primary-foreground)',
@@ -150,44 +150,36 @@ export default function VendorManagement() {
       {/* Stats Bar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border border-slate-100 px-6 py-5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Total Vendors</div>
           <div className="text-3xl tracking-tight" style={{ color: 'var(--foreground)' }}>{stats.total}</div>
         </div>
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border border-slate-100 px-6 py-5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Compliant</div>
           <div className="text-3xl tracking-tight" style={{ color: 'var(--status-compliant)' }}>{stats.compliant}</div>
         </div>
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border border-slate-100 px-6 py-5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>At Risk</div>
           <div className="text-3xl tracking-tight" style={{ color: 'var(--status-at-risk)' }}>{stats.atRisk}</div>
         </div>
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border border-slate-100 px-6 py-5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Non-Compliant</div>
@@ -197,11 +189,9 @@ export default function VendorManagement() {
 
       {/* Filters and Search */}
       <div 
-        className="rounded-xl border p-4 md:p-6 mb-6"
+        className="rounded-2xl border border-slate-100 p-4 md:p-6 mb-6"
         style={{
           backgroundColor: 'var(--card)',
-          borderColor: 'var(--border)',
-          boxShadow: 'var(--shadow-sm)'
         }}
       >
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
@@ -271,11 +261,9 @@ export default function VendorManagement() {
 
       {/* Desktop Table */}
       <div
-        className="hidden md:block rounded-xl border overflow-hidden"
+        className="hidden md:block rounded-2xl border border-slate-100 overflow-hidden"
         style={{
           backgroundColor: 'var(--card)',
-          borderColor: 'var(--border)',
-          boxShadow: 'var(--shadow-sm)'
         }}
       >
         <table className="w-full">
@@ -390,11 +378,9 @@ export default function VendorManagement() {
             <Link
               key={vendor.id}
               to={`/vendors/${vendor.id}`}
-              className="block rounded-xl border p-4 transition-all"
+              className="block rounded-2xl border border-slate-100 p-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300"
               style={{
                 backgroundColor: 'var(--card)',
-                borderColor: 'var(--border)',
-                boxShadow: 'var(--shadow-sm)'
               }}
             >
               <div className="flex items-start justify-between mb-3">

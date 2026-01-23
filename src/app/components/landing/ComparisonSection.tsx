@@ -93,7 +93,7 @@ export default function ComparisonSection() {
 
           {/* Old Way Card */}
           <div 
-            className="p-6 md:p-8 rounded-3xl bg-slate-50 border border-slate-100 relative group transition-all duration-300"
+            className="p-6 md:p-8 rounded-2xl bg-white border border-slate-100 relative group transition-all duration-300"
             onMouseEnter={() => setIsAutoPlaying(false)}
           >
             <div className="absolute top-6 right-6 md:top-8 md:right-8 text-slate-300">
@@ -163,7 +163,7 @@ export default function ComparisonSection() {
 
           {/* New Way Card */}
           <div 
-            className="p-6 md:p-8 rounded-3xl bg-[#3A4F6A] text-white relative shadow-2xl shadow-[#3A4F6A]/20 overflow-hidden group"
+            className="p-6 md:p-8 rounded-2xl bg-[#3A4F6A] text-white relative overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-[#3A4F6A]/20"
             onMouseEnter={() => setIsAutoPlaying(false)}
           >
             {/* Background Effects */}

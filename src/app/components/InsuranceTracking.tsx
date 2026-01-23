@@ -87,11 +87,9 @@ export default function InsuranceTracking() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border px-6 py-5 border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Expiring in 7 days</div>
@@ -99,11 +97,9 @@ export default function InsuranceTracking() {
           <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>Requires immediate action</div>
         </div>
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border px-6 py-5 border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Expiring in 14 days</div>
@@ -111,11 +107,9 @@ export default function InsuranceTracking() {
           <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>Monitor closely</div>
         </div>
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border px-6 py-5 border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Expiring in 30 days</div>
@@ -123,11 +117,9 @@ export default function InsuranceTracking() {
           <div className="text-xs" style={{ color: 'var(--foreground-subtle)' }}>Plan ahead</div>
         </div>
         <div 
-          className="rounded-xl border px-6 py-5"
+          className="rounded-2xl border px-6 py-5 border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-sm)'
           }}
         >
           <div className="text-sm mb-2" style={{ color: 'var(--foreground-muted)' }}>Missing COIs</div>
@@ -174,11 +166,9 @@ export default function InsuranceTracking() {
               {expiringCOIs['7days'].map((coi, index) => (
                 <div
                   key={index}
-                  className="rounded-xl border p-4 md:p-6"
+                  className="rounded-2xl border p-4 md:p-6 border-slate-100"
                   style={{
                     backgroundColor: 'var(--card)',
-                    borderColor: 'var(--border)',
-                    boxShadow: 'var(--shadow-sm)'
                   }}
                 >
                   {/* Mobile: Stack vertically, Desktop: Horizontal layout */}
@@ -244,11 +234,9 @@ export default function InsuranceTracking() {
               {expiringCOIs['14days'].map((coi, index) => (
                 <div
                   key={index}
-                  className="rounded-xl border p-4 md:p-6"
+                  className="rounded-2xl border p-4 md:p-6 border-slate-100"
                   style={{
                     backgroundColor: 'var(--card)',
-                    borderColor: 'var(--border)',
-                    boxShadow: 'var(--shadow-sm)'
                   }}
                 >
                   {/* Mobile: Stack vertically, Desktop: Horizontal layout */}
@@ -314,11 +302,9 @@ export default function InsuranceTracking() {
               {expiringCOIs['30days'].map((coi, index) => (
                 <div
                   key={index}
-                  className="rounded-xl border p-4 md:p-6"
+                  className="rounded-2xl border p-4 md:p-6 border-slate-100"
                   style={{
                     backgroundColor: 'var(--card)',
-                    borderColor: 'var(--border)',
-                    boxShadow: 'var(--shadow-sm)'
                   }}
                 >
                   {/* Mobile: Stack vertically, Desktop: Horizontal layout */}
@@ -387,11 +373,9 @@ export default function InsuranceTracking() {
             missingCOIs.map((coi, index) => (
               <div
                 key={index}
-                className="rounded-xl border p-4 md:p-6"
+                className="rounded-2xl border p-4 md:p-6 border-slate-100"
                 style={{
                   backgroundColor: 'var(--card)',
-                  borderColor: 'var(--border)',
-                  boxShadow: 'var(--shadow-sm)'
                 }}
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -434,11 +418,10 @@ export default function InsuranceTracking() {
             expiredCOIs.map((coi, index) => (
               <div
                 key={index}
-                className="rounded-xl border p-4 md:p-6"
+                className="rounded-2xl border p-4 md:p-6"
                 style={{
                   backgroundColor: 'var(--status-non-compliant-bg)',
                   borderColor: 'var(--status-non-compliant-border)',
-                  boxShadow: 'var(--shadow-sm)'
                 }}
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

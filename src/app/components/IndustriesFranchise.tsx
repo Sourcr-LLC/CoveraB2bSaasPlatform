@@ -68,7 +68,7 @@ export default function IndustriesFranchise() {
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4">
                 <Link 
                   to="/login"
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
+                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
                   style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
                 >
                   Start free trial
@@ -76,8 +76,8 @@ export default function IndustriesFranchise() {
                 </Link>
                 <Link 
                   to="/#demo"
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
-                  style={{ border: '1px solid var(--border)', color: 'var(--foreground)', fontWeight: 500 }}
+                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
+                  style={{ border: '1px solid #f1f5f9', color: 'var(--foreground)', fontWeight: 500 }}
                   onClick={(e) => {
                     e.preventDefault();
                     setIsDemoModalOpen(true);
@@ -103,7 +103,7 @@ export default function IndustriesFranchise() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="p-6 rounded-xl border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <MapPin className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Multi-location visibility</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -111,7 +111,7 @@ export default function IndustriesFranchise() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-xl border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Shield className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Corporate standards</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -119,7 +119,7 @@ export default function IndustriesFranchise() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-xl border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Users className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Franchisee autonomy</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -162,7 +162,7 @@ export default function IndustriesFranchise() {
                     ))}
                   </ul>
                 </div>
-                <div className="rounded-xl border p-8" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+                <div className="rounded-2xl border p-8" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-4 rounded-lg" style={{ backgroundColor: 'var(--panel)' }}>
                       <div>
@@ -187,7 +187,7 @@ export default function IndustriesFranchise() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="order-2 md:order-1 rounded-xl border p-8" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+                <div className="order-2 md:order-1 rounded-2xl border p-8" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                   <div className="text-center">
                     <div className="mb-4">
                       <div className="text-5xl mb-2" style={{ fontWeight: 600, color: 'var(--foreground)' }}>50+</div>
@@ -240,7 +240,7 @@ export default function IndustriesFranchise() {
             </p>
             <Link 
               to="/login"
-              className="px-8 py-4 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all"
+              className="px-8 py-4 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all"
               style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
             >
               Start free trial

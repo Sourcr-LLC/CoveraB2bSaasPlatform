@@ -330,11 +330,9 @@ export default function ContractManagement() {
       <div className="mb-6 md:mb-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div
-            className="rounded-xl border p-6"
+            className="rounded-2xl border p-6 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="text-sm mb-1" style={{ color: 'var(--foreground-muted)' }}>
@@ -346,11 +344,9 @@ export default function ContractManagement() {
           </div>
 
           <div
-            className="rounded-xl border p-6"
+            className="rounded-2xl border p-6 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="text-sm mb-1" style={{ color: 'var(--foreground-muted)' }}>
@@ -362,11 +358,9 @@ export default function ContractManagement() {
           </div>
 
           <div
-            className="rounded-xl border p-6"
+            className="rounded-2xl border p-6 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="text-sm mb-1" style={{ color: 'var(--foreground-muted)' }}>
@@ -378,11 +372,9 @@ export default function ContractManagement() {
           </div>
 
           <div
-            className="rounded-xl border p-6"
+            className="rounded-2xl border p-6 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="text-sm mb-1" style={{ color: 'var(--foreground-muted)' }}>
@@ -463,11 +455,9 @@ export default function ContractManagement() {
       {/* Desktop Table View */}
       <div className="hidden md:block">
         <div 
-          className="rounded-2xl border overflow-hidden"
+          className="rounded-2xl border overflow-hidden border-slate-100"
           style={{
             backgroundColor: 'var(--card)',
-            borderColor: 'var(--border)',
-            boxShadow: 'var(--shadow-md)'
           }}
         >
           <div className="overflow-x-auto">
@@ -682,11 +672,9 @@ export default function ContractManagement() {
           return (
             <div
               key={contract.id}
-              className="rounded-xl border p-4"
+              className="rounded-2xl border p-4 border-slate-100"
               style={{
                 backgroundColor: 'var(--card)',
-                borderColor: 'var(--border)',
-                boxShadow: 'var(--shadow-sm)'
               }}
             >
               {/* Vendor Name & Status */}
@@ -879,10 +867,9 @@ export default function ContractManagement() {
           onClick={() => setViewingDocument(null)}
         >
           <div 
-            className="rounded-xl border max-w-5xl w-full h-[90vh] flex flex-col"
+            className="rounded-2xl border border-slate-100 max-w-5xl w-full h-[90vh] flex flex-col"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
               boxShadow: 'var(--shadow-lg)'
             }}
             onClick={(e) => e.stopPropagation()}

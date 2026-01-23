@@ -202,7 +202,7 @@ export default function BlogList() {
                 <Link
                   key={post.slug}
                   to={`/blog/${post.slug}`}
-                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="group bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
                   <div className="p-8">
                     <div className="flex items-center gap-3 mb-4">
@@ -238,7 +238,7 @@ export default function BlogList() {
                 <Link
                   key={post.slug}
                   to={`/blog/${post.slug}`}
-                  className="group flex items-start gap-6 p-6 bg-white rounded-xl border border-slate-200 hover:shadow-lg transition-all duration-300"
+                  className="group flex items-start gap-6 p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition-all duration-300"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">

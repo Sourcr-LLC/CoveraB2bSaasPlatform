@@ -583,11 +583,9 @@ export default function VendorDetail() {
         <div className="col-span-2 space-y-8">
           {/* Vendor Overview */}
           <div
-            className="rounded-2xl border p-6 md:p-8"
+            className="rounded-2xl border border-slate-100 p-6 md:p-8"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-md)'
             }}
           >
             <div className="flex items-center justify-between mb-6">
@@ -642,11 +640,9 @@ export default function VendorDetail() {
 
           {/* Compliance Checklist */}
           <div
-            className="rounded-2xl border p-8"
+            className="rounded-2xl border border-slate-100 p-8"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-md)'
             }}
           >
             <h2 className="text-xl mb-2" style={{ color: 'var(--foreground)' }}>Compliance checklist</h2>
@@ -692,7 +688,7 @@ export default function VendorDetail() {
                   return (
                     <div
                       key={index}
-                      className="border rounded-xl p-6"
+                      className="border rounded-2xl p-6"
                       style={{
                         borderColor: gapWarning ? '#fee2e2' : 'var(--border)', // Red border if gap
                         backgroundColor: gapWarning ? '#fef2f2' : 'var(--background)' // Red bg if gap

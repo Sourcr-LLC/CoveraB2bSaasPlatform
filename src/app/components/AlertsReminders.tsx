@@ -317,11 +317,9 @@ export default function AlertsReminders() {
         {/* Left: Reminder Settings */}
         <div className="lg:col-span-5">
           <div 
-            className="rounded-xl border p-8 mb-6"
+            className="rounded-2xl border p-8 mb-6 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="flex items-center justify-between mb-8">
@@ -443,11 +441,9 @@ export default function AlertsReminders() {
 
           {/* Upcoming Reminders */}
           <div 
-            className="rounded-xl border p-8"
+            className="rounded-2xl border p-8 border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <h3 className="text-lg mb-6">Upcoming reminders</h3>
@@ -493,11 +489,9 @@ export default function AlertsReminders() {
           
           {/* Active Alerts Section */}
           <div 
-            className="rounded-xl border overflow-hidden"
+            className="rounded-2xl border overflow-hidden border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
              <div className="px-8 py-6 border-b flex justify-between items-center" style={{ borderColor: 'var(--border-subtle)' }}>
@@ -558,11 +552,9 @@ export default function AlertsReminders() {
           </div>
 
           <div 
-            className="rounded-xl border overflow-hidden"
+            className="rounded-2xl border overflow-hidden border-slate-100"
             style={{
               backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)',
-              boxShadow: 'var(--shadow-sm)'
             }}
           >
             <div className="px-8 py-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
