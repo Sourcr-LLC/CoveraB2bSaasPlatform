@@ -719,7 +719,7 @@ export default function Dashboard() {
                     tickLine={false} 
                     tick={{fontSize: 12, fill: '#94a3b8', fontWeight: 600}} 
                     domain={[0, 100]} 
-                    width={40}
+                    width={30}
                   />
                   <Tooltip 
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
@@ -1128,7 +1128,7 @@ export default function Dashboard() {
           </div>
 
           {/* Tips Card or Onboarding */}
-          {onboardingProgress < 100 && (
+          {onboardingProgress < 100 ? (
             <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-white border border-slate-100 p-6 transition-all duration-300 relative overflow-hidden group">
                <div className="flex justify-between items-start mb-4">
                  <div>
@@ -1176,6 +1176,33 @@ export default function Dashboard() {
                  </button>
                )}
             </div>
+          ) : (
+          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-md border border-blue-100 p-6 transition-all duration-300 relative overflow-hidden group">
+            {/* Background blobs to match design */}
+            <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-blue-100/30 group-hover:scale-105 transition-transform duration-700"></div>
+            <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-indigo-100/30 group-hover:scale-105 transition-transform duration-700 delay-100"></div>
+            
+            <div className="relative z-10">
+              <h4 className="font-semibold text-base mb-3 flex items-center gap-2.5 text-slate-800">
+                 <Shield className="w-5 h-5 text-blue-600" /> 
+                 Pro Tip
+              </h4>
+              <p className="text-sm text-slate-600 leading-relaxed mb-5 font-normal">
+                 Vendors with expiring insurance are 3x more likely to lapse if not reminded 30 days prior.
+              </p>
+              <button 
+                onClick={handleAutomateReminders}
+                disabled={isAutomatedRemindersEnabled}
+                className={`text-sm font-medium w-full py-2.5 rounded-lg transition-all duration-200 border ${
+                  isAutomatedRemindersEnabled 
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-100 cursor-default' 
+                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 shadow-sm'
+                }`}
+              >
+                {isAutomatedRemindersEnabled ? 'Reminders Active' : 'Automate Reminders'}
+              </button>
+            </div>
+          </div>
           )}
         </div>
       </div>
