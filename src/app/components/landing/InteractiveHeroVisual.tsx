@@ -63,10 +63,10 @@ function DashboardContent() {
   const currentItems = activeTab === 'insurance' ? insuranceItems : contractItems;
 
   return (
-    <div className="flex h-[700px] bg-[#fafaf9] min-w-[1024px] p-4 gap-4">
+    <div className="flex h-[700px] min-w-[1024px] p-4 gap-4">
       
       {/* SIDEBAR */}
-      <div className="flex w-64 flex-col bg-[#3A4F6A] rounded-2xl flex-shrink-0 shadow-xl shadow-blue-900/10">
+      <div className="flex w-56 flex-col bg-[#3A4F6A] rounded-2xl flex-shrink-0 shadow-xl shadow-blue-900/10">
         <div className="h-16 flex items-center px-6 border-b border-white/10">
            {/* LOGO */}
            <svg width="100" height="22" viewBox="0 0 800 168" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white w-[110px] h-[24px]">
@@ -90,7 +90,7 @@ function DashboardContent() {
       </div>
 
       {/* MAIN */}
-      <div className="flex-1 flex flex-col min-w-0 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 bg-white rounded-2xl shadow-sm overflow-hidden">
         {/* HEADER */}
         <div className="h-16 border-b border-[#e7e5e4] flex items-center justify-between px-8">
           <h1 className="text-xl font-bold text-slate-900">Dashboard</h1>
