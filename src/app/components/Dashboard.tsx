@@ -1093,16 +1093,20 @@ export default function Dashboard() {
                {alerts.slice(0, 5).map((alert, i) => (
                  <div key={i} className="p-3 hover:bg-slate-50 transition-colors group cursor-default">
                     <div className="flex gap-2.5">
-                       <div className={`mt-0.5 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          alert.type === 'expired' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600'
-                       }`}>
-                          {alert.type === 'expired' ? <AlertCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" /> }
+                       <div 
+                          className="mt-0.5 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                          style={{
+                            backgroundColor: alert.type === 'expired' ? 'var(--status-non-compliant-bg)' : 'var(--status-at-risk-bg)',
+                            color: alert.type === 'expired' ? 'var(--status-non-compliant)' : 'var(--status-at-risk)'
+                          }}
+                       >
+                          {alert.type === 'expired' ? <AlertCircle className="w-4 h-4" /> : <Clock className="w-4 h-4" /> }
                        </div>
-                       <div>
-                          <p className="text-sm font-semibold text-slate-800 leading-snug mb-0.5">
+                       <div className="flex-1 min-w-0 py-1">
+                          <p className="text-sm font-medium text-slate-900 leading-snug mb-0.5 truncate">
                              {alert.message}
                           </p>
-                          <p className="text-xs text-slate-500 leading-tight">
+                          <p className="text-xs text-slate-500 leading-tight line-clamp-2">
                              {alert.subtext}
                           </p>
                        </div>
@@ -1176,26 +1180,22 @@ export default function Dashboard() {
                )}
             </div>
           ) : (
-          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-md border border-blue-100 p-6 transition-all duration-300 relative overflow-hidden group">
-            {/* Background blobs to match design */}
-            <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-blue-100/30 group-hover:scale-105 transition-transform duration-700"></div>
-            <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-indigo-100/30 group-hover:scale-105 transition-transform duration-700 delay-100"></div>
-            
+          <div onClick={(e) => e.stopPropagation()} className="flex-none rounded-2xl bg-blue-50/50 border border-blue-100 p-6 transition-all duration-300 relative overflow-hidden group hover:border-blue-200">
             <div className="relative z-10">
-              <h4 className="font-semibold text-base mb-3 flex items-center gap-2.5 text-slate-800">
-                 <Shield className="w-5 h-5 text-blue-600" /> 
+              <h4 className="font-bold text-base mb-3 flex items-center gap-2.5 text-[#3A4F6A]">
+                 <Shield className="w-5 h-5" /> 
                  Pro Tip
               </h4>
-              <p className="text-sm text-slate-600 leading-relaxed mb-5 font-normal">
+              <p className="text-sm text-slate-600 leading-relaxed mb-5 font-medium">
                  Vendors with expiring insurance are 3x more likely to lapse if not reminded 30 days prior.
               </p>
               <button 
                 onClick={handleAutomateReminders}
                 disabled={isAutomatedRemindersEnabled}
-                className={`text-sm font-medium w-full py-2.5 rounded-lg transition-all duration-200 border ${
+                className={`text-sm font-bold w-full py-3 rounded-xl transition-all duration-200 border ${
                   isAutomatedRemindersEnabled 
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-100 cursor-default' 
-                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 shadow-sm'
+                    : 'bg-white border-slate-200 text-slate-700 hover:bg-white hover:border-[#3A4F6A] hover:text-[#3A4F6A] shadow-sm'
                 }`}
               >
                 {isAutomatedRemindersEnabled ? 'Reminders Active' : 'Automate Reminders'}
