@@ -92,33 +92,33 @@ function DashboardContent() {
       {/* MAIN */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-white">
         {/* HEADER */}
-        <div className="h-14 border-b border-[#e7e5e4] flex items-center justify-between px-6">
-          <h1 className="text-lg font-bold text-slate-900">Dashboard</h1>
+        <div className="h-16 border-b border-[#e7e5e4] flex items-center justify-between px-8">
+          <h1 className="text-xl font-bold text-slate-900">Dashboard</h1>
           <div className="flex items-center gap-4">
             <button className="flex items-center gap-2 px-3 py-1.5 bg-[#3A4F6A] text-white text-xs font-medium rounded-md hover:bg-[#2c3e53] transition-colors">
               <Plus className="w-3.5 h-3.5" />
               Add Vendor
             </button>
-            <div className="w-px h-5 bg-slate-200 mx-1" />
-            <Search className="w-4 h-4 text-slate-400" />
-            <Bell className="w-4 h-4 text-slate-400" />
+            <div className="w-px h-6 bg-slate-200 mx-2" />
+            <Search className="w-5 h-5 text-slate-400" />
+            <Bell className="w-5 h-5 text-slate-400" />
           </div>
         </div>
         
         {/* Action Banner */}
-        <div className="px-5 pt-4 -mb-1">
-          <div className="relative p-3.5 rounded-xl bg-white border border-red-100 flex items-center justify-between overflow-hidden group">
+        <div className="px-6 pt-6 -mb-2">
+          <div className="relative p-4 rounded-2xl bg-white border border-red-100 flex items-center justify-between overflow-hidden group">
              <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
-             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600">
-                  <AlertTriangle className="w-4 h-4" />
+             <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600">
+                  <AlertTriangle className="w-5 h-5" />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-900">
                     7 vendors are non-compliant
                   </p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    Resolve this now to reduce exposure.
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Resolve this now to reduce exposure and maintain audit readiness.
                   </p>
                 </div>
              </div>
@@ -126,7 +126,7 @@ function DashboardContent() {
                onClick={() => {
                   document.getElementById('attention-items-visual')?.scrollIntoView({ behavior: 'smooth' });
                }}
-               className="text-[10px] font-semibold bg-red-50 text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-100 transition-colors"
+               className="text-xs font-semibold bg-red-50 text-red-700 px-4 py-2 rounded-xl hover:bg-red-100 transition-colors"
              >
                Resolve issue →
              </button>
@@ -134,10 +134,10 @@ function DashboardContent() {
         </div>
 
         {/* CONTENT */}
-        <div className="flex-1 flex flex-col p-5 space-y-3 overflow-hidden">
+        <div className="flex-1 flex flex-col p-6 space-y-3 overflow-hidden">
           
           {/* STATS ROW */}
-          <div className="grid grid-cols-4 gap-3 flex-shrink-0">
+          <div className="grid grid-cols-4 gap-4 flex-shrink-0">
             <KpiCard 
               label="Compliance Risk" 
               value={stats.atRisk} 
@@ -189,7 +189,7 @@ function DashboardContent() {
              
              {/* Attention Items Table */}
              <div id="attention-items-visual" className="h-full bg-white border border-slate-100 rounded-2xl overflow-hidden flex flex-col">
-                <div className="px-6 py-4 border-b border-[#f5f5f4] flex items-center justify-between flex-shrink-0">
+                <div className="px-6 py-3 border-b border-[#f5f5f4] flex items-center justify-between flex-shrink-0">
                   <div>
                     <div className="flex items-center gap-4 mb-1">
                        <h3 className="font-bold text-slate-900 text-base">Attention Items</h3>
@@ -224,7 +224,7 @@ function DashboardContent() {
                 
                 <div className="flex-1 overflow-hidden divide-y divide-[#f5f5f4]">
                    {/* Header Row */}
-                   <div className="grid grid-cols-12 px-6 py-3 bg-[#fafaf9] text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                   <div className="grid grid-cols-12 px-6 py-2 bg-[#fafaf9] text-xs font-semibold text-slate-500 uppercase tracking-wider">
                       <div className="col-span-4">Vendor / Item</div>
                       <div className="col-span-3 text-center">Status</div>
                       <div className="col-span-3">Deadline</div>
@@ -273,7 +273,7 @@ function VendorRow({ name, type, status, date, action }: any) {
   }
 
   return (
-    <div className="px-6 py-3 grid grid-cols-12 items-center group hover:bg-[#fafaf9] transition-colors duration-200">
+    <div className="px-6 py-2.5 grid grid-cols-12 items-center group hover:bg-[#fafaf9] transition-colors duration-200">
        <div className="col-span-4 pr-4">
          <div className="flex items-center gap-3">
             {/* Added Avatar to match Dashboard.tsx */}
