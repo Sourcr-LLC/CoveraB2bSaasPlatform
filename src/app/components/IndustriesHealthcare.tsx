@@ -103,7 +103,7 @@ export default function IndustriesHealthcare() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-              <div className="p-5 md:p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-5 md:p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Shield className="w-7 h-7 md:w-8 md:h-8 mb-3 md:mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-base md:text-lg" style={{ fontWeight: 600 }}>Regulatory compliance</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -111,7 +111,7 @@ export default function IndustriesHealthcare() {
                 </p>
               </div>
 
-              <div className="p-5 md:p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-5 md:p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Users className="w-7 h-7 md:w-8 md:h-8 mb-3 md:mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-base md:text-lg" style={{ fontWeight: 600 }}>Multiple facility locations</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -119,7 +119,7 @@ export default function IndustriesHealthcare() {
                 </p>
               </div>
 
-              <div className="p-5 md:p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-5 md:p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <FileCheck className="w-7 h-7 md:w-8 md:h-8 mb-3 md:mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-base md:text-lg" style={{ fontWeight: 600 }}>Audit preparation</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>

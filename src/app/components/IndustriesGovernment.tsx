@@ -64,7 +64,7 @@ export default function IndustriesGovernment() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
                 style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
               >
                 Start free trial
@@ -72,7 +72,7 @@ export default function IndustriesGovernment() {
               </Link>
               <Link 
                 to="/#demo"
-                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-md text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
                 style={{ border: '1px solid var(--border)', color: 'var(--foreground)', fontWeight: 500 }}
                 onClick={(e) => {
                   e.preventDefault();
@@ -121,7 +121,7 @@ export default function IndustriesGovernment() {
             ].map((item, index) => (
               <div 
                 key={index}
-                className="rounded-2xl border p-8 hover:shadow-lg transition-all duration-300"
+                className="rounded-2xl border p-8 hover:shadow-md transition-all duration-300"
                 style={{
                   backgroundColor: 'var(--card)',
                   borderColor: '#f1f5f9'
@@ -176,7 +176,7 @@ export default function IndustriesGovernment() {
             ].map((item, index) => (
               <div 
                 key={index}
-                className="rounded-2xl border p-8 hover:shadow-lg transition-all duration-300"
+                className="rounded-2xl border p-8 hover:shadow-md transition-all duration-300"
                 style={{
                   backgroundColor: 'var(--card)',
                   borderColor: '#f1f5f9'
@@ -219,7 +219,7 @@ export default function IndustriesGovernment() {
             ].map((item, index) => (
               <div 
                 key={index}
-                className="rounded-lg border p-6 flex items-center gap-3"
+                className="rounded-2xl border p-6 flex items-center gap-3 hover:shadow-md transition-shadow duration-200"
                 style={{
                   backgroundColor: 'var(--card)',
                   borderColor: 'var(--border)'
@@ -260,11 +260,10 @@ export default function IndustriesGovernment() {
             ].map((item, index) => (
               <div 
                 key={index}
-                className="rounded-xl border p-8 text-center"
+                className="rounded-2xl border p-8 text-center hover:shadow-md transition-shadow duration-200"
                 style={{
                   backgroundColor: 'var(--card)',
-                  borderColor: 'var(--border)',
-                  boxShadow: 'var(--shadow-sm)'
+                  borderColor: 'var(--border)'
                 }}
               >
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--panel)' }}>
@@ -289,11 +288,10 @@ export default function IndustriesGovernment() {
           </p>
           <Link 
             to="/login"
-            className="px-8 py-4 rounded-lg text-lg inline-flex items-center gap-2 transition-all"
+            className="px-8 py-4 rounded-xl text-lg inline-flex items-center gap-2 transition-all hover:shadow-md"
             style={{ 
               backgroundColor: 'var(--primary)',
-              color: 'var(--primary-foreground)',
-              boxShadow: 'var(--shadow-md)'
+              color: 'var(--primary-foreground)'
             }}
           >
             Start 7-Day Free Trial

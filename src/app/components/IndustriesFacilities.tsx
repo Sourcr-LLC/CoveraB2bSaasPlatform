@@ -103,7 +103,7 @@ export default function IndustriesFacilities() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Users className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Multiple vendor types</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -111,7 +111,7 @@ export default function IndustriesFacilities() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Building2 className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Multi-facility visibility</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -119,7 +119,7 @@ export default function IndustriesFacilities() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Shield className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Client requirements</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>

@@ -103,7 +103,7 @@ export default function IndustriesFranchise() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <MapPin className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Multi-location visibility</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -111,7 +111,7 @@ export default function IndustriesFranchise() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Shield className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Corporate standards</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -119,7 +119,7 @@ export default function IndustriesFranchise() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-2xl border" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
+              <div className="p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: '#f1f5f9' }}>
                 <Users className="w-8 h-8 mb-4" style={{ color: 'var(--primary)' }} />
                 <h3 className="mb-2 text-lg" style={{ fontWeight: 600 }}>Franchisee autonomy</h3>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>

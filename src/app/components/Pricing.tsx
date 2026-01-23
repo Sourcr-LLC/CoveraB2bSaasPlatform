@@ -6,19 +6,7 @@ import SEO from './SEO';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 import DemoModal from './DemoModal';
-
-const PremiumCheck = () => (
-  <div className="w-5 h-5 mt-0.5 rounded-full flex items-center justify-center bg-emerald-100/50 flex-shrink-0">
-    <svg 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      className="w-5 h-5 text-emerald-600"
-    >
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
-      <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  </div>
-);
+import { PremiumCheck } from './ui/PremiumCheck';
 
 export default function Pricing() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);

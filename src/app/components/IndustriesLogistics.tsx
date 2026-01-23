@@ -99,7 +99,7 @@ export default function IndustriesLogistics() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            <div className="p-5 md:p-6 rounded-xl border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+            <div className="p-5 md:p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
               <Truck className="w-7 h-7 md:w-8 md:h-8 mb-3 md:mb-4" style={{ color: 'var(--primary)' }} />
               <h3 className="mb-2 text-base md:text-lg" style={{ fontWeight: 600 }}>Fleet & carrier tracking</h3>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -107,7 +107,7 @@ export default function IndustriesLogistics() {
               </p>
             </div>
 
-            <div className="p-5 md:p-6 rounded-xl border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+            <div className="p-5 md:p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
               <Clock className="w-7 h-7 md:w-8 md:h-8 mb-3 md:mb-4" style={{ color: 'var(--primary)' }} />
               <h3 className="mb-2 text-base md:text-lg" style={{ fontWeight: 600 }}>Real-time visibility</h3>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -115,7 +115,7 @@ export default function IndustriesLogistics() {
               </p>
             </div>
 
-            <div className="p-5 md:p-6 rounded-xl border" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+            <div className="p-5 md:p-6 rounded-2xl border hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
               <Shield className="w-7 h-7 md:w-8 md:h-8 mb-3 md:mb-4" style={{ color: 'var(--primary)' }} />
               <h3 className="mb-2 text-base md:text-lg" style={{ fontWeight: 600 }}>Risk mitigation</h3>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
@@ -158,7 +158,7 @@ export default function IndustriesLogistics() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-xl border p-6 md:p-8" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+              <div className="rounded-2xl border p-6 md:p-8 hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
                 <div className="space-y-3 md:space-y-4">
                   <div className="flex items-center justify-between p-3 md:p-4 rounded-lg" style={{ backgroundColor: 'var(--panel)' }}>
                     <div>
@@ -183,7 +183,7 @@ export default function IndustriesLogistics() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-              <div className="order-2 md:order-1 rounded-xl border p-6 md:p-8" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+              <div className="order-2 md:order-1 rounded-2xl border p-6 md:p-8 hover:shadow-md transition-shadow duration-200" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
                 <div className="text-center">
                   <div className="mb-4">
                     <div className="text-4xl md:text-5xl mb-2" style={{ fontWeight: 600, color: 'var(--foreground)' }}>$180M+</div>
