@@ -3,6 +3,7 @@ import { ArrowRight, MessageSquare } from 'lucide-react';
 import { useState, lazy, Suspense } from 'react';
 import SEO, { SEO_CONFIGS } from './SEO';
 import InteractiveHeroVisual from './landing/InteractiveHeroVisual';
+import TrustedByMarquee from './landing/TrustedByMarquee';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 
@@ -136,16 +137,10 @@ export default function LandingPage() {
       </section>
 
       {/* Social Proof */}
-      <section className="py-8 md:py-12 border-y border-slate-100 bg-white/50">
+      <section className="py-8 md:py-12 border-y border-slate-100 bg-white/50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-sm font-medium text-slate-600 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0">
-            {['Roadr', 'Summit Properties', 'BuildRight', 'MedCore Health', 'FranchiseCo', 'Apex Group'].map((name) => (
-              <div key={name} className="text-xl font-bold font-display text-slate-800 flex items-center gap-2">
-                {name}
-              </div>
-            ))}
-          </div>
+          <TrustedByMarquee />
         </div>
       </section>
 
