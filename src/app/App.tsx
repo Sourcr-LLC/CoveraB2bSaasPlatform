@@ -8,10 +8,11 @@ import PremiumLoader from './components/PremiumLoader';
 import DashboardLoadingFallback from './components/DashboardLoadingFallback';
 import ScrollToTop from './components/ScrollToTop';
 import GoogleAnalytics from './components/GoogleAnalytics';
+import DashboardLayout from './components/DashboardLayoutNew';
 
 // Lazy load components to optimize bundle size and performance
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
-const DashboardLayout = lazy(() => import('./components/DashboardLayoutNew'));
+// DashboardLayout is now imported directly to prevent unmounting issues
 const LandingPage = lazy(() => import('./components/LandingPage'));
 const LoginScreen = lazy(() => import('./components/LoginScreen'));
 const PageTransition = lazy(() => import('./components/PageTransition'));

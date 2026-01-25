@@ -57,37 +57,49 @@ async function getAuthToken() {
 }
 
 // Helper for API calls
-async function apiCall(endpoint: string, options: RequestInit = {}) {
+async function apiCall(endpoint: string, options: RequestInit = {}, retries = 2) {
   const token = await getAuthToken();
+  const url = `${API_URL}${endpoint}`;
   
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-      ...options.headers,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        ...options.headers,
+      },
+    });
 
-  // Handle authentication errors
-  if (response.status === 401 || response.status === 403) {
-    console.error('🔒 Authentication error - session expired, redirecting to login');
-    // Clear localStorage directly (don't call signOut API as session is already invalid)
-    localStorage.removeItem('sb-gpnvockmgvysulsxxtyi-auth-token');
-    sessionStorage.clear();
-    // Redirect only once
-    if (!window.location.pathname.includes('/login')) {
-      window.location.href = '/login';
+    // Handle authentication errors
+    if (response.status === 401 || response.status === 403) {
+      console.error('🔒 Authentication error - session expired, redirecting to login');
+      // Clear localStorage directly (don't call signOut API as session is already invalid)
+      localStorage.removeItem('sb-gpnvockmgvysulsxxtyi-auth-token');
+      sessionStorage.clear();
+      // Redirect only once
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
+      throw new Error('Session expired. Please log in again.');
     }
-    throw new Error('Session expired. Please log in again.');
-  }
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(error.error || 'Request failed');
-  }
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Request failed' }));
+      throw new Error(error.error || 'Request failed');
+    }
 
-  return response.json();
+    return response.json();
+  } catch (error) {
+    // Retry on network errors (Failed to fetch)
+    if (retries > 0 && error instanceof TypeError && error.message === 'Failed to fetch') {
+      console.warn(`⚠️ Network error calling ${endpoint}, retrying... (${retries} attempts left)`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return apiCall(endpoint, options, retries - 1);
+    }
+    
+    throw error;
+  }
 }
 
 // Auth API

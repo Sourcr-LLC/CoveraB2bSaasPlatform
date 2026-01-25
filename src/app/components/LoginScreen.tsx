@@ -31,16 +31,11 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
     try {
       if (isSignUp) {
-        if (step === 'initial') {
-          await authApi.signUpRequest(email, name);
-          setStep('verification');
-        } else {
-          await authApi.signUpVerify(email, verificationCode, password, name, organizationName);
-          analytics.trackTrialSignup('standard');
-          // Navigate first to avoid race condition with App.tsx protected route redirect
-          navigate('/subscription-success');
-          onLogin();
-        }
+        // Direct signup without email verification (skipping step === 'initial' check)
+        await authApi.signUp(email, password, name, organizationName);
+        analytics.trackTrialSignup('standard');
+        navigate('/dashboard');
+        onLogin();
       } else {
         await authApi.signIn(email, password);
         analytics.trackLogin('email');

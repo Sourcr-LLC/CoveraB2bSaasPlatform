@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Menu, X, Bell, Lock } from 'lucide-react';
 import { authApi, supabase } from '../lib/api';
@@ -299,7 +299,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Main Content - with left margin on desktop for sidebar */}
       <main className="lg:ml-72 pb-6">
-        {children}
+        <Suspense fallback={
+          <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+            <PremiumLoader />
+          </div>
+        }>
+          {children}
+        </Suspense>
         {shouldShowWalkthrough && !walkthroughChecking && (
           <InteractiveWalkthrough
             onComplete={completeWalkthrough}
