@@ -93,41 +93,39 @@
         const urlParams = new URLSearchParams(window.location.search);
         const lid = urlParams.get('lid');
         
-        // 2. Persist Lead ID
+        // 2. Persist Lead ID if present
         if (lid) {
           localStorage.setItem('sendlr_lid', lid);
         }
         
-        // 3. Get Lead ID from storage
+        // 3. Get Lead ID from storage (if any)
         const storedLid = localStorage.getItem('sendlr_lid');
         
-        if (storedLid) {
-          // 4. Send "Page View" Heartbeat
-          const track = () => {
-            fetch('https://zylftkvcasvznhkmyzfj.supabase.co/functions/v1/make-server-a8b2511f/track/web', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                lead_id: storedLid,
-                url: window.location.href,
-                title: document.title,
-                timestamp: Date.now()
-              })
-            }).catch(err => console.error('Sendlr Tracking Error:', err));
-          };
-          
-          // Track immediately
+        // 4. Send "Page View" Heartbeat (Works for both leads and anonymous visitors)
+        const track = () => {
+          fetch('https://zylftkvcasvznhkmyzfj.supabase.co/functions/v1/make-server-a8b2511f/track/web', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              lead_id: storedLid, // Can be null for anonymous
+              url: window.location.href,
+              title: document.title,
+              timestamp: Date.now()
+            })
+          }).catch(err => console.error('Sendlr Tracking Error:', err));
+        };
+        
+        // Track immediately
+        track();
+        
+        // Track on history changes (SPA support)
+        const pushState = history.pushState;
+        history.pushState = function() {
+          pushState.apply(history, arguments);
           track();
-          
-          // Track on history changes (SPA support)
-          const pushState = history.pushState;
-          history.pushState = function() {
-            pushState.apply(history, arguments);
-            track();
-          };
-          
-          window.addEventListener('popstate', track);
-        }
+        };
+        
+        window.addEventListener('popstate', track);
       })();
     </script>
   </head>
