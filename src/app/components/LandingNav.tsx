@@ -82,7 +82,7 @@ export default function LandingNav() {
                 to="/login" 
                 className="px-5 py-2.5 rounded-xl text-sm font-medium bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-all shadow-lg shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 hover:-translate-y-0.5"
               >
-                Start Free Trial
+                Launch App
               </Link>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function LandingNav() {
           <Link to="/blog" className="text-sm font-medium text-slate-600 py-2">Blog</Link>
           <hr className="border-slate-100" />
           <Link to="/login" className="text-sm font-medium text-slate-600 py-2">Log in</Link>
-          <Link to="/login" className="w-full py-3 rounded-xl text-sm font-medium bg-[#3A4F6A] text-white text-center">Start Free Trial</Link>
+          <Link to="/login" className="w-full py-3 rounded-xl text-sm font-medium bg-[#3A4F6A] text-white text-center">Launch App</Link>
         </div>
       </div>
     </nav>
