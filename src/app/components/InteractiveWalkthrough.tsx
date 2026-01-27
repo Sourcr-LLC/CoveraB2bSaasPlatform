@@ -137,25 +137,31 @@ export default function InteractiveWalkthrough({ onComplete, onSkip }: Interacti
   }, [currentStep]);
 
   const updateHighlight = () => {
-    const element = document.querySelector(step.target);
-    console.log('🎯 Walkthrough trying to find:', step.target, 'Found:', !!element);
-    if (element) {
-      const rect = element.getBoundingClientRect();
-      setHighlightRect(rect);
-      calculateTooltipPosition(rect);
-    } else {
-      console.warn(`Element not found for step ${currentStep}:`, step.target);
-      // Try again after a short delay
-      setTimeout(() => {
-        const retryElement = document.querySelector(step.target);
-        console.log('🔄 Retry finding:', step.target, 'Found:', !!retryElement);
-        if (retryElement) {
-          const rect = retryElement.getBoundingClientRect();
-          setHighlightRect(rect);
-          calculateTooltipPosition(rect);
-        }
-      }, 500);
-    }
+    // Use requestAnimationFrame to batch DOM reads and avoid forced reflows
+    requestAnimationFrame(() => {
+      const element = document.querySelector(step.target);
+      console.log('🎯 Walkthrough trying to find:', step.target, 'Found:', !!element);
+      if (element) {
+        // Batch the getBoundingClientRect call to minimize reflows
+        const rect = element.getBoundingClientRect();
+        setHighlightRect(rect);
+        calculateTooltipPosition(rect);
+      } else {
+        console.warn(`Element not found for step ${currentStep}:`, step.target);
+        // Try again after a short delay
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            const retryElement = document.querySelector(step.target);
+            console.log('🔄 Retry finding:', step.target, 'Found:', !!retryElement);
+            if (retryElement) {
+              const rect = retryElement.getBoundingClientRect();
+              setHighlightRect(rect);
+              calculateTooltipPosition(rect);
+            }
+          });
+        }, 500);
+      }
+    });
   };
 
   const calculateTooltipPosition = (rect: DOMRect) => {
