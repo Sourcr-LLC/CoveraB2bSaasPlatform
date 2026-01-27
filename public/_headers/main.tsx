@@ -1,0 +1,47 @@
+# Covera - Cache & Security Headers
+
+# Cache static assets for 1 year (with versioned filenames)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache fonts for 1 year
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache images for 1 year
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+/*.gif
+  Cache-Control: public, max-age=31536000, immutable
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+# Don't cache HTML files (for dynamic content)
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Cache manifest and other metadata briefly
+/site.webmanifest
+  Cache-Control: public, max-age=86400
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+# Security headers for all routes
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
