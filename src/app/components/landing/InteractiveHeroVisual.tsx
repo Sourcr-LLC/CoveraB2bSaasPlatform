@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { 
   Shield, LayoutDashboard, Users, FileCheck, Search, Bell, Filter,
-  CheckCircle2, AlertCircle, Clock, TrendingDown, FileText, Calendar, AlertTriangle, BarChart3, Plus,
-  Send, ArrowUpRight, RefreshCw
+  AlertTriangle, Calendar, BarChart3, Plus,
+  Send, ArrowUpRight, FileText
 } from 'lucide-react';
 import { KpiCard } from '../dashboard/KpiCard';
 
@@ -24,7 +24,7 @@ function getInitials(name: string) {
 export default function InteractiveHeroVisual() {
   return (
     <div className="relative w-full mx-auto" style={{ fontFamily: 'Red Hat Display, sans-serif' }}>
-      <div className="relative bg-white overflow-hidden">
+      <div className="relative bg-white overflow-hidden flex justify-center">
         <DashboardContent />
       </div>
     </div>
@@ -63,7 +63,7 @@ function DashboardContent() {
   const currentItems = activeTab === 'insurance' ? insuranceItems : contractItems;
 
   return (
-    <div className="flex h-[700px] min-w-[1024px] p-4 gap-4">
+    <div className="flex h-[700px] w-full max-w-[1280px] p-4 gap-4">
       
       {/* SIDEBAR */}
       <div className="flex w-56 flex-col bg-[#3A4F6A] rounded-2xl flex-shrink-0 shadow-xl shadow-blue-900/10">
@@ -107,7 +107,7 @@ function DashboardContent() {
         
         {/* Action Banner */}
         <div className="px-6 pt-6 -mb-2">
-          <div className="relative p-5 rounded-2xl bg-white flex items-center justify-between overflow-hidden group shadow-sm shadow-red-100/50">
+          <div className="relative p-5 rounded-2xl bg-white flex items-center justify-between overflow-hidden group shadow-sm shadow-red-100/50 border border-red-100/30">
              <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
              <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600">
@@ -188,7 +188,7 @@ function DashboardContent() {
           <div className="flex-1 min-h-0">
              
              {/* Attention Items Table */}
-             <div id="attention-items-visual" className="h-full bg-white rounded-2xl overflow-hidden flex flex-col">
+             <div id="attention-items-visual" className="h-full bg-white rounded-2xl overflow-hidden flex flex-col border border-slate-100">
                 <div className="px-6 py-4 flex items-center justify-between flex-shrink-0">
                   <div>
                     <div className="flex items-center gap-4 mb-1">

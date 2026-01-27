@@ -81,7 +81,7 @@ export default function LandingPage() {
   const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
 
   return (
-    <div className="page-root relative min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
+    <div className="page-root relative min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
       <SEO {...SEO_CONFIGS.landing} />
       
       {/* Background Ambience */}
@@ -104,31 +104,31 @@ export default function LandingPage() {
       <LandingNav />
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 w-full overflow-x-hidden">
         
         {/* Hero Section */}
         <section className="section-hero pt-32 pb-16 md:pt-48 md:pb-32 relative">
-          <div className="text-center max-w-4xl mx-auto mb-16">
+          <div className="text-center max-w-4xl mx-auto mb-16 px-4">
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               Vendor Contracts & Compliance <br className="hidden md:block" />
-              <span className="text-[var(--primary)]">Without Spreadsheets</span>
+              <span className="text-[#3A4F6A]">Without Spreadsheets</span>
             </h1>
             
-            <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
               Every vendor introduces risk. Covera makes it visible, trackable, and controlled.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-colors shadow-md shadow-[var(--primary)]/20 hover:shadow-lg hover:shadow-[var(--primary)]/30 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-colors shadow-md shadow-[#3A4F6A]/20 hover:shadow-lg hover:shadow-[#3A4F6A]/30 flex items-center justify-center gap-2"
               >
                 Start Free Trial
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <button 
                 onClick={() => setIsDemoModalOpen(true)}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-100 text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 shadow-sm"
               >
                 Schedule demo
               </button>
@@ -137,9 +137,20 @@ export default function LandingPage() {
 
           {/* Hero Visual */}
           <div className="fullbleed mt-16 w-full px-4 md:px-6 lg:px-8">
-            <div className="relative max-w-[1400px] mx-auto w-full">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[var(--primary)]/20 rounded-3xl opacity-40 blur-lg" />
+            <div className="relative max-w-[1280px] mx-auto w-full">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[#3A4F6A]/20 rounded-3xl opacity-40 blur-lg" />
               <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-[700px] border border-slate-100 bg-white shadow-lg shadow-slate-200/40" aria-hidden="true">
+                {/* 
+                  Scaling Logic:
+                  Mobile (343px width): Scale 0.34 * 1280px content ≈ 435px width (still wider than 343).
+                  Needs adjustment.
+                  If we assume content is 1280px fixed width (from InteractiveHeroVisual max-w).
+                  Mobile scale 0.34 -> 435px.
+                  Container width ~340px. 
+                  So it will overflow or need to be smaller.
+                  
+                  Let's use a percentage-based width on the inner container to ensure it fills the space correctly.
+                */}
                 <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
                   <InteractiveHeroVisual />
                 </div>
@@ -149,9 +160,9 @@ export default function LandingPage() {
         </section>
 
         {/* Social Proof */}
-        <section className="section py-8 md:py-12 border-y border-slate-100 bg-white/50 overflow-hidden">
+        <section className="section py-12 md:py-16 border-y border-slate-100 bg-white/50 overflow-hidden">
           <div className="text-center w-full mb-8">
-            <p className="text-sm font-medium text-slate-600 uppercase tracking-widest">Trusted by compliance-first teams</p>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Trusted by compliance-first teams</p>
           </div>
           <div className="fullbleed w-full">
             <TrustedByMarquee />
@@ -163,7 +174,7 @@ export default function LandingPage() {
           <ComparisonSection />
         </Suspense>
 
-        {/* New Marketing Features (Inspired by JeevaAI) */}
+        {/* New Marketing Features */}
         <Suspense fallback={<SectionLoader />}>
           <MarketingFeatures />
         </Suspense>
@@ -174,15 +185,15 @@ export default function LandingPage() {
         </Suspense>
 
         {/* Testimonials */}
-        <section className="section bg-slate-50 border-y border-slate-200 py-16 md:py-24">
-          <div className="w-full">
-            <div className="text-center mb-12 md:mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+        <section className="section bg-slate-50 border-y border-slate-200 py-20 md:py-32">
+          <div className="w-full max-w-7xl mx-auto">
+            <div className="text-center mb-16 md:mb-20">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
                  <MessageSquare className="w-3 h-3" />
                  Testimonials
               </div>
-              <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
-                Loved by <span className="text-[var(--primary)]">Operations Teams</span>
+              <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] leading-tight">
+                Loved by <span className="text-[#3A4F6A]">Operations Teams</span>
               </h2>
             </div>
             <Suspense fallback={<SectionLoader />}>
@@ -193,20 +204,20 @@ export default function LandingPage() {
 
         {/* CTA */}
         <section className="section-cta relative overflow-hidden">
-          <div className="absolute inset-0 bg-[var(--primary)] fullbleed" />
+          <div className="absolute inset-0 bg-[#3A4F6A] fullbleed" />
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay fullbleed" />
           
-          <div className="relative z-10 w-full">
+          <div className="relative z-10 w-full max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tight">
               Ready to automate your compliance?
             </h2>
-            <p className="text-xl text-slate-200 mb-10 max-w-2xl mx-auto">
+            <p className="text-xl text-slate-200 mb-10 max-w-2xl mx-auto leading-relaxed">
               Join hundreds of companies using Covera to reduce risk and save time.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/login"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[var(--primary)] hover:bg-slate-50 transition-all shadow-md flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[#3A4F6A] hover:bg-slate-50 transition-all shadow-md flex items-center justify-center gap-2"
               >
                 Start Free Trial
                 <ArrowRight className="w-4 h-4" />
@@ -218,8 +229,8 @@ export default function LandingPage() {
                 Contact Sales
               </button>
             </div>
-            <p className="mt-6 text-sm text-slate-300">
-              7-day free trial • Cancel anytime
+            <p className="mt-8 text-sm text-slate-300">
+              7-day free trial • Cancel anytime • No credit card required for demo
             </p>
           </div>
         </section>
