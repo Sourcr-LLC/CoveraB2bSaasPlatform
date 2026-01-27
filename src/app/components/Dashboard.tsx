@@ -700,7 +700,7 @@ export default function Dashboard() {
             </div>
             <div className="flex-1 w-full min-h-[200px] min-w-0">
               <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                <AreaChart data={complianceTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
+                <AreaChart data={complianceTrendData} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
                   <defs>
                     <linearGradient id="colorCompliance" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={trendColor} stopOpacity={0.15}/>
