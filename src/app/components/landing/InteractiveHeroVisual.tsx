@@ -23,7 +23,7 @@ function getInitials(name: string) {
 
 export default function InteractiveHeroVisual() {
   return (
-    <div className="relative w-full max-w-6xl mx-auto" style={{ fontFamily: 'Red Hat Display, sans-serif' }}>
+    <div className="relative w-full mx-auto" style={{ fontFamily: 'Red Hat Display, sans-serif' }}>
       <div className="relative bg-white overflow-hidden">
         <DashboardContent />
       </div>

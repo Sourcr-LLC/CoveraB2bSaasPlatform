@@ -2,8 +2,8 @@ import { Link } from 'react-router';
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-200 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
+    <footer className="bg-white border-t border-slate-200 pt-16 pb-8 w-full">
+      <div className="w-full mx-auto px-6 md:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
           <div className="col-span-2">
             <Link to="/" className="flex items-center mb-6" aria-label="Covera Home">

@@ -1,0 +1,280 @@
+/**
+ * Modern Framer-style Layout System
+ * Full-bleed sections with elegant content centering using CSS Grid
+ */
+
+/* ============================================
+   STEP 1: Kill the global container
+   ============================================ */
+.page-root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   STEP 2: Full-bleed section base
+   Modern CSS Grid approach (recommended)
+   ============================================ */
+.section {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 
+    minmax(1rem, 1fr)  /* Left gutter with min 1rem padding */
+    minmax(0, 1200px)  /* Content area - max 1200px */
+    minmax(1rem, 1fr); /* Right gutter with min 1rem padding */
+  position: relative;
+}
+
+/* All direct children go into center column by default */
+.section > * {
+  grid-column: 2;
+}
+
+/* ============================================
+   STEP 3: Content variations
+   ============================================ */
+
+/* Narrow content (blogs, about pages) */
+.section-narrow {
+  grid-template-columns: 
+    minmax(1rem, 1fr) 
+    minmax(0, 800px) 
+    minmax(1rem, 1fr);
+}
+
+/* Wide content (dashboards, tables) */
+.section-wide {
+  grid-template-columns: 
+    minmax(1rem, 1fr) 
+    minmax(0, 1400px) 
+    minmax(1rem, 1fr);
+}
+
+/* Full-bleed elements (backgrounds, images, etc.) */
+.section > .fullbleed,
+.section-hero > .fullbleed,
+.section-feature > .fullbleed,
+.section-cta > .fullbleed,
+.section-fullbleed {
+  grid-column: 1 / -1 !important;
+  width: 100%;
+}
+
+/* ============================================
+   STEP 4: Clamp-based responsive padding
+   ============================================ */
+.section-padding {
+  padding-block: clamp(3rem, 8vw, 8rem);
+}
+
+.section-padding-sm {
+  padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+.section-padding-lg {
+  padding-block: clamp(6rem, 12vw, 12rem);
+}
+
+/* Inline (horizontal) padding with clamp */
+.section-padding-inline {
+  padding-inline: clamp(1rem, 4vw, 4rem);
+}
+
+/* ============================================
+   STEP 5: Alternative full-bleed method
+   (Legacy support if grid doesn't work)
+   ============================================ */
+.section-legacy-fullbleed {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* Constrain content inside legacy full-bleed */
+.section-legacy-fullbleed > .section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 4rem);
+}
+
+/* ============================================
+   STEP 6: Utility classes
+   ============================================ */
+
+/* Viewport-based heights */
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.min-h-75vh {
+  min-height: 75vh;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+/* Prevent horizontal scroll */
+.no-scroll-x {
+  overflow-x: hidden;
+}
+
+/* Content centering utilities */
+.content-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-center-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   STEP 7: Specific section types
+   ============================================ */
+
+/* Hero sections - typically full height */
+.section-hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 
+    minmax(1rem, 1fr) 
+    minmax(0, 1200px) 
+    minmax(1rem, 1fr);
+  align-items: center;
+}
+
+.section-hero > * {
+  grid-column: 2;
+}
+
+/* Feature sections with alternating backgrounds */
+.section-feature {
+  display: grid;
+  grid-template-columns: 
+    minmax(1rem, 1fr) 
+    minmax(0, 1200px) 
+    minmax(1rem, 1fr);
+  padding-block: clamp(4rem, 10vw, 10rem);
+}
+
+.section-feature > * {
+  grid-column: 2;
+}
+
+/* CTA sections - usually centered and bold */
+.section-cta {
+  display: grid;
+  grid-template-columns: 
+    minmax(1rem, 1fr) 
+    minmax(0, 900px) 
+    minmax(1rem, 1fr);
+  padding-block: clamp(5rem, 12vw, 12rem);
+  text-align: center;
+}
+
+.section-cta > * {
+  grid-column: 2;
+}
+
+/* ============================================
+   STEP 8: Responsive breakpoint adjustments
+   ============================================ */
+
+/* Tablet */
+@media (min-width: 768px) {
+  .section,
+  .section-hero,
+  .section-feature {
+    grid-template-columns: 
+      minmax(2rem, 1fr) 
+      minmax(0, 1200px) 
+      minmax(2rem, 1fr);
+  }
+  
+  .section-narrow,
+  .section-cta {
+    grid-template-columns: 
+      minmax(2rem, 1fr) 
+      minmax(0, 800px) 
+      minmax(2rem, 1fr);
+  }
+  
+  .section-wide {
+    grid-template-columns: 
+      minmax(2rem, 1fr) 
+      minmax(0, 1400px) 
+      minmax(2rem, 1fr);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1280px) {
+  .section,
+  .section-hero,
+  .section-feature {
+    grid-template-columns: 
+      minmax(4rem, 1fr) 
+      minmax(0, 12fr) 
+      minmax(4rem, 1fr);
+  }
+  
+  .section-narrow,
+  .section-cta {
+    grid-template-columns: 
+      minmax(4rem, 1fr) 
+      minmax(0, 1000px) 
+      minmax(4rem, 1fr);
+  }
+  
+  .section-wide {
+    grid-template-columns: 
+      minmax(4rem, 1fr) 
+      minmax(0, 12fr) 
+      minmax(4rem, 1fr);
+  }
+}
+
+/* ============================================
+   STEP 9: Background utilities for full-bleed
+   ============================================ */
+
+/* Full-bleed background colors */
+.bg-fullbleed {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+.bg-fullbleed > * {
+  grid-column: 2;
+}
+
+/* Example usage:
+<section class="section">
+  <div class="bg-fullbleed bg-slate-50">
+    <div>Content here stays centered</div>
+  </div>
+</section>
+*/
+
+/* ============================================
+   STEP 10: Debugging (remove in production)
+   ============================================ */
+
+/* Uncomment to visualize grid columns
+.section {
+  background-image: 
+    linear-gradient(to right, rgba(255,0,0,0.1) 0%, rgba(255,0,0,0.1) 1px, transparent 1px),
+    linear-gradient(to right, transparent 0%, rgba(0,255,0,0.1) 1px, rgba(0,255,0,0.1) 100%);
+  background-size: 100% 100%, 100% 100%;
+  background-position: 0 0, 0 0;
+}
+*/

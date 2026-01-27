@@ -21,23 +21,21 @@ import {
 
 export default function MarketingFeatures() {
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden">
+    <section className="section section-padding relative overflow-hidden">
       {/* Background gradients */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="fullbleed absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-stone-100 rounded-full blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-50 rounded-full blur-3xl opacity-50 -translate-x-1/2 translate-y-1/2" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        
-        {/* SECTION 2: HOW IT WORKS */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-32"
-        >
+      {/* SECTION 2: HOW IT WORKS */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-32 relative z-10"
+      >
           <div className="flex items-center justify-between mb-12">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
@@ -233,8 +231,6 @@ export default function MarketingFeatures() {
 
           </div>
         </motion.div>
-
-      </div>
     </section>
   );
 }

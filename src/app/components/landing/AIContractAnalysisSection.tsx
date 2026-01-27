@@ -15,9 +15,8 @@ import {
 
 export default function AIContractAnalysisSection() {
   return (
-    <section className="py-24 md:py-32 bg-[#fafaf9] overflow-hidden relative">
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+    <section className="section section-padding bg-[#fafaf9] overflow-hidden relative">
+      <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
           
           {/* Left Content */}
           <div className="lg:w-1/2">
@@ -187,7 +186,6 @@ export default function AIContractAnalysisSection() {
             </div>
           </div>
 
-        </div>
       </div>
     </section>
   );

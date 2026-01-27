@@ -1,6 +1,7 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+@import './layouts.css'; /* Modern Framer-style layout system */
 
 /* Performance & Best Practices */
 

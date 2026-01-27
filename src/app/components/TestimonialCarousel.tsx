@@ -15,32 +15,45 @@ interface TestimonialCarouselProps {
 export default function TestimonialCarousel({ testimonials = [] }: TestimonialCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
+  const [columns, setColumns] = useState(1);
 
   // Return null if no testimonials
   if (!testimonials || testimonials.length === 0) {
     return null;
   }
 
-  // Detect mobile/desktop using matchMedia to avoid forced reflow from window.innerWidth
+  // Responsive column detection
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
-    
-    // Set initial value
-    setIsMobile(mediaQuery.matches);
+    const sm = window.matchMedia('(min-width: 640px)');
+    const md = window.matchMedia('(min-width: 768px)');
+    const lg = window.matchMedia('(min-width: 1024px)');
+    const xl = window.matchMedia('(min-width: 1280px)');
 
-    // Handler for changes
-    const handleResize = (e: MediaQueryListEvent) => {
-      setIsMobile(e.matches);
+    const updateColumns = () => {
+      if (xl.matches) setColumns(4);
+      else if (lg.matches) setColumns(3);
+      else if (md.matches) setColumns(2);
+      else setColumns(1);
     };
 
-    // Add listener
-    mediaQuery.addEventListener('change', handleResize);
-    return () => mediaQuery.removeEventListener('change', handleResize);
+    // Initial check
+    updateColumns();
+
+    // Event listeners
+    sm.addEventListener('change', updateColumns);
+    md.addEventListener('change', updateColumns);
+    lg.addEventListener('change', updateColumns);
+    xl.addEventListener('change', updateColumns);
+
+    return () => {
+      sm.removeEventListener('change', updateColumns);
+      md.removeEventListener('change', updateColumns);
+      lg.removeEventListener('change', updateColumns);
+      xl.removeEventListener('change', updateColumns);
+    };
   }, []);
 
-  // Items per slide: 1 on mobile, 2 on desktop
-  const itemsPerSlide = isMobile ? 1 : 2;
+  const itemsPerSlide = columns;
   const totalSlides = Math.ceil(testimonials.length / itemsPerSlide);
 
   // Auto-advance testimonials
@@ -72,14 +85,15 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
   // Get testimonials for current slide
   const getCurrentTestimonials = () => {
     const startIdx = currentIndex * itemsPerSlide;
+    // We want to fill the grid even if we are at the end, if possible, or just show what's left.
+    // Standard carousel behavior: show the slice.
     return testimonials.slice(startIdx, startIdx + itemsPerSlide);
   };
 
   return (
     <div className="relative w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Testimonial Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {getCurrentTestimonials().map((testimonial, idx) => (
             <div 
               key={currentIndex * itemsPerSlide + idx}
@@ -145,15 +159,6 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
                 className="w-12 h-12 flex items-center justify-center transition-all rounded-full relative"
                 aria-label={`Go to testimonial ${index + 1}`}
               >
-                {/* 
-                  Using scale transform instead of width animation to prevent layout thrashing (reflow).
-                  The container is 8px wide, and we scale it up to emulate the wider dot.
-                  Wait, to emulate 24px from 8px, we need scaleX(3).
-                  However, standard dots usually just change color or opacity.
-                  Let's stick to width but ensure we don't read layout.
-                  Actually, best practice for avoiding reflow is to NOT animate width.
-                  Let's use a constant size dot that changes opacity/color, or a transform.
-                */}
                 <span 
                   className="rounded-full transition-all duration-300 block"
                   style={{
@@ -178,7 +183,6 @@ export default function TestimonialCarousel({ testimonials = [] }: TestimonialCa
             <ChevronRight className="w-5 h-5" style={{ color: 'var(--foreground)' }} />
           </button>
         </div>
-      </div>
     </div>
   );
 }

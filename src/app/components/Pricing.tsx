@@ -64,7 +64,7 @@ export default function Pricing() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
+    <div className="page-root min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
       <SEO
         title="Pricing - Simple, Transparent Vendor Compliance Software | Covera"
         description="Simple pricing for vendor compliance tracking. Start with a 7-day free trial. No setup fees, no contracts. Cancel anytime."
@@ -98,22 +98,20 @@ export default function Pricing() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 md:px-12">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-                Transparent pricing <span className="text-[#3A4F6A]">for every team</span>
-              </h1>
-              <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                Start with everything you need. Scale when you're ready.
-              </p>
-            </div>
+        <section className="section section-hero pt-40 pb-20 md:pt-48 md:pb-32 border-b border-slate-200 bg-[#fafaf9]">
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Transparent pricing <span className="text-[#3A4F6A]">for every team</span>
+            </h1>
+            <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+              Start with everything you need. Scale when you're ready.
+            </p>
           </div>
         </section>
 
         {/* Pricing Cards */}
-        <section className="py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <section className="section section-padding py-16 md:py-24 bg-[#fafaf9]">
+          <div className="w-full">
             
             <div className="flex items-center justify-center gap-4 mb-12">
               <span className={`text-base cursor-pointer ${billingCycle === 'monthly' ? 'font-bold text-[#1a1a1a]' : 'text-slate-500'}`} onClick={() => setBillingCycle('monthly')}>Monthly</span>
@@ -307,8 +305,8 @@ export default function Pricing() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-24 bg-white border-t border-slate-200">
-          <div className="max-w-4xl mx-auto px-4 md:px-12">
+        <section className="section section-padding py-24 bg-white border-t border-slate-200">
+          <div className="w-full max-w-3xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] mb-4">
                 Frequently asked <span className="text-[#3A4F6A]">Questions</span>
@@ -363,8 +361,8 @@ export default function Pricing() {
         </section>
 
         {/* Final CTA Section */}
-        <section className="py-24 bg-[#fafaf9]">
-          <div className="max-w-4xl mx-auto px-4 md:px-12 text-center">
+        <section className="section-cta bg-[#fafaf9]">
+          <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] mb-6">
               Ready to eliminate <span className="text-[#3A4F6A]">compliance headaches?</span>
             </h2>

@@ -10,7 +10,7 @@ export default function IndustriesFacilities() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
+    <div className="page-root min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
       <SEO
         title="Facilities Management Vendor Compliance Software | Service Provider COI Tracking - Covera"
         description="Centralize vendor insurance tracking for cleaning, maintenance, and service providers. Track janitorial, HVAC, landscaping, and contractor compliance across all managed facilities."
@@ -49,50 +49,45 @@ export default function IndustriesFacilities() {
       <LandingNav />
 
       <main className="flex-1">
-        {/* Spacing for fixed nav */}
-        <div className="h-24 md:h-28"></div>
-
         {/* Hero Section */}
-        <section className="border-b pt-20 md:pt-24" style={{ borderColor: 'var(--border)' }}>
-          <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
-            <div className="max-w-4xl mx-auto text-center">
-              
-              <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-                Vendor compliance for facilities <span className="text-[#3A4F6A]">management operations</span>
-              </h1>
-              
-              <p className="text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-                Track cleaning services, maintenance contractors, and service provider compliance across all managed facilities. Eliminate manual COI tracking and ensure continuous vendor coverage.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4">
-                <Link 
-                  to="/login"
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
-                  style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
-                >
-                  Start free trial
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link 
-                  to="/#demo"
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
-                  style={{ border: '1px solid #f1f5f9', color: 'var(--foreground)', fontWeight: 500 }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsDemoModalOpen(true);
-                  }}
-                >
-                  Schedule demo
-                </Link>
-              </div>
+        <section className="section-hero section-padding pt-32 md:pt-40 border-b" style={{ borderColor: 'var(--border)' }}>
+          <div className="max-w-4xl mx-auto text-center">
+            
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Vendor compliance for facilities <span className="text-[#3A4F6A]">management operations</span>
+            </h1>
+            
+            <p className="text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
+              Track cleaning services, maintenance contractors, and service provider compliance across all managed facilities. Eliminate manual COI tracking and ensure continuous vendor coverage.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4">
+              <Link 
+                to="/login"
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
+                style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
+              >
+                Start free trial
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link 
+                to="/#demo"
+                className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
+                style={{ border: '1px solid #f1f5f9', color: 'var(--foreground)', fontWeight: 500 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsDemoModalOpen(true);
+                }}
+              >
+                Schedule demo
+              </Link>
             </div>
           </div>
         </section>
 
         {/* Key Challenges */}
-        <section style={{ backgroundColor: 'var(--panel)' }}>
-          <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+        <section className="section section-padding py-20" style={{ backgroundColor: 'var(--panel)' }}>
+          <div>
             <div className="max-w-3xl mb-12">
               <h2 className="mb-4 text-3xl md:text-4xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
                 Facilities management demands continuous compliance
@@ -131,8 +126,8 @@ export default function IndustriesFacilities() {
         </section>
 
         {/* Key Features */}
-        <section className="border-t" style={{ borderColor: 'var(--border)' }}>
-          <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+        <section className="section section-padding py-20 border-t" style={{ borderColor: 'var(--border)' }}>
+          <div>
             <div className="max-w-3xl mb-12">
               <h2 className="mb-4 text-3xl md:text-4xl" style={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
                 Built for facilities operations teams
@@ -230,7 +225,7 @@ export default function IndustriesFacilities() {
         </section>
 
         {/* CTA Section */}
-        <section className="border-t" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
+        <section className="section-cta section-padding border-t" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
           <div className="max-w-4xl mx-auto px-6 py-16 md:py-24 text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] mb-6">
               Ready to automate <span className="text-[#3A4F6A]">facilities compliance?</span>

@@ -17,8 +17,10 @@ const AIContractAnalysisSection = lazy(() => import('./landing/AIContractAnalysi
 
 // Simple loading fallback for sections
 const SectionLoader = () => (
-  <div className="py-24 flex justify-center items-center">
-    <div className="w-8 h-8 border-2 border-slate-200 border-t-[#3A4F6A] rounded-full animate-spin" />
+  <div className="section">
+    <div className="py-24 flex justify-center items-center">
+      <div className="w-8 h-8 border-2 border-slate-200 border-t-[#3A4F6A] rounded-full animate-spin" />
+    </div>
   </div>
 );
 
@@ -59,18 +61,27 @@ const TESTIMONIALS = [
     author: "James Patterson",
     title: "CFO, Apex Development Group",
     initials: "JP"
+  },
+  {
+    quote: "We onboarded 50 new vendors in a week without a single email. The self-service portal is intuitive, and the automated verification catches issues our team used to miss.",
+    author: "Elena Rodriguez",
+    title: "Procurement Lead, TechFlow Systems",
+    initials: "ER"
+  },
+  {
+    quote: "Finally, a compliance tool that doesn't feel like legacy software. It's fast, modern, and actually helpful. Our vendors prefer using Covera over our old email process.",
+    author: "Marcus Johnson",
+    title: "Facility Director, Urban Spaces",
+    initials: "MJ"
   }
 ];
-
-// Memoize FeatureSteps removed to reduce redundancy
-
 
 export default function LandingPage() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isContactSalesModalOpen, setIsContactSalesModalOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white overflow-x-hidden">
+    <div className="page-root relative min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[var(--primary)] selection:text-white">
       <SEO {...SEO_CONFIGS.landing} />
       
       {/* Background Ambience */}
@@ -92,12 +103,12 @@ export default function LandingPage() {
       
       <LandingNav />
 
-      {/* Hero Section */}
+      {/* Main Content */}
       <main className="flex-1">
-        <section className="pt-32 pb-16 md:pt-48 md:pb-32 px-4 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center max-w-4xl mx-auto mb-16">
-            
+        
+        {/* Hero Section */}
+        <section className="section-hero pt-32 pb-16 md:pt-48 md:pb-32 relative">
+          <div className="text-center max-w-4xl mx-auto mb-16">
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
               Vendor Contracts & Compliance <br className="hidden md:block" />
               <span className="text-[var(--primary)]">Without Spreadsheets</span>
@@ -125,90 +136,93 @@ export default function LandingPage() {
           </div>
 
           {/* Hero Visual */}
-          <div className="relative mx-auto max-w-6xl mt-16">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[var(--primary)]/20 rounded-3xl opacity-40 blur-lg" />
-            <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-[700px] border border-slate-100 bg-white shadow-lg shadow-slate-200/40" aria-hidden="true">
-              <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
-                <InteractiveHeroVisual />
+          <div className="fullbleed mt-16 w-full px-4 md:px-6 lg:px-8">
+            <div className="relative max-w-[1400px] mx-auto w-full">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-[var(--primary)]/20 rounded-3xl opacity-40 blur-lg" />
+              <div className="relative z-10 overflow-hidden rounded-2xl h-[240px] sm:h-[420px] md:h-[560px] lg:h-[700px] border border-slate-100 bg-white shadow-lg shadow-slate-200/40" aria-hidden="true">
+                <div className="origin-top-left transform scale-[0.34] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 w-[294%] sm:w-[166%] md:w-[125%] lg:w-full">
+                  <InteractiveHeroVisual />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Social Proof */}
-      <section className="py-8 md:py-12 border-y border-slate-100 bg-white/50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm font-medium text-slate-600 mb-8 uppercase tracking-widest">Trusted by compliance-first teams</p>
-          <TrustedByMarquee />
-        </div>
-      </section>
+        {/* Social Proof */}
+        <section className="section py-8 md:py-12 border-y border-slate-100 bg-white/50 overflow-hidden">
+          <div className="text-center w-full mb-8">
+            <p className="text-sm font-medium text-slate-600 uppercase tracking-widest">Trusted by compliance-first teams</p>
+          </div>
+          <div className="fullbleed w-full">
+            <TrustedByMarquee />
+          </div>
+        </section>
 
-      {/* The Shift Section */}
-      <Suspense fallback={<SectionLoader />}>
-        <ComparisonSection />
-      </Suspense>
+        {/* The Shift Section */}
+        <Suspense fallback={<SectionLoader />}>
+          <ComparisonSection />
+        </Suspense>
 
-      {/* New Marketing Features (Inspired by JeevaAI) */}
-      <Suspense fallback={<SectionLoader />}>
-        <MarketingFeatures />
-      </Suspense>
+        {/* New Marketing Features (Inspired by JeevaAI) */}
+        <Suspense fallback={<SectionLoader />}>
+          <MarketingFeatures />
+        </Suspense>
 
-      {/* AI Contract Analysis Section */}
-      <Suspense fallback={<SectionLoader />}>
-        <AIContractAnalysisSection />
-      </Suspense>
+        {/* AI Contract Analysis Section */}
+        <Suspense fallback={<SectionLoader />}>
+          <AIContractAnalysisSection />
+        </Suspense>
 
-      {/* Testimonials */}
-      <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
-               <MessageSquare className="w-3 h-3" />
-               Testimonials
+        {/* Testimonials */}
+        <section className="section bg-slate-50 border-y border-slate-200 py-16 md:py-24">
+          <div className="w-full">
+            <div className="text-center mb-12 md:mb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[var(--primary)] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+                 <MessageSquare className="w-3 h-3" />
+                 Testimonials
+              </div>
+              <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
+                Loved by <span className="text-[var(--primary)]">Operations Teams</span>
+              </h2>
             </div>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
-              Loved by <span className="text-[var(--primary)]">Operations Teams</span>
-            </h2>
+            <Suspense fallback={<SectionLoader />}>
+              <TestimonialCarousel testimonials={TESTIMONIALS} />
+            </Suspense>
           </div>
-          <Suspense fallback={<SectionLoader />}>
-            <TestimonialCarousel testimonials={TESTIMONIALS} />
-          </Suspense>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA */}
-      <section className="py-16 md:py-24 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[var(--primary)]" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay" />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tight">
-            Ready to automate your compliance?
-          </h2>
-          <p className="text-xl text-slate-200 mb-10 max-w-2xl mx-auto">
-            Join hundreds of companies using Covera to reduce risk and save time.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-              to="/login"
-              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[var(--primary)] hover:bg-slate-50 transition-all shadow-md flex items-center justify-center gap-2"
-            >
-              Start Free Trial
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <button 
-              onClick={() => setIsContactSalesModalOpen(true)}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-transparent border border-white/30 text-white hover:bg-white/10 transition-all"
-            >
-              Contact Sales
-            </button>
+        {/* CTA */}
+        <section className="section-cta relative overflow-hidden">
+          <div className="absolute inset-0 bg-[var(--primary)] fullbleed" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay fullbleed" />
+          
+          <div className="relative z-10 w-full">
+            <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tight">
+              Ready to automate your compliance?
+            </h2>
+            <p className="text-xl text-slate-200 mb-10 max-w-2xl mx-auto">
+              Join hundreds of companies using Covera to reduce risk and save time.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link 
+                to="/login"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white text-[var(--primary)] hover:bg-slate-50 transition-all shadow-md flex items-center justify-center gap-2"
+              >
+                Start Free Trial
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <button 
+                onClick={() => setIsContactSalesModalOpen(true)}
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-transparent border border-white/30 text-white hover:bg-white/10 transition-all"
+              >
+                Contact Sales
+              </button>
+            </div>
+            <p className="mt-6 text-sm text-slate-300">
+              7-day free trial • Cancel anytime
+            </p>
           </div>
-          <p className="mt-6 text-sm text-slate-300">
-            7-day free trial • Cancel anytime
-          </p>
-        </div>
-      </section>
+        </section>
       </main>
 
       {/* Footer */}

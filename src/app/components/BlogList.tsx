@@ -174,28 +174,26 @@ export default function BlogList() {
   const regularPosts = blogPosts.filter(post => !post.featured);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
+    <div className="page-root min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] selection:bg-[#3A4F6A] selection:text-white">
       <SEO {...SEO_CONFIGS.blog} />
       <LandingNav />
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="pt-40 pb-20 md:pt-48 md:pb-32 px-4 relative border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 md:px-12">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-                Vendor Compliance & Insurance Tracking Blog
-              </h1>
-              <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                Expert guides, best practices, and insights for managing vendor insurance compliance
-              </p>
-            </div>
+        <section className="section-hero section-padding pt-32 md:pt-48 border-b border-slate-200">
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Vendor Compliance & Insurance Tracking Blog
+            </h1>
+            <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+              Expert guides, best practices, and insights for managing vendor insurance compliance
+            </p>
           </div>
         </section>
 
         {/* Featured Posts */}
-        <section className="py-16 px-6">
-          <div className="max-w-6xl mx-auto">
+        <section className="section section-padding py-16">
+          <div className="w-full">
             <h2 className="text-2xl font-bold text-[#1a1a1a] mb-8">Featured Articles</h2>
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               {featuredPosts.map((post) => (
@@ -271,7 +269,7 @@ export default function BlogList() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-6 border-t border-slate-200 bg-[#fafaf9]">
+        <section className="section-cta section-padding py-20 border-t border-slate-200 bg-[#fafaf9]">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4 text-[#1a1a1a]">
               Ready to Stop Tracking Vendor Insurance in Spreadsheets?

@@ -65,10 +65,10 @@ export default function ComparisonSection() {
   ];
 
   return (
-    <section className="py-16 md:py-32 px-4 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
+    <section className="section section-padding bg-white relative overflow-hidden">
+      {/* Header */}
+      <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
              <TrendingUp className="w-3 h-3" />
              The Problem
           </div>
@@ -79,9 +79,10 @@ export default function ComparisonSection() {
             See the difference automation makes. 
             <span className="hidden md:inline"> Hover over the steps to compare.</span>
           </p>
-        </div>
+      </div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 relative">
+      {/* Grid Content */}
+      <div className="grid md:grid-cols-2 gap-8 lg:gap-12 relative">
           
           {/* Connecting Lines (Desktop Only) */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 hidden md:flex flex-col items-center justify-center gap-1 z-20">
@@ -264,7 +265,6 @@ export default function ComparisonSection() {
           </div>
 
         </div>
-      </div>
     </section>
   );
 }

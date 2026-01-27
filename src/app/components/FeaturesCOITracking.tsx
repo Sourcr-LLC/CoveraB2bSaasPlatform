@@ -7,7 +7,7 @@ import MarketingFeatures from './MarketingFeatures';
 
 export default function FeaturesCOITracking() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
+    <div className="page-root min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
       <SEO
         title="Certificate of Insurance (COI) Tracking Software | Automated COI Management - Covera"
         description="Automate certificate of insurance tracking with Covera. Upload COIs, get expiration alerts, and maintain vendor compliance with enterprise COI management software."
@@ -46,39 +46,34 @@ export default function FeaturesCOITracking() {
       <LandingNav />
 
       <main className="flex-1">
-        {/* Spacing for fixed nav */}
-        <div className="h-24 md:h-28"></div>
-
         {/* Hero */}
-        <section className="border-b pt-16 md:pt-20" style={{ borderColor: 'var(--border)' }}>
-          <div className="max-w-7xl mx-auto px-6 py-20 md:py-32">
-            <div className="max-w-4xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'var(--panel)', border: '1px solid var(--border)' }}>
-                <FileCheck className="w-4 h-4" style={{ color: 'var(--primary)' }} />
-                <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Feature Spotlight</span>
-              </div>
-              
-              <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-                Automated Certificate <span className="text-[#3A4F6A]">of Insurance Tracking</span>
-              </h1>
-              
-              <p className="text-xl mb-8" style={{ color: 'var(--foreground-muted)', lineHeight: 1.6 }}>
-                Never miss an insurance renewal again. Upload COIs, track expiration dates, and automatically send renewal reminders to vendors. Enterprise-grade COI management in one centralized platform.
-              </p>
-              
-              <Link 
-                to="/login"
-                className="px-8 py-4 rounded-lg text-base inline-flex items-center gap-2 transition-all"
-                style={{ 
-                  backgroundColor: 'var(--primary)',
-                  color: 'var(--primary-foreground)',
-                  boxShadow: 'var(--shadow-md)'
-                }}
-              >
-                Start free trial
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+        <section className="section section-padding pt-32 md:pt-40 border-b" style={{ borderColor: 'var(--border)' }}>
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'var(--panel)', border: '1px solid var(--border)' }}>
+              <FileCheck className="w-4 h-4" style={{ color: 'var(--primary)' }} />
+              <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>Feature Spotlight</span>
             </div>
+            
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Automated Certificate <span className="text-[#3A4F6A]">of Insurance Tracking</span>
+            </h1>
+            
+            <p className="text-xl mb-8" style={{ color: 'var(--foreground-muted)', lineHeight: 1.6 }}>
+              Never miss an insurance renewal again. Upload COIs, track expiration dates, and automatically send renewal reminders to vendors. Enterprise-grade COI management in one centralized platform.
+            </p>
+            
+            <Link 
+              to="/login"
+              className="px-8 py-4 rounded-lg text-base inline-flex items-center gap-2 transition-all"
+              style={{ 
+                backgroundColor: 'var(--primary)',
+                color: 'var(--primary-foreground)',
+                boxShadow: 'var(--shadow-md)'
+              }}
+            >
+              Start free trial
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </section>
 
@@ -86,8 +81,8 @@ export default function FeaturesCOITracking() {
         <MarketingFeatures />
 
         {/* Benefits */}
-        <section className="py-20 border-b" style={{ borderColor: 'var(--border)' }}>
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="section section-padding py-20 border-b" style={{ borderColor: 'var(--border)' }}>
+          <div>
             <h2 className="text-3xl md:text-4xl mb-12 text-center" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
               Why Automated COI Tracking Matters
             </h2>
@@ -129,7 +124,7 @@ export default function FeaturesCOITracking() {
         </section>
 
         {/* CTA */}
-        <section className="py-20" style={{ backgroundColor: 'var(--background)' }}>
+        <section className="section-cta section-padding py-20" style={{ backgroundColor: 'var(--background)' }}>
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] mb-6">
               Start Tracking COIs <span className="text-[#3A4F6A]">Automatically</span>

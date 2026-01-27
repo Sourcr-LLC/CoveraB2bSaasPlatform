@@ -10,7 +10,7 @@ export default function SolutionsPropertyManagement() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
+    <div className="page-root min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
       <SEO
         title="Property Management Compliance Software | Vendor & COI Tracking - Covera"
         description="Streamline vendor compliance for property management companies. Track contractor insurance certificates, manage service providers, and automate COI renewals for residential and commercial properties."
@@ -49,55 +49,44 @@ export default function SolutionsPropertyManagement() {
       <LandingNav />
 
       <main className="flex-1">
-        {/* Spacing for fixed nav */}
-        <div className="h-24 md:h-28"></div>
-
         {/* Hero Section */}
-        <section className="border-b pt-20 md:pt-24" style={{ borderColor: 'var(--border)' }}>
-          <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
-            <div className="max-w-4xl mx-auto text-center">
-              
-              <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
-                Vendor Compliance Management for <span className="text-[#3A4F6A]">Property Managers</span>
-              </h1>
-              
-              <p className="text-sm sm:text-base md:text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)', fontWeight: 400 }}>
-                Track contractor insurance certificates, manage service provider compliance, and protect your properties with automated COI tracking. Built for residential and commercial property management teams.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4">
-                <Link 
-                  to="/login"
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:shadow-lg"
-                  style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)', fontWeight: 500 }}
-                >
-                  Start free trial
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link 
-                  to="/#demo"
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm inline-flex items-center justify-center gap-2 transition-all hover:bg-gray-50"
-                  style={{ border: '1px solid var(--border)', color: 'var(--foreground)', fontWeight: 500 }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsDemoModalOpen(true);
-                  }}
-                >
-                  Schedule demo
-                </Link>
-              </div>
+        <section className="section section-hero section-padding pt-32 md:pt-40 border-b border-slate-200">
+          <div className="text-center max-w-4xl mx-auto">
+            
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1a1a1a] mb-6 leading-[1.1]">
+              Vendor Compliance Management for <span className="text-[#3A4F6A]">Property Managers</span>
+            </h1>
+            
+            <p className="text-xl text-slate-500 mb-8 leading-relaxed max-w-2xl mx-auto">
+              Track contractor insurance certificates, manage service provider compliance, and protect your properties with automated COI tracking. Built for residential and commercial property management teams.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link 
+                to="/login"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-colors shadow-md shadow-[var(--primary)]/20 hover:shadow-lg hover:shadow-[var(--primary)]/30 flex items-center justify-center gap-2"
+              >
+                Start free trial
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <button 
+                onClick={() => setIsDemoModalOpen(true)}
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-white border border-slate-100 text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
+              >
+                Schedule demo
+              </button>
             </div>
           </div>
         </section>
 
         {/* Key Challenges Section */}
-        <section className="py-20 border-b" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--background)' }}>
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="section section-padding py-20 bg-white border-b border-slate-100">
+          <div className="w-full">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl mb-4" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-4">
                 Challenges Property Managers Face
               </h2>
-              <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--foreground-muted)' }}>
+              <p className="text-lg text-slate-500 max-w-2xl mx-auto">
                 Managing hundreds of contractors and service providers across multiple properties
               </p>
             </div>
@@ -122,17 +111,13 @@ export default function SolutionsPropertyManagement() {
               ].map((item, index) => (
                 <div 
                   key={index}
-                  className="rounded-2xl border p-8 hover:shadow-md transition-shadow duration-200"
-                  style={{
-                    backgroundColor: 'var(--card)',
-                    borderColor: 'var(--border)'
-                  }}
+                  className="rounded-2xl border border-slate-100 p-8 hover:shadow-lg transition-all duration-300 bg-white"
                 >
-                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: 'var(--panel)' }}>
-                    <item.icon className="w-6 h-6" style={{ color: 'var(--primary)' }} />
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6 text-[#3A4F6A]">
+                    <item.icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl mb-3" style={{ fontWeight: 600, color: 'var(--foreground)' }}>{item.title}</h3>
-                  <p style={{ color: 'var(--foreground-muted)', lineHeight: 1.6 }}>{item.description}</p>
+                  <h3 className="text-xl font-bold text-[#1a1a1a] mb-3">{item.title}</h3>
+                  <p className="text-slate-500 leading-relaxed">{item.description}</p>
                 </div>
               ))}
             </div>
@@ -140,10 +125,10 @@ export default function SolutionsPropertyManagement() {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-20 border-b" style={{ borderColor: 'var(--border)' }}>
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="section section-padding py-20 bg-[#fafaf9] border-b border-slate-200">
+          <div className="w-full">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl mb-4" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-4">
                 How Covera Helps Property Managers
               </h2>
             </div>
@@ -173,19 +158,15 @@ export default function SolutionsPropertyManagement() {
               ].map((item, index) => (
                 <div 
                   key={index}
-                  className="rounded-2xl border p-8 hover:shadow-md transition-shadow duration-200"
-                  style={{
-                    backgroundColor: 'var(--card)',
-                    borderColor: 'var(--border)'
-                  }}
+                  className="rounded-2xl border border-slate-200 p-8 hover:shadow-md transition-shadow duration-200 bg-white"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--panel)' }}>
-                      <item.icon className="w-6 h-6" style={{ color: 'var(--primary)' }} />
+                  <div className="flex items-start gap-6">
+                    <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 text-[#3A4F6A]">
+                      <item.icon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-xl mb-3" style={{ fontWeight: 600, color: 'var(--foreground)' }}>{item.title}</h3>
-                      <p style={{ color: 'var(--foreground-muted)', lineHeight: 1.6 }}>{item.description}</p>
+                      <h3 className="text-xl font-bold text-[#1a1a1a] mb-3">{item.title}</h3>
+                      <p className="text-slate-500 leading-relaxed">{item.description}</p>
                     </div>
                   </div>
                 </div>
@@ -195,13 +176,13 @@ export default function SolutionsPropertyManagement() {
         </section>
 
         {/* Use Cases Section */}
-        <section className="py-20 border-b" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
-          <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl mb-12 text-center" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
+        <section className="section section-padding py-20 bg-white border-b border-slate-100">
+          <div className="w-full max-w-5xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-12 text-center">
               Perfect for Every Property Type
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
               {[
                 'Residential Apartment Communities',
                 'Commercial Office Buildings',
@@ -212,14 +193,10 @@ export default function SolutionsPropertyManagement() {
               ].map((item, index) => (
                 <div 
                   key={index}
-                  className="rounded-2xl border p-6 flex items-center gap-3 hover:shadow-md transition-shadow duration-200"
-                  style={{
-                    backgroundColor: 'var(--card)',
-                    borderColor: 'var(--border)'
-                  }}
+                  className="rounded-xl border border-slate-100 p-5 flex items-center gap-3 hover:bg-slate-50 transition-colors duration-200"
                 >
-                  <CheckCircle className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--primary)' }} />
-                  <span style={{ color: 'var(--foreground)' }}>{item}</span>
+                  <CheckCircle className="w-5 h-5 flex-shrink-0 text-[#3A4F6A]" />
+                  <span className="font-medium text-slate-700">{item}</span>
                 </div>
               ))}
             </div>
@@ -227,25 +204,29 @@ export default function SolutionsPropertyManagement() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20" style={{ backgroundColor: 'var(--background)' }}>
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] mb-6">
+        <section className="section-cta section-padding bg-[#fafaf9]">
+          <div className="text-center max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] mb-6">
               Start Managing Property <span className="text-[#3A4F6A]">Compliance Today</span>
             </h2>
-            <p className="text-xl mb-8" style={{ color: 'var(--foreground-muted)' }}>
+            <p className="text-xl mb-10 text-slate-500 leading-relaxed">
               Join property management companies using Covera to track 1000+ contractors
             </p>
-            <Link 
-              to="/login"
-              className="px-8 py-4 rounded-xl text-lg inline-flex items-center gap-2 transition-all hover:shadow-md"
-              style={{ 
-                backgroundColor: 'var(--primary)',
-                color: 'var(--primary-foreground)'
-              }}
-            >
-              Start 7-Day Free Trial
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link 
+                to="/login"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl inline-flex items-center justify-center gap-2 transition-all bg-[#3A4F6A] text-white hover:bg-[#2c3e53] font-medium shadow-xl shadow-[#3A4F6A]/20 hover:shadow-[#3A4F6A]/30 hover:-translate-y-1"
+              >
+                Start free trial
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <button 
+                onClick={() => setIsDemoModalOpen(true)}
+                className="w-full sm:w-auto px-8 py-4 rounded-xl inline-flex items-center justify-center gap-2 transition-all border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-white font-medium"
+              >
+                Schedule demo
+              </button>
+            </div>
           </div>
         </section>
       </main>
