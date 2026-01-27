@@ -2,87 +2,104 @@ import { Link } from 'react-router';
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-200 pt-16 pb-8 w-full">
-      <div className="w-full mx-auto px-6 md:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
-          <div className="col-span-2">
-            <Link to="/" className="flex items-center mb-6" aria-label="Covera Home">
-              <svg className="w-32 h-7" viewBox="0 0 3000 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M598.514 129.609L549.807 165.933C523.39 131.26 491.538 105.05 454.251 87.3005C416.965 69.5515 376.032 60.677 331.453 60.677C282.471 60.677 237.204 72.3721 195.652 95.7623C154.1 119.152 121.835 150.592 98.858 190.08C75.8805 229.568 64.3918 274.078 64.3918 323.61C64.3918 398.184 89.9834 458.242 141.167 503.784C192.35 549.326 256.879 572.097 334.755 572.097C420.611 572.097 492.295 538.525 549.807 471.381L598.514 508.118C567.969 546.918 529.857 576.913 484.177 598.101C438.497 619.29 387.589 629.884 331.453 629.884C224.133 629.884 139.516 594.249 77.6004 522.977C25.8668 462.713 0 394.469 0 318.244C0 228.811 31.4392 153.412 94.3175 92.0474C157.196 30.6825 235.828 6.10352e-05 330.215 6.10352e-05C387.452 6.10352e-05 439.117 11.3512 485.209 34.0534C531.302 56.7557 569.07 88.6077 598.514 129.609ZM925.014 150.248C994.634 150.248 1052.42 175.427 1098.38 225.784C1139.93 272.014 1160.7 326.637 1160.7 389.653C1160.7 452.669 1138.69 507.774 1094.66 554.967C1050.63 602.16 994.084 625.757 925.014 625.757C855.669 625.757 799.051 602.16 755.16 554.967C711.268 507.774 689.323 452.669 689.323 389.653C689.323 326.912 710.099 272.427 751.651 226.197C797.606 175.564 855.393 150.248 925.014 150.248ZM925.014 207.21C876.857 207.21 835.443 225.096 800.77 260.87C766.098 296.643 748.762 339.846 748.762 390.479C748.762 423.225 756.673 453.839 772.496 482.32C788.319 510.801 809.714 532.678 836.681 547.95C863.649 563.222 893.093 570.859 925.014 570.859C957.485 570.859 987.135 563.222 1013.97 547.95C1040.8 532.678 1062.05 510.801 1077.74 482.32C1093.42 453.839 1101.27 423.225 1101.27 390.479C1101.27 339.846 1083.93 296.643 1049.26 260.87C1014.58 225.096 973.17 207.21 925.014 207.21ZM1225.1 173.363H1287.01L1438.5 502.752L1588.75 173.363H1651.07L1443.86 626.17H1433.54L1225.1 173.363ZM2120.8 464.364L2169.51 490.369C2153.83 522.014 2135.39 547.468 2114.2 566.731C2093.01 585.993 2069.21 600.647 2042.79 610.691C2016.37 620.735 1986.52 625.757 1953.22 625.757C1879.47 625.757 1821.82 601.61 1780.27 553.316C1738.72 505.022 1717.94 450.468 1717.94 389.653C1717.94 332.141 1735.55 280.958 1770.78 236.104C1815.36 178.866 1875.21 150.248 1950.33 150.248C2027.11 150.248 2088.61 179.554 2134.84 238.167C2167.58 279.444 2184.09 330.903 2184.37 392.543H1777.79C1778.89 445.377 1795.68 488.649 1828.15 522.358C1860.62 556.068 1900.66 572.923 1948.27 572.923C1971.38 572.923 1993.81 568.864 2015.55 560.746C2037.29 552.628 2055.79 541.965 2071.07 528.756C2086.34 515.548 2102.92 494.084 2120.8 464.364ZM2120.8 342.598C2113.1 311.503 2101.82 286.668 2086.96 268.093C2072.1 249.518 2052.42 234.521 2027.93 223.101C2003.44 211.681 1977.71 205.971 1950.74 205.971C1906.44 205.971 1868.33 220.281 1836.41 248.899C1813.29 269.813 1795.82 301.046 1783.98 342.598H2120.8ZM2270.64 418.134V363.649C2275.04 336.406 2281.37 314.254 2289.63 297.193C2308.89 249.862 2334.76 215.19 2367.23 193.176C2399.7 171.161 2426.66 160.154 2448.13 160.154C2464.09 160.154 2481.15 165.383 2499.31 175.839L2469.18 224.546C2443.59 215.19 2418.2 222.757 2393.02 247.248C2367.85 271.739 2350.44 298.432 2340.81 327.325C2333.65 352.917 2330.08 400.936 2330.08 471.381V624.518H2270.64V418.134ZM2762.66 150.248C2832.28 150.248 2890.07 175.427 2936.02 225.784C2978.4 271.739 2999.59 326.362 2999.59 389.653C3000.14 545.955 3000.14 625.344 2999.59 627.821H2938.08V525.041C2905.89 585.03 2847.41 618.602 2762.66 625.757C2693.31 625.757 2636.7 602.16 2592.8 554.967C2548.91 507.774 2526.97 452.669 2526.97 389.653C2526.97 326.912 2547.74 272.427 2589.3 226.197C2635.25 175.564 2693.04 150.248 2762.66 150.248ZM2762.66 207.21C2714.5 207.21 2673.09 225.096 2638.42 260.87C2603.74 296.643 2586.41 339.846 2586.41 390.479C2586.41 423.225 2595.28 454.733 2613.03 485.003C2630.78 515.272 2660.84 540.864 2703.22 561.778C2809.44 585.443 2884.98 537.149 2929.83 416.896C2932.31 378.371 2928.18 341.497 2917.45 306.274C2909.74 290.314 2899.15 275.179 2885.66 260.87C2851.82 225.096 2810.81 207.21 2762.66 207.21Z" fill="currentColor"/>
-              </svg>
-            </Link>
-            <p className="text-slate-600 text-sm max-w-xs mb-6">
-              Vendor contracts and compliance without spreadsheets.
-            </p>
-            <div className="flex gap-4">
-              <a href="https://x.com/covera_co" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-colors cursor-pointer">
-                <span className="sr-only">Twitter</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-              </a>
-              <a href="https://www.linkedin.com/company/covera-co/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-colors cursor-pointer">
-                <span className="sr-only">LinkedIn</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-              </a>
-              <a href="https://www.instagram.com/covera.co/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-colors cursor-pointer">
-                <span className="sr-only">Instagram</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              </a>
-              <a href="https://www.tiktok.com/@covera.co" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-colors cursor-pointer">
-                <span className="sr-only">TikTok</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-              </a>
+    <footer 
+      className="relative w-full py-20 md:py-32 bg-cover bg-center bg-no-repeat"
+      style={{ 
+        backgroundImage: 'url(https://images.unsplash.com/photo-1768104553734-d9f568bce4f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYmx1ZSUyMHNreSUyMGNsb3VkcyUyMGNhbG0lMjBhZXJpYWx8ZW58MXx8fHwxNzY5NDkxODk1fDA&ixlib=rb-4.1.0&q=80&w=1080)',
+        backgroundPosition: 'center 30%' // Adjust position to see more sky
+      }}
+    >
+      {/* Subtle overlay for better atmosphere */}
+      <div className="absolute inset-0 bg-slate-900/5 backdrop-blur-[1px]"></div>
+
+      {/* Floating Card Container */}
+      <div className="relative w-full max-w-[94%] xl:max-w-7xl mx-auto bg-white rounded-[2.5rem] shadow-2xl overflow-hidden">
+        <div className="px-8 md:px-12 lg:px-16 py-12 md:py-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-12 mb-16">
+            
+            {/* Brand Column */}
+            <div className="col-span-2 lg:col-span-2">
+              <Link to="/" className="flex items-center mb-6" aria-label="Covera Home">
+                <svg className="w-32 h-7 text-[#1a1a1a]" viewBox="0 0 3000 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M598.514 129.609L549.807 165.933C523.39 131.26 491.538 105.05 454.251 87.3005C416.965 69.5515 376.032 60.677 331.453 60.677C282.471 60.677 237.204 72.3721 195.652 95.7623C154.1 119.152 121.835 150.592 98.858 190.08C75.8805 229.568 64.3918 274.078 64.3918 323.61C64.3918 398.184 89.9834 458.242 141.167 503.784C192.35 549.326 256.879 572.097 334.755 572.097C420.611 572.097 492.295 538.525 549.807 471.381L598.514 508.118C567.969 546.918 529.857 576.913 484.177 598.101C438.497 619.29 387.589 629.884 331.453 629.884C224.133 629.884 139.516 594.249 77.6004 522.977C25.8668 462.713 0 394.469 0 318.244C0 228.811 31.4392 153.412 94.3175 92.0474C157.196 30.6825 235.828 6.10352e-05 330.215 6.10352e-05C387.452 6.10352e-05 439.117 11.3512 485.209 34.0534C531.302 56.7557 569.07 88.6077 598.514 129.609ZM925.014 150.248C994.634 150.248 1052.42 175.427 1098.38 225.784C1139.93 272.014 1160.7 326.637 1160.7 389.653C1160.7 452.669 1138.69 507.774 1094.66 554.967C1050.63 602.16 994.084 625.757 925.014 625.757C855.669 625.757 799.051 602.16 755.16 554.967C711.268 507.774 689.323 452.669 689.323 389.653C689.323 326.912 710.099 272.427 751.651 226.197C797.606 175.564 855.393 150.248 925.014 150.248ZM925.014 207.21C876.857 207.21 835.443 225.096 800.77 260.87C766.098 296.643 748.762 339.846 748.762 390.479C748.762 423.225 756.673 453.839 772.496 482.32C788.319 510.801 809.714 532.678 836.681 547.95C863.649 563.222 893.093 570.859 925.014 570.859C957.485 570.859 987.135 563.222 1013.97 547.95C1040.8 532.678 1062.05 510.801 1077.74 482.32C1093.42 453.839 1101.27 423.225 1101.27 390.479C1101.27 339.846 1083.93 296.643 1049.26 260.87C1014.58 225.096 973.17 207.21 925.014 207.21ZM1225.1 173.363H1287.01L1438.5 502.752L1588.75 173.363H1651.07L1443.86 626.17H1433.54L1225.1 173.363ZM2120.8 464.364L2169.51 490.369C2153.83 522.014 2135.39 547.468 2114.2 566.731C2093.01 585.993 2069.21 600.647 2042.79 610.691C2016.37 620.735 1986.52 625.757 1953.22 625.757C1879.47 625.757 1821.82 601.61 1780.27 553.316C1738.72 505.022 1717.94 450.468 1717.94 389.653C1717.94 332.141 1735.55 280.958 1770.78 236.104C1815.36 178.866 1875.21 150.248 1950.33 150.248C2027.11 150.248 2088.61 179.554 2134.84 238.167C2167.58 279.444 2184.09 330.903 2184.37 392.543H1777.79C1778.89 445.377 1795.68 488.649 1828.15 522.358C1860.62 556.068 1900.66 572.923 1948.27 572.923C1971.38 572.923 1993.81 568.864 2015.55 560.746C2037.29 552.628 2055.79 541.965 2071.07 528.756C2086.34 515.548 2102.92 494.084 2120.8 464.364ZM2120.8 342.598C2113.1 311.503 2101.82 286.668 2086.96 268.093C2072.1 249.518 2052.42 234.521 2027.93 223.101C2003.44 211.681 1977.71 205.971 1950.74 205.971C1906.44 205.971 1868.33 220.281 1836.41 248.899C1813.29 269.813 1795.82 301.046 1783.98 342.598H2120.8ZM2270.64 418.134V363.649C2275.04 336.406 2281.37 314.254 2289.63 297.193C2308.89 249.862 2334.76 215.19 2367.23 193.176C2399.7 171.161 2426.66 160.154 2448.13 160.154C2464.09 160.154 2481.15 165.383 2499.31 175.839L2469.18 224.546C2443.59 215.19 2418.2 222.757 2393.02 247.248C2367.85 271.739 2350.44 298.432 2340.81 327.325C2333.65 352.917 2330.08 400.936 2330.08 471.381V624.518H2270.64V418.134ZM2762.66 150.248C2832.28 150.248 2890.07 175.427 2936.02 225.784C2978.4 271.739 2999.59 326.362 2999.59 389.653C3000.14 545.955 3000.14 625.344 2999.59 627.821H2938.08V525.041C2905.89 585.03 2847.41 618.602 2762.66 625.757C2693.31 625.757 2636.7 602.16 2592.8 554.967C2548.91 507.774 2526.97 452.669 2526.97 389.653C2526.97 326.912 2547.74 272.427 2589.3 226.197C2635.25 175.564 2693.04 150.248 2762.66 150.248ZM2762.66 207.21C2714.5 207.21 2673.09 225.096 2638.42 260.87C2603.74 296.643 2586.41 339.846 2586.41 390.479C2586.41 423.225 2595.28 454.733 2613.03 485.003C2630.78 515.272 2660.84 540.864 2703.22 561.778C2809.44 585.443 2884.98 537.149 2929.83 416.896C2932.31 378.371 2928.18 341.497 2917.45 306.274C2909.74 290.314 2899.15 275.179 2885.66 260.87C2851.82 225.096 2810.81 207.21 2762.66 207.21Z" fill="currentColor"/>
+                </svg>
+              </Link>
+              <p className="text-slate-500 text-sm max-w-xs mb-8 leading-relaxed">
+                Vendor contracts and compliance without spreadsheets.
+                Automate your entire verification process.
+              </p>
+              <div className="flex gap-4">
+                <a href="https://x.com/covera_co" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-[#3A4F6A] transition-all duration-200">
+                  <span className="sr-only">Twitter</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/company/covera-co/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-[#3A4F6A] transition-all duration-200">
+                  <span className="sr-only">LinkedIn</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/covera.co/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-[#3A4F6A] transition-all duration-200">
+                  <span className="sr-only">Instagram</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.tiktok.com/@covera.co" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-[#3A4F6A] transition-all duration-200">
+                  <span className="sr-only">TikTok</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                </a>
+              </div>
+            </div>
+            
+            {/* Links Columns */}
+            <div>
+              <h3 className="font-bold text-slate-900 mb-6 text-sm uppercase tracking-wide">Product</h3>
+              <ul className="space-y-4 text-sm text-slate-500 font-medium">
+                <li><Link to="/features-coi-tracking" className="hover:text-[#3A4F6A] transition-colors">Features</Link></li>
+                <li><Link to="/pricing" className="hover:text-[#3A4F6A] transition-colors">Pricing</Link></li>
+                <li><Link to="/login" className="hover:text-[#3A4F6A] transition-colors">Log In</Link></li>
+                <li><Link to="/login" className="hover:text-[#3A4F6A] transition-colors">Start Trial</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-slate-900 mb-6 text-sm uppercase tracking-wide">Industries</h3>
+              <ul className="space-y-4 text-sm text-slate-500 font-medium">
+                <li><Link to="/solutions-property-management" className="hover:text-[#3A4F6A] transition-colors">Property Mgmt</Link></li>
+                <li><Link to="/solutions-construction" className="hover:text-[#3A4F6A] transition-colors">Construction</Link></li>
+                <li><Link to="/industries-healthcare" className="hover:text-[#3A4F6A] transition-colors">Healthcare</Link></li>
+                <li><Link to="/industries-logistics" className="hover:text-[#3A4F6A] transition-colors">Logistics</Link></li>
+                <li><Link to="/industries-franchise" className="hover:text-[#3A4F6A] transition-colors">Franchises</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <div className="h-[2rem] hidden lg:block" aria-hidden="true" />
+              <ul className="space-y-4 text-sm text-slate-500 font-medium">
+                <li><Link to="/industries-retail" className="hover:text-[#3A4F6A] transition-colors">Retail</Link></li>
+                <li><Link to="/industries-government" className="hover:text-[#3A4F6A] transition-colors">Government</Link></li>
+                <li><Link to="/industries-education" className="hover:text-[#3A4F6A] transition-colors">Education</Link></li>
+                <li><Link to="/industries-facilities" className="hover:text-[#3A4F6A] transition-colors">Facilities</Link></li>
+                <li><Link to="/industries-hospitality" className="hover:text-[#3A4F6A] transition-colors">Hospitality</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-slate-900 mb-6 text-sm uppercase tracking-wide">Company</h3>
+              <ul className="space-y-4 text-sm text-slate-500 font-medium">
+                <li><Link to="/about-us" className="hover:text-[#3A4F6A] transition-colors">About</Link></li>
+                <li><Link to="/blog" className="hover:text-[#3A4F6A] transition-colors">Blog</Link></li>
+                <li><Link to="/contact" className="hover:text-[#3A4F6A] transition-colors">Contact</Link></li>
+                <li><Link to="/security" className="hover:text-[#3A4F6A] transition-colors">Security</Link></li>
+              </ul>
             </div>
           </div>
           
-          <div>
-            <h3 className="font-semibold text-slate-900 mb-4">Product</h3>
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/features-coi-tracking" className="hover:text-[#3A4F6A]">Features</Link></li>
-              <li><Link to="/pricing" className="hover:text-[#3A4F6A]">Pricing</Link></li>
-              <li><Link to="/login" className="hover:text-[#3A4F6A]">Log In</Link></li>
-              <li><Link to="/login" className="hover:text-[#3A4F6A]">Start Trial</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-slate-900 mb-4">Industries</h3>
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/solutions-property-management" className="hover:text-[#3A4F6A]">Property Management</Link></li>
-              <li><Link to="/solutions-construction" className="hover:text-[#3A4F6A]">Construction</Link></li>
-              <li><Link to="/industries-healthcare" className="hover:text-[#3A4F6A]">Healthcare</Link></li>
-              <li><Link to="/industries-logistics" className="hover:text-[#3A4F6A]">Logistics</Link></li>
-              <li><Link to="/industries-franchise" className="hover:text-[#3A4F6A]">Franchises</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="h-[2.5rem] hidden md:block" aria-hidden="true" />
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/industries-retail" className="hover:text-[#3A4F6A]">Retail</Link></li>
-              <li><Link to="/industries-government" className="hover:text-[#3A4F6A]">Government</Link></li>
-              <li><Link to="/industries-education" className="hover:text-[#3A4F6A]">Education</Link></li>
-              <li><Link to="/industries-facilities" className="hover:text-[#3A4F6A]">Facilities</Link></li>
-              <li><Link to="/industries-hospitality" className="hover:text-[#3A4F6A]">Hospitality</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-slate-900 mb-4">Company</h3>
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link to="/about-us" className="hover:text-[#3A4F6A]">About</Link></li>
-              <li><Link to="/blog" className="hover:text-[#3A4F6A]">Blog</Link></li>
-              <li><Link to="/contact" className="hover:text-[#3A4F6A]">Contact</Link></li>
-              <li><Link to="/security" className="hover:text-[#3A4F6A]">Security</Link></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
-          <div>&copy; {new Date().getFullYear()} Covera Inc. All rights reserved.</div>
-          <div className="flex gap-6">
-            <Link to="/privacy-policy" className="hover:text-slate-700">Privacy Policy</Link>
-            <Link to="/terms-of-service" className="hover:text-slate-700">Terms of Service</Link>
-            <Link to="/security" className="hover:text-slate-700">Security</Link>
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-slate-400">
+            <div>&copy; {new Date().getFullYear()} Covera Inc. All rights reserved.</div>
+            <div className="flex gap-8">
+              <Link to="/privacy-policy" className="hover:text-slate-600 transition-colors">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="hover:text-slate-600 transition-colors">Terms of Service</Link>
+              <Link to="/security" className="hover:text-slate-600 transition-colors">Security</Link>
+            </div>
           </div>
         </div>
       </div>
