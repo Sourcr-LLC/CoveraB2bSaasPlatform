@@ -34,7 +34,7 @@ export default function MarketingFeatures() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mb-32 relative z-10"
+        className="mb-32 relative z-10 max-w-7xl mx-auto w-full"
       >
           <div className="flex items-center justify-between mb-12">
             <div>
@@ -140,6 +140,7 @@ export default function MarketingFeatures() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
+          className="max-w-7xl mx-auto w-full"
         >
           <div className="flex items-center justify-between mb-12">
             <div>

@@ -185,14 +185,14 @@ export default function LandingPage() {
         </Suspense>
 
         {/* Testimonials */}
-        <section className="section bg-slate-50 border-y border-slate-200 py-20 md:py-32">
-          <div className="w-full max-w-7xl mx-auto">
-            <div className="text-center mb-16 md:mb-20">
+        <section className="section bg-slate-50 border-y border-slate-200 py-16 md:py-24">
+          <div className="w-full">
+            <div className="text-center mb-12 md:mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3A4F6A] text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100">
                  <MessageSquare className="w-3 h-3" />
                  Testimonials
               </div>
-              <h2 className="text-3xl md:text-5xl font-semibold text-[#1a1a1a] leading-tight">
+              <h2 className="text-3xl md:text-4xl font-semibold text-[#1a1a1a] leading-tight">
                 Loved by <span className="text-[#3A4F6A]">Operations Teams</span>
               </h2>
             </div>

@@ -82,7 +82,7 @@ export default function ComparisonSection() {
       </div>
 
       {/* Grid Content */}
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12 relative">
+      <div className="grid md:grid-cols-2 gap-8 lg:gap-12 relative max-w-7xl mx-auto w-full">
           
           {/* Connecting Lines (Desktop Only) */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 hidden md:flex flex-col items-center justify-center gap-1 z-20">
