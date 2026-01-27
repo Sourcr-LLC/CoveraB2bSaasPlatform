@@ -3,14 +3,15 @@ import { Link } from 'react-router';
 export default function Footer() {
   return (
     <footer 
-      className="relative w-full py-20 md:py-32 bg-cover bg-center bg-no-repeat"
-      style={{ 
-        backgroundImage: 'url(https://images.unsplash.com/photo-1768104553734-d9f568bce4f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYmx1ZSUyMHNreSUyMGNsb3VkcyUyMGNhbG0lMjBhZXJpYWx8ZW58MXx8fHwxNzY5NDkxODk1fDA&ixlib=rb-4.1.0&q=80&w=1080)',
-        backgroundPosition: 'center 30%' // Adjust position to see more sky
-      }}
+      className="relative w-full py-20 md:py-32 bg-slate-50"
     >
-      {/* Subtle overlay for better atmosphere */}
-      <div className="absolute inset-0 bg-slate-900/5 backdrop-blur-[1px]"></div>
+      {/* Background decoration */}
+      <div className="absolute inset-0 opacity-[0.4] pointer-events-none" 
+           style={{ 
+             backgroundImage: `radial-gradient(#cbd5e1 1px, transparent 1px)`,
+             backgroundSize: '32px 32px'
+           }} 
+      />
 
       {/* Floating Card Container */}
       <div className="relative w-full max-w-[94%] xl:max-w-7xl mx-auto bg-white rounded-[2.5rem] shadow-2xl overflow-hidden">
