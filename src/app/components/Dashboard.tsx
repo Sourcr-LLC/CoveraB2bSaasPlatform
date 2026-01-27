@@ -1,15 +1,13 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
 import { TrendingUp, TrendingDown, Users, AlertTriangle, CheckCircle2, Bell, Send, ArrowUpRight, Mail, Phone, Building2, Calendar, Clock, XCircle, RefreshCw, AlertCircle, Minus, Lock, FileText, FileCheck, Shield, BarChart3, Plus, MoreHorizontal, CheckSquare, Square, Download, Check, ListChecks } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
 import PaywallModal from './PaywallModal';
 import ContactSalesModal from './ContactSalesModal';
 import { toast } from 'sonner';
 import { supabase, vendorApi, contractApi, authApi } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { useSubscription } from '../hooks/useSubscription';
-import { isDemoMode, demoVendors, demoContracts, getDemoStats } from '../lib/demoData';
-import { KpiCard } from './dashboard/KpiCard';
+import { ComplianceAreaChart, CompliancePieChart } from './DashboardCharts';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {

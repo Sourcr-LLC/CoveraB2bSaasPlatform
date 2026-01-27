@@ -65,6 +65,17 @@
     <!-- Preload critical font for faster text rendering -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap" as="style" />
     
+    <!-- Inline critical CSS to prevent render blocking -->
+    <style>
+      /* Critical CSS for instant first paint */
+      *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:currentColor}
+      html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:Red Hat Display,ui-sans-serif,system-ui,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}
+      body{margin:0;line-height:inherit;background-color:#fafaf9}
+      #root{min-height:100vh;display:flex;flex-direction:column}
+      /* Prevent flash of unstyled content */
+      .loading-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background-color:#fafaf9}
+    </style>
+    
     <!-- Preload critical CSS to reduce render blocking -->
     <link rel="modulepreload" href="/src/app/index.tsx" />
     
