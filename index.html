@@ -105,20 +105,27 @@
         
         // 4. Send "Page View" Heartbeat (Works for both leads and anonymous visitors)
         const track = () => {
-          fetch('https://zylftkvcasvznhkmyzfj.supabase.co/functions/v1/make-server-a8b2511f/track/web', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              lead_id: storedLid, // Can be null for anonymous
-              url: window.location.href,
-              title: document.title,
-              timestamp: Date.now()
-            })
-          }).catch(err => console.error('Sendlr Tracking Error:', err));
+          // Defer tracking to not block critical path
+          setTimeout(() => {
+            fetch('https://zylftkvcasvznhkmyzfj.supabase.co/functions/v1/make-server-a8b2511f/track/web', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                lead_id: storedLid, // Can be null for anonymous
+                url: window.location.href,
+                title: document.title,
+                timestamp: Date.now()
+              })
+            }).catch(err => console.error('Sendlr Tracking Error:', err));
+          }, 0); // Execute after current call stack
         };
         
-        // Track immediately
-        track();
+        // Track after page is fully loaded (not blocking render)
+        if (document.readyState === 'complete') {
+          track();
+        } else {
+          window.addEventListener('load', track);
+        }
         
         // Track on history changes (SPA support)
         const pushState = history.pushState;
