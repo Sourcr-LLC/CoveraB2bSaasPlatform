@@ -70,6 +70,9 @@ export default defineConfig({
           // Stripe
           'stripe': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
           
+          // Animation library
+          'proxy': ['motion'],
+          
           // Other libraries
           'libs': ['sonner', 'react-slick', 'slick-carousel'],
         },
@@ -92,8 +95,12 @@ export default defineConfig({
       },
     },
     // Chunk size warnings
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 600,
     // Optimize asset inlining
     assetsInlineLimit: 4096, // Inline assets smaller than 4kb
+    // Target modern browsers for better optimization
+    target: 'es2020',
+    // Enable CSS minification
+    cssMinify: true,
   },
 })
