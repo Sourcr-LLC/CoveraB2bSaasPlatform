@@ -20,92 +20,61 @@ export default defineConfig({
   publicDir: 'public',
   build: {
     // Enable source maps for better debugging
-    sourcemap: false, // Disable in production for smaller files
+    sourcemap: true, // Re-enable for debugging
     // CSS code splitting
     cssCodeSplit: true,
     // Enable code splitting
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Node modules chunking strategy
-          if (id.includes('node_modules')) {
-            // React core
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor';
-            }
-            
-            // Charts - only load when needed
-            if (id.includes('recharts') || id.includes('decimal.js')) {
-              return 'charts';
-            }
-            
-            // PDF - already lazy loaded
-            if (id.includes('jspdf') || id.includes('pako') || id.includes('fast-png')) {
-              return 'pdf';
-            }
-            
-            // Excel
-            if (id.includes('xlsx')) {
-              return 'excel';
-            }
-            
-            // Radix UI - split by component for better caching
-            if (id.includes('@radix-ui')) {
-              return 'ui-radix';
-            }
-            
-            // Floating UI (used by Radix)
-            if (id.includes('@floating-ui')) {
-              return 'ui-radix';
-            }
-            
-            // Motion/Framer Motion
-            if (id.includes('motion') || id.includes('framer-motion')) {
-              return 'proxy';
-            }
-            
-            // Supabase
-            if (id.includes('@supabase')) {
-              return 'supabase';
-            }
-            
-            // Stripe
-            if (id.includes('@stripe')) {
-              return 'stripe';
-            }
-            
-            // Date libraries
-            if (id.includes('date-fns')) {
-              return 'dates';
-            }
-            
-            // Icons
-            if (id.includes('lucide-react')) {
-              return 'icons';
-            }
-            
-            // MUI
-            if (id.includes('@mui') || id.includes('@emotion')) {
-              return 'mui';
-            }
-            
-            // Other large libraries
-            if (id.includes('react-slick') || id.includes('slick-carousel')) {
-              return 'libs';
-            }
-            
-            if (id.includes('sonner')) {
-              return 'libs';
-            }
-            
-            // Tailwind merge
-            if (id.includes('tailwind-merge')) {
-              return 'utils';
-            }
-            
-            // All other node_modules go into vendor chunk
-            return 'vendor';
-          }
+        manualChunks: {
+          // React core libraries
+          'react-vendor': ['react', 'react-dom', 'react-router'],
+          
+          // Radix UI components (grouped by functionality)
+          'ui-radix': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-label',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-radio-group',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-tooltip',
+          ],
+          
+          // Chart libraries
+          'charts': ['recharts'],
+          
+          // Material UI (if used)
+          'mui': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          
+          // PDF generation - separate chunk for lazy loading
+          'pdf': ['jspdf', 'jspdf-autotable'],
+          
+          // Excel generation - separate chunk for lazy loading
+          'excel': ['xlsx'],
+          
+          // Date handling
+          'dates': ['date-fns'],
+          
+          // Icons
+          'icons': ['lucide-react'],
+          
+          // Supabase
+          'supabase': ['@supabase/supabase-js'],
+          
+          // Stripe
+          'stripe': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
+          
+          // Animation library
+          'motion': ['motion'],
+          
+          // Other libraries
+          'libs': ['sonner', 'react-slick', 'slick-carousel'],
         },
         // Optimize chunk naming for better caching
         chunkFileNames: 'assets/[name]-[hash].js',
@@ -117,18 +86,12 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        drop_console: false, // Keep console for debugging
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
-        passes: 2, // Multiple passes for better compression
-        unsafe_arrows: true,
-        unsafe_methods: true,
+        pure_funcs: ['console.log'],
       },
       format: {
         comments: false,
-      },
-      mangle: {
-        safari10: true,
       },
     },
     // Chunk size warnings
@@ -139,7 +102,5 @@ export default defineConfig({
     target: 'es2020',
     // Enable CSS minification
     cssMinify: true,
-    // Report compressed size
-    reportCompressedSize: true,
   },
 })
