@@ -8,6 +8,9 @@ import { supabase, vendorApi, contractApi, authApi } from '../lib/api';
 import { projectId } from '../../../utils/supabase/info';
 import { useSubscription } from '../hooks/useSubscription';
 import { ComplianceAreaChart, CompliancePieChart } from './DashboardCharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
+import { KpiCard } from './dashboard/KpiCard';
+import { isDemoMode, demoVendors, demoContracts } from '../lib/demoData';
 
 // Helper function to calculate vendor status client-side
 function calculateVendorStatus(insuranceExpiry: string | undefined): string {
