@@ -5,8 +5,6 @@ import SEO from './SEO';
 import DemoModal from './DemoModal';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
-import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
-import teamImage from 'figma:asset/008575bdb0662cc4441a6d2eede40e712cb68683.png';
 
 export default function AboutUs() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
@@ -67,20 +65,6 @@ export default function AboutUs() {
                 Schedule demo
               </button>
             </div>
-          </div>
-
-          {/* Hero Image */}
-          <div className="w-full max-w-[1200px] mx-auto px-4 md:px-0">
-             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/60 aspect-[16/9] md:aspect-[21/9] bg-slate-100 group">
-                <div className="absolute inset-0 bg-slate-200 animate-pulse" />
-                <ImageWithFallback 
-                  src={teamImage} 
-                  alt="Covera team collaborating" 
-                  className="object-cover w-full h-full relative z-10 transition-transform duration-700 group-hover:scale-105"
-                />
-                {/* Overlay for better text contrast if we had text on top, but here just for polish */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#3A4F6A]/10 to-transparent pointer-events-none z-20" />
-             </div>
           </div>
         </section>
 
