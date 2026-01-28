@@ -7,6 +7,8 @@ import TrustedByMarquee from './landing/TrustedByMarquee';
 import LandingNav from './LandingNav';
 import Footer from './Footer';
 
+import { TrustScore } from './ui/TrustScore';
+
 // Lazy load heavy components and modals
 const DemoModal = lazy(() => import('./DemoModal'));
 const ContactSalesModal = lazy(() => import('./ContactSalesModal'));
@@ -118,7 +120,7 @@ export default function LandingPage() {
               Every vendor introduces risk. Covera makes it visible, trackable, and controlled.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
               <Link 
                 to="/login"
                 className="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold bg-[#3A4F6A] text-white hover:bg-[#2c3e53] transition-colors shadow-md shadow-[#3A4F6A]/20 hover:shadow-lg hover:shadow-[#3A4F6A]/30 flex items-center justify-center gap-2"
@@ -132,6 +134,10 @@ export default function LandingPage() {
               >
                 Schedule demo
               </button>
+            </div>
+
+            <div className="flex justify-center">
+              <TrustScore />
             </div>
           </div>
 

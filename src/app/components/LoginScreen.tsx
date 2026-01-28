@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router';
 import { CheckCircle2, ArrowLeft } from 'lucide-react';
 import { PremiumCheck } from './ui/PremiumCheck';
+import { TrustScoreMinimal } from './ui/TrustScore';
 import { authApi } from '../lib/api';
 import SEO, { SEO_CONFIGS } from './SEO';
 import { analytics } from './GoogleAnalytics';
@@ -318,8 +319,8 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             </div>
 
             {/* Trust indicator */}
-            <div className="mt-8 text-center text-sm" style={{ color: 'var(--foreground-subtle)' }}>
-              <p>Trusted by compliance teams across the USA</p>
+            <div className="mt-8 flex justify-center">
+              <TrustScoreMinimal />
             </div>
           </div>
         </div>
