@@ -9,6 +9,7 @@ import DashboardLoadingFallback from './components/DashboardLoadingFallback';
 import ScrollToTop from './components/ScrollToTop';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import DashboardLayout from './components/DashboardLayoutNew';
+import CookieConsent from './components/CookieConsent';
 
 // Lazy load components to optimize bundle size and performance
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
@@ -489,6 +490,7 @@ export default function App() {
           } />
           <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
         </Routes>
+        <CookieConsent />
         <Toaster />
         <ScrollToTop />
         <GoogleAnalytics />

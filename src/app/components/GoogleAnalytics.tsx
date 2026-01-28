@@ -19,6 +19,10 @@ export default function GoogleAnalytics() {
     // Defer Google Analytics loading until after page is interactive
     // This prevents blocking the critical rendering path
     const loadGA = () => {
+      // Check for cookie consent
+      const consent = localStorage.getItem('cookie_consent');
+      if (consent !== 'true') return;
+
       // Initialize dataLayer
       window.dataLayer = window.dataLayer || [];
       
@@ -51,11 +55,27 @@ export default function GoogleAnalytics() {
 
     // Defer GA loading until after initial render
     // Use requestIdleCallback for best performance, fallback to setTimeout
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadGA, { timeout: 5000 });
-    } else {
-      setTimeout(loadGA, 5000);
-    }
+    const initGA = () => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGA, { timeout: 5000 });
+      } else {
+        setTimeout(loadGA, 5000);
+      }
+    };
+
+    initGA();
+
+    // Listen for consent given event
+    const handleConsent = () => {
+      // Immediate load when consent given
+      loadGA(); 
+    };
+    
+    window.addEventListener('cookie-consent-given', handleConsent);
+
+    return () => {
+      window.removeEventListener('cookie-consent-given', handleConsent);
+    };
   }, []);
 
   // Track page views on route change
