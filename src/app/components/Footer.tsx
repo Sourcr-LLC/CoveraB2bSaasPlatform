@@ -95,7 +95,7 @@ export default function Footer() {
           
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-slate-400">
-            <div>&copy; {new Date().getFullYear()} Covera Inc. All rights reserved.</div>
+            <div>&copy; {new Date().getFullYear()} Covera. All rights reserved.</div>
             <div className="flex gap-8">
               <Link to="/privacy-policy" className="hover:text-slate-600 transition-colors">Privacy Policy</Link>
               <Link to="/terms-of-service" className="hover:text-slate-600 transition-colors">Terms of Service</Link>
